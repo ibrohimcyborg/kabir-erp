@@ -147,6 +147,8 @@ const THEMES = {
 function App() {
   const [dark, setDark] = useState(true);
   const [tab, setTab] = useState("home");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [screenW, setScreenW] = useState(window.innerWidth || 1024);
   const [user, setUser] = useState(() => {
     try { const u = localStorage.getItem("kabir_user"); return u ? JSON.parse(u) : null; } catch { return null; }
   });
@@ -221,6 +223,12 @@ function App() {
   }, []);
 
   useEffect(() => { if (user) loadAll(); }, [user, loadAll]);
+
+  useEffect(() => {
+    const handle = () => setScreenW(window.innerWidth);
+    window.addEventListener('resize', handle);
+    return () => window.removeEventListener('resize', handle);
+  }, []);
 
   // ═══════════════════════════════════════════════════════════
   // SUPABASE — SAQLASH FUNKSIYALARI
@@ -2108,15 +2116,6 @@ To'lov uchun:
       default: return <HomePage />;
     }
   };
-
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [screenW, setScreenW] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
-
-  useEffect(() => {
-    const handle = () => setScreenW(window.innerWidth);
-    window.addEventListener('resize', handle);
-    return () => window.removeEventListener('resize', handle);
-  }, []);
 
   const navItems = [
     { id: "home", l: "Bosh", i: "home" },
