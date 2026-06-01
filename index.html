@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#080810">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kabir ERP">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='115' fill='%23080810'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%237B73FF'/%3E%3Cstop offset='100%25' stop-color='%2300B8D9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='106' y='106' width='300' height='300' rx='70' fill='url(%23g)'/%3E%3Ctext x='256' y='310' text-anchor='middle' font-family='system-ui' font-weight='800' font-size='180' fill='white'%3EK%3C/text%3E%3C/svg%3E">
+<title>Kabir ERP</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:system-ui,sans-serif;background:#080810;color:#EEEEF8;transition:background .3s,color .3s}
+input,select,textarea,button{font-family:inherit;outline:none}
+button{cursor:pointer;border:none;background:none}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+input[type=number]{-moz-appearance:textfield}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:#22223A;border-radius:3px}
+@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.up{animation:up .3s cubic-bezier(.16,1,.3,1) forwards}
+.fade{animation:fade .2s ease}
+.press{transition:transform .12s}.press:active{transform:scale(.97)}
+.spin{animation:spin 1s linear infinite}
+/* RESPONSIVE LAYOUT */
+.app-layout{display:flex;min-height:100vh}
+.sidebar{width:220px;background:#101018;border-right:1px solid #22223A;display:flex;flex-direction:column;position:fixed;left:0;top:0;height:100vh;z-index:10;transition:transform .3s}
+.main-content{margin-left:220px;flex:1;min-height:100vh;max-width:100%}
+.main-body{padding:20px;padding-bottom:20px;max-width:900px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.actions-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.content-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+/* Tablet */
+@media(max-width:1024px){
+  .sidebar{width:180px}
+  .main-content{margin-left:180px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .content-grid{grid-template-columns:1fr}
+}
+/* Mobile landscape */
+@media(max-width:768px){
+  .sidebar{width:60px;overflow:hidden}
+  .sidebar .sid-label{display:none}
+  .sidebar .sid-logo-text{display:none}
+  .main-content{margin-left:60px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .actions-grid{grid-template-columns:repeat(4,1fr)}
+}
+/* Mobile portrait */
+@media(max-width:480px){
+  .sidebar{transform:translateX(-100%);position:fixed}
+  .sidebar.sidebar-open{transform:translateX(0)}
+  .main-content{margin-left:0!important}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .actions-grid{grid-template-columns:repeat(4,1fr)}
+  .content-grid{grid-template-columns:1fr}
+  .mobile-nav{display:flex!important}
+}
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100}
+.ptr{text-align:center;padding:12px;color:#7B73FF;font-size:13px;font-weight:700;display:none}
+.ptr.show{display:block}
+@keyframes ptr-spin{to{transform:rotate(360deg)}}
+.ptr-spin{display:inline-block;animation:ptr-spin 1s linear infinite;margin-right:6px}
+/* Sidebar text hide on icon-only mode */
+@media(max-width:768px) and (min-width:481px){
+  .sid-text{display:none}
+  .sidebar{width:58px}
+  .main-content{margin-left:58px}
+}
+/* Pull to refresh */
+.ptr-indicator{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;justify-content:center;height:0;overflow:hidden;background:#101018;z-index:200;transition:height .2s;font-size:13px;color:#7B73FF;font-weight:700;font-family:system-ui}
+.ptr-indicator.ptr-show{height:56px}
+.ptr-spin{display:inline-block;margin-right:8px;animation:spin 1s linear infinite}
+</style>
+</head>
+<body>
+<div id="ptr" class="ptr-indicator"><span class="ptr-spin">🔄</span> Yangilanmoqda...</div>
+<div id="root"></div>
+<script>
+// Pull to refresh
+let startY = 0, pulling = false;
+const ptr = document.getElementById('ptr');
+document.addEventListener('touchstart', e => {
+  if (window.scrollY === 0) { startY = e.touches[0].clientY; pulling = true; }
+}, {passive: true});
+document.addEventListener('touchmove', e => {
+  if (!pulling) return;
+  const dy = e.touches[0].clientY - startY;
+  if (dy > 60) ptr.classList.add('ptr-show');
+  else ptr.classList.remove('ptr-show');
+}, {passive: true});
+document.addEventListener('touchend', () => {
+  if (ptr.classList.contains('ptr-show')) {
+    setTimeout(() => { ptr.classList.remove('ptr-show'); location.reload(); }, 500);
+  }
+  pulling = false;
+});
+</script>
+<script type="text/babel">
+const{useState,useEffect,useMemo,useCallback}=React;
+const createClient=window.supabase.createClient;
+const db=createClient("https://rtvozskolwlxndwisvdv.supabase.co","sb_publishable_HB-CcgF00TtRAqyha__M2g_5X91h40W");
+
+// ═══════════════════════════════════════════════════════════
+// SUPABASE
+// ═══════════════════════════════════════════════════════════
+const SUPABASE_URL = "https://rtvozskolwlxndwisvdv.supabase.co";
+const SUPABASE_KEY = "sb_publishable_HB-CcgF00TtRAqyha__M2g_5X91h40W";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ═══════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════
+const uid = () => Math.random().toString(36).slice(2) + Date.now();
+const today = () => new Date().toISOString().slice(0, 10);
+const now = () => new Date().toISOString();
+const fmt = (n) => "$" + new Intl.NumberFormat("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(n || 0);
+const fmtN = (n) => new Intl.NumberFormat("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 }).format(n || 0);
+const fmtK = (n) => {
+  if (!n) return "$0";
+  const num = Math.abs(n);
+  if (num >= 1e6) return "$" + (n / 1e6).toFixed(1) + "M";
+  if (num >= 1e3) return "$" + (n / 1e3).toFixed(1) + "K";
+  return "$" + (Math.round(n * 100) / 100);
+};
+const pad4 = (n) => String(n).padStart(4, "0");
+const dateStr = (iso) => iso ? new Date(iso).toLocaleDateString("uz-UZ", { day: "2-digit", month: "2-digit", year: "numeric" }) : "";
+const daysLeft = (d) => d ? Math.ceil((new Date(d) - new Date()) / 86400000) : null;
+
+const CATEGORIES = ["Jurnal stol", "Divan", "Kreslo", "Shkaf", "Stol", "Stul", "Yotoq", "Boshqa"];
+const PAYMENT_INFO = {
+  cash: { label: "Naqd", emoji: "💵" },
+  card: { label: "Karta", emoji: "💳" },
+  click: { label: "Click", emoji: "📱" },
+  transfer: { label: "O'tkazma", emoji: "🏦" },
+  installment: { label: "Bo'lib", emoji: "📅" },
+};
+const ORDER_STATUS = {
+  pending: { label: "Kutmoqda", color: "amber", emoji: "🟡" },
+  working: { label: "Ishlanmoqda", color: "blue", emoji: "🔵" },
+  ready: { label: "Tayyor", color: "green", emoji: "🟢" },
+  delivered: { label: "Topshirildi", color: "acc", emoji: "✅" },
+};
+
+const Ic = ({ n, s = 20 }) => {
+  const p = { width: s, height: s, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" };
+  switch (n) {
+    case "home": return <svg {...p}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>;
+    case "warehouse": return <svg {...p}><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35z" /><path d="M6 18h12" /><path d="M6 14h12" /><path d="M6 10h12" /></svg>;
+    case "store": return <svg {...p}><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" /><path d="M3 9V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2" /><line x1="12" y1="12" x2="12" y2="19" /></svg>;
+    case "order": return <svg {...p}><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>;
+    case "debt": return <svg {...p}><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>;
+    case "report": return <svg {...p}><path d="M3 3v18h18" /><path d="M7 16l4-4 4 4 5-5" /></svg>;
+    case "plus": return <svg {...p} strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>;
+    case "x": return <svg {...p} strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>;
+    case "back": return <svg {...p} strokeWidth="2.5"><polyline points="15 18 9 12 15 6" /></svg>;
+    case "right": return <svg {...p}><polyline points="9 18 15 12 9 6" /></svg>;
+    case "search": return <svg {...p}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>;
+    case "trash": return <svg {...p}><polyline points="3 6 5 6 21 6" /><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6" /></svg>;
+    case "edit": return <svg {...p}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>;
+    case "alert": return <svg {...p}><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>;
+    case "sun": return <svg {...p}><circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" /></svg>;
+    case "moon": return <svg {...p}><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>;
+    case "refresh": return <svg {...p}><polyline points="23 4 23 10 17 10" /><polyline points="1 20 1 14 7 14" /><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" /></svg>;
+    case "send": return <svg {...p}><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>;
+    case "money": return <svg {...p}><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>;
+    default: return null;
+  }
+};
+
+const THEMES = {
+  dark: { bg: "#080810", surf: "#101018", card: "#181824", border: "#22223A", acc: "#7B73FF", accSoft: "#7B73FF22", txt: "#EEEEF8", sub: "#7777AA", dim: "#44445A", green: "#00D68F", greenS: "#00D68F18", red: "#FF4D6D", redS: "#FF4D6D18", amber: "#FFB800", amberS: "#FFB80018", blue: "#00B8D9", blueS: "#00B8D918" },
+  light: { bg: "#F2F2F8", surf: "#FFFFFF", card: "#F8F8FC", border: "#E0E0EE", acc: "#5B52F0", accSoft: "#5B52F015", txt: "#1A1A30", sub: "#6666AA", dim: "#AAAACC", green: "#00B87A", greenS: "#00B87A15", red: "#E53935", redS: "#E5393515", amber: "#F59E0B", amberS: "#F59E0B15", blue: "#0EA5E9", blueS: "#0EA5E915" },
+};
+
+function App() {
+  const [dark, setDark] = useState(() => {
+    try { 
+      const saved = localStorage.getItem("kabir_dark");
+      return saved === null ? true : saved === "true";
+    } catch { return true; }
+  });
+  const [tab, setTab] = useState(() => {
+    try { return localStorage.getItem("kabir_tab") || "home"; } catch { return "home"; }
+  });
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [pullY, setPullY] = useState(0);
+  const [pulling, setPulling] = useState(false);
+  const [user, setUser] = useState(() => {
+    try { const u = localStorage.getItem("kabir_user"); return u ? JSON.parse(u) : null; } catch { return null; }
+  });
+  const [loginU, setLoginU] = useState("");
+  const [loginP, setLoginP] = useState("");
+  const [loginErr, setLoginErr] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+
+  const doLogin = async () => {
+    if (!loginU || !loginP) { setLoginErr("To'ldiring"); return; }
+    setLoginLoading(true);
+    const { data } = await db.from("users").select("*").eq("username", loginU).eq("password", loginP).single();
+    setLoginLoading(false);
+    if (data) {
+      setUser(data);
+      localStorage.setItem("kabir_user", JSON.stringify(data));
+      setLoginErr("");
+    }
+    else setLoginErr("Login yoki parol xato!");
+  };
+
+  const canSee = (field) => {
+    if (!user) return false;
+    if (user.role === "superadmin") return true;
+    if (user.role === "admin") { if (field === "users" || field === "price") return false; return true; }
+    if (user.role === "moder") { if (field === "cost" || field === "profit" || field === "report") return false; return true; }
+    return false;
+  };
+  const [modal, setModal] = useState(null);
+  const [sel, setSel] = useState(null);
+  const [storeProfileId, setStoreProfileId] = useState(null);
+  const [confirmDialog, setConfirmDialog] = useState(null);
+  const [printData, setPrintData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
+
+  // DATA
+  const [products, setProducts] = useState([]);
+  const [units, setUnits] = useState([]);
+  const [stores, setStores] = useState([]);
+  const [sales, setSales] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [customers, setCustomers] = useState([]);
+  const [activity, setActivity] = useState([]);
+
+  const t = dark ? THEMES.dark : THEMES.light;
+
+  // ═══════════════════════════════════════════════════════════
+  // SUPABASE — MA'LUMOT YUKLASH
+  // ═══════════════════════════════════════════════════════════
+  const loadAll = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [p, u, st, sa, o, c, a] = await Promise.all([
+        db.from("products").select("*").order("created_at", { ascending: false }),
+        db.from("units").select("*").order("added_at", { ascending: false }),
+        db.from("stores").select("*").order("created_at", { ascending: false }),
+        db.from("sales").select("*").order("created_at", { ascending: false }),
+        db.from("orders").select("*").order("created_at", { ascending: false }),
+        db.from("customers").select("*").order("created_at", { ascending: false }),
+        db.from("activity").select("*").order("time", { ascending: false }).limit(200),
+      ]);
+      if (p.data) setProducts(p.data.map(x => ({ ...x, costItems: x.cost_items || [] })));
+      if (u.data) setUnits(u.data.map(x => ({ ...x, unitId: x.unit_id, productId: x.product_id, addedAt: x.added_at, sentAt: x.sent_at })));
+      if (st.data) setStores(st.data);
+      if (sa.data) setSales(sa.data.map(x => ({ ...x, unitIds: x.unit_ids || [], storeId: x.store_id, productId: x.product_id, customerId: x.customer_id, customerName: x.customer_name, totalAmount: x.total_amount, payDate: x.pay_date, payMethod: x.pay_method, partialPayments: x.partial_payments || [] })));
+      if (o.data) setOrders(o.data.map(x => ({ ...x, orderId: x.order_id, storeId: x.store_id, productId: x.product_id, statusHistory: x.status_history || [] })));
+      if (c.data) setCustomers(c.data);
+      if (a.data) setActivity(a.data);
+    } catch (e) { console.error(e); }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => { if (user) loadAll(); }, [user, loadAll]);
+
+  useEffect(() => {
+    document.body.style.background = dark ? "#080810" : "#F2F2F8";
+    document.body.style.color = dark ? "#EEEEF8" : "#1A1A30";
+  }, [dark]);
+
+  const doRefresh = async () => {
+    if (refreshing) return;
+    setRefreshing(true);
+    await loadAll();
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    let startY = 0;
+    let isDragging = false;
+    const el = document.getElementById('main-scroll');
+    if (!el) return;
+
+    const onTouchStart = (e) => {
+      if (el.scrollTop === 0) {
+        startY = e.touches[0].clientY;
+        isDragging = true;
+      }
+    };
+    const onTouchMove = (e) => {
+      if (!isDragging) return;
+      const dy = e.touches[0].clientY - startY;
+      if (dy > 0 && dy < 80) {
+        setPullY(dy);
+        setPulling(dy > 50);
+      }
+    };
+    const onTouchEnd = () => {
+      if (pulling) doRefresh();
+      setPullY(0);
+      setPulling(false);
+      isDragging = false;
+    };
+
+    el.addEventListener('touchstart', onTouchStart, { passive: true });
+    el.addEventListener('touchmove', onTouchMove, { passive: true });
+    el.addEventListener('touchend', onTouchEnd);
+    return () => {
+      el.removeEventListener('touchstart', onTouchStart);
+      el.removeEventListener('touchmove', onTouchMove);
+      el.removeEventListener('touchend', onTouchEnd);
+    };
+  }, [pulling, refreshing, user]);
+
+  
+
+  // ═══════════════════════════════════════════════════════════
+  // SUPABASE — SAQLASH FUNKSIYALARI
+  // ═══════════════════════════════════════════════════════════
+  const dbSave = async (table, data) => {
+    setSyncing(true);
+    try {
+      await db.from(table).upsert(data);
+    } catch (e) { console.error(e); }
+    setSyncing(false);
+  };
+
+  const dbDelete = async (table, id) => {
+    setSyncing(true);
+    try { await db.from(table).delete().eq("id", id); } catch (e) { console.error(e); }
+    setSyncing(false);
+  };
+
+  const dbDeleteMany = async (table, ids) => {
+    setSyncing(true);
+    try { await db.from(table).delete().in("id", ids); } catch (e) { console.error(e); }
+    setSyncing(false);
+  };
+
+  const log = async (action, details) => {
+    const entry = { id: uid(), action, details, time: now() };
+    setActivity(prev => [entry, ...prev].slice(0, 200));
+    await db.from("activity").insert(entry);
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // HELPER FUNKSIYALAR
+  // ═══════════════════════════════════════════════════════════
+  const askConfirm = (title, message, onConfirm, danger = false) => setConfirmDialog({ title, message, onConfirm, danger });
+  const generateUnitId = (sku, num) => `${sku}-#${num}`;
+  const getWhUnits = (pid) => units.filter(u => u.productId === pid && u.location === "warehouse" && u.status === "available");
+  const getStoreUnits = (sid, pid = null) => units.filter(u => u.location === sid && u.status === "available" && (pid === null || u.productId === pid));
+  const getStoreUnitsByProduct = (sid) => {
+    const r = {};
+    units.filter(u => u.location === sid && u.status === "available").forEach(u => {
+      if (!r[u.productId]) r[u.productId] = [];
+      r[u.productId].push(u);
+    });
+    return r;
+  };
+
+  const stats = useMemo(() => {
+    const totalSales = sales.reduce((s, x) => s + x.totalAmount, 0);
+    const totalProfit = sales.reduce((s, x) => s + (x.price - x.cost) * x.qty, 0);
+    const totalPaid = sales.reduce((s, x) => {
+      const pp = (x.partialPayments || []).reduce((a, p) => a + p.amount, 0);
+      return s + (x.paid ? x.totalAmount : pp);
+    }, 0);
+    const totalCustomerDebt = sales.reduce((s, x) => {
+      if (x.paid) return s;
+      const pp = (x.partialPayments || []).reduce((a, p) => a + p.amount, 0);
+      return s + (x.totalAmount - pp);
+    }, 0);
+    let totalVitrinaDebt = 0;
+    units.filter(u => u.location !== "warehouse" && u.status === "available").forEach(u => {
+      const p = products.find(x => x.id === u.productId);
+      if (p) totalVitrinaDebt += p.price;
+    });
+    const debtCount = sales.filter(x => !x.paid).length;
+    return { totalSales, totalProfit, totalPaid, totalCustomerDebt, totalVitrinaDebt, debtCount };
+  }, [sales, units, products]);
+
+  // ═══════════════════════════════════════════════════════════
+  // PRINT FUNKSIYALARI
+  // ═══════════════════════════════════════════════════════════
+  const buildYorliqHtml = (selectedUnitIds) => {
+    const printUnits = units.filter(u => selectedUnitIds.includes(u.id));
+    const pages = printUnits.map((u, idx) => {
+      const prod = products.find(p => p.id === u.productId);
+      if (!prod) return '';
+      const loc = u.status === "sold" ? "Sotildi" : u.location === "warehouse" ? "Omborda" : stores.find(s => s.id === u.location)?.name || "—";
+      return `<div class="yorliq" id="y${idx}">
+        <div class="band"><div class="brand">KABIR EXCLUSIVE</div><div class="sub">MEBEL ISHLAB CHIQARISH</div></div>
+        <div class="body">
+          <div class="name">${prod.name}</div>
+          <div class="bcwrap"><svg id="bc${idx}"></svg></div>
+          <div class="info">
+            ${prod.dimensions ? `<div class="row"><span>O'lcham:</span><span>${prod.dimensions}</span></div>` : ''}
+            <div class="row"><span>Kategoriya:</span><span>${prod.category}</span></div>
+            <div class="row"><span>Holat:</span><span>${loc}</span></div>
+            <div class="row"><span>Sana:</span><span>${dateStr(u.addedAt)}</span></div>
+          </div>
+          <div class="badges"><div class="badge">✓ SIFAT NAZORATI</div><div class="badge">✓ GOST</div></div>
+          <div class="contact">+998 20 000 00 74 · Yangiyo'l, Qirariq</div>
+        </div>
+      </div>`;
+    }).join('');
+    const barcodeScripts = printUnits.map((u, idx) => 
+      `JsBarcode("#bc${idx}","${u.unitId}",{format:"CODE128",width:2.5,height:55,displayValue:true,fontSize:16,margin:2,font:"Courier New"});`
+    ).join('');
+    return `<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"><\/script>
+    <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Courier New',monospace;background:white}
+    .yorliq{width:80mm;height:100mm;border:1px solid #ccc;margin:0 auto 6mm;page-break-after:always;display:flex;flex-direction:column;overflow:hidden}
+    .yorliq:last-child{page-break-after:avoid}
+    .band{background:#000;color:#fff;text-align:center;padding:2.5mm 2mm}
+    .brand{font-size:13px;font-weight:bold;letter-spacing:1px}
+    .sub{font-size:7px;opacity:.8;margin-top:1px}
+    .body{flex:1;padding:2mm 3mm;display:flex;flex-direction:column;justify-content:space-between}
+    .name{font-size:13px;font-weight:bold;text-align:center;margin:1mm 0}
+    .bcwrap{text-align:center;line-height:0}
+    .bcwrap svg{width:74mm!important}
+    .info{font-size:11px}
+    .row{display:flex;justify-content:space-between;margin:0.8mm 0}
+    .row span:first-child{color:#666}
+    .badges{display:flex;gap:2mm;margin-top:1.5mm}
+    .badge{flex:1;background:#000;color:#fff;text-align:center;padding:1.5mm;font-size:9px;font-weight:bold}
+    .contact{text-align:center;font-size:9px;color:#888;margin-top:1.5mm}
+    @media print{body{margin:0}}
+    </style></head><body>${pages}
+    <script>window.onload=function(){${barcodeScripts};setTimeout(()=>{window.print();},500);}<\/script>
+    </body></html>`;
+  };
+
+  const buildGarantiyaHtml = (unitIds) => {
+    const garUnits = units.filter(u => unitIds.includes(u.id));
+    const pages = garUnits.map((u, idx) => {
+      const prod = products.find(p => p.id === u.productId);
+      if (!prod) return '';
+      return `<div class="gar">
+        <div class="band"><div class="brand">KABIR EXCLUSIVE</div><div class="sub">MEBEL ISHLAB CHIQARISH</div></div>
+        <div class="body">
+          <div class="name">${prod.name}</div>
+          <div class="id">${u.unitId}</div>
+          <div class="bcwrap"><svg id="gc${idx}"></svg></div>
+          <hr class="div">
+          <div class="info">
+            ${prod.dimensions ? `<div class="row"><span>O'lcham:</span><span>${prod.dimensions}</span></div>` : ''}
+            <div class="row"><span>Kategoriya:</span><span>${prod.category}</span></div>
+          </div>
+          <div class="gbox">✓ GARANTIYA: 24 OY</div>
+          <div class="sana"><div class="sana-lbl">SOTILGAN SANA:</div><div class="sana-line"></div></div>
+          <div class="pechat"><div class="pechat-txt">M . P .</div></div>
+          <div class="contact">+998 20 000 00 74 · Yangiyo'l, Qirariq</div>
+        </div>
+      </div>`;
+    }).join('');
+    const barcodeScripts = garUnits.map((u, idx) =>
+      `JsBarcode("#gc${idx}","${u.unitId}",{format:"CODE128",width:2.5,height:55,displayValue:true,fontSize:16,margin:2,font:"Courier New"});`
+    ).join('');
+    return `<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"><\/script>
+    <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Courier New',monospace;background:white}
+    .gar{width:80mm;height:150mm;border:1px solid #ccc;margin:0 auto 6mm;page-break-after:always;display:flex;flex-direction:column;overflow:hidden}
+    .gar:last-child{page-break-after:avoid}
+    .band{background:#000;color:#fff;text-align:center;padding:2.5mm 2mm}
+    .brand{font-size:13px;font-weight:bold;letter-spacing:1px}
+    .sub{font-size:7px;opacity:.8;margin-top:1px}
+    .body{flex:1;padding:2.5mm 3mm;display:flex;flex-direction:column}
+    .name{font-size:13px;font-weight:bold;text-align:center;margin:1mm 0}
+    .id{font-size:10px;text-align:center;color:#555;margin-bottom:1mm}
+    .bcwrap{text-align:center;line-height:0;margin:1mm 0}
+    .bcwrap svg{width:74mm!important}
+    .div{border:none;border-top:1px dashed #aaa;margin:2mm 0}
+    .info{font-size:11px;margin-bottom:1mm}
+    .row{display:flex;justify-content:space-between;margin:0.8mm 0}
+    .row span:first-child{color:#666}
+    .gbox{background:#000;color:#fff;text-align:center;padding:3mm;margin:2mm 0;font-size:14px;font-weight:bold;letter-spacing:1px}
+    .sana{border:1px solid #000;padding:2mm 3mm;margin:2mm 0}
+    .sana-lbl{color:#777;font-size:10px;margin-bottom:1.5mm}
+    .sana-line{border-bottom:1px solid #333;height:5mm}
+    .pechat{border:1.5px solid #000;height:14mm;margin:1.5mm 0;display:flex;align-items:center;justify-content:center}
+    .pechat-txt{font-size:13px;color:#bbb;letter-spacing:5px}
+    .contact{text-align:center;font-size:9px;color:#888;margin-top:auto;padding-top:2mm;border-top:1px solid #eee}
+    @media print{body{margin:0}}
+    </style></head><body>${pages}
+    <script>window.onload=function(){${barcodeScripts};setTimeout(()=>{window.print();},500);}<\/script>
+    </body></html>`;
+  };
+
+  const printYorliq = (ids) => setPrintData({ type: 'yorliq', count: ids.length, html: buildYorliqHtml(ids) });
+  const printGarantiya = (ids) => setPrintData({ type: 'garantiya', count: ids.length, html: buildGarantiyaHtml(ids) });
+
+  // ═══════════════════════════════════════════════════════════
+  // STYLES
+  // ═══════════════════════════════════════════════════════════
+  const css = `@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body,html{font-family:'Sora',system-ui,sans-serif;background:${t.bg}}input,select,textarea,button{font-family:inherit;outline:none}button{cursor:pointer;border:none;background:none}input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}input[type=number]{-moz-appearance:textfield}::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:${t.border};border-radius:3px}@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes spin{to{transform:rotate(360deg)}}.up{animation:up .3s cubic-bezier(.16,1,.3,1) forwards}.fade{animation:fade .2s ease}.press{transition:transform .12s}.press:active{transform:scale(.97)}.spin{animation:spin 1s linear infinite}`;
+
+  const s = {
+    root: { background: t.bg, minHeight: "100vh", maxWidth: 430, margin: "0 auto", color: t.txt, position: "relative" },
+    hdr: { background: t.surf, borderBottom: `1px solid ${t.border}`, padding: "13px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50 },
+    body: { padding: 16, paddingBottom: 20 },
+    nav: { position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 430, background: t.surf, borderTop: `1px solid ${t.border}`, display: "flex", padding: "8px 0 14px", zIndex: 100 },
+    card: { background: t.card, border: `1px solid ${t.border}`, borderRadius: 14, padding: 14, marginBottom: 10 },
+    overlay: { position: "fixed", inset: 0, background: "#00000099", zIndex: 9999, display: "flex", alignItems: "flex-end", justifyContent: "center" },
+    sheet: { background: t.surf, borderRadius: "20px 20px 0 0", width: "100%", maxWidth: "100%", maxHeight: "90vh", overflowY: "auto", padding: 20, borderTop: `1px solid ${t.border}`, position: "relative", zIndex: 10000 },
+    row: { display: "flex", justifyContent: "space-between", alignItems: "center" },
+    inp: { width: "100%", background: t.card, border: `1px solid ${t.border}`, borderRadius: 10, padding: "11px 13px", color: t.txt, fontSize: 14, marginBottom: 11 },
+    iBtn: { width: 36, height: 36, borderRadius: 10, background: t.card, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: t.txt },
+    mono: { fontFamily: "'JetBrains Mono', monospace" },
+  };
+
+  const Lbl = ({ children }) => <label style={{ fontSize: 11, fontWeight: 600, color: t.sub, textTransform: "uppercase", letterSpacing: ".5px", marginBottom: 5, display: "block" }}>{children}</label>;
+  const Btn = ({ bg, c = "#fff", mt = 0, onClick, children, disabled, small }) => <button disabled={disabled} style={{ width: "100%", background: disabled ? t.border : bg, color: c, borderRadius: 11, padding: small ? "9px" : "13px", fontWeight: 700, fontSize: small ? 12 : 14, marginTop: mt, opacity: disabled ? 0.5 : 1 }} onClick={onClick}>{children}</button>;
+  const Sec = ({ children, right, mt = 16 }) => <div style={{ fontSize: 11, fontWeight: 700, color: t.sub, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 9, marginTop: mt, display: "flex", justifyContent: "space-between", alignItems: "center" }}><span>{children}</span>{right}</div>;
+  const Div = () => <div style={{ borderTop: `1px solid ${t.border}`, margin: "11px 0" }} />;
+  const Badge = ({ c, bg, children }) => <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 9px", borderRadius: 20, fontSize: 10, fontWeight: 700, color: c, background: bg }}>{children}</span>;
+  const NumInp = ({ value, onChange, ...rest }) => (
+    <input type="number" inputMode="decimal" step="0.01" style={s.inp}
+      value={value === 0 || value === "" || value === null || value === undefined ? "" : value}
+      onChange={(e) => onChange(e.target.value === "" ? "" : +e.target.value)} {...rest} />
+  );
+  const Empty = ({ icon, title, desc, btnText, onBtn }) => (
+    <div style={{ textAlign: "center", padding: "52px 20px" }}>
+      <div style={{ width: 72, height: 72, borderRadius: 22, background: t.accSoft, margin: "0 auto 18px", display: "flex", alignItems: "center", justifyContent: "center", color: t.acc }}><Ic n={icon} s={32} /></div>
+      <div style={{ fontSize: 17, fontWeight: 800, marginBottom: 8 }}>{title}</div>
+      <div style={{ fontSize: 13, color: t.sub, lineHeight: 1.55, marginBottom: 22, whiteSpace: "pre-line" }}>{desc}</div>
+      {btnText && <button onClick={onBtn} style={{ background: t.acc, color: "#fff", borderRadius: 11, padding: "11px 22px", fontWeight: 700, fontSize: 13, display: "inline-flex", alignItems: "center", gap: 8 }}><Ic n="plus" s={15} />{btnText}</button>}
+    </div>
+  );
+
+
+  if (!user) {
+    return (
+      <div style={{ background: "#080810", minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
+        <div style={{ width: 70, height: 70, borderRadius: 20, background: "linear-gradient(135deg,#7B73FF,#00B8D9)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 32, marginBottom: 16 }}>K</div>
+        <div style={{ fontSize: 22, fontWeight: 800, color: "#EEEEF8", marginBottom: 4 }}>Kabir ERP</div>
+        <div style={{ fontSize: 13, color: "#7777AA", marginBottom: 32 }}>Kabir Exclusive</div>
+        <div style={{ width: "100%", maxWidth: 320 }}>
+          <input style={{ width: "100%", background: "#181824", border: "1px solid #22223A", borderRadius: 11, padding: "13px 15px", color: "#EEEEF8", fontSize: 15, marginBottom: 12, display: "block" }} placeholder="Login" value={loginU} onChange={e => setLoginU(e.target.value)} onKeyDown={e => e.key === "Enter" && doLogin()} />
+          <input type="password" style={{ width: "100%", background: "#181824", border: "1px solid #22223A", borderRadius: 11, padding: "13px 15px", color: "#EEEEF8", fontSize: 15, marginBottom: loginErr ? 8 : 16, display: "block" }} placeholder="Parol" value={loginP} onChange={e => setLoginP(e.target.value)} onKeyDown={e => e.key === "Enter" && doLogin()} />
+          {loginErr && <div style={{ color: "#FF4D6D", fontSize: 13, marginBottom: 12, textAlign: "center" }}>{loginErr}</div>}
+          <button onClick={doLogin} disabled={loginLoading} style={{ width: "100%", background: "#7B73FF", color: "#fff", borderRadius: 11, padding: "14px", fontWeight: 700, fontSize: 15, border: "none", cursor: "pointer", opacity: loginLoading ? 0.7 : 1 }}>{loginLoading ? "Kirilmoqda..." : "Kirish"}</button>
+        </div>
+      </div>
+    );
+  }
+
+  // Loading ekran
+  if (loading) {
+    return (
+      <div style={{ background: THEMES.dark.bg, minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20 }}>
+        <style>{css}</style>
+        <div style={{ width: 60, height: 60, borderRadius: 18, background: `linear-gradient(135deg, ${THEMES.dark.acc}, ${THEMES.dark.blue})`, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 28 }}>M</div>
+        <div style={{ color: THEMES.dark.acc, fontSize: 18, fontWeight: 800 }}>Mebel ERP</div>
+        <div style={{ color: THEMES.dark.sub, fontSize: 13 }}>Ma'lumotlar yuklanmoqda...</div>
+        <div style={{ width: 32, height: 32, border: `3px solid ${THEMES.dark.border}`, borderTopColor: THEMES.dark.acc, borderRadius: "50%" }} className="spin" />
+      </div>
+    );
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // MODAL: PRODUCT
+  // ═══════════════════════════════════════════════════════════
+  const ProductModal = () => {
+    const existing = sel?.editProduct;
+    const [f, setF] = useState(existing ? { 
+      name: existing.name || "", 
+      sku: existing.sku || "", 
+      category: existing.category || CATEGORIES[0], 
+      dimensions: existing.dimensions || "", 
+      initialStock: "", 
+      markup: existing.markup || "", 
+      salePrice: existing.price || "", 
+      costItems: existing.costItems || [],
+      image: existing.image || ""
+    } : { name: "", sku: "", category: CATEGORIES[0], dimensions: "", initialStock: "", markup: "", salePrice: "", costItems: [], image: "" });
+    const [cName, setCName] = useState("");
+    const [cAmt, setCAmt] = useState("");
+    const [saving, setSaving] = useState(false);
+    const [editingCostId, setEditingCostId] = useState(null);
+    const [editCostName, setEditCostName] = useState("");
+    const [editCostAmt, setEditCostAmt] = useState("");
+
+    const totalCost = f.costItems.reduce((sum, x) => sum + (+x.amount || 0), 0);
+    const markupN = +f.markup || 0;
+    const price = +f.salePrice || 0;
+    const profit = price - totalCost;
+    const profitPct = totalCost > 0 ? Math.round((profit / totalCost) * 100) : 0;
+
+    const onMarkupChange = (v) => {
+      if (v === "" || v === null) { setF(p => ({ ...p, markup: "" })); return; }
+      const newPrice = totalCost > 0 ? Math.round(totalCost * (1 + (+v) / 100) * 100) / 100 : "";
+      setF(p => ({ ...p, markup: v, salePrice: newPrice }));
+    };
+    const onPriceChange = (v) => {
+      if (v === "" || v === null) { setF(p => ({ ...p, salePrice: "" })); return; }
+      const newMarkup = totalCost > 0 ? Math.round(((+v - totalCost) / totalCost) * 100) : "";
+      setF(p => ({ ...p, salePrice: v, markup: newMarkup }));
+    };
+    const addCost = () => {
+      if (!cName.trim() || !cAmt) return;
+      setF(p => ({ ...p, costItems: [...p.costItems, { id: uid(), name: cName.trim(), amount: +cAmt }] }));
+      setCName(""); setCAmt("");
+    };
+
+    const save = async () => {
+      if (!f.name || !f.sku) return alert("Nomi va SKU to'ldiring");
+      if (totalCost === 0) return alert("Kamida 1 ta xarajat kiriting");
+      if (!price) return alert("Sotuv narxi yoki ustamani yozing");
+      setSaving(true);
+      const initialStock = +f.initialStock || 0;
+
+      const productData = {
+        id: existing?.id || uid(),
+        name: f.name, sku: f.sku, category: f.category,
+        dimensions: f.dimensions, cost: totalCost, price, markup: markupN,
+        cost_items: f.costItems,
+        image: f.image || "",
+        created_at: existing?.created_at || now(),
+      };
+
+      await db.from("products").upsert(productData);
+
+      if (existing) {
+        setProducts(prev => prev.map(p => p.id === existing.id ? { ...productData, costItems: f.costItems } : p));
+        await log("Mahsulot tahrirlandi", f.name);
+      } else {
+        setProducts(prev => [{ ...productData, costItems: f.costItems }, ...prev]);
+        if (initialStock > 0) {
+          const existingCount = units.filter(u => u.productId === productData.id).length;
+          const newUnits = [];
+          for (let i = 1; i <= initialStock; i++) {
+            const u = {
+              id: uid(),
+              unit_id: generateUnitId(f.sku, pad4(existingCount + i)),
+              product_id: productData.id,
+              location: "warehouse",
+              status: "available",
+              added_at: now(),
+            };
+            newUnits.push(u);
+          }
+          await db.from("units").insert(newUnits);
+          setUnits(prev => [...newUnits.map(u => ({ ...u, unitId: u.unit_id, productId: u.product_id, addedAt: u.added_at })), ...prev]);
+          await log("Mahsulot qo'shildi", `${f.name} — ${initialStock} dona`);
+        } else await log("Mahsulot qo'shildi", f.name);
+      }
+      setSaving(false);
+      setModal(null); setSel(null);
+    };
+
+    return (
+      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+        <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
+          <div style={{ ...s.row, marginBottom: 16 }}>
+            <span style={{ fontSize: 17, fontWeight: 800 }}>{existing ? "Tahrirlash" : "Yangi mahsulot"}</span>
+            <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
+          </div>
+          {/* FOTO */}
+          <div style={{ marginBottom: 12 }}>
+            <input type="file" accept="image/*" id="imgInput" style={{ display: "none" }} onChange={e => {
+              const file = e.target.files[0];
+              if (!file) return;
+              const reader = new FileReader();
+              reader.onload = ev => setF(p => ({ ...p, image: ev.target.result }));
+              reader.readAsDataURL(file);
+            }} />
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <div onClick={() => document.getElementById("imgInput").click()} style={{ width: 72, height: 72, borderRadius: 12, background: f.image ? "transparent" : t.card, border: `2px dashed ${f.image ? t.acc : t.border}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", overflow: "hidden", flexShrink: 0 }}>
+                {f.image ? <img src={f.image} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <span style={{ fontSize: 28 }}>📷</span>}
+              </div>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>Mahsulot rasmi</div>
+                <button onClick={() => document.getElementById("imgInput").click()} style={{ background: t.accSoft, color: t.acc, borderRadius: 8, padding: "6px 12px", fontSize: 12, fontWeight: 700 }}>
+                  {f.image ? "✏️ O'zgartirish" : "📷 Rasm qo'shish"}
+                </button>
+                {f.image && <button onClick={() => setF(p => ({ ...p, image: "" }))} style={{ background: t.redS, color: t.red, borderRadius: 8, padding: "6px 12px", fontSize: 12, fontWeight: 700, marginLeft: 6 }}>🗑️</button>}
+              </div>
+            </div>
+          </div>
+          <Lbl>Model nomi *</Lbl>
+          <input style={s.inp} placeholder="Jurnal stol Classic" value={f.name} onChange={e => setF(p => ({ ...p, name: e.target.value }))} />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 9 }}>
+            <div><Lbl>SKU *</Lbl><input style={s.inp} placeholder="JS-001" value={f.sku} onChange={e => setF(p => ({ ...p, sku: e.target.value.toUpperCase() }))} /></div>
+            <div><Lbl>Kategoriya</Lbl><select style={s.inp} value={f.category} onChange={e => setF(p => ({ ...p, category: e.target.value }))}>{CATEGORIES.map(c => <option key={c}>{c}</option>)}</select></div>
+          </div>
+          <Lbl>O'lchamlari</Lbl>
+          <input style={s.inp} placeholder="120×60×45 sm" value={f.dimensions} onChange={e => setF(p => ({ ...p, dimensions: e.target.value }))} />
+          {!existing && (
+            <>
+              <Lbl>Boshlang'ich son</Lbl>
+              <NumInp value={f.initialStock} onChange={v => setF(p => ({ ...p, initialStock: v }))} placeholder="Masalan: 10" />
+              {+f.initialStock > 0 && f.sku && (
+                <div style={{ background: t.accSoft, borderRadius: 9, padding: "8px 11px", marginTop: -4, marginBottom: 11, fontSize: 11, color: t.acc }}>
+                  📦 ID: <b>{f.sku}-#0001</b> → <b>{f.sku}-#{pad4(+f.initialStock)}</b>
+                </div>
+              )}
+            </>
+          )}
+          <div style={{ borderTop: `2px dashed ${t.border}`, margin: "14px 0 12px", paddingTop: 14 }}>
+            <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 4 }}>💰 Tannarx tarkibi</div>
+            <div style={{ fontSize: 12, color: t.sub, marginBottom: 14 }}>Har bir xarajatni alohida yozing</div>
+            {f.costItems.map((item, i) => (
+              <div key={item.id} style={{ background: t.card, border: `1px solid ${editingCostId === item.id ? t.acc : t.border}`, borderRadius: 10, padding: "9px 12px", marginBottom: 7 }}>
+                {editingCostId === item.id ? (
+                  <div>
+                    <input style={s.inp} value={editCostName} onChange={e => setEditCostName(e.target.value)} />
+                    <div style={{ display: "flex", gap: 8 }}>
+                      <input type="number" inputMode="decimal" step="0.01" style={{ ...s.inp, marginBottom: 0, flex: 1 }} value={editCostAmt} onChange={e => setEditCostAmt(e.target.value)} />
+                      <button onClick={() => {
+                        setF(p => ({ ...p, costItems: p.costItems.map(x => x.id === item.id ? { ...x, name: editCostName, amount: +editCostAmt } : x) }));
+                        setEditingCostId(null);
+                      }} style={{ background: t.green, color: "#fff", borderRadius: 9, padding: "0 14px", fontWeight: 700, fontSize: 13 }}>✓</button>
+                      <button onClick={() => setEditingCostId(null)} style={{ background: t.card, border: `1px solid ${t.border}`, color: t.sub, borderRadius: 9, padding: "0 12px", fontWeight: 700 }}>✕</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <div style={{ width: 24, height: 24, borderRadius: 6, background: t.accSoft, color: t.acc, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800 }}>{i + 1}</div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 13, fontWeight: 600 }}>{item.name}</div>
+                      <div style={{ fontSize: 12, color: t.acc, fontWeight: 700, ...s.mono }}>${fmtN(item.amount)}</div>
+                    </div>
+                    <button style={{ color: t.acc, padding: 4 }} onClick={() => { setEditingCostId(item.id); setEditCostName(item.name); setEditCostAmt(item.amount); }}><Ic n="edit" s={15} /></button>
+                    <button style={{ color: t.red, padding: 4 }} onClick={() => setF(p => ({ ...p, costItems: p.costItems.filter(x => x.id !== item.id) }))}><Ic n="trash" s={15} /></button>
+                  </div>
+                )}
+              </div>
+            ))}
+            <div style={{ background: t.card, border: `1.5px dashed ${t.acc}55`, borderRadius: 11, padding: 12, marginBottom: 10 }}>
+              <input style={s.inp} placeholder="Nomi: MDF / Lak / Zborka..." value={cName} onChange={e => setCName(e.target.value)} />
+              <div style={{ display: "flex", gap: 8 }}>
+                <input type="number" inputMode="decimal" step="0.01" style={{ ...s.inp, marginBottom: 0, flex: 1 }} placeholder="Summa ($)" value={cAmt} onChange={e => setCAmt(e.target.value)} onKeyDown={e => e.key === "Enter" && addCost()} />
+                <button onClick={addCost} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "0 16px", fontWeight: 700, fontSize: 18 }}>+</button>
+              </div>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 10 }}>
+                {["MDF", "Lak", "Zborka", "Temir", "Yelim", "Mato", "Charm", "Shisha", "Dostavka", "Upakovka", "Ish haqi"].map(q => (
+                  <button key={q} onClick={() => setCName(q)} style={{ background: cName === q ? t.acc : t.surf, color: cName === q ? "#fff" : t.sub, border: `1px solid ${cName === q ? t.acc : t.border}`, borderRadius: 14, padding: "4px 10px", fontSize: 11, fontWeight: 600 }}>{q}</button>
+                ))}
+              </div>
+            </div>
+            {totalCost > 0 && (
+              <div style={{ background: t.accSoft, borderRadius: 11, padding: 12, marginBottom: 12 }}>
+                <div style={s.row}><span style={{ fontSize: 12, color: t.sub }}>JAMI TANNARX</span><span style={{ ...s.mono, fontWeight: 800, color: t.acc, fontSize: 16 }}>{fmt(totalCost)}</span></div>
+              </div>
+            )}
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 9 }}>
+            <div><Lbl>Ustama %</Lbl><NumInp value={f.markup} onChange={onMarkupChange} placeholder="30" /></div>
+            <div><Lbl>Sotuv narxi ($)</Lbl><NumInp value={f.salePrice} onChange={onPriceChange} placeholder="60" /></div>
+          </div>
+          <div style={{ fontSize: 11, color: t.sub, marginTop: -4, marginBottom: 12 }}>💡 Birortasini yozsangiz, ikkinchisi avtomatik</div>
+          {totalCost > 0 && price > 0 && (
+            <div style={{ background: `${t.green}12`, border: `1px solid ${t.green}30`, borderRadius: 12, padding: 14, marginBottom: 12 }}>
+              <div style={{ ...s.row, marginBottom: 8 }}><span style={{ fontSize: 12, color: t.sub }}>Tannarx</span><span style={{ ...s.mono, fontWeight: 700 }}>{fmt(totalCost)}</span></div>
+              <div style={{ ...s.row, marginBottom: 8 }}><span style={{ fontSize: 12, color: t.sub }}>Sotuv narxi</span><span style={{ ...s.mono, fontWeight: 700, color: t.acc }}>{fmt(price)}</span></div>
+              <div style={{ borderTop: `1px dashed ${t.border}`, paddingTop: 10 }}>
+                <div style={{ ...s.row, marginBottom: 4 }}><span style={{ fontSize: 13, fontWeight: 700 }}>FOYDA</span><span style={{ ...s.mono, fontWeight: 800, color: t.green, fontSize: 17 }}>{fmt(profit)}</span></div>
+                <div style={s.row}><span style={{ fontSize: 11, color: t.sub }}>Ustama</span><span style={{ ...s.mono, fontWeight: 700, color: profitPct >= 0 ? t.green : t.red }}>{profitPct}%</span></div>
+              </div>
+            </div>
+          )}
+          <Btn bg={t.acc} onClick={save} disabled={saving}>{saving ? "Saqlanmoqda..." : existing ? "Saqlash" : "Mahsulot qo'shish"}</Btn>
+        </div>
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // MODAL: ADD STOCK
+  // ═══════════════════════════════════════════════════════════
+  const AddStockModal = () => {
+    const product = products.find(p => p.id === sel?.productId);
+    const [qty, setQty] = useState("");
+    const [addedDate, setAddedDate] = useState(today());
+    const [location, setLocation] = useState("warehouse");
+    const [saving, setSaving] = useState(false);
+    if (!product) return null;
+    const existingCount = units.filter(u => u.productId === product.id).length;
+
+    const add = async () => {
+      const q = +qty;
+      if (!q || q <= 0) return alert("Sonini kiriting");
+      setSaving(true);
+      const newUnits = [];
+      for (let i = 1; i <= q; i++) {
+        newUnits.push({
+          id: uid(),
+          unit_id: generateUnitId(product.sku, pad4(existingCount + i)),
+          product_id: product.id,
+          location: location,
+          status: "available",
+          added_at: addedDate + "T00:00:00.000Z",
+          sent_at: location !== "warehouse" ? addedDate + "T00:00:00.000Z" : null,
+        });
+      }
+      await db.from("units").insert(newUnits);
+      setUnits(prev => [...newUnits.map(u => ({ ...u, unitId: u.unit_id, productId: u.product_id, addedAt: u.added_at })), ...prev]);
+      await log("Ombor to'ldirildi", `${product.name} — ${q} dona`);
+      setSaving(false);
+      setModal(null); setSel(null);
+    };
+
+    return (
+      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+        <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
+          <div style={{ ...s.row, marginBottom: 16 }}>
+            <span style={{ fontSize: 17, fontWeight: 800 }}>➕ Omborga qo'shish</span>
+            <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
+          </div>
+          <div style={{ background: t.accSoft, borderRadius: 11, padding: 13, marginBottom: 14 }}>
+            <div style={{ fontSize: 14, fontWeight: 700 }}>{product.name}</div>
+            <div style={{ fontSize: 11, color: t.sub, ...s.mono }}>{product.sku}</div>
+          </div>
+          <Lbl>Qo'shilgan sana</Lbl>
+          <input type="date" style={s.inp} value={addedDate} onChange={e => setAddedDate(e.target.value)} />
+          <Lbl>Joylashuv</Lbl>
+          <select style={s.inp} value={location} onChange={e => setLocation(e.target.value)}>
+            <option value="warehouse">📦 Ombor</option>
+            {stores.map(st => <option key={st.id} value={st.id}>🏪 {st.name}</option>)}
+          </select>
+          <Lbl>Nechta qo'shasiz</Lbl>
+          <NumInp value={qty} onChange={setQty} placeholder="Masalan: 10" />
+          {+qty > 0 && (
+            <div style={{ background: t.card, borderRadius: 10, padding: 11, marginBottom: 11, fontSize: 12 }}>
+              <div style={{ color: t.sub, marginBottom: 4 }}>Avtomatik ID:</div>
+              <div style={{ ...s.mono, color: t.acc, fontWeight: 700 }}>
+                {generateUnitId(product.sku, pad4(existingCount + 1))} → {generateUnitId(product.sku, pad4(existingCount + (+qty)))}
+              </div>
+              {location !== "warehouse" && <div style={{ marginTop: 8, padding: "7px 10px", background: t.amberS, borderRadius: 8, fontSize: 11, color: t.amber }}>⚠️ Vitrinaga to'g'ridan qo'shiladi</div>}
+            </div>
+          )}
+          <Btn bg={t.acc} onClick={add} disabled={saving}>{saving ? "Saqlanmoqda..." : "✓ Qo'shish"}</Btn>
+        </div>
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // MODAL: STORE
+  // ═══════════════════════════════════════════════════════════
+  const StoreModal = () => {
+    const [f, setF] = useState({ name: "", address: "", manager: "", phone: "" });
+    const [saving, setSaving] = useState(false);
+    const save = async () => {
+      if (!f.name) return alert("Nomi to'ldiring");
+      setSaving(true);
+      const newStore = { id: uid(), ...f, created_at: now() };
+      await db.from("stores").insert(newStore);
+      setStores(p => [newStore, ...p]);
+      await log("Do'kon qo'shildi", f.name);
+      setSaving(false);
+      setModal(null);
+    };
+    return (
+      <div style={s.overlay} onClick={() => setModal(null)}>
+        <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
+          <div style={{ ...s.row, marginBottom: 16 }}>
+            <span style={{ fontSize: 17, fontWeight: 800 }}>Yangi do'kon</span>
+            <button style={s.iBtn} onClick={() => setModal(null)}><Ic n="x" s={16} /></button>
+          </div>
+          <Lbl>Do'kon nomi *</Lbl>
+          <input style={s.inp} placeholder="Chilonzor Showroom" value={f.name} onChange={e => setF(p => ({ ...p, name: e.target.value }))} />
+          <Lbl>Manzil</Lbl>
+          <input style={s.inp} placeholder="Manzil" value={f.address} onChange={e => setF(p => ({ ...p, address: e.target.value }))} />
+          <Lbl>Mas'ul shaxs</Lbl>
+          <input style={s.inp} placeholder="Ism Familiya" value={f.manager} onChange={e => setF(p => ({ ...p, manager: e.target.value }))} />
+          <Lbl>Telefon</Lbl>
+          <input style={s.inp} placeholder="+998 90 ..." value={f.phone} onChange={e => setF(p => ({ ...p, phone: e.target.value }))} />
+          <Btn bg={t.acc} onClick={save} disabled={saving}>{saving ? "Saqlanmoqda..." : "Qo'shish"}</Btn>
+        </div>
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // MODAL: TRANSFER
+  // ═══════════════════════════════════════════════════════════
+  const TransferModal = () => {
+    const [storeId, setStoreId] = useState(sel?.storeId || stores[0]?.id || "");
+    const [productId, setProductId] = useState("");
+    const [qty, setQty] = useState("");
+    const [sentDate, setSentDate] = useState(today());
+    const [saving, setSaving] = useState(false);
+    const [scanMode, setScanMode] = useState(false);
+    const [scannedIds, setScannedIds] = useState([]);
+    const [scanInput, setScanInput] = useState("");
+    const [scanErr, setScanErr] = useState("");
+    const [transferList, setTransferList] = useState([]);
+
+    const handleScanInput = (val) => {
+      setScanInput(val);
+      setScanErr("");
+    };
+
+    const addScannedId = () => {
+      const trimmed = scanInput.trim();
+      if (!trimmed) return;
+      const unit = units.find(u => u.unitId === trimmed && u.location === "warehouse" && u.status === "available");
+      if (!unit) { setScanErr(`❌ ${trimmed} — omborda yo'q!`); return; }
+      if (scannedIds.find(s => s.unitId === trimmed)) { setScanErr("⚠️ Allaqachon qo'shilgan!"); return; }
+      const prod = products.find(p => p.id === unit.productId);
+      setScannedIds(prev => [...prev, { ...unit, prodName: prod?.name || "—" }]);
+      setScanInput("");
+      setScanErr("");
+    };
+
+    if (stores.length === 0 || products.length === 0) {
+      return (
+        <div style={s.overlay} onClick={() => setModal(null)}>
+          <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
+            <div style={{ ...s.row, marginBottom: 16 }}>
+              <span style={{ fontSize: 17, fontWeight: 800 }}>Jo'natish</span>
+              <button style={s.iBtn} onClick={() => setModal(null)}><Ic n="x" s={16} /></button>
+            </div>
+            <div style={{ textAlign: "center", padding: 30, color: t.sub, fontSize: 13 }}>{stores.length === 0 ? "⚠️ Avval do'kon qo'shing" : "⚠️ Avval mahsulot qo'shing"}</div>
+          </div>
+        </div>
+      );
+    }
+
+    const availProds = products.filter(p => getWhUnits(p.id).length > 0);
+    const availUnits = productId ? getWhUnits(productId) : [];
+    const product = products.find(p => p.id === productId);
+    const qtyN = +qty || 0;
+
+    const send = async () => {
+      if (!storeId) return alert("Do'kon tanlang");
+      setSaving(true);
+      let toSend = [];
+      if (scanMode && scannedIds.length > 0) {
+        toSend = scannedIds;
+      } else if (transferList.length > 0) {
+        // Ko'p mahsulot jo'natish
+        for (const item of transferList) {
+          const whUnits = units.filter(u => u.productId === item.productId && u.location === "warehouse" && u.status === "available");
+          if (item.qty > whUnits.length) {
+            setSaving(false);
+            return alert(`${item.name}: omborda faqat ${whUnits.length} dona`);
+          }
+          toSend = [...toSend, ...whUnits.slice(0, item.qty)];
+        }
+      } else {
+        if (!productId) { setSaving(false); return alert("Mahsulot tanlang"); }
+        if (!qtyN || qtyN <= 0) { setSaving(false); return alert("Sonini kiriting"); }
+        if (qtyN > availUnits.length) { setSaving(false); return alert(`Omborda ${availUnits.length} dona`); }
+        toSend = availUnits.slice(0, qtyN);
+      }
+      if (toSend.length === 0) { setSaving(false); return alert("Mol tanlanmagan"); }
+      const updates = toSend.map(u => ({
+        id: u.id,
+        unit_id: u.unitId,
+        product_id: u.productId,
+        location: storeId,
+        status: "available",
+        added_at: u.addedAt,
+        sent_at: sentDate + "T00:00:00.000Z",
+      }));
+      const { error: upsertErr } = await db.from("units").upsert(updates);
+      if (upsertErr) { console.error("Upsert error:", upsertErr); alert("Xato: " + upsertErr.message); setSaving(false); return; }
+      setUnits(prev => prev.map(u => toSend.find(x => x.id === u.id) ? { ...u, location: storeId, sentAt: sentDate } : u));
+      const store = stores.find(st => st.id === storeId);
+      await log("Vitrinaga jo'natildi", `${toSend.length} dona → ${store.name}`);
+      setSaving(false);
+      setModal(null); setSel(null);
+    };
+
+    return (
+      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+        <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
+          <div style={{ ...s.row, marginBottom: 16 }}>
+            <span style={{ fontSize: 17, fontWeight: 800 }}>📦 Vitrinaga jo'natish</span>
+            <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
+          </div>
+          <Lbl>Jo'natish sanasi</Lbl>
+          <input type="date" style={s.inp} value={sentDate} onChange={e => setSentDate(e.target.value)} />
+          <Lbl>Qaysi do'konga</Lbl>
+          <select style={s.inp} value={storeId} onChange={e => setStoreId(e.target.value)}>{stores.map(st => <option key={st.id} value={st.id}>{st.name}</option>)}</select>
+          <Lbl>Mahsulot</Lbl>
+          <select style={s.inp} value={productId} onChange={e => setProductId(e.target.value)}>
+            <option value="">— tanlang —</option>
+            {availProds.map(p => <option key={p.id} value={p.id}>{p.name} (omborda: {getWhUnits(p.id).length})</option>)}
+          </select>
+          {product && <div style={{ background: t.accSoft, borderRadius: 10, padding: "10px 12px", marginBottom: 11, fontSize: 12 }}><div style={s.row}><span style={{ color: t.sub }}>Omborda:</span><span style={{ ...s.mono, fontWeight: 800, color: t.acc }}>{availUnits.length} dona</span></div></div>}
+          {/* Scanner/Qo'lda rejimi */}
+          <div style={{ display: "flex", gap: 6, marginBottom: 11 }}>
+            <button onClick={() => { setScanMode(false); setScannedIds([]); }} style={{ flex: 1, padding: "9px", borderRadius: 9, background: !scanMode ? t.acc : t.card, color: !scanMode ? "#fff" : t.sub, border: `1px solid ${!scanMode ? t.acc : t.border}`, fontWeight: 700, fontSize: 12 }}>📋 Qo'lda</button>
+            <button onClick={() => setScanMode(true)} style={{ flex: 1, padding: "9px", borderRadius: 9, background: scanMode ? t.acc : t.card, color: scanMode ? "#fff" : t.sub, border: `1px solid ${scanMode ? t.acc : t.border}`, fontWeight: 700, fontSize: 12 }}>📷 Scanner</button>
+          </div>
+
+          {!scanMode ? (
+            <>
+              <Lbl>Nechta jo'natasiz</Lbl>
+              <div style={{ display:"flex", gap:8 }}>
+                <div style={{ flex:1 }}><NumInp value={qty} onChange={setQty} placeholder="Masalan: 5" /></div>
+                <button onClick={() => {
+                  if (!productId || !qtyN || qtyN <= 0) return;
+                  if (qtyN > availUnits.length) return alert(`Omborda ${availUnits.length} dona`);
+                  const already = transferList.find(x => x.productId === productId);
+                  if (already) {
+                    setTransferList(prev => prev.map(x => x.productId === productId ? { ...x, qty: x.qty + qtyN } : x));
+                  } else {
+                    setTransferList(prev => [...prev, { productId, name: product?.name, qty: qtyN }]);
+                  }
+                  setProductId(""); setQty("");
+                }} style={{ background: t.acc, color:"#fff", borderRadius:10, padding:"0 16px", fontWeight:700, fontSize:18, marginBottom:11 }}>+</button>
+              </div>
+
+              {transferList.length > 0 && (
+                <div style={{ background:t.card, borderRadius:10, padding:10, marginBottom:11 }}>
+                  <div style={{ fontSize:11, color:t.sub, fontWeight:700, marginBottom:8 }}>Jo'natiladiganlar:</div>
+                  {transferList.map((item, i) => (
+                    <div key={i} style={{ display:"flex", alignItems:"center", gap:8, padding:"6px 0", borderBottom:`1px solid ${t.border}33` }}>
+                      <div style={{ flex:1 }}>
+                        <div style={{ fontSize:13, fontWeight:700 }}>{item.name}</div>
+                        <div style={{ fontSize:11, color:t.acc, ...s.mono }}>{item.qty} dona</div>
+                      </div>
+                      <button onClick={() => setTransferList(prev => prev.filter((_, j) => j !== i))} style={{ color:t.red, padding:4 }}><Ic n="trash" s={14}/></button>
+                    </div>
+                  ))}
+                  <div style={{ marginTop:8, fontSize:12, color:t.amber }}>⚠️ Jami: {transferList.reduce((s,x)=>s+x.qty,0)} dona</div>
+                </div>
+              )}
+
+              <Btn bg={t.acc} onClick={send} disabled={(transferList.length === 0 && (!product || !qtyN)) || saving}>
+                {saving ? "Jo'natilmoqda..." : transferList.length > 0 ? `✓ Jo'natish (${transferList.reduce((s,x)=>s+x.qty,0)} dona)` : "✓ Jo'natish"}
+              </Btn>
+            </>
+          ) : (
+            <>
+              <Lbl>Scanner yoki qo'lda ID yozing</Lbl>
+              <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+                <input
+                  style={{ ...s.inp, marginBottom: 0, flex: 1 }}
+                  placeholder="JS-001-#0001"
+                  value={scanInput}
+                  onChange={e => handleScanInput(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && addScannedId()}
+                  autoFocus
+                />
+                <button onClick={addScannedId} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "0 16px", fontWeight: 700, fontSize: 18 }}>+</button>
+              </div>
+              {scanErr && <div style={{ color: t.red, fontSize: 12, marginBottom: 8 }}>{scanErr}</div>}
+              {scannedIds.length > 0 && (
+                <div style={{ background: t.card, borderRadius: 10, padding: 10, marginBottom: 11, maxHeight: 150, overflowY: "auto" }}>
+                  <div style={{ ...s.row, marginBottom: 6 }}>
+                    <span style={{ fontSize: 11, color: t.sub, fontWeight: 700 }}>Skanerlangan: {scannedIds.length} dona</span>
+                    <button onClick={() => setScannedIds([])} style={{ fontSize: 10, color: t.red }}>Tozalash</button>
+                  </div>
+                  {scannedIds.map(u => (
+                    <div key={u.id} style={{ ...s.row, padding: "4px 0", fontSize: 11, borderBottom: `1px solid ${t.border}33` }}>
+                      <span style={{ ...s.mono, color: t.acc, fontWeight: 700 }}>{u.unitId}</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span style={{ color: t.sub }}>{u.prodName}</span>
+                        <button onClick={() => setScannedIds(prev => prev.filter(x => x.id !== u.id))} style={{ color: t.red, fontSize: 12 }}>✕</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <Btn bg={t.acc} onClick={send} disabled={scannedIds.length === 0 || saving}>{saving ? "Jo'natilmoqda..." : `✓ Jo'natish (${scannedIds.length} dona)`}</Btn>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // MODAL: SELL
+  // ═══════════════════════════════════════════════════════════
+  const SellModal = () => {
+    const [storeId, setStoreId] = useState(sel?.storeId || "");
+    const [productId, setProductId] = useState(sel?.productId || "");
+    const [qty, setQty] = useState(1);
+    const [discount, setDiscount] = useState("");
+    const [customerId, setCustomerId] = useState("");
+    const [customerName, setCustomerName] = useState("");
+    const [customerPhone, setCustomerPhone] = useState("");
+    const [isPaid, setIsPaid] = useState(true);
+    const [payMethod, setPayMethod] = useState("cash");
+    const [date, setDate] = useState(today());
+    const [debtDue, setDebtDue] = useState("");
+    const [saving, setSaving] = useState(false);
+
+    const storeProds = useMemo(() => {
+      const byP = getStoreUnitsByProduct(storeId);
+      return Object.entries(byP).map(([pid, us]) => ({ product: products.find(p => p.id === pid), units: us })).filter(x => x.product);
+    }, [storeId, units]);
+
+    const availUnits = productId && storeId ? getStoreUnits(storeId, productId) : [];
+    const product = products.find(p => p.id === productId);
+    const qtyN = +qty || 1;
+    const discN = +discount || 0;
+    const total = product ? Math.round(product.price * qtyN * (1 - discN / 100) * 100) / 100 : 0;
+
+    const sell = async () => {
+      if (!storeId || !product) return alert("Tanlang");
+      if (qtyN > availUnits.length) return alert(`Vitrinada ${availUnits.length} dona`);
+      setSaving(true);
+      const soldUnits = availUnits.slice(0, qtyN);
+
+      // Units sold qilish
+      const updatedUnits = soldUnits.map(u => ({ ...u, unit_id: u.unitId, product_id: u.productId, added_at: u.addedAt, status: "sold" }));
+      await db.from("units").upsert(updatedUnits);
+      setUnits(prev => prev.map(u => soldUnits.find(x => x.id === u.id) ? { ...u, status: "sold" } : u));
+
+      // Customer
+      let finalCustomerId = customerId, finalCustomerName = customerName;
+      if (!customerId && customerName.trim()) {
+        const newC = { id: uid(), name: customerName.trim(), phone: customerPhone.trim(), created_at: now() };
+        await db.from("customers").insert(newC);
+        setCustomers(prev => [newC, ...prev]);
+        finalCustomerId = newC.id;
+      } else if (customerId) {
+        finalCustomerName = customers.find(c => c.id === customerId)?.name || "";
+      }
+
+      const sale = {
+        id: uid(),
+        unit_ids: soldUnits.map(u => u.unitId),
+        store_id: storeId, product_id: productId,
+        customer_id: finalCustomerId || null, customer_name: finalCustomerName || "",
+        qty: qtyN, price: total / qtyN, cost: product.cost, total_amount: total,
+        paid: isPaid, pay_date: isPaid ? date : null, pay_method: isPaid ? payMethod : null,
+        debt_due: !isPaid && debtDue ? debtDue : null,
+        partial_payments: [], date, created_at: now(),
+      };
+      await db.from("sales").insert(sale);
+      setSales(prev => [{ ...sale, unitIds: sale.unit_ids, storeId: sale.store_id, productId: sale.product_id, customerId: sale.customer_id, customerName: sale.customer_name, totalAmount: sale.total_amount, payDate: sale.pay_date, payMethod: sale.pay_method, partialPayments: [] }, ...prev]);
+
+      const store = stores.find(s => s.id === storeId);
+      await log("Sotildi", `${product.name} ${qtyN} dona — ${store.name} = ${fmt(total)}${!isPaid ? ' [QARZ]' : ''}`);
+      setSaving(false);
+      setModal(null); setSel(null);
+    };
+
+    return (
+      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+        <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
+          <div style={{ ...s.row, marginBottom: 16 }}>
+            <span style={{ fontSize: 17, fontWeight: 800 }}>💵 Sotuv yozish</span>
+            <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
+          </div>
+          <Lbl>Do'kon</Lbl>
+          <select style={s.inp} value={storeId} onChange={e => { setStoreId(e.target.value); setProductId(""); }}>
+            <option value="">— tanlang —</option>
+            {stores.map(st => <option key={st.id} value={st.id}>{st.name}</option>)}
+          </select>
+          {storeId && (
+            <>
+              <Lbl>Mahsulot</Lbl>
+              <select style={s.inp} value={productId} onChange={e => setProductId(e.target.value)}>
+                <option value="">— tanlang —</option>
+                {storeProds.map(({ product: p, units: us }) => <option key={p.id} value={p.id}>{p.name} ({us.length} dona)</option>)}
+              </select>
+              {storeProds.length === 0 && <div style={{ background: t.amberS, borderRadius: 9, padding: 10, marginBottom: 11, fontSize: 12, color: t.amber }}>⚠️ Vitrinada yo'q.</div>}
+            </>
+          )}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 9 }}>
+            <div><Lbl>Soni</Lbl><NumInp value={qty} onChange={setQty} placeholder="1" /></div>
+            <div><Lbl>Chegirma %</Lbl><NumInp value={discount} onChange={setDiscount} placeholder="0" /></div>
+          </div>
+          <Lbl>Mijoz</Lbl>
+          {customers.length > 0 && (
+            <select style={s.inp} value={customerId} onChange={e => { setCustomerId(e.target.value); if (e.target.value) setCustomerName(""); }}>
+              <option value="">— yangi —</option>
+              {customers.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+            </select>
+          )}
+          {!customerId && (
+            <div>
+              <input style={s.inp} placeholder="Yangi mijoz ismi *" value={customerName} onChange={e => setCustomerName(e.target.value)} />
+              <input style={s.inp} placeholder="Telefon: +998901234567" value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} />
+            </div>
+          )}
+          <Lbl>Sana</Lbl>
+          <input type="date" style={s.inp} value={date} onChange={e => setDate(e.target.value)} />
+          <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 11, padding: 12, marginBottom: 11 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: t.sub, marginBottom: 10, textTransform: "uppercase" }}>To'lov holati</div>
+            <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+              <button onClick={() => setIsPaid(true)} style={{ flex: 1, padding: "10px", borderRadius: 9, background: isPaid ? t.green : t.card, border: `1.5px solid ${isPaid ? t.green : t.border}`, color: isPaid ? "#fff" : t.sub, fontWeight: 700, fontSize: 13 }}>✓ To'landi</button>
+              <button onClick={() => setIsPaid(false)} style={{ flex: 1, padding: "10px", borderRadius: 9, background: !isPaid ? t.red : t.card, border: `1.5px solid ${!isPaid ? t.red : t.border}`, color: !isPaid ? "#fff" : t.sub, fontWeight: 700, fontSize: 13 }}>📝 Qarzga</button>
+            </div>
+            {isPaid && <select style={{ ...s.inp, marginBottom: 0 }} value={payMethod} onChange={e => setPayMethod(e.target.value)}>{Object.entries(PAYMENT_INFO).map(([k, v]) => <option key={k} value={k}>{v.emoji} {v.label}</option>)}</select>}
+            {!isPaid && (
+              <div>
+                <Lbl>To'lash muddati</Lbl>
+                <input type="date" style={{ ...s.inp, marginBottom: 0 }} value={debtDue} onChange={e => setDebtDue(e.target.value)} />
+              </div>
+            )}
+          </div>
+          {product && qtyN > 0 && (
+            <div style={{ background: isPaid ? t.greenS : t.redS, borderRadius: 11, padding: 13, marginBottom: 11 }}>
+              <div style={{ ...s.row, marginBottom: 6 }}><span style={{ fontSize: 12, color: t.sub }}>Jami</span><span style={{ ...s.mono, fontWeight: 800, color: isPaid ? t.green : t.red, fontSize: 17 }}>{fmt(total)}</span></div>
+              {canSee("profit") && <div style={s.row}><span style={{ fontSize: 12, color: t.sub }}>Foyda</span><span style={{ ...s.mono, fontWeight: 700, color: t.green }}>{fmt(total - product.cost * qtyN)}</span></div>}
+            </div>
+          )}
+          <Btn bg={isPaid ? t.green : t.amber} onClick={sell} disabled={!product || saving}>{saving ? "Saqlanmoqda..." : isPaid ? "✓ Tasdiqlash" : "📝 Qarzga"}</Btn>
+        </div>
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // MODAL: PAY
+  // ═══════════════════════════════════════════════════════════
+  const PayModal = () => {
+    const sale = sales.find(x => x.id === sel?.saleId);
+    if (!sale) return null;
+    const pp = (sale.partialPayments || []).reduce((sum, p) => sum + p.amount, 0);
+    const remaining = sale.totalAmount - pp;
+    const [amount, setAmount] = useState(remaining);
+    const [method, setMethod] = useState("cash");
+    const [date, setDate] = useState(today());
+    const [saving, setSaving] = useState(false);
+
+    const conf = async () => {
+      const amt = +amount;
+      if (!amt || amt <= 0) return alert("Summa");
+      if (amt > remaining) return alert(`Qolgan: ${fmt(remaining)}`);
+      setSaving(true);
+      const isFull = amt >= remaining;
+      const payment = { id: uid(), amount: amt, method, date };
+      const newPartials = [...(sale.partialPayments || []), payment];
+      const updated = {
+        ...sale,
+        unit_ids: sale.unitIds,
+        store_id: sale.storeId, product_id: sale.productId,
+        customer_id: sale.customerId, customer_name: sale.customerName,
+        total_amount: sale.totalAmount, pay_date: isFull ? date : sale.payDate,
+        pay_method: isFull ? method : sale.payMethod,
+        partial_payments: newPartials, paid: isFull,
+      };
+      await db.from("sales").upsert(updated);
+      setSales(prev => prev.map(x => x.id === sale.id ? { ...x, partialPayments: newPartials, paid: isFull, payDate: isFull ? date : x.payDate, payMethod: isFull ? method : x.payMethod } : x));
+      await log("Pul olindi", `${sale.customerName || 'Mijoz'} — ${fmt(amt)}`);
+      setSaving(false);
+      setModal(null); setSel(null);
+    };
+
+    return (
+      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+        <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
+          <div style={{ ...s.row, marginBottom: 16 }}>
+            <span style={{ fontSize: 17, fontWeight: 800 }}>💰 Pul qabul qilish</span>
+            <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
+          </div>
+          <div style={{ background: t.card, borderRadius: 12, padding: 14, marginBottom: 14 }}>
+            <div style={{ ...s.row, marginBottom: 6 }}><span style={{ fontSize: 12, color: t.sub }}>Mijoz</span><span style={{ fontSize: 13, fontWeight: 700 }}>{sale.customerName || "—"}</span></div>
+            <div style={{ ...s.row, marginBottom: 6 }}><span style={{ fontSize: 12, color: t.sub }}>Umumiy</span><span style={{ ...s.mono, fontWeight: 700 }}>{fmt(sale.totalAmount)}</span></div>
+            {pp > 0 && <div style={{ ...s.row, marginBottom: 6 }}><span style={{ fontSize: 12, color: t.sub }}>To'langan</span><span style={{ ...s.mono, fontWeight: 700, color: t.green }}>{fmt(pp)}</span></div>}
+            <Div />
+            <div style={s.row}><span style={{ fontSize: 13, fontWeight: 700 }}>QOLGAN</span><span style={{ ...s.mono, fontWeight: 800, color: t.red, fontSize: 17 }}>{fmt(remaining)}</span></div>
+          </div>
+          <Lbl>Olingan summa</Lbl>
+          <NumInp value={amount} onChange={setAmount} placeholder="0" />
+          <Lbl>To'lov usuli</Lbl>
+          <select style={s.inp} value={method} onChange={e => setMethod(e.target.value)}>{Object.entries(PAYMENT_INFO).map(([k, v]) => <option key={k} value={k}>{v.emoji} {v.label}</option>)}</select>
+          <Lbl>Sana</Lbl>
+          <input type="date" style={s.inp} value={date} onChange={e => setDate(e.target.value)} />
+          <Btn bg={t.green} onClick={conf} disabled={saving}>{saving ? "Saqlanmoqda..." : `✓ Pul olindi — ${fmt(+amount || 0)}`}</Btn>
+        </div>
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // MODAL: RETURN
+  // ═══════════════════════════════════════════════════════════
+  const ReturnModal = () => {
+    const store = stores.find(s => s.id === sel?.storeId);
+    const product = products.find(p => p.id === sel?.productId);
+    const availUnits = getStoreUnits(sel?.storeId, sel?.productId);
+    const [qty, setQty] = useState(1);
+    const [saving, setSaving] = useState(false);
+    if (!store || !product) return null;
+    const ret = async () => {
+      const q = +qty || 1;
+      if (q > availUnits.length) return alert(`Vitrinada ${availUnits.length} dona`);
+      setSaving(true);
+      const toRet = availUnits.slice(0, q);
+      const updates = toRet.map(u => ({ ...u, unit_id: u.unitId, product_id: u.productId, added_at: u.addedAt, location: "warehouse", sent_at: null }));
+      await db.from("units").upsert(updates);
+      setUnits(prev => prev.map(u => toRet.find(r => r.id === u.id) ? { ...u, location: "warehouse", sentAt: undefined } : u));
+      await log("Vitrinadan qaytarildi", `${product.name} ${q} dona — ${store.name}`);
+      setSaving(false);
+      setModal(null); setSel(null);
+    };
+    return (
+      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+        <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
+          <div style={{ ...s.row, marginBottom: 16 }}>
+            <span style={{ fontSize: 17, fontWeight: 800 }}>↩️ Qaytarish</span>
+            <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
+          </div>
+          <div style={{ background: t.amberS, borderRadius: 11, padding: 12, marginBottom: 14, fontSize: 12, color: t.amber }}><b>{product.name}</b><br />{store.name} → omborga</div>
+          <Lbl>Nechta (mavjud: {availUnits.length})</Lbl>
+          <NumInp value={qty} onChange={setQty} placeholder="1" />
+          <Btn bg={t.amber} onClick={ret} disabled={saving}>{saving ? "Qaytarilmoqda..." : "✓ Qaytarish"}</Btn>
+        </div>
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // MODAL: ORDER
+  // ═══════════════════════════════════════════════════════════
+  const OrderModal = () => {
+    const existing = sel?.editOrder;
+    const [f, setF] = useState(existing || { storeId: stores[0]?.id || "", productId: "", qty: 1, note: "", deadline: "", price: "", prepaid: "", status: "pending" });
+    const [saving, setSaving] = useState(false);
+    const product = products.find(p => p.id === f.productId);
+    const orderNumber = existing?.orderId || `ZK-${pad4(orders.length + 1)}`;
+
+    const save = async () => {
+      if (!f.storeId || !f.productId) return alert("Tanlang");
+      if (!f.deadline) return alert("Srok");
+      setSaving(true);
+      if (existing) {
+        const updated = { ...existing, ...f, store_id: f.storeId, product_id: f.productId, order_id: existing.orderId, status_history: existing.statusHistory || [] };
+        await db.from("orders").upsert(updated);
+        setOrders(prev => prev.map(o => o.id === existing.id ? { ...o, ...f } : o));
+        await log("Zakaz tahrirlandi", existing.orderId);
+      } else {
+        const newOrder = {
+          id: uid(), order_id: orderNumber,
+          store_id: f.storeId, product_id: f.productId,
+          qty: +f.qty || 1, note: f.note, deadline: f.deadline,
+          price: +f.price || 0, prepaid: +f.prepaid || 0,
+          status: "pending", status_history: [{ status: "pending", time: now() }],
+          created_at: now(),
+        };
+        await db.from("orders").insert(newOrder);
+        setOrders(prev => [{ ...newOrder, orderId: newOrder.order_id, storeId: newOrder.store_id, productId: newOrder.product_id, statusHistory: newOrder.status_history }, ...prev]);
+        await log("Zakaz qo'shildi", `${orderNumber} — ${product?.name}`);
+      }
+      setSaving(false);
+      setModal(null); setSel(null);
+    };
+
+    return (
+      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+        <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
+          <div style={{ ...s.row, marginBottom: 16 }}>
+            <span style={{ fontSize: 17, fontWeight: 800 }}>{existing ? "Zakazni tahrirlash" : "Yangi zakaz"}</span>
+            <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
+          </div>
+          <div style={{ background: t.accSoft, borderRadius: 10, padding: "10px 12px", marginBottom: 14 }}>
+            <div style={{ fontSize: 11, color: t.sub }}>Zakaz ID</div>
+            <div style={{ ...s.mono, fontWeight: 800, color: t.acc, fontSize: 16 }}>{orderNumber}</div>
+          </div>
+          <Lbl>Qaysi do'kondan</Lbl>
+          <select style={s.inp} value={f.storeId} onChange={e => setF(p => ({ ...p, storeId: e.target.value }))}>
+            <option value="">— tanlang —</option>
+            {stores.map(st => <option key={st.id} value={st.id}>{st.name}</option>)}
+          </select>
+          <Lbl>Qaysi modelga o'xshash</Lbl>
+          <select style={s.inp} value={f.productId} onChange={e => setF(p => ({ ...p, productId: e.target.value }))}>
+            <option value="">— tanlang —</option>
+            {products.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+          </select>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 9 }}>
+            <div><Lbl>Soni</Lbl><NumInp value={f.qty} onChange={v => setF(p => ({ ...p, qty: v }))} placeholder="1" /></div>
+            <div><Lbl>Srok</Lbl><input type="date" style={s.inp} value={f.deadline} onChange={e => setF(p => ({ ...p, deadline: e.target.value }))} /></div>
+          </div>
+          <Lbl>Izoh</Lbl>
+          <textarea style={{ ...s.inp, minHeight: 70, resize: "vertical" }} placeholder="Masalan: qora rangda..." value={f.note} onChange={e => setF(p => ({ ...p, note: e.target.value }))} />
+          <Lbl>Kelishilgan narx ($)</Lbl>
+          <NumInp value={f.price} onChange={v => setF(p => ({ ...p, price: v }))} placeholder="0" />
+          <Lbl>Oldindan olingan ($)</Lbl>
+          <NumInp value={f.prepaid} onChange={v => setF(p => ({ ...p, prepaid: v }))} placeholder="0" />
+          {existing && (
+            <>
+              <Lbl>Status</Lbl>
+              <select style={s.inp} value={f.status} onChange={e => setF(p => ({ ...p, status: e.target.value }))}>{Object.entries(ORDER_STATUS).map(([k, v]) => <option key={k} value={k}>{v.emoji} {v.label}</option>)}</select>
+            </>
+          )}
+          <Btn bg={t.acc} onClick={save} disabled={saving}>{saving ? "Saqlanmoqda..." : existing ? "Saqlash" : "Zakaz qo'shish"}</Btn>
+        </div>
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // PAGE: HOME
+  // ═══════════════════════════════════════════════════════════
+  const HomePage = () => {
+    if (products.length === 0 && stores.length === 0) {
+      return (
+        <div className="fade">
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontSize: 12, color: t.sub }}>Xush kelibsiz 👋</div>
+            <div style={{ fontSize: 22, fontWeight: 800 }}>Mebel ERP</div>
+          </div>
+          <Empty icon="warehouse" title="Boshlash uchun" desc={"1️⃣ Mahsulot qo'shing\n2️⃣ Do'kon qo'shing\n3️⃣ Vitrinaga jo'nating\n4️⃣ Sotuv yozing"} btnText="Mahsulot qo'shish" onBtn={() => setModal("product")} />
+        </div>
+      );
+    }
+    const urgent = orders.filter(o => o.status !== "delivered" && o.deadline && daysLeft(o.deadline) <= 3).length;
+    const topProducts = (() => {
+      const map = {};
+      sales.forEach(s => {
+        if (!map[s.productId]) map[s.productId] = 0;
+        map[s.productId] += (s.price - s.cost) * s.qty;
+      });
+      return Object.entries(map).map(([pid, prof]) => ({ product: products.find(p => p.id === pid), profit: prof })).filter(x => x.product).sort((a, b) => b.profit - a.profit).slice(0, 3);
+    })();
+    return (
+      <div className="fade">
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 12, color: t.sub }}>Dashboard</div>
+          <div style={{ fontSize: 22, fontWeight: 800 }}>Umumiy holat</div>
+        </div>
+        {urgent > 0 && (
+          <div onClick={() => setTab("orders")} style={{ background: t.redS, border: `1px solid ${t.red}33`, borderRadius: 12, padding: "12px 14px", marginBottom: 10, display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
+            <div style={{ color: t.red }}><Ic n="alert" s={18} /></div>
+            <div style={{ flex: 1, fontSize: 13, color: t.red, fontWeight: 700 }}>⚠️ {urgent} ta zakaz sroki yaqin!</div>
+            <Ic n="right" s={16} />
+          </div>
+        )}
+        {stats.debtCount > 0 && (() => {
+          const overdueDebts = sales.filter(s => {
+            if (s.paid) return false;
+            if (!s.payDate) return false;
+            return new Date(s.payDate) < new Date();
+          });
+          return overdueDebts.length > 0 ? (
+            <div onClick={() => setTab("debts")} style={{ background: t.amberS, border: `1px solid ${t.amber}33`, borderRadius: 12, padding: "12px 14px", marginBottom: 10, display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
+              <div style={{ color: t.amber }}><Ic n="debt" s={18} /></div>
+              <div style={{ flex: 1, fontSize: 13, color: t.amber, fontWeight: 700 }}>💰 {overdueDebts.length} ta qarz muddati o'tdi!</div>
+              <Ic n="right" s={16} />
+            </div>
+          ) : null;
+        })()}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 8 }}>
+          <div style={{ background: t.accSoft, border: `1px solid ${t.acc}22`, borderRadius: 13, padding: 14 }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color: t.acc, ...s.mono }}>{fmtK(stats.totalSales)}</div>
+            <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Umumiy sotuv</div>
+          </div>
+          <div style={{ background: t.greenS, border: `1px solid ${t.green}22`, borderRadius: 13, padding: 14 }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color: t.green, ...s.mono }}>{fmtK(stats.totalProfit)}</div>
+            <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Foyda</div>
+          </div>
+          <div style={{ background: t.blueS, border: `1px solid ${t.blue}22`, borderRadius: 13, padding: 14 }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color: t.blue, ...s.mono }}>{fmtK(stats.totalPaid)}</div>
+            <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Kassada</div>
+          </div>
+          <div style={{ background: t.redS, border: `1px solid ${t.red}22`, borderRadius: 13, padding: 14 }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color: t.red, ...s.mono }}>{fmtK(stats.totalCustomerDebt)}</div>
+            <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Mijoz qarzi</div>
+          </div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10, marginBottom: 14 }}>
+          <div style={{ background: t.amberS, border: `1px solid ${t.amber}22`, borderRadius: 13, padding: 14 }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color: t.amber, ...s.mono }}>{fmtK(stats.totalVitrinaDebt)}</div>
+            <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Vitrina qarzi</div>
+          </div>
+          <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 13, padding: 14 }}>
+            <div style={{ fontSize: 22, fontWeight: 800, color: t.txt, ...s.mono }}>{fmtK(stats.totalCustomerDebt + stats.totalVitrinaDebt)}</div>
+            <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Jami qarz</div>
+          </div>
+        </div>
+        <Sec>Tez amallar</Sec>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+          {[
+            { e: "📦", l: "Mol+", a: () => setModal("product") },
+            { e: "🚚", l: "Jo'nat", a: () => setModal("transfer") },
+            { e: "💵", l: "Sotuv", a: () => setModal("sell") },
+            { e: "📋", l: "Zakaz", a: () => setModal("order") },
+          ].map((b, i) => (
+            <button key={i} className="press" onClick={b.a} style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 13, padding: "16px 10px", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+              <div style={{ fontSize: 26 }}>{b.e}</div>
+              <div style={{ fontSize: 12, fontWeight: 700, color: t.txt }}>{b.l}</div>
+            </button>
+          ))}
+        </div>
+        {topProducts.length > 0 && (
+          <>
+            <Sec>Eng foydali mahsulotlar</Sec>
+            {topProducts.map((x, i) => (
+              <div key={x.product.id} style={{ ...s.card, display: "flex", alignItems: "center", gap: 12 }}>
+                <div style={{ width: 32, height: 32, borderRadius: 9, background: i === 0 ? t.amberS : t.accSoft, color: i === 0 ? t.amber : t.acc, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, ...s.mono }}>#{i + 1}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 14, fontWeight: 700 }}>{x.product.name}</div>
+                  <div style={{ fontSize: 11, color: t.sub }}>{x.product.sku}</div>
+                </div>
+                <div style={{ ...s.mono, fontWeight: 800, color: t.green }}>{fmtK(x.profit)}</div>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // PAGE: WAREHOUSE
+  // ═══════════════════════════════════════════════════════════
+  const WarehousePage = () => {
+    const [q, setQ] = useState("");
+    const [expanded, setExpanded] = useState(null);
+    const [selectedIds, setSelectedIds] = useState([]);
+    const totalUnits = units.filter(u => u.location === "warehouse" && u.status === "available").length;
+    const list = products
+      .filter(p => p.name.toLowerCase().includes(q.toLowerCase()) || p.sku.toLowerCase().includes(q.toLowerCase()))
+      .map(p => ({ ...p, whUnits: getWhUnits(p.id), allUnits: units.filter(u => u.productId === p.id) }));
+
+    return (
+      <div className="fade">
+        <div style={{ ...s.row, marginBottom: 14 }}>
+          <div>
+            <div style={{ fontSize: 22, fontWeight: 800 }}>📦 Ombor</div>
+            <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {totalUnits} dona</div>
+          </div>
+          {canSee("price") && <button onClick={() => setModal("product")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
+        </div>
+        {products.length === 0 ? (
+          <Empty icon="warehouse" title="Ombor bo'sh" desc="Mahsulot qo'shing" btnText="Mahsulot qo'shish" onBtn={() => setModal("product")} />
+        ) : (
+          <>
+            <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 11, padding: "10px 13px", marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{ color: t.sub }}><Ic n="search" s={16} /></div>
+              <input style={{ flex: 1, background: "none", color: t.txt, fontSize: 14, border: "none" }} placeholder="Qidirish..." value={q} onChange={e => setQ(e.target.value)} />
+            </div>
+            {list.map(p => {
+              const isExp = expanded === p.id;
+              return (
+                <div key={p.id} style={s.card}>
+                  <div style={{ display: "flex", gap: 11, alignItems: "flex-start" }}>
+                    <div style={{ width: 48, height: 48, borderRadius: 12, background: `${t.acc}22`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, overflow: "hidden", flexShrink: 0 }}>
+                      {p.image ? <img src={p.image} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <span>🪑</span>}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ ...s.row, alignItems: "flex-start" }}>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: 14, fontWeight: 700 }}>{p.name}</div>
+                          <div style={{ fontSize: 11, color: t.sub, marginTop: 2, ...s.mono }}>{p.sku} · {p.category}</div>
+                        </div>
+                        <div style={{ display: "flex", gap: 5 }}>
+                          <button onClick={() => { setSel({ editProduct: p }); setModal("product"); }} style={{ background: t.accSoft, color: t.acc, borderRadius: 8, padding: "6px 8px" }}><Ic n="edit" s={13} /></button>
+                          <button onClick={() => {
+                            const uc = p.allUnits.length;
+                            askConfirm("Mahsulotni o'chirish", `"${p.name}" o'chirilsinmi?${uc > 0 ? `\n\n⚠️ ${uc} ta unit ham o'chiriladi` : ''}`, async () => {
+                              await db.from("units").delete().eq("product_id", p.id);
+                              await db.from("products").delete().eq("id", p.id);
+                              setUnits(prev => prev.filter(u => u.productId !== p.id));
+                              setProducts(prev => prev.filter(x => x.id !== p.id));
+                              await log("Mahsulot o'chirildi", p.name);
+                            }, true);
+                          }} style={{ background: t.redS, color: t.red, borderRadius: 8, padding: "6px 8px" }}><Ic n="trash" s={13} /></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 12 }}>
+                    <div style={{ background: t.accSoft, borderRadius: 9, padding: "9px 10px" }}>
+                      <div style={{ fontSize: 10, color: t.sub }}>OMBORDA</div>
+                      <div style={{ fontSize: 17, fontWeight: 800, color: t.acc, ...s.mono }}>{p.whUnits.length}</div>
+                    </div>
+                    <div style={{ background: t.blueS, borderRadius: 9, padding: "9px 10px" }}>
+                      <div style={{ fontSize: 10, color: t.sub }}>VITRINADA</div>
+                      <div style={{ fontSize: 17, fontWeight: 800, color: t.blue, ...s.mono }}>{p.allUnits.filter(u => u.location !== "warehouse" && u.status === "available").length}</div>
+                    </div>
+                    <div style={{ background: t.greenS, borderRadius: 9, padding: "9px 10px" }}>
+                      <div style={{ fontSize: 10, color: t.sub }}>SOTILGAN</div>
+                      <div style={{ fontSize: 17, fontWeight: 800, color: t.green, ...s.mono }}>{p.allUnits.filter(u => u.status === "sold").length}</div>
+                    </div>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 8 }}>
+                    {canSee("cost") && <div><div style={{ fontSize: 10, color: t.sub }}>TANNARX</div><span style={{ ...s.mono, fontWeight: 700 }}>{fmtK(p.cost)}</span></div>}
+                    <div><div style={{ fontSize: 10, color: t.sub }}>NARX</div><span style={{ ...s.mono, fontWeight: 700, color: t.acc }}>{fmtK(p.price)}</span></div>
+                    {canSee("profit") && <div><div style={{ fontSize: 10, color: t.sub }}>FOYDA</div><span style={{ ...s.mono, fontWeight: 700, color: t.green }}>{fmtK(p.price - p.cost)} <span style={{ fontSize: 10, color: t.sub }}>({p.markup}%)</span></span></div>}
+                  </div>
+                  {canSee("cost") && p.costItems?.length > 0 && (
+                    <div style={{ background: t.surf, borderRadius: 9, padding: "9px 11px", marginTop: 10 }}>
+                      <div style={{ fontSize: 10, color: t.sub, fontWeight: 700, marginBottom: 6, textTransform: "uppercase" }}>Tannarx tarkibi</div>
+                      {p.costItems.map(ci => (
+                        <div key={ci.id} style={{ ...s.row, marginBottom: 3, fontSize: 12 }}>
+                          <span style={{ color: t.sub }}>{ci.name}</span>
+                          <span style={{ ...s.mono, fontWeight: 700 }}>${fmtN(ci.amount)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
+                    <button onClick={() => { setSel({ productId: p.id }); setModal("addStock"); }} style={{ flex: 1, background: t.acc, color: "#fff", borderRadius: 9, padding: "9px", fontSize: 12, fontWeight: 700 }}>+ Qo'shish</button>
+                    <button onClick={() => setExpanded(isExp ? null : p.id)} style={{ flex: 1, background: t.card, border: `1px solid ${t.border}`, color: t.txt, borderRadius: 9, padding: "9px", fontSize: 12, fontWeight: 700 }}>{isExp ? "Yashirish" : `ID lar (${p.allUnits.length})`}</button>
+                  </div>
+                  {isExp && p.allUnits.length > 0 && (
+                    <div style={{ marginTop: 10, background: t.surf, borderRadius: 9, padding: 10, maxHeight: 300, overflowY: "auto" }}>
+                      <div style={{ ...s.row, marginBottom: 8, paddingBottom: 8, borderBottom: `1px solid ${t.border}` }}>
+                        <button onClick={() => {
+                          const ids = p.allUnits.map(u => u.id);
+                          const allSel = ids.every(id => selectedIds.includes(id));
+                          if (allSel) setSelectedIds(prev => prev.filter(id => !ids.includes(id)));
+                          else setSelectedIds(prev => [...new Set([...prev, ...ids])]);
+                        }} style={{ fontSize: 11, color: t.acc, fontWeight: 700, background: t.accSoft, borderRadius: 7, padding: "4px 10px" }}>
+                          {p.allUnits.every(u => selectedIds.includes(u.id)) ? "✕ Barchasini olib tashla" : "☑ Hammasini belgilab"}
+                        </button>
+                        {selectedIds.filter(id => p.allUnits.find(u => u.id === id)).length > 0 && (
+                          <button onClick={() => {
+                            const ids = selectedIds.filter(id => p.allUnits.find(u => u.id === id));
+                            printYorliq(ids);
+                          }} style={{ fontSize: 11, color: "#fff", fontWeight: 700, background: t.acc, borderRadius: 7, padding: "4px 10px" }}>
+                            🖨️ Chiqar ({selectedIds.filter(id => p.allUnits.find(u => u.id === id)).length})
+                          </button>
+                        )}
+                      </div>
+                      {p.allUnits.slice().reverse().map(u => {
+                        const loc = u.status === "sold" ? "Sotildi" : u.location === "warehouse" ? "Omborda" : stores.find(s => s.id === u.location)?.name || "—";
+                        const lc = u.status === "sold" ? t.green : u.location === "warehouse" ? t.acc : t.blue;
+                        const isChecked = selectedIds.includes(u.id);
+                        return (
+                          <div key={u.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0", borderBottom: `1px solid ${t.border}33`, fontSize: 11 }}>
+                            <button onClick={() => setSelectedIds(prev => isChecked ? prev.filter(id => id !== u.id) : [...prev, u.id])}
+                              style={{ width: 20, height: 20, borderRadius: 5, border: `2px solid ${isChecked ? t.acc : t.border}`, background: isChecked ? t.acc : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                              {isChecked && <span style={{ color: "#fff", fontSize: 10, fontWeight: 800 }}>✓</span>}
+                            </button>
+                            <span style={{ ...s.mono, fontWeight: 700, flex: 1 }}>{u.unitId}</span>
+                            <div style={{ textAlign: "right" }}>
+                              <span style={{ ...s.mono, color: lc, fontWeight: 700 }}>{loc}</span>
+                              <div style={{ color: t.sub, fontSize: 10 }}>{dateStr(u.addedAt)}</div>
+                            </div>
+                            <button onClick={() => printYorliq([u.id])} style={{ color: t.sub, padding: "2px 4px", fontSize: 13 }}>🖨️</button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </>
+        )}
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // PAGE: STORES
+  // ═══════════════════════════════════════════════════════════
+  const StoresPage = () => {
+    if (storeProfileId) return <StoreProfile />;
+    return (
+      <div className="fade">
+        <div style={{ ...s.row, marginBottom: 14 }}>
+          <div>
+            <div style={{ fontSize: 22, fontWeight: 800 }}>🏪 Do'konlar</div>
+            <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {stores.length} ta</div>
+          </div>
+          {canSee("price") && <button onClick={() => setModal("addstore")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
+        </div>
+        {stores.length === 0 ? (
+          <Empty icon="store" title="Do'kon yo'q" desc="Birinchi do'koningizni qo'shing" btnText="Do'kon qo'shish" onBtn={() => setModal("addstore")} />
+        ) : (
+          stores.map(store => {
+            const sUnits = units.filter(u => u.location === store.id && u.status === "available");
+            const sSales = sales.filter(s => s.storeId === store.id);
+            const sDebt = sUnits.reduce((sum, u) => sum + (products.find(p => p.id === u.productId)?.price || 0), 0);
+            const sRev = sSales.reduce((sum, s) => sum + s.totalAmount, 0);
+            return (
+              <button key={store.id} onClick={() => setStoreProfileId(store.id)} className="press" style={{ ...s.card, width: "100%", textAlign: "left" }}>
+                <div style={s.row}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 15, fontWeight: 700 }}>🏪 {store.name}</div>
+                    {store.address && <div style={{ fontSize: 11, color: t.sub, marginTop: 2 }}>📍 {store.address}</div>}
+                    {store.manager && <div style={{ fontSize: 11, color: t.sub }}>👤 {store.manager}</div>}
+                  </div>
+                  <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                    <button onClick={(e) => {
+                      e.stopPropagation();
+                      askConfirm("Do'konni o'chirish", `"${store.name}" o'chirilsinmi?${sUnits.length > 0 ? `\n\n⚠️ ${sUnits.length} ta mol omborga qaytariladi` : ''}`, async () => {
+                        const toReturn = sUnits.map(u => ({ ...u, unit_id: u.unitId, product_id: u.productId, added_at: u.addedAt, location: "warehouse", sent_at: null }));
+                        if (toReturn.length > 0) await db.from("units").upsert(toReturn);
+                        await db.from("stores").delete().eq("id", store.id);
+                        setUnits(prev => prev.map(u => u.location === store.id ? { ...u, location: "warehouse", sentAt: undefined } : u));
+                        setStores(prev => prev.filter(x => x.id !== store.id));
+                        await log("Do'kon o'chirildi", store.name);
+                      }, true);
+                    }} style={{ background: t.redS, color: t.red, borderRadius: 8, padding: "6px 8px" }}><Ic n="trash" s={13} /></button>
+                    <Ic n="right" s={18} />
+                  </div>
+                </div>
+                <Div />
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+                  <div style={{ background: t.blueS, borderRadius: 8, padding: "8px 10px", textAlign: "center" }}>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: t.blue, ...s.mono }}>{sUnits.length}</div>
+                    <div style={{ fontSize: 9, color: t.sub }}>VITRINADA</div>
+                  </div>
+                  <div style={{ background: t.redS, borderRadius: 8, padding: "8px 10px", textAlign: "center" }}>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: t.red, ...s.mono }}>{fmtK(sDebt)}</div>
+                    <div style={{ fontSize: 9, color: t.sub }}>QARZ</div>
+                  </div>
+                  <div style={{ background: t.greenS, borderRadius: 8, padding: "8px 10px", textAlign: "center" }}>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: t.green, ...s.mono }}>{fmtK(sRev)}</div>
+                    <div style={{ fontSize: 9, color: t.sub }}>SOTUV</div>
+                  </div>
+                </div>
+              </button>
+            );
+          })
+        )}
+      </div>
+    );
+  };
+
+  // STORE PROFILE
+  const StoreProfile = () => {
+    const store = stores.find(s => s.id === storeProfileId);
+    const [pTab, setPTab] = useState("vitrina");
+    if (!store) { setStoreProfileId(null); return null; }
+    const sUnits = units.filter(u => u.location === store.id && u.status === "available");
+    const unitsByProd = {};
+    sUnits.forEach(u => {
+      if (!unitsByProd[u.productId]) unitsByProd[u.productId] = [];
+      unitsByProd[u.productId].push(u);
+    });
+    const sSales = sales.filter(s => s.storeId === store.id).sort((a, b) => b.date.localeCompare(a.date));
+    const sOrders = orders.filter(o => o.storeId === store.id);
+    const allPayments = [];
+    sSales.forEach(s => {
+      if (s.paid && s.payDate) allPayments.push({ id: s.id + "-full", saleId: s.id, amount: s.totalAmount, method: s.payMethod, date: s.payDate, customerName: s.customerName, productId: s.productId });
+      (s.partialPayments || []).forEach(p => allPayments.push({ id: p.id, saleId: s.id, amount: p.amount, method: p.method, date: p.date, customerName: s.customerName, productId: s.productId }));
+    });
+    allPayments.sort((a, b) => b.date.localeCompare(a.date));
+    const sDebt = sUnits.reduce((sum, u) => sum + (products.find(p => p.id === u.productId)?.price || 0), 0);
+    const totalRev = sSales.reduce((sum, s) => sum + s.totalAmount, 0);
+    const totalPaidStore = allPayments.reduce((sum, p) => sum + p.amount, 0);
+    const custDebt = sSales.reduce((sum, s) => {
+      if (s.paid) return sum;
+      const pp = (s.partialPayments || []).reduce((a, p) => a + p.amount, 0);
+      return sum + (s.totalAmount - pp);
+    }, 0);
+    return (
+      <div className="fade">
+        <button onClick={() => setStoreProfileId(null)} style={{ display: "flex", alignItems: "center", gap: 6, color: t.sub, fontSize: 14, fontWeight: 600, marginBottom: 14 }}>
+          <Ic n="back" s={16} /> Do'konlar
+        </button>
+        <div style={{ background: `linear-gradient(135deg, ${t.acc}, ${t.blue})`, borderRadius: 16, padding: 16, marginBottom: 14, color: "#fff" }}>
+          <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>🏪 {store.name}</div>
+          {store.address && <div style={{ fontSize: 12, opacity: 0.8 }}>📍 {store.address}</div>}
+          {store.manager && <div style={{ fontSize: 12, opacity: 0.8 }}>👤 {store.manager}{store.phone ? ` · ${store.phone}` : ''}</div>}
+          <div style={{ borderTop: "1px solid #ffffff22", margin: "12px 0" }} />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+            <div style={{ background: "#ffffff15", borderRadius: 9, padding: 10 }}><div style={{ fontSize: 10, opacity: 0.7 }}>VITRINA QARZI</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(sDebt)}</div></div>
+            <div style={{ background: "#ffffff15", borderRadius: 9, padding: 10 }}><div style={{ fontSize: 10, opacity: 0.7 }}>MIJOZ QARZI</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono, color: custDebt > 0 ? "#FFAAAA" : "#fff" }}>{fmtK(custDebt)}</div></div>
+            <div style={{ background: "#ffffff15", borderRadius: 9, padding: 10 }}><div style={{ fontSize: 10, opacity: 0.7 }}>JAMI SOTUV</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(totalRev)}</div></div>
+            <div style={{ background: "#ffffff15", borderRadius: 9, padding: 10 }}><div style={{ fontSize: 10, opacity: 0.7 }}>OLINGAN PUL</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(totalPaidStore)}</div></div>
+          </div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 14 }}>
+          <button onClick={() => { setSel({ storeId: store.id }); setModal("transfer"); }} className="press" style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "11px 8px", fontWeight: 700, fontSize: 12, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}><Ic n="send" s={16} /> Jo'natish</button>
+          <button onClick={() => { setSel({ storeId: store.id }); setModal("sell"); }} className="press" style={{ background: t.green, color: "#fff", borderRadius: 10, padding: "11px 8px", fontWeight: 700, fontSize: 12, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}><Ic n="money" s={16} /> Sotuv</button>
+          <button onClick={() => { setSel({ storeId: store.id }); setModal("order"); }} className="press" style={{ background: t.amber, color: "#fff", borderRadius: 10, padding: "11px 8px", fontWeight: 700, fontSize: 12, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}><Ic n="order" s={16} /> Zakaz</button>
+        </div>
+        <div style={{ display: "flex", gap: 6, marginBottom: 12, background: t.card, padding: 4, borderRadius: 11, border: `1px solid ${t.border}` }}>
+          {[{ id: "vitrina", l: "Vitrina", n: sUnits.length }, { id: "sales", l: "Sotuv", n: sSales.length }, { id: "payments", l: "To'lov", n: allPayments.length }, { id: "orders", l: "Zakaz", n: sOrders.length }].map(x => (
+            <button key={x.id} onClick={() => setPTab(x.id)} style={{ flex: 1, padding: "8px 4px", borderRadius: 8, background: pTab === x.id ? t.acc : "transparent", color: pTab === x.id ? "#fff" : t.sub, fontSize: 11, fontWeight: 700 }}>{x.l} {x.n > 0 && <span style={{ opacity: 0.7 }}>· {x.n}</span>}</button>
+          ))}
+        </div>
+        {pTab === "vitrina" && (
+          Object.keys(unitsByProd).length === 0 ? (
+            <div style={{ ...s.card, textAlign: "center", padding: 30, color: t.sub, fontSize: 13 }}>Vitrinada mol yo'q</div>
+          ) : Object.entries(unitsByProd).map(([pid, us]) => {
+            const prod = products.find(p => p.id === pid);
+            if (!prod) return null;
+            return (
+              <div key={pid} style={s.card}>
+                <div style={s.row}>
+                  <div>
+                    <div style={{ fontSize: 14, fontWeight: 700 }}>{prod.name}</div>
+                    <div style={{ fontSize: 11, color: t.sub, ...s.mono }}>{prod.sku} · {fmt(prod.price)}/dona</div>
+                  </div>
+                  <Badge c={t.blue} bg={t.blueS}>{us.length} dona</Badge>
+                </div>
+                <div style={{ marginTop: 10, padding: 10, background: t.surf, borderRadius: 9, maxHeight: 120, overflowY: "auto" }}>
+                  {us.map(u => (
+                    <div key={u.id} style={{ ...s.row, padding: "5px 0", fontSize: 11 }}>
+                      <span style={{ ...s.mono, fontWeight: 700 }}>{u.unitId}</span>
+                      <span style={{ color: t.sub }}>{dateStr(u.sentAt)}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
+                  <button onClick={() => { setSel({ storeId: store.id, productId: pid }); setModal("sell"); }} style={{ flex: 1, background: t.green, color: "#fff", borderRadius: 8, padding: "8px", fontSize: 12, fontWeight: 700 }}>Sotish</button>
+                  <button onClick={() => { setSel({ storeId: store.id, productId: pid }); setModal("return"); }} style={{ background: t.amberS, color: t.amber, borderRadius: 8, padding: "8px 12px", fontSize: 12, fontWeight: 700 }}>↩️ Qaytar</button>
+                </div>
+              </div>
+            );
+          })
+        )}
+        {pTab === "sales" && (
+          sSales.length === 0 ? (
+            <div style={{ ...s.card, textAlign: "center", padding: 30, color: t.sub, fontSize: 13 }}>Sotuvlar yo'q</div>
+          ) : sSales.map(sr => {
+            const prod = products.find(p => p.id === sr.productId);
+            const pp = (sr.partialPayments || []).reduce((a, p) => a + p.amount, 0);
+            const remaining = sr.totalAmount - pp;
+            return (
+              <div key={sr.id} style={s.card}>
+                <div style={s.row}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 14, fontWeight: 700 }}>{prod?.name}</div>
+                    <div style={{ fontSize: 11, color: t.sub }}>{dateStr(sr.date)} · {sr.qty} dona</div>
+                    {sr.customerName && <div style={{ fontSize: 11, color: t.sub }}>👤 {sr.customerName}</div>}
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: 15, fontWeight: 800, color: sr.paid ? t.green : t.red, ...s.mono }}>{fmt(sr.totalAmount)}</div>
+                    {sr.paid ? <div style={{ fontSize: 10, color: t.green }}>✓ {PAYMENT_INFO[sr.payMethod]?.emoji}</div> : <Badge c={t.red} bg={t.redS}>QARZ: {fmtK(remaining)}</Badge>}
+                  </div>
+                </div>
+                {!sr.paid && <Btn bg={t.amber} mt={9} small onClick={() => { setSel({ saleId: sr.id }); setModal("pay"); }}>💰 Pul olish</Btn>}
+                <button onClick={() => {
+                  const saleUnitIds = units.filter(u => sr.unitIds?.includes(u.unitId)).map(u => u.id);
+                  if(saleUnitIds.length > 0) printGarantiya(saleUnitIds);
+                }} style={{ width: "100%", marginTop: 6, background: t.card, border: `1px solid ${t.border}`, borderRadius: 8, padding: "7px", fontSize: 11, fontWeight: 700, color: t.sub, display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
+                  🖨️ Garantiya taloni
+                </button>
+              </div>
+            );
+          })
+        )}
+        {pTab === "payments" && (
+          allPayments.length === 0 ? (
+            <div style={{ ...s.card, textAlign: "center", padding: 30, color: t.sub, fontSize: 13 }}>To'lovlar yo'q</div>
+          ) : allPayments.map(pmt => {
+            const prod = products.find(p => p.id === pmt.productId);
+            return (
+              <div key={pmt.id} style={s.card}>
+                <div style={s.row}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 14, fontWeight: 700 }}>{prod?.name}</div>
+                    <div style={{ fontSize: 11, color: t.sub }}>{dateStr(pmt.date)} · {PAYMENT_INFO[pmt.method]?.emoji} {PAYMENT_INFO[pmt.method]?.label}</div>
+                    {pmt.customerName && <div style={{ fontSize: 11, color: t.sub }}>👤 {pmt.customerName}</div>}
+                  </div>
+                  <div style={{ ...s.mono, fontWeight: 800, color: t.green, fontSize: 15 }}>+{fmt(pmt.amount)}</div>
+                </div>
+              </div>
+            );
+          })
+        )}
+        {pTab === "orders" && (
+          sOrders.length === 0 ? (
+            <div style={{ ...s.card, textAlign: "center", padding: 30, color: t.sub, fontSize: 13 }}>Zakazlar yo'q</div>
+          ) : sOrders.map(o => {
+            const prod = products.find(p => p.id === o.productId);
+            const dl = daysLeft(o.deadline);
+            const stInfo = ORDER_STATUS[o.status];
+            return (
+              <div key={o.id} style={s.card}>
+                <div style={s.row}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ ...s.mono, fontSize: 12, color: t.acc, fontWeight: 700 }}>{o.orderId}</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, marginTop: 2 }}>{prod?.name} × {o.qty}</div>
+                    {o.note && <div style={{ fontSize: 11, color: t.sub, marginTop: 3, fontStyle: "italic" }}>"{o.note}"</div>}
+                  </div>
+                  <Badge c={t[stInfo.color]} bg={t[stInfo.color + "S"]}>{stInfo.emoji} {stInfo.label}</Badge>
+                </div>
+                <div style={{ ...s.row, marginTop: 9, fontSize: 11 }}>
+                  <span style={{ color: dl !== null && dl <= 3 ? t.red : t.sub }}>{dateStr(o.deadline)}{dl !== null && ` (${dl < 0 ? `${Math.abs(dl)} kun o'tdi` : `${dl} kun qoldi`})`}</span>
+                  <span style={{ ...s.mono, color: t.sub }}>{fmtK(o.prepaid)}/{fmtK(o.price)}</span>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // PAGE: ORDERS
+  // ═══════════════════════════════════════════════════════════
+  const OrdersPage = () => {
+    const [filter, setFilter] = useState("all");
+    const filtered = orders.filter(o => filter === "all" || o.status === filter).sort((a, b) => {
+      if (a.status === "delivered" && b.status !== "delivered") return 1;
+      if (a.status !== "delivered" && b.status === "delivered") return -1;
+      return (a.deadline || "9999").localeCompare(b.deadline || "9999");
+    });
+    return (
+      <div className="fade">
+        <div style={{ ...s.row, marginBottom: 14 }}>
+          <div>
+            <div style={{ fontSize: 22, fontWeight: 800 }}>📋 Zakazlar</div>
+            <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {orders.length} ta</div>
+          </div>
+          <button onClick={() => setModal("order")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>
+        </div>
+        <div style={{ display: "flex", gap: 6, overflowX: "auto", marginBottom: 12, paddingBottom: 4 }}>
+          {[{ id: "all", l: "Hammasi" }, ...Object.entries(ORDER_STATUS).map(([k, v]) => ({ id: k, l: `${v.emoji} ${v.label}` }))].map(x => (
+            <button key={x.id} onClick={() => setFilter(x.id)} style={{ padding: "7px 14px", borderRadius: 18, background: filter === x.id ? t.acc : t.card, color: filter === x.id ? "#fff" : t.sub, fontSize: 12, fontWeight: 700, border: `1px solid ${filter === x.id ? t.acc : t.border}`, whiteSpace: "nowrap", flexShrink: 0 }}>{x.l}</button>
+          ))}
+        </div>
+        {filtered.length === 0 ? (
+          <Empty icon="order" title="Zakaz yo'q" desc="Do'konlar bergan zakazlarni shu yerda yozasiz" btnText="Zakaz qo'shish" onBtn={() => setModal("order")} />
+        ) : filtered.map(o => {
+          const prod = products.find(p => p.id === o.productId);
+          const store = stores.find(s => s.id === o.storeId);
+          const dl = daysLeft(o.deadline);
+          const stInfo = ORDER_STATUS[o.status];
+          const isUrg = dl !== null && dl <= 3 && o.status !== "delivered";
+          return (
+            <div key={o.id} style={{ ...s.card, border: isUrg ? `1px solid ${t.red}55` : `1px solid ${t.border}` }}>
+              <div style={s.row}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                    <span style={{ ...s.mono, fontSize: 13, color: t.acc, fontWeight: 800 }}>{o.orderId}</span>
+                    <Badge c={t[stInfo.color]} bg={t[stInfo.color + "S"]}>{stInfo.emoji} {stInfo.label}</Badge>
+                  </div>
+                  <div style={{ fontSize: 14, fontWeight: 700 }}>{prod?.name} × {o.qty}</div>
+                  <div style={{ fontSize: 11, color: t.sub, marginTop: 2 }}>🏪 {store?.name}</div>
+                  {o.note && <div style={{ fontSize: 11, color: t.sub, marginTop: 4, fontStyle: "italic", padding: "6px 9px", background: t.surf, borderRadius: 7 }}>"{o.note}"</div>}
+                </div>
+                <button onClick={() => askConfirm("Zakazni o'chirish", `${o.orderId} o'chirilsinmi?`, async () => {
+                  await db.from("orders").delete().eq("id", o.id);
+                  setOrders(prev => prev.filter(x => x.id !== o.id));
+                  await log("Zakaz o'chirildi", o.orderId);
+                }, true)} style={{ background: t.redS, color: t.red, borderRadius: 8, padding: "6px 8px" }}><Ic n="trash" s={13} /></button>
+              </div>
+              <Div />
+              <div style={{ ...s.row, fontSize: 11 }}>
+                <div style={{ color: isUrg ? t.red : t.sub, fontWeight: 700 }}>📅 {dateStr(o.deadline)}{dl !== null && <span> ({dl < 0 ? `${Math.abs(dl)} kun kechikdi!` : dl === 0 ? "BUGUN!" : `${dl} kun qoldi`})</span>}</div>
+                <div style={{ ...s.mono, color: t.sub }}>{fmtK(o.prepaid)}/{fmtK(o.price)}</div>
+              </div>
+              <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
+                <button onClick={() => { setSel({ editOrder: o }); setModal("order"); }} style={{ flex: 1, background: t.accSoft, color: t.acc, borderRadius: 8, padding: "8px", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: 4 }}><Ic n="edit" s={13} /> Tahrirlash</button>
+                {o.status !== "delivered" && (
+                  <select value={o.status} onChange={async e => {
+                    const ns = e.target.value;
+                    const newHistory = [...(o.statusHistory || []), { status: ns, time: now() }];
+                    await db.from("orders").update({ status: ns, status_history: newHistory }).eq("id", o.id);
+                    setOrders(prev => prev.map(x => x.id === o.id ? { ...x, status: ns, statusHistory: newHistory } : x));
+                    await log("Zakaz statusi", `${o.orderId} → ${ORDER_STATUS[ns].label}`);
+                  }} style={{ flex: 1, background: t.card, border: `1px solid ${t.border}`, borderRadius: 8, padding: "8px", fontSize: 12, fontWeight: 700, color: t.txt }}>
+                    {Object.entries(ORDER_STATUS).map(([k, v]) => <option key={k} value={k}>{v.emoji} {v.label}</option>)}
+                  </select>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // PAGE: DEBTS
+  // ═══════════════════════════════════════════════════════════
+  const DebtsPage = () => {
+    const unpaid = sales.filter(x => !x.paid);
+    return (
+      <div className="fade">
+        <div style={{ marginBottom: 14 }}>
+          <div style={{ fontSize: 22, fontWeight: 800 }}>💳 Qarzlar</div>
+          <div style={{ fontSize: 13, color: t.sub, marginTop: 2 }}>Jami: <span style={{ color: t.red, fontWeight: 700 }}>{fmt(stats.totalCustomerDebt)}</span></div>
+        </div>
+        {unpaid.length === 0 ? (
+          <Empty icon="debt" title="Qarz yo'q 🎉" desc="Barcha sotuvlar to'langan" />
+        ) : unpaid.map(sr => {
+          const prod = products.find(p => p.id === sr.productId);
+          const store = stores.find(s => s.id === sr.storeId);
+          const pp = (sr.partialPayments || []).reduce((a, p) => a + p.amount, 0);
+          const remaining = sr.totalAmount - pp;
+          return (
+            <div key={sr.id} style={{ ...s.card, border: `1px solid ${t.red}33` }}>
+              <div style={s.row}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 14, fontWeight: 700 }}>{prod?.name}</div>
+                  <div style={{ fontSize: 11, color: t.sub }}>{store?.name} · {dateStr(sr.date)}</div>
+                  {sr.customerName && <div style={{ fontSize: 11, color: t.sub }}>👤 {sr.customerName}</div>}
+                  {pp > 0 && <div style={{ fontSize: 11, color: t.green, marginTop: 3 }}>✓ To'langan: {fmt(pp)}</div>}
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ ...s.mono, fontWeight: 800, color: t.red, fontSize: 15 }}>{fmt(remaining)}</div>
+                  <div style={{ fontSize: 10, color: t.sub }}>qarz</div>
+                </div>
+              </div>
+              {/* Qarz muddati */}
+              {sr.debt_due && (() => {
+                const dl = daysLeft(sr.debt_due);
+                const color = dl < 0 ? t.red : dl <= 3 ? t.amber : t.sub;
+                const text = dl < 0 ? `⚠️ ${Math.abs(dl)} kun kechikdi!` : dl === 0 ? "⚠️ Bugun muddati!" : `📅 ${dl} kun qoldi`;
+                return <div style={{ background: dl < 0 ? t.redS : t.amberS, borderRadius: 8, padding: "7px 10px", marginTop: 8, fontSize: 12, color, fontWeight: 700 }}>{text} — {dateStr(sr.debt_due)}</div>;
+              })()}
+              <Btn bg={t.amber} mt={8} small onClick={() => { setSel({ saleId: sr.id }); setModal("pay"); }}>💰 Pul qabul qilish</Btn>
+              {/* Telegram xabar */}
+              {(() => {
+                const cust = customers.find(c => c.id === sr.customerId);
+                const phone = cust?.phone;
+                if (!phone) return null;
+                const prod = products.find(p => p.id === sr.productId);
+                const pp = (sr.partialPayments || []).reduce((a, p) => a + p.amount, 0);
+                const rem = sr.totalAmount - pp;
+                const msg = encodeURIComponent(`Assalomu alaykum ${sr.customerName || ""}!
+
+Kabir Exclusive eslatmasi:
+━━━━━━━━━━━━━━━
+🛋 ${prod?.name || ""}
+💰 Qarz: ${fmt(rem)}
+${sr.debt_due ? `📅 Muddat: ${dateStr(sr.debt_due)}` : ""}
+━━━━━━━━━━━━━━━
+To'lov uchun:
++998 20 000 00 74`);
+                const tgLink = `https://t.me/${phone.replace(/\D/g, "").replace(/^998/, "998")}?text=${msg}`;
+                return (
+                  <button onClick={() => window.open(`https://t.me/+${phone.replace(/\D/g, "")}`, "_blank")} style={{ width: "100%", marginTop: 6, background: "#229ED9", color: "#fff", borderRadius: 8, padding: "7px", fontSize: 11, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
+                    📨 Telegram xabar yuborish
+                  </button>
+                );
+              })()}
+              <button onClick={() => {
+                const saleUnitIds = units.filter(u => sr.unitIds?.includes(u.unitId)).map(u => u.id);
+                if(saleUnitIds.length > 0) printGarantiya(saleUnitIds);
+              }} style={{ width: "100%", marginTop: 6, background: t.card, border: `1px solid ${t.border}`, borderRadius: 8, padding: "7px", fontSize: 11, fontWeight: 700, color: t.sub, display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
+                🖨️ Garantiya taloni
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // PAGE: REPORT
+  // ═══════════════════════════════════════════════════════════
+  const ReportPage = () => {
+    const thisMonth = new Date().toISOString().slice(0, 7);
+    const monthSales = sales.filter(s => s.date.startsWith(thisMonth));
+    const monthRev = monthSales.reduce((sum, s) => sum + s.totalAmount, 0);
+    const monthProfit = monthSales.reduce((sum, s) => sum + (s.price - s.cost) * s.qty, 0);
+    const productSales = {};
+    sales.forEach(s => {
+      if (!productSales[s.productId]) productSales[s.productId] = { qty: 0, profit: 0 };
+      productSales[s.productId].qty += s.qty;
+      productSales[s.productId].profit += (s.price - s.cost) * s.qty;
+    });
+    const topProds = Object.entries(productSales).map(([pid, st]) => ({ product: products.find(p => p.id === pid), ...st })).filter(x => x.product).sort((a, b) => b.profit - a.profit).slice(0, 5);
+    return (
+      <div className="fade">
+        <div style={{ ...s.row, marginBottom: 16 }}>
+          <div>
+            <div style={{ fontSize: 22, fontWeight: 800 }}>📊 Hisobot</div>
+            <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Umumiy biznes holati</div>
+          </div>
+          <div style={{ display: "flex", gap: 6 }}>
+            <button onClick={loadAll} style={{ ...s.iBtn, color: t.acc }} title="Yangilash"><Ic n="refresh" s={16} /></button>
+            <button onClick={() => {
+              const rows = [["Sana","Mahsulot","Dokon","Mijoz","Soni","Narx","Jami","Tolangan","Qarz"]];
+              sales.forEach(s => {
+                const prod = products.find(p => p.id === s.productId);
+                const store = stores.find(st => st.id === s.storeId);
+                const pp = (s.partialPayments||[]).reduce((a,p)=>a+p.amount,0);
+                rows.push([dateStr(s.date),prod?.name||"",store?.name||"",s.customerName||"",s.qty,s.price,s.totalAmount,s.paid?s.totalAmount:pp,s.paid?0:s.totalAmount-pp]);
+              });
+              const csv = rows.map(r=>r.join(",")).join(String.fromCharCode(10));
+              const blob = new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"});
+              const a = document.createElement("a");
+              a.href = URL.createObjectURL(blob);
+              a.download = "kabir-erp-sotuv-"+today()+".csv";
+              a.click();
+            }} style={{ ...s.iBtn, color: t.green }} title="Excel yuklash">📥</button>
+            <button onClick={() => {
+              const data = { products, units, stores, sales, orders, customers, exportDate: now() };
+              const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+              const a = document.createElement("a");
+              a.href = URL.createObjectURL(blob);
+              a.download = "kabir-erp-backup-"+today()+".json";
+              a.click();
+            }} style={{ ...s.iBtn, color: t.amber }} title="Backup">💾</button>
+          </div>
+        </div>
+        <Sec mt={4}>Bu oy</Sec>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+          <div style={{ background: t.accSoft, borderRadius: 12, padding: 13 }}>
+            <div style={{ fontSize: 18, fontWeight: 800, color: t.acc, ...s.mono }}>{fmtK(monthRev)}</div>
+            <div style={{ fontSize: 11, color: t.sub, marginTop: 4 }}>Sotuv</div>
+          </div>
+          <div style={{ background: t.greenS, borderRadius: 12, padding: 13 }}>
+            <div style={{ fontSize: 18, fontWeight: 800, color: t.green, ...s.mono }}>{fmtK(monthProfit)}</div>
+            <div style={{ fontSize: 11, color: t.sub, marginTop: 4 }}>Foyda</div>
+          </div>
+        </div>
+        <Sec>Boshidan beri</Sec>
+        <div style={s.card}>
+          <div style={{ ...s.row, marginBottom: 8 }}><span style={{ fontSize: 13, color: t.sub }}>Jami sotuv</span><span style={{ ...s.mono, fontWeight: 700 }}>{fmt(stats.totalSales)}</span></div>
+          <div style={{ ...s.row, marginBottom: 8 }}><span style={{ fontSize: 13, color: t.sub }}>Jami foyda</span><span style={{ ...s.mono, fontWeight: 700, color: t.green }}>{fmt(stats.totalProfit)}</span></div>
+          <div style={{ ...s.row, marginBottom: 8 }}><span style={{ fontSize: 13, color: t.sub }}>Olingan pul</span><span style={{ ...s.mono, fontWeight: 700, color: t.blue }}>{fmt(stats.totalPaid)}</span></div>
+          <div style={{ ...s.row, marginBottom: 8 }}><span style={{ fontSize: 13, color: t.sub }}>Mijozlar qarzi</span><span style={{ ...s.mono, fontWeight: 700, color: t.red }}>{fmt(stats.totalCustomerDebt)}</span></div>
+          <div style={s.row}><span style={{ fontSize: 13, color: t.sub }}>Vitrina qarzi</span><span style={{ ...s.mono, fontWeight: 700, color: t.amber }}>{fmt(stats.totalVitrinaDebt)}</span></div>
+        </div>
+        {topProds.length > 0 && (
+          <>
+            <Sec>Eng foydali mahsulotlar</Sec>
+            {topProds.map((x, i) => (
+              <div key={x.product.id} style={s.card}>
+                <div style={s.row}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <div style={{ width: 28, height: 28, borderRadius: 8, background: i === 0 ? t.amberS : t.accSoft, color: i === 0 ? t.amber : t.acc, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, ...s.mono }}>#{i + 1}</div>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 700 }}>{x.product.name}</div>
+                      <div style={{ fontSize: 11, color: t.sub }}>{x.qty} dona</div>
+                    </div>
+                  </div>
+                  <div style={{ ...s.mono, fontWeight: 800, color: t.green }}>{fmtK(x.profit)}</div>
+                </div>
+              </div>
+            ))}
+          </>
+        )}
+        {customers.length > 0 && (
+          <>
+            <Sec>Mijozlar ({customers.length})</Sec>
+            {customers.slice(0, 5).map(c => {
+              const cSales = sales.filter(s => s.customerId === c.id);
+              const cDebt = cSales.reduce((sum, s) => {
+                if (s.paid) return sum;
+                const pp = (s.partialPayments || []).reduce((a, p) => a + p.amount, 0);
+                return sum + (s.totalAmount - pp);
+              }, 0);
+              const cTotal = cSales.reduce((sum, s) => sum + s.totalAmount, 0);
+              return (
+                <div key={c.id} style={s.card}>
+                  <div style={s.row}>
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 700 }}>👤 {c.name}</div>
+                      {c.phone && <div style={{ fontSize: 11, color: t.acc }}>📞 {c.phone}</div>}
+                      <div style={{ fontSize: 11, color: t.sub }}>{cSales.length} ta sotuv · {fmtK(cTotal)}</div>
+                    </div>
+                    <div style={{ textAlign: "right" }}>
+                      {cDebt > 0 && <Badge c={t.red} bg={t.redS}>Qarz: {fmtK(cDebt)}</Badge>}
+                      {c.phone && (
+                        <button onClick={() => window.open(`https://t.me/+${c.phone.replace(/\D/g,"")}`, "_blank")} style={{ marginTop: 6, background: "#229ED9", color: "#fff", borderRadius: 8, padding: "4px 10px", fontSize: 11, fontWeight: 700, display: "block" }}>
+                          📨 Telegram
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  {cSales.length > 0 && (
+                    <div style={{ marginTop: 8, background: t.surf, borderRadius: 8, padding: 8 }}>
+                      {cSales.slice(0, 3).map(cs => {
+                        const prod = products.find(p => p.id === cs.productId);
+                        return (
+                          <div key={cs.id} style={{ ...s.row, fontSize: 11, padding: "4px 0", borderBottom: `1px solid ${t.border}33` }}>
+                            <span style={{ color: t.sub }}>{dateStr(cs.date)} · {prod?.name}</span>
+                            <span style={{ ...s.mono, fontWeight: 700, color: cs.paid ? t.green : t.red }}>{fmt(cs.totalAmount)}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </>
+        )}
+        {/* OYLIK GRAFIK */}
+        {(() => {
+          const months = [];
+          for (let i = 5; i >= 0; i--) {
+            const d = new Date();
+            d.setMonth(d.getMonth() - i);
+            const key = d.toISOString().slice(0, 7);
+            const label = d.toLocaleDateString("uz-UZ", { month: "short" });
+            const mSales = sales.filter(s => s.date?.startsWith(key));
+            const rev = mSales.reduce((s, x) => s + x.totalAmount, 0);
+            const profit = mSales.reduce((s, x) => s + (x.price - x.cost) * x.qty, 0);
+            months.push({ key, label, rev, profit });
+          }
+          const maxVal = Math.max(...months.map(m => m.rev), 1);
+          return months.some(m => m.rev > 0) ? (
+            <>
+              <Sec>Oylik sotuv grafigi</Sec>
+              <div style={{ ...s.card, padding: "14px 10px" }}>
+                <div style={{ display: "flex", alignItems: "flex-end", gap: 6, height: 120, marginBottom: 8 }}>
+                  {months.map(m => (
+                    <div key={m.key} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}>
+                      <div style={{ fontSize: 9, color: t.green, fontWeight: 700 }}>{m.profit > 0 ? fmtK(m.profit) : ""}</div>
+                      <div style={{ width: "100%", position: "relative", height: 90, display: "flex", alignItems: "flex-end", gap: 2 }}>
+                        <div style={{ flex: 1, background: t.acc, borderRadius: "3px 3px 0 0", height: `${Math.max((m.rev / maxVal) * 90, m.rev > 0 ? 4 : 0)}px`, transition: "height .3s" }} title={`Sotuv: ${fmt(m.rev)}`} />
+                        <div style={{ flex: 1, background: t.green, borderRadius: "3px 3px 0 0", height: `${Math.max((m.profit / maxVal) * 90, m.profit > 0 ? 4 : 0)}px`, transition: "height .3s" }} title={`Foyda: ${fmt(m.profit)}`} />
+                      </div>
+                      <div style={{ fontSize: 9, color: t.sub, fontWeight: 600 }}>{m.label}</div>
+                      <div style={{ fontSize: 9, color: t.acc, fontWeight: 700 }}>{m.rev > 0 ? fmtK(m.rev) : "—"}</div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11 }}>
+                    <div style={{ width: 12, height: 12, background: t.acc, borderRadius: 2 }} />
+                    <span style={{ color: t.sub }}>Sotuv</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11 }}>
+                    <div style={{ width: 12, height: 12, background: t.green, borderRadius: 2 }} />
+                    <span style={{ color: t.sub }}>Foyda</span>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : null;
+        })()}
+
+        {/* DO'KON BO'YICHA */}
+        {stores.length > 0 && (
+          <>
+            <Sec>Do'kon bo'yicha sotuv</Sec>
+            {stores.map(st => {
+              const stSales = sales.filter(s => s.storeId === st.id);
+              const stRev = stSales.reduce((s, x) => s + x.totalAmount, 0);
+              const stProfit = stSales.reduce((s, x) => s + (x.price - x.cost) * x.qty, 0);
+              const totalRev = sales.reduce((s, x) => s + x.totalAmount, 0);
+              const pct = totalRev > 0 ? Math.round((stRev / totalRev) * 100) : 0;
+              return (
+                <div key={st.id} style={{ ...s.card, marginBottom: 8 }}>
+                  <div style={{ ...s.row, marginBottom: 8 }}>
+                    <span style={{ fontSize: 13, fontWeight: 700 }}>🏪 {st.name}</span>
+                    <span style={{ ...s.mono, fontWeight: 700, color: t.acc }}>{fmtK(stRev)}</span>
+                  </div>
+                  <div style={{ background: t.border, borderRadius: 4, height: 6, marginBottom: 6 }}>
+                    <div style={{ background: t.acc, borderRadius: 4, height: 6, width: `${pct}%`, transition: "width .3s" }} />
+                  </div>
+                  <div style={{ ...s.row, fontSize: 11 }}>
+                    <span style={{ color: t.sub }}>{pct}% umumiydan</span>
+                    <span style={{ color: t.green }}>Foyda: {fmtK(stProfit)}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        )}
+
+        {activity.length > 0 && (
+          <>
+            <Sec>So'nggi amallar</Sec>
+            <div style={{ ...s.card, maxHeight: 320, overflowY: "auto" }}>
+              {activity.slice(0, 20).map(a => (
+                <div key={a.id} style={{ padding: "9px 0", borderBottom: `1px solid ${t.border}33` }}>
+                  <div style={{ fontSize: 12, fontWeight: 700 }}>{a.action}</div>
+                  <div style={{ fontSize: 11, color: t.sub, marginTop: 2 }}>{a.details}</div>
+                  <div style={{ fontSize: 10, color: t.dim, marginTop: 2, ...s.mono }}>{dateStr(a.time)}</div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    );
+  };
+
+  const renderPage = () => {
+    switch (tab) {
+      case "home": return <HomePage />;
+      case "warehouse": return <WarehousePage />;
+      case "stores": return <StoresPage />;
+      case "orders": return <OrdersPage />;
+      case "debts": return <DebtsPage />;
+      case "report": return <ReportPage />;
+      default: return <HomePage />;
+    }
+  };
+
+  const navItems = [
+    { id: "home", l: "Bosh", i: "home" },
+    { id: "warehouse", l: "Ombor", i: "warehouse" },
+    { id: "stores", l: "Do'kon", i: "store" },
+    { id: "orders", l: "Zakaz", i: "order" },
+    { id: "debts", l: "Qarz", i: "debt" },
+    ...(user?.role !== "moder" ? [{ id: "report", l: "Hisobot", i: "report" }] : []),
+  ];
+  
+  
+
+
+  const roleLabel = user?.role === "superadmin" ? "👑 Super Admin" : user?.role === "admin" ? "📊 Admin" : "📦 Moder";
+  const roleColor = user?.role === "superadmin" ? t.amber : user?.role === "admin" ? t.acc : t.green;
+
+  return (
+    <div className="app-layout" style={{ background: t.bg, color: t.txt, minHeight: "100vh" }}>
+      <style>{css}</style>
+
+      {/* SIDEBAR OVERLAY mobile */}
+      {sidebarOpen && <div onClick={() => setSidebarOpen(false)} style={{ position:"fixed",inset:0,background:"#00000066",zIndex:99,display:"block" }} className="sidebar-overlay"/>}
+
+      {/* SIDEBAR */}
+      <aside className={sidebarOpen ? "sidebar sidebar-open" : "sidebar"} style={{ background: t.surf, borderRight: `1px solid ${t.border}` }}>
+        <div style={{ padding:"16px 14px", borderBottom:`1px solid ${t.border}`, display:"flex", alignItems:"center", gap:10 }}>
+          <div style={{ width:36, height:36, borderRadius:10, background:`linear-gradient(135deg, ${t.acc}, ${t.blue})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:800, fontSize:16, flexShrink:0 }}>M</div>
+          <div className="sid-text">
+            <div style={{ fontSize:13, fontWeight:700, color:t.txt }}>Mebel ERP</div>
+            <div style={{ fontSize:9, color:syncing ? t.amber : t.green }}>{ syncing ? "⏳ Saqlanmoqda..." : "☁️ Cloud" }</div>
+          </div>
+        </div>
+        <nav style={{ flex:1, padding:"10px 8px", overflowY:"auto" }}>
+          {navItems.map(item => {
+            const active = tab === item.id;
+            return (
+              <button key={item.id} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); setSidebarOpen(false); }}
+                style={{ width:"100%", display:"flex", alignItems:"center", gap:10, padding:"10px", borderRadius:10, marginBottom:2, background:active ? t.accSoft : "transparent", color:active ? t.acc : t.sub, fontWeight:active?700:500, fontSize:13, textAlign:"left", position:"relative" }}>
+                <div style={{ position:"relative", flexShrink:0 }}>
+                  <Ic n={item.i} s={18} />
+                  {item.id === "debts" && stats.debtCount > 0 && (
+                    <div style={{ position:"absolute", top:-4, right:-6, minWidth:14, height:14, padding:"0 3px", borderRadius:7, background:t.red, color:"#fff", fontSize:8, fontWeight:800, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</div>
+                  )}
+                </div>
+                <span className="sid-text">{item.l}</span>
+                {active && <div style={{ position:"absolute", left:0, top:"20%", height:"60%", width:3, background:t.acc, borderRadius:"0 3px 3px 0" }} />}
+              </button>
+            );
+          })}
+        </nav>
+        <div style={{ padding:"12px 10px", borderTop:`1px solid ${t.border}`, display:"flex", alignItems:"center", gap:8 }}>
+          <div style={{ width:32, height:32, borderRadius:"50%", background:t.accSoft, display:"flex", alignItems:"center", justifyContent:"center", color:t.acc, fontWeight:800, fontSize:13, flexShrink:0 }}>
+            {(user?.username||"U")[0].toUpperCase()}
+          </div>
+          <div className="sid-text" style={{ flex:1, minWidth:0 }}>
+            <div style={{ fontSize:12, fontWeight:700, color:t.txt, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{user?.username}</div>
+            <div style={{ fontSize:10, color: user?.role==="superadmin" ? t.amber : user?.role==="admin" ? t.acc : t.green }}>
+              {user?.role==="superadmin" ? "👑 Super" : user?.role==="admin" ? "📊 Admin" : "📦 Moder"}
+            </div>
+          </div>
+          <button onClick={() => { setUser(null); localStorage.removeItem("kabir_user"); }} style={{ color:t.red, flexShrink:0, padding:4 }}><Ic n="x" s={14}/></button>
+        </div>
+      </aside>
+
+      {/* MAIN */}
+      <main className="main-content">
+        <header style={{ background:t.surf, borderBottom:`1px solid ${t.border}`, padding:"11px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:50 }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+            <button onClick={() => setSidebarOpen(o => !o)} style={{ color:t.sub, padding:4, display:"flex" }}><Ic n="warehouse" s={18}/></button>
+            <div style={{ fontSize:14, fontWeight:700, color:t.txt }}>{navItems.find(n=>n.id===tab)?.l || "Bosh"}</div>
+          </div>
+          <button style={{ width:36, height:36, borderRadius:10, background:t.card, border:`1px solid ${t.border}`, display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }} onClick={() => { setDark(d => { 
+  const newDark = !d;
+  localStorage.setItem("kabir_dark", newDark);
+  document.body.style.background = newDark ? "#080810" : "#F2F2F8";
+  return newDark;
+}); }}>
+            <Ic n={dark ? "sun" : "moon"} s={16}/>
+          </button>
+        </header>
+        <div id="main-scroll" style={{ padding:16, paddingBottom:80, overflowY:"auto", height:"calc(100vh - 52px)" }}>
+          {/* Pull to refresh indicator */}
+          {(pullY > 10 || refreshing) && (
+            <div style={{ textAlign:"center", padding:"8px", color:t.acc, fontSize:13, fontWeight:700, marginBottom:8, transform:`translateY(${Math.min(pullY, 60)}px)`, transition: pullY === 0 ? "transform 0.3s" : "none" }}>
+              {refreshing ? (
+                <span><span className="ptr-spin">🔄</span> Yangilanmoqda...</span>
+              ) : pulling ? (
+                <span>⬆️ Qo'yib yuboring</span>
+              ) : (
+                <span>⬇️ Yangilash uchun torting</span>
+              )}
+            </div>
+          )}
+          {renderPage()}
+        </div>
+      </main>
+
+      {/* MOBILE BOTTOM NAV */}
+      <nav className="mobile-nav" style={{ background:t.surf, borderTop:`1px solid ${t.border}`, padding:"8px 0 14px" }}>
+        {navItems.map(item => {
+          const active = tab === item.id;
+          return (
+            <button key={item.id} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:2, color:active ? t.acc : t.sub, position:"relative" }} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }}>
+              <div style={{ position:"absolute", top:0, left:"50%", transform:"translateX(-50%)", height:3, width:active?22:0, background:t.acc, borderRadius:2, transition:"width .25s" }}/>
+              <div style={{ position:"relative" }}>
+                <Ic n={item.i} s={19}/>
+                {item.id==="debts" && stats.debtCount > 0 && (
+                  <div style={{ position:"absolute", top:-4, right:-7, minWidth:14, height:14, padding:"0 3px", borderRadius:7, background:t.red, color:"#fff", fontSize:8, fontWeight:800, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</div>
+                )}
+              </div>
+              <span style={{ fontSize:9, fontWeight:active?700:500 }}>{item.l}</span>
+            </button>
+          );
+        })}
+      </nav>
+
+      {modal === "product" && <ProductModal />}
+      {modal === "addStock" && <AddStockModal />}
+      {modal === "addstore" && <StoreModal />}
+      {modal === "transfer" && <TransferModal />}
+      {modal === "sell" && <SellModal />}
+      {modal === "pay" && <PayModal />}
+      {modal === "return" && <ReturnModal />}
+      {modal === "order" && <OrderModal />}
+
+      {confirmDialog && (
+        <div style={{ position:"fixed", inset:0, background:"#000000CC", zIndex:9999, display:"flex", alignItems:"center", justifyContent:"center" }} onClick={() => setConfirmDialog(null)}>
+          <div style={{ background:t.surf, borderRadius:18, width:"100%", maxWidth:360, padding:24, border:`1px solid ${t.border}`, margin:16 }} onClick={e => e.stopPropagation()} className="up">
+            <div style={{ textAlign:"center", padding:"8px 0" }}>
+              <div style={{ width:60, height:60, borderRadius:18, background:confirmDialog.danger ? t.redS : t.amberS, color:confirmDialog.danger ? t.red : t.amber, display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 14px" }}>
+                <Ic n={confirmDialog.danger ? "trash" : "alert"} s={26}/>
+              </div>
+              <div style={{ fontSize:17, fontWeight:800, marginBottom:10 }}>{confirmDialog.title}</div>
+              <div style={{ fontSize:13, color:t.sub, lineHeight:1.5, marginBottom:22, whiteSpace:"pre-line" }}>{confirmDialog.message}</div>
+            </div>
+            <div style={{ display:"flex", gap:9 }}>
+              <button onClick={() => setConfirmDialog(null)} style={{ flex:1, background:t.card, border:`1px solid ${t.border}`, color:t.txt, borderRadius:11, padding:"13px", fontWeight:700, fontSize:14 }}>Bekor</button>
+              <button onClick={() => { confirmDialog.onConfirm(); setConfirmDialog(null); }} style={{ flex:1, background:confirmDialog.danger ? t.red : t.acc, color:"#fff", borderRadius:11, padding:"13px", fontWeight:700, fontSize:14 }}>{confirmDialog.danger ? "🗑️ O'chirish" : "✓ Tasdiqlash"}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {printData && (
+        <div style={{ position:"fixed", inset:0, background:"#000000CC", zIndex:9999, display:"flex", flexDirection:"column" }}>
+          <div style={{ background:"#1A1A30", padding:"12px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", flexShrink:0 }}>
+            <div>
+              <div style={{ fontSize:14, fontWeight:800, color:"#fff" }}>
+                {printData.type === 'yorliq' ? `🖨️ Yorliq — ${printData.count} ta` : '📜 Garantiya taloni'}
+              </div>
+              <div style={{ fontSize:11, color:"#7777AA", marginTop:2 }}>Ko'rib Ctrl+P bosing</div>
+            </div>
+            <div style={{ display:"flex", gap:8 }}>
+              <button onClick={() => { document.getElementById('printFrame').contentWindow.focus(); document.getElementById('printFrame').contentWindow.print(); }}
+                style={{ background:"#7B73FF", color:"#fff", borderRadius:10, padding:"9px 18px", fontWeight:700, fontSize:13, border:"none", cursor:"pointer" }}>🖨️ Print</button>
+              <button onClick={() => setPrintData(null)}
+                style={{ background:"#22223A", color:"#fff", borderRadius:10, padding:"9px 14px", fontWeight:700, fontSize:13, border:"none", cursor:"pointer" }}>✕</button>
+            </div>
+          </div>
+          <iframe id="printFrame" srcDoc={printData.html} style={{ flex:1, border:"none", background:"white" }} title="Print"/>
+        </div>
+      )}
+
+    </div>
+  );
+}
+
+const root=ReactDOM.createRoot(document.getElementById('root'));
+// Number input wheel scroll o'chirish
+document.addEventListener('wheel', function(e) {
+  if (document.activeElement && document.activeElement.type === 'number') {
+    document.activeElement.blur();
+  }
+}, { passive: false });
+
+root.render(<App/>);
+</script>
+</body>
+</html>
