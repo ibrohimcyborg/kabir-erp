@@ -15,7 +15,6 @@
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 <style>
@@ -110,15 +109,95 @@ document.addEventListener('touchend', () => {
 </script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback}=React;
-const createClient=window.supabase.createClient;
-const db=createClient("https://rtvozskolwlxndwisvdv.supabase.co","sb_publishable_HB-CcgF00TtRAqyha__M2g_5X91h40W");
-
 // ═══════════════════════════════════════════════════════════
-// SUPABASE
+// LOCAL DB — localStorage (Supabase o'rniga, internet kerak emas)
 // ═══════════════════════════════════════════════════════════
-const SUPABASE_URL = "https://rtvozskolwlxndwisvdv.supabase.co";
-const SUPABASE_KEY = "sb_publishable_HB-CcgF00TtRAqyha__M2g_5X91h40W";
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const LS_PREFIX = "kabir-erp:";
+const DEFAULT_USERS = [
+  { id: "u1", username: "superadmin", password: "kabir0074", role: "superadmin" },
+  { id: "u2", username: "admin",      password: "kabir0074", role: "admin" },
+  { id: "u3", username: "moder1",     password: "kabir0074", role: "moder" },
+];
+const lsGet = (table) => {
+  try {
+    const raw = localStorage.getItem(LS_PREFIX + table);
+    if (raw) return JSON.parse(raw);
+  } catch (e) { console.error("lsGet", table, e); }
+  return table === "users" ? DEFAULT_USERS.slice() : [];
+};
+const lsSet = (table, rows) => {
+  try {
+    localStorage.setItem(LS_PREFIX + table, JSON.stringify(rows));
+    return null;
+  } catch (e) {
+    console.error("lsSet", table, e);
+    alert("Xotira to'ldi! Eski rasmlarni o'chiring yoki JSON backup qilib tozalang.");
+    return e;
+  }
+};
+const db = {
+  from(table) {
+    const q = {
+      _op: "select", _filters: [], _order: null, _limit: null,
+      _single: false, _payload: null,
+      select() { q._op = "select"; return q; },
+      eq(col, val) { q._filters.push(r => r[col] === val); return q; },
+      in(col, vals) { q._filters.push(r => vals.includes(r[col])); return q; },
+      order(col, opts) { q._order = { col, asc: !!(opts && opts.ascending) }; return q; },
+      limit(n) { q._limit = n; return q; },
+      single() { q._single = true; return q; },
+      insert(payload) { q._op = "insert"; q._payload = payload; return q; },
+      upsert(payload) { q._op = "upsert"; q._payload = payload; return q; },
+      update(payload) { q._op = "update"; q._payload = payload; return q; },
+      delete() { q._op = "delete"; return q; },
+      _run() {
+        let rows = lsGet(table);
+        const match = r => q._filters.every(f => f(r));
+        if (q._op === "select") {
+          let out = rows.filter(match);
+          if (q._order) {
+            const { col, asc } = q._order;
+            out.sort((a, b) => {
+              const va = a[col] ?? "", vb = b[col] ?? "";
+              if (va < vb) return asc ? -1 : 1;
+              if (va > vb) return asc ? 1 : -1;
+              return 0;
+            });
+          }
+          if (q._limit != null) out = out.slice(0, q._limit);
+          if (q._single) return { data: out[0] || null, error: out[0] ? null : { message: "not found" } };
+          return { data: out, error: null };
+        }
+        if (q._op === "insert") {
+          const items = Array.isArray(q._payload) ? q._payload : [q._payload];
+          rows = rows.concat(items.map(it => ({ ...it, id: it.id ?? (Math.random().toString(36).slice(2) + Date.now()) })));
+          return { data: items, error: lsSet(table, rows) };
+        }
+        if (q._op === "upsert") {
+          const items = Array.isArray(q._payload) ? q._payload : [q._payload];
+          for (const it of items) {
+            const i = rows.findIndex(r => r.id === it.id);
+            if (i >= 0) rows[i] = { ...rows[i], ...it };
+            else rows.push({ ...it, id: it.id ?? (Math.random().toString(36).slice(2) + Date.now()) });
+          }
+          return { data: items, error: lsSet(table, rows) };
+        }
+        if (q._op === "update") {
+          rows = rows.map(r => (match(r) ? { ...r, ...q._payload } : r));
+          return { data: null, error: lsSet(table, rows) };
+        }
+        if (q._op === "delete") {
+          rows = rows.filter(r => !match(r));
+          return { data: null, error: lsSet(table, rows) };
+        }
+        return { data: null, error: { message: "unknown op" } };
+      },
+      then(res, rej) { try { res(q._run()); } catch (e) { rej ? rej(e) : console.error(e); } },
+      catch() { return q; },
+    };
+    return q;
+  },
+};
 
 // ═══════════════════════════════════════════════════════════
 // HELPERS
@@ -247,7 +326,7 @@ function App() {
   const t = dark ? THEMES.dark : THEMES.light;
 
   // ═══════════════════════════════════════════════════════════
-  // SUPABASE — MA'LUMOT YUKLASH
+  // LOCAL DB — MA'LUMOT YUKLASH
   // ═══════════════════════════════════════════════════════════
   const loadAll = useCallback(async () => {
     setLoading(true);
@@ -326,7 +405,7 @@ function App() {
   
 
   // ═══════════════════════════════════════════════════════════
-  // SUPABASE — SAQLASH FUNKSIYALARI
+  // LOCAL DB — SAQLASH FUNKSIYALARI
   // ═══════════════════════════════════════════════════════════
   const dbSave = async (table, data) => {
     setSyncing(true);
