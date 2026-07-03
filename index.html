@@ -310,6 +310,19 @@ function App() {
   const [loginErr, setLoginErr] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
 
+  // QR link (#p=SKU) orqali kelgan mijoz uchun ochiq mahsulot sahifasi
+  const publicSku = useMemo(() => {
+    const m = window.location.hash.match(/^#p=(.+)$/);
+    return m ? decodeURIComponent(m[1]) : null;
+  }, []);
+  const [publicProd, setPublicProd] = useState(undefined); // undefined=yuklanmoqda, null=topilmadi
+  useEffect(() => {
+    if (!publicSku) return;
+    db.from("products").select("*").eq("sku", publicSku).single()
+      .then(r => setPublicProd(r.data || null))
+      .catch(() => setPublicProd(null));
+  }, [publicSku]);
+
   const doLogin = async () => {
     if (!loginU || !loginP) { setLoginErr("To'ldiring"); return; }
     setLoginLoading(true);
@@ -632,22 +645,29 @@ function App() {
         <div class="body">
           <div class="name">${prod.name}</div>
           <div class="bcwrap"><svg id="bc${idx}"></svg></div>
-          <div class="info">
-            ${prod.dimensions ? `<div class="row"><span>O'lcham:</span><span>${prod.dimensions}</span></div>` : ''}
-            <div class="row"><span>Kategoriya:</span><span>${prod.category}</span></div>
-            <div class="row"><span>Holat:</span><span>${loc}</span></div>
-            <div class="row"><span>Sana:</span><span>${dateStr(u.addedAt)}</span></div>
+          <div class="mid">
+            <div class="qrbox"><div class="qr" id="qr${idx}"></div><div class="qrtxt">Mahsulot<br>haqida →<br>kamera bilan<br>skanerlang</div></div>
+            <div class="info">
+              ${prod.dimensions ? `<div class="row"><span>O'lcham:</span><span>${prod.dimensions}</span></div>` : ''}
+              <div class="row"><span>Kategoriya:</span><span>${prod.category}</span></div>
+              <div class="row"><span>Holat:</span><span>${loc}</span></div>
+              <div class="row"><span>Sana:</span><span>${dateStr(u.addedAt)}</span></div>
+            </div>
           </div>
           <div class="badges"><div class="badge">✓ SIFAT NAZORATI</div><div class="badge">✓ GOST</div></div>
           <div class="contact">+998 20 000 00 74 · Yangiyo'l, Qirariq</div>
         </div>
       </div>`;
     }).join('');
-    const barcodeScripts = printUnits.map((u, idx) => 
-      `JsBarcode("#bc${idx}","${u.unitId}",{format:"CODE128",width:2.5,height:55,displayValue:true,fontSize:16,margin:2,font:"Courier New"});`
-    ).join('');
+    const siteUrl = window.location.origin;
+    const barcodeScripts = printUnits.map((u, idx) => {
+      const prod = products.find(p => p.id === u.productId);
+      const qrUrl = `${siteUrl}/#p=${encodeURIComponent(prod?.sku || '')}`;
+      return `JsBarcode("#bc${idx}","${u.unitId}",{format:"CODE128",width:2.5,height:50,displayValue:true,fontSize:15,margin:2,font:"Courier New"});new QRCode(document.getElementById("qr${idx}"),{text:"${qrUrl}",width:62,height:62,correctLevel:QRCode.CorrectLevel.M});`;
+    }).join('');
     return `<!DOCTYPE html><html><head><meta charset="UTF-8">
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"><\/script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
     <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Courier New',monospace;background:white}
@@ -660,15 +680,19 @@ function App() {
     .name{font-size:13px;font-weight:bold;text-align:center;margin:1mm 0}
     .bcwrap{text-align:center;line-height:0}
     .bcwrap svg{width:74mm!important}
-    .info{font-size:11px}
-    .row{display:flex;justify-content:space-between;margin:0.8mm 0}
+    .mid{display:flex;gap:2.5mm;align-items:center;margin-top:1mm}
+    .qrbox{flex-shrink:0;display:flex;gap:1.5mm;align-items:center}
+    .qr img,.qr canvas{width:17mm!important;height:17mm!important}
+    .qrtxt{font-size:7px;color:#555;line-height:1.35}
+    .info{font-size:10px;flex:1}
+    .row{display:flex;justify-content:space-between;margin:0.7mm 0}
     .row span:first-child{color:#666}
     .badges{display:flex;gap:2mm;margin-top:1.5mm}
     .badge{flex:1;background:#000;color:#fff;text-align:center;padding:1.5mm;font-size:9px;font-weight:bold}
     .contact{text-align:center;font-size:9px;color:#888;margin-top:1.5mm}
     @media print{body{margin:0}}
     </style></head><body>${pages}
-    <script>window.onload=function(){${barcodeScripts};setTimeout(()=>{window.print();},500);}<\/script>
+    <script>window.onload=function(){${barcodeScripts};setTimeout(()=>{window.print();},700);}<\/script>
     </body></html>`;
   };
 
@@ -773,6 +797,38 @@ function App() {
 
 
   if (!user) {
+    // QR orqali kelgan mijoz uchun ochiq mahsulot sahifasi (#p=SKU)
+    if (publicSku) {
+      return (
+        <div style={{ background: "#080810", minHeight: "100vh", maxWidth: 430, margin: "0 auto", padding: 20, color: "#EEEEF8", fontFamily: "system-ui, sans-serif" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: "linear-gradient(135deg,#7B73FF,#00B8D9)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 19 }}>K</div>
+            <div>
+              <div style={{ fontSize: 15, fontWeight: 800 }}>Kabir Exclusive</div>
+              <div style={{ fontSize: 11, color: "#7777AA" }}>Mebel ishlab chiqarish</div>
+            </div>
+          </div>
+          {publicProd === undefined ? (
+            <div style={{ textAlign: "center", padding: 60, color: "#7777AA" }}>Yuklanmoqda...</div>
+          ) : publicProd === null ? (
+            <div style={{ textAlign: "center", padding: 60, color: "#7777AA" }}>Mahsulot topilmadi 😕</div>
+          ) : (
+            <div style={{ background: "#181824", borderRadius: 18, overflow: "hidden" }}>
+              {publicProd.image && <img src={publicProd.image} alt={publicProd.name} style={{ width: "100%", display: "block" }} />}
+              <div style={{ padding: 18 }}>
+                <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 6 }}>{publicProd.name}</div>
+                <div style={{ fontSize: 12, color: "#7777AA", marginBottom: 14, fontFamily: "monospace" }}>{publicProd.sku}</div>
+                {publicProd.category && <div style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: "1px solid #22223A", fontSize: 14 }}><span style={{ color: "#7777AA" }}>Kategoriya</span><span>{publicProd.category}</span></div>}
+                {publicProd.dimensions && <div style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", borderBottom: "1px solid #22223A", fontSize: 14 }}><span style={{ color: "#7777AA" }}>O'lcham</span><span>{publicProd.dimensions}</span></div>}
+                <div style={{ display: "flex", justifyContent: "space-between", padding: "9px 0", fontSize: 14 }}><span style={{ color: "#7777AA" }}>Kafolat</span><span>✓ Sifat nazorati · GOST</span></div>
+                <a href="tel:+998200000074" style={{ display: "block", background: "#7B73FF", color: "#fff", borderRadius: 12, padding: 14, textAlign: "center", fontWeight: 700, fontSize: 15, marginTop: 16, textDecoration: "none" }}>📞 Bog'lanish: +998 20 000 00 74</a>
+                <div style={{ textAlign: "center", fontSize: 11, color: "#55557A", marginTop: 12 }}>Yangiyo'l, Qirariq</div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
     return (
       <div style={{ background: "#080810", minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
         <div style={{ width: 70, height: 70, borderRadius: 20, background: "linear-gradient(135deg,#7B73FF,#00B8D9)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 32, marginBottom: 16 }}>K</div>
