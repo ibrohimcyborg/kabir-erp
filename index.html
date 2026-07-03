@@ -15,6 +15,8 @@
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 <style>
@@ -110,31 +112,43 @@ document.addEventListener('touchend', () => {
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback}=React;
 // ═══════════════════════════════════════════════════════════
-// LOCAL DB — localStorage (Supabase o'rniga, internet kerak emas)
+// FIREBASE (Firestore) — bulutli baza
+// Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
+// console.firebase.google.com → Project settings → Your apps → Web app
 // ═══════════════════════════════════════════════════════════
-const LS_PREFIX = "kabir-erp:";
+const firebaseConfig = {
+  apiKey: "AIzaSyBRjP0bc4_B9mJ23-_tNkxgX9FHtSMCwas",
+  authDomain: "kabir-erp.firebaseapp.com",
+  projectId: "kabir-erp",
+  storageBucket: "kabir-erp.firebasestorage.app",
+  messagingSenderId: "93906210680",
+  appId: "1:93906210680:web:54a26b8ccc1d74c381428d",
+};
+
+firebase.initializeApp(firebaseConfig);
+const fsdb = firebase.firestore();
+// Offline rejim: internet uzilsa ham ishlaydi, qaytganda avtomatik sinxronlanadi
+fsdb.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+
 const DEFAULT_USERS = [
   { id: "u1", username: "superadmin", password: "kabir0074", role: "superadmin" },
   { id: "u2", username: "admin",      password: "kabir0074", role: "admin" },
   { id: "u3", username: "moder1",     password: "kabir0074", role: "moder" },
 ];
-const lsGet = (table) => {
-  try {
-    const raw = localStorage.getItem(LS_PREFIX + table);
-    if (raw) return JSON.parse(raw);
-  } catch (e) { console.error("lsGet", table, e); }
-  return table === "users" ? DEFAULT_USERS.slice() : [];
-};
-const lsSet = (table, rows) => {
-  try {
-    localStorage.setItem(LS_PREFIX + table, JSON.stringify(rows));
-    return null;
-  } catch (e) {
-    console.error("lsSet", table, e);
-    alert("Xotira to'ldi! Eski rasmlarni o'chiring yoki JSON backup qilib tozalang.");
-    return e;
+
+const fsGetAll = async (table) => {
+  const snap = await fsdb.collection(table).get();
+  let rows = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  // Birinchi ishga tushirishda userlar bo'lmasa — avtomatik yaratamiz
+  if (table === "users" && rows.length === 0) {
+    const batch = fsdb.batch();
+    DEFAULT_USERS.forEach(u => batch.set(fsdb.collection("users").doc(u.id), u));
+    await batch.commit();
+    rows = DEFAULT_USERS.slice();
   }
+  return rows;
 };
+
 const db = {
   from(table) {
     const q = {
@@ -150,49 +164,58 @@ const db = {
       upsert(payload) { q._op = "upsert"; q._payload = payload; return q; },
       update(payload) { q._op = "update"; q._payload = payload; return q; },
       delete() { q._op = "delete"; return q; },
-      _run() {
-        let rows = lsGet(table);
+      async _run() {
         const match = r => q._filters.every(f => f(r));
-        if (q._op === "select") {
-          let out = rows.filter(match);
-          if (q._order) {
-            const { col, asc } = q._order;
-            out.sort((a, b) => {
-              const va = a[col] ?? "", vb = b[col] ?? "";
-              if (va < vb) return asc ? -1 : 1;
-              if (va > vb) return asc ? 1 : -1;
-              return 0;
+        try {
+          if (q._op === "select") {
+            let out = (await fsGetAll(table)).filter(match);
+            if (q._order) {
+              const { col, asc } = q._order;
+              out.sort((a, b) => {
+                const va = a[col] ?? "", vb = b[col] ?? "";
+                if (va < vb) return asc ? -1 : 1;
+                if (va > vb) return asc ? 1 : -1;
+                return 0;
+              });
+            }
+            if (q._limit != null) out = out.slice(0, q._limit);
+            if (q._single) return { data: out[0] || null, error: out[0] ? null : { message: "not found" } };
+            return { data: out, error: null };
+          }
+          if (q._op === "insert" || q._op === "upsert") {
+            const items = Array.isArray(q._payload) ? q._payload : [q._payload];
+            const batch = fsdb.batch();
+            items.forEach(it => {
+              const id = it.id ?? (Math.random().toString(36).slice(2) + Date.now());
+              const clean = JSON.parse(JSON.stringify({ ...it, id })); // undefined larni tozalash
+              batch.set(fsdb.collection(table).doc(String(id)), clean, { merge: q._op === "upsert" });
             });
+            await batch.commit();
+            return { data: items, error: null };
           }
-          if (q._limit != null) out = out.slice(0, q._limit);
-          if (q._single) return { data: out[0] || null, error: out[0] ? null : { message: "not found" } };
-          return { data: out, error: null };
-        }
-        if (q._op === "insert") {
-          const items = Array.isArray(q._payload) ? q._payload : [q._payload];
-          rows = rows.concat(items.map(it => ({ ...it, id: it.id ?? (Math.random().toString(36).slice(2) + Date.now()) })));
-          return { data: items, error: lsSet(table, rows) };
-        }
-        if (q._op === "upsert") {
-          const items = Array.isArray(q._payload) ? q._payload : [q._payload];
-          for (const it of items) {
-            const i = rows.findIndex(r => r.id === it.id);
-            if (i >= 0) rows[i] = { ...rows[i], ...it };
-            else rows.push({ ...it, id: it.id ?? (Math.random().toString(36).slice(2) + Date.now()) });
+          if (q._op === "update") {
+            const rows = (await fsGetAll(table)).filter(match);
+            const clean = JSON.parse(JSON.stringify(q._payload));
+            const batch = fsdb.batch();
+            rows.forEach(r => batch.update(fsdb.collection(table).doc(String(r.id)), clean));
+            await batch.commit();
+            return { data: null, error: null };
           }
-          return { data: items, error: lsSet(table, rows) };
+          if (q._op === "delete") {
+            const rows = (await fsGetAll(table)).filter(match);
+            const batch = fsdb.batch();
+            rows.forEach(r => batch.delete(fsdb.collection(table).doc(String(r.id))));
+            await batch.commit();
+            return { data: null, error: null };
+          }
+          return { data: null, error: { message: "unknown op" } };
+        } catch (e) {
+          console.error("DB xato:", table, q._op, e);
+          alert("Baza xatosi: " + e.message);
+          return { data: q._single ? null : [], error: e };
         }
-        if (q._op === "update") {
-          rows = rows.map(r => (match(r) ? { ...r, ...q._payload } : r));
-          return { data: null, error: lsSet(table, rows) };
-        }
-        if (q._op === "delete") {
-          rows = rows.filter(r => !match(r));
-          return { data: null, error: lsSet(table, rows) };
-        }
-        return { data: null, error: { message: "unknown op" } };
       },
-      then(res, rej) { try { res(q._run()); } catch (e) { rej ? rej(e) : console.error(e); } },
+      then(res, rej) { q._run().then(res, rej); },
       catch() { return q; },
     };
     return q;
@@ -255,6 +278,7 @@ const Ic = ({ n, s = 20 }) => {
     case "refresh": return <svg {...p}><polyline points="23 4 23 10 17 10" /><polyline points="1 20 1 14 7 14" /><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" /></svg>;
     case "send": return <svg {...p}><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>;
     case "money": return <svg {...p}><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>;
+    case "pdf": return <svg {...p}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><path d="M9 15h1a1.5 1.5 0 0 0 0-3H9v4M13 12v4M13 12h1.2a1.4 1.4 0 0 1 0 4H13M17 12v4M17 14h1.3" strokeWidth="1.3" /></svg>;
     default: return null;
   }
 };
@@ -326,7 +350,7 @@ function App() {
   const t = dark ? THEMES.dark : THEMES.light;
 
   // ═══════════════════════════════════════════════════════════
-  // LOCAL DB — MA'LUMOT YUKLASH
+  // FIREBASE — MA'LUMOT YUKLASH
   // ═══════════════════════════════════════════════════════════
   const loadAll = useCallback(async () => {
     setLoading(true);
@@ -338,7 +362,7 @@ function App() {
         db.from("sales").select("*").order("created_at", { ascending: false }),
         db.from("orders").select("*").order("created_at", { ascending: false }),
         db.from("customers").select("*").order("created_at", { ascending: false }),
-        db.from("activity").select("*").order("time", { ascending: false }).limit(200),
+        db.from("activity").select("*").order("time", { ascending: false }).limit(10000),
       ]);
       if (p.data) setProducts(p.data.map(x => ({ ...x, costItems: x.cost_items || [] })));
       if (u.data) setUnits(u.data.map(x => ({ ...x, unitId: x.unit_id, productId: x.product_id, addedAt: x.added_at, sentAt: x.sent_at })));
@@ -405,7 +429,7 @@ function App() {
   
 
   // ═══════════════════════════════════════════════════════════
-  // LOCAL DB — SAQLASH FUNKSIYALARI
+  // FIREBASE — SAQLASH FUNKSIYALARI
   // ═══════════════════════════════════════════════════════════
   const dbSave = async (table, data) => {
     setSyncing(true);
@@ -429,7 +453,7 @@ function App() {
 
   const log = async (action, details) => {
     const entry = { id: uid(), action, details, time: now() };
-    setActivity(prev => [entry, ...prev].slice(0, 200));
+    setActivity(prev => [entry, ...prev].slice(0, 10000));
     await db.from("activity").insert(entry);
   };
 
@@ -469,6 +493,130 @@ function App() {
     const debtCount = sales.filter(x => !x.paid).length;
     return { totalSales, totalProfit, totalPaid, totalCustomerDebt, totalVitrinaDebt, debtCount };
   }, [sales, units, products]);
+
+  // ═══════════════════════════════════════════════════════════
+  // PDF HISOBOTLAR
+  // ═══════════════════════════════════════════════════════════
+  const [pdfLoading, setPdfLoading] = useState(null);
+
+  const openReportPdf = async (type, data) => {
+    setPdfLoading(type);
+    try {
+      const res = await fetch("/api/pdf.py", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type, data }),
+      });
+      if (!res.ok) { const msg = await res.text(); throw new Error(msg); }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+      setTimeout(() => URL.revokeObjectURL(url), 30000);
+    } catch (e) {
+      alert("PDF xato: " + e.message);
+    }
+    setPdfLoading(null);
+  };
+
+  const pdfHome = () => {
+    const rows = activity.slice(0, 300).map(a => ({
+      date: dateStr(a.time), action: a.action, product: a.details, location: "", amount: null,
+    }));
+    openReportPdf("home", { range: `So'nggi ${rows.length} ta harakat`, rows });
+  };
+
+  const pdfWarehouse = () => {
+    const rows = products.map(pr => {
+      const prodUnits = units.filter(u => u.productId === pr.id);
+      const warehouse = prodUnits.filter(u => u.location === "warehouse" && u.status === "available").length;
+      const perStore = stores.map(st => prodUnits.filter(u => u.location === st.id && u.status === "available").length);
+      const sold = prodUnits.filter(u => u.status === "sold").length;
+      return { name: pr.name, sku: pr.sku, total: prodUnits.length, warehouse, perStore, sold };
+    });
+    openReportPdf("warehouse", { asOf: today(), stores: stores.map(s => s.name), rows });
+  };
+
+  const pdfStore = (storeId) => {
+    const store = stores.find(s => s.id === storeId);
+    const storeUnits = units.filter(u => u.location === storeId);
+    const incomingMap = {};
+    storeUnits.forEach(u => {
+      const pr = products.find(p => p.id === u.productId);
+      const key = dateStr(u.sentAt || u.addedAt) + "|" + (pr?.name || "-");
+      if (!incomingMap[key]) incomingMap[key] = { date: dateStr(u.sentAt || u.addedAt), product: pr?.name || "-", qty: 0 };
+      incomingMap[key].qty += 1;
+    });
+    const storeSales = sales.filter(s => s.storeId === storeId);
+    const cash = [];
+    storeSales.forEach(s => {
+      const pr = products.find(p => p.id === s.productId);
+      const methodLabel = { cash: "Naqd", card: "Karta", transfer: "O'tkazma" }[s.payMethod] || s.payMethod || "-";
+      if (s.paid) cash.push({ date: dateStr(s.payDate || s.date), product: pr?.name || "-", method: methodLabel, amount: s.totalAmount });
+      (s.partialPayments || []).forEach(pp => cash.push({ date: dateStr(pp.date), product: pr?.name || "-", method: { cash: "Naqd", card: "Karta" }[pp.method] || pp.method || "-", amount: pp.amount }));
+    });
+    const debts = storeSales.filter(s => !s.paid).map(s => {
+      const pp = (s.partialPayments || []).reduce((a, x) => a + x.amount, 0);
+      return { customer: s.customerName || "-", taken: dateStr(s.date), closed: null, amount: s.totalAmount - pp };
+    });
+    openReportPdf("stores", {
+      storeName: store?.name || "", range: today(),
+      incoming: Object.values(incomingMap), cash, debts,
+    });
+  };
+
+  const pdfOrders = () => {
+    const rows = orders.map(o => {
+      const pr = products.find(p => p.id === o.productId);
+      const st = stores.find(s => s.id === o.storeId);
+      const doneEntry = (o.statusHistory || []).find(h => h.status === "delivered");
+      return {
+        product: pr?.name || "-", store: st?.name || "-",
+        given: dateStr(o.created_at), done: doneEntry ? dateStr(doneEntry.time) : null,
+        price: o.price, status: ORDER_STATUS[o.status]?.label || o.status,
+      };
+    });
+    openReportPdf("orders", { range: today(), rows });
+  };
+
+  const pdfDebts = () => {
+    const unpaid = sales.filter(s => !s.paid);
+    const rows = unpaid.map(s => {
+      const pp = (s.partialPayments || []).reduce((a, x) => a + x.amount, 0);
+      const st = stores.find(x => x.id === s.storeId);
+      return { customer: s.customerName || "-", store: st?.name || "-", taken: dateStr(s.date), closed: null, amount: s.totalAmount - pp };
+    });
+    openReportPdf("debts", { asOf: today(), openTotal: stats.totalCustomerDebt, closedTotal: 0, rows });
+  };
+
+  const pdfReport = () => {
+    const byProduct = {};
+    sales.forEach(s => {
+      if (!byProduct[s.productId]) byProduct[s.productId] = { sold: 0, revenue: 0 };
+      byProduct[s.productId].sold += s.qty;
+      byProduct[s.productId].revenue += s.totalAmount;
+    });
+    const bestsellers = Object.entries(byProduct).map(([pid, v]) => {
+      const pr = products.find(p => p.id === pid);
+      return { name: pr?.name || "-", sku: pr?.sku || "", sold: v.sold, revenue: v.revenue };
+    }).sort((a, b) => b.sold - a.sold).slice(0, 10);
+
+    const byStore = {};
+    sales.forEach(s => {
+      if (!byStore[s.storeId]) byStore[s.storeId] = { sales: 0, profit: 0 };
+      byStore[s.storeId].sales += s.totalAmount;
+      byStore[s.storeId].profit += (s.price - s.cost) * s.qty;
+    });
+    const storeRanking = Object.entries(byStore).map(([sid, v]) => {
+      const st = stores.find(x => x.id === sid);
+      return { store: st?.name || "-", sales: v.sales, profit: v.profit };
+    }).sort((a, b) => b.sales - a.sales);
+
+    openReportPdf("report", {
+      range: today(),
+      totals: { sales: stats.totalSales, profit: stats.totalProfit, loss: 0 },
+      bestsellers, storeRanking,
+    });
+  };
 
   // ═══════════════════════════════════════════════════════════
   // PRINT FUNKSIYALARI
@@ -757,7 +905,20 @@ function App() {
               const file = e.target.files[0];
               if (!file) return;
               const reader = new FileReader();
-              reader.onload = ev => setF(p => ({ ...p, image: ev.target.result }));
+              reader.onload = ev => {
+                const img = new Image();
+                img.onload = () => {
+                  const MAX = 600;
+                  let w = img.width, h = img.height;
+                  if (w > h && w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+                  else if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; }
+                  const canvas = document.createElement("canvas");
+                  canvas.width = w; canvas.height = h;
+                  canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+                  setF(p => ({ ...p, image: canvas.toDataURL("image/jpeg", 0.7) }));
+                };
+                img.src = ev.target.result;
+              };
               reader.readAsDataURL(file);
             }} />
             <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
@@ -1503,9 +1664,12 @@ function App() {
     })();
     return (
       <div className="fade">
-        <div style={{ marginBottom: 16 }}>
-          <div style={{ fontSize: 12, color: t.sub }}>Dashboard</div>
-          <div style={{ fontSize: 22, fontWeight: 800 }}>Umumiy holat</div>
+        <div style={{ ...s.row, marginBottom: 16 }}>
+          <div>
+            <div style={{ fontSize: 12, color: t.sub }}>Dashboard</div>
+            <div style={{ fontSize: 22, fontWeight: 800 }}>Umumiy holat</div>
+          </div>
+          <button onClick={pdfHome} disabled={pdfLoading === "home"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "home" ? "refresh" : "pdf"} s={16} /></button>
         </div>
         {urgent > 0 && (
           <div onClick={() => setTab("orders")} style={{ background: t.redS, border: `1px solid ${t.red}33`, borderRadius: 12, padding: "12px 14px", marginBottom: 10, display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
@@ -1608,7 +1772,10 @@ function App() {
             <div style={{ fontSize: 22, fontWeight: 800 }}>📦 Ombor</div>
             <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {totalUnits} dona</div>
           </div>
-          {canSee("price") && <button onClick={() => setModal("product")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
+          <div style={{ display: "flex", gap: 6 }}>
+            {canSee("price") && <button onClick={() => setModal("product")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
+            <button onClick={pdfWarehouse} disabled={pdfLoading === "warehouse"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "warehouse" ? "refresh" : "pdf"} s={16} /></button>
+          </div>
         </div>
         {products.length === 0 ? (
           <Empty icon="warehouse" title="Ombor bo'sh" desc="Mahsulot qo'shing" btnText="Mahsulot qo'shish" onBtn={() => setModal("product")} />
@@ -1829,9 +1996,12 @@ function App() {
     }, 0);
     return (
       <div className="fade">
-        <button onClick={() => setStoreProfileId(null)} style={{ display: "flex", alignItems: "center", gap: 6, color: t.sub, fontSize: 14, fontWeight: 600, marginBottom: 14 }}>
-          <Ic n="back" s={16} /> Do'konlar
-        </button>
+        <div style={{ ...s.row, marginBottom: 14 }}>
+          <button onClick={() => setStoreProfileId(null)} style={{ display: "flex", alignItems: "center", gap: 6, color: t.sub, fontSize: 14, fontWeight: 600 }}>
+            <Ic n="back" s={16} /> Do'konlar
+          </button>
+          <button onClick={() => pdfStore(store.id)} disabled={pdfLoading === "stores"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "stores" ? "refresh" : "pdf"} s={16} /></button>
+        </div>
         <div style={{ background: `linear-gradient(135deg, ${t.acc}, ${t.blue})`, borderRadius: 16, padding: 16, marginBottom: 14, color: "#fff" }}>
           <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>🏪 {store.name}</div>
           {store.address && <div style={{ fontSize: 12, opacity: 0.8 }}>📍 {store.address}</div>}
@@ -1981,7 +2151,10 @@ function App() {
             <div style={{ fontSize: 22, fontWeight: 800 }}>📋 Zakazlar</div>
             <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {orders.length} ta</div>
           </div>
-          <button onClick={() => setModal("order")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>
+          <div style={{ display: "flex", gap: 6 }}>
+            <button onClick={() => setModal("order")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>
+            <button onClick={pdfOrders} disabled={pdfLoading === "orders"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "orders" ? "refresh" : "pdf"} s={16} /></button>
+          </div>
         </div>
         <div style={{ display: "flex", gap: 6, overflowX: "auto", marginBottom: 12, paddingBottom: 4 }}>
           {[{ id: "all", l: "Hammasi" }, ...Object.entries(ORDER_STATUS).map(([k, v]) => ({ id: k, l: `${v.emoji} ${v.label}` }))].map(x => (
@@ -2047,9 +2220,12 @@ function App() {
     const unpaid = sales.filter(x => !x.paid);
     return (
       <div className="fade">
-        <div style={{ marginBottom: 14 }}>
-          <div style={{ fontSize: 22, fontWeight: 800 }}>💳 Qarzlar</div>
-          <div style={{ fontSize: 13, color: t.sub, marginTop: 2 }}>Jami: <span style={{ color: t.red, fontWeight: 700 }}>{fmt(stats.totalCustomerDebt)}</span></div>
+        <div style={{ ...s.row, marginBottom: 14 }}>
+          <div>
+            <div style={{ fontSize: 22, fontWeight: 800 }}>💳 Qarzlar</div>
+            <div style={{ fontSize: 13, color: t.sub, marginTop: 2 }}>Jami: <span style={{ color: t.red, fontWeight: 700 }}>{fmt(stats.totalCustomerDebt)}</span></div>
+          </div>
+          <button onClick={pdfDebts} disabled={pdfLoading === "debts"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "debts" ? "refresh" : "pdf"} s={16} /></button>
         </div>
         {unpaid.length === 0 ? (
           <Empty icon="debt" title="Qarz yo'q 🎉" desc="Barcha sotuvlar to'langan" />
@@ -2142,6 +2318,7 @@ To'lov uchun:
           </div>
           <div style={{ display: "flex", gap: 6 }}>
             <button onClick={loadAll} style={{ ...s.iBtn, color: t.acc }} title="Yangilash"><Ic n="refresh" s={16} /></button>
+            <button onClick={pdfReport} disabled={pdfLoading === "report"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "report" ? "refresh" : "pdf"} s={16} /></button>
             <button onClick={() => {
               const rows = [["Sana","Mahsulot","Dokon","Mijoz","Soni","Narx","Jami","Tolangan","Qarz"]];
               sales.forEach(s => {
