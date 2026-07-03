@@ -61,8 +61,9 @@ input[type=number]{-moz-appearance:textfield}
 }
 /* Mobile portrait */
 @media(max-width:480px){
-  .sidebar{transform:translateX(-100%);position:fixed}
-  .sidebar.sidebar-open{transform:translateX(0)}
+  .sidebar{display:none!important}
+  .sidebar-overlay{display:none!important}
+  .sidebar-toggle{display:none!important}
   .main-content{margin-left:0!important}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .actions-grid{grid-template-columns:repeat(4,1fr)}
@@ -2656,7 +2657,7 @@ To'lov uchun:
       <main className="main-content">
         <header style={{ background:t.surf, borderBottom:`1px solid ${t.border}`, padding:"11px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:50 }}>
           <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-            <button onClick={() => setSidebarOpen(o => !o)} style={{ color:t.sub, padding:4, display:"flex" }}><Ic n="warehouse" s={18}/></button>
+            <button onClick={() => setSidebarOpen(o => !o)} className="sidebar-toggle" style={{ color:t.sub, padding:4, display:"flex" }}><Ic n="warehouse" s={18}/></button>
             <div style={{ fontSize:14, fontWeight:700, color:t.txt }}>{navItems.find(n=>n.id===tab)?.l || "Bosh"}</div>
           </div>
           <button style={{ width:36, height:36, borderRadius:10, background:t.card, border:`1px solid ${t.border}`, display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }} onClick={() => { setDark(d => { 
