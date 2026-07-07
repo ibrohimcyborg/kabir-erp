@@ -12,6 +12,9 @@
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='115' fill='%23080810'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%237B73FF'/%3E%3Cstop offset='100%25' stop-color='%2300B8D9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='106' y='106' width='300' height='300' rx='70' fill='url(%23g)'/%3E%3Ctext x='256' y='310' text-anchor='middle' font-family='system-ui' font-weight='800' font-size='180' fill='white'%3EK%3C/text%3E%3C/svg%3E">
 <title>Kabir ERP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -870,6 +873,7 @@ function App() {
     inp: { width: "100%", background: t.card, border: `1px solid ${t.border}`, borderRadius: 10, padding: "11px 13px", color: t.txt, fontSize: 14, marginBottom: 11 },
     iBtn: { width: 36, height: 36, borderRadius: 10, background: t.card, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: t.txt },
     mono: { fontFamily: "'JetBrains Mono', monospace" },
+    numXl: { fontFamily: "'Outfit', sans-serif", fontWeight: 700, letterSpacing: "-0.01em" },
   };
 
   const Lbl = ({ children }) => <label style={{ fontSize: 11, fontWeight: 600, color: t.sub, textTransform: "uppercase", letterSpacing: ".5px", marginBottom: 5, display: "block" }}>{children}</label>;
@@ -1861,29 +1865,29 @@ function App() {
         })()}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 8 }}>
           <div style={{ background: t.accSoft, border: `1px solid ${t.acc}22`, borderRadius: 13, padding: 14 }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: t.acc, ...s.mono }}>{fmtK(stats.totalSales)}</div>
+            <div style={{ fontSize: 26, color: t.acc, ...s.numXl }}>{fmtK(stats.totalSales)}</div>
             <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Umumiy sotuv</div>
           </div>
           <div style={{ background: t.greenS, border: `1px solid ${t.green}22`, borderRadius: 13, padding: 14 }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: t.green, ...s.mono }}>{fmtK(stats.totalProfit)}</div>
+            <div style={{ fontSize: 26, color: t.green, ...s.numXl }}>{fmtK(stats.totalProfit)}</div>
             <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Foyda</div>
           </div>
           <div style={{ background: t.blueS, border: `1px solid ${t.blue}22`, borderRadius: 13, padding: 14 }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: t.blue, ...s.mono }}>{fmtK(stats.totalPaid)}</div>
+            <div style={{ fontSize: 26, color: t.blue, ...s.numXl }}>{fmtK(stats.totalPaid)}</div>
             <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Kassada</div>
           </div>
           <div style={{ background: t.redS, border: `1px solid ${t.red}22`, borderRadius: 13, padding: 14 }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: t.red, ...s.mono }}>{fmtK(stats.totalCustomerDebt)}</div>
+            <div style={{ fontSize: 26, color: t.red, ...s.numXl }}>{fmtK(stats.totalCustomerDebt)}</div>
             <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Mijoz qarzi</div>
           </div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10, marginBottom: 14 }}>
           <div style={{ background: t.amberS, border: `1px solid ${t.amber}22`, borderRadius: 13, padding: 14 }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: t.amber, ...s.mono }}>{fmtK(stats.totalVitrinaDebt)}</div>
+            <div style={{ fontSize: 30, color: t.amber, ...s.numXl }}>{fmtK(stats.totalVitrinaDebt)}</div>
             <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Vitrina qarzi</div>
           </div>
           <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 13, padding: 14 }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: t.txt, ...s.mono }}>{fmtK(stats.totalCustomerDebt + stats.totalVitrinaDebt)}</div>
+            <div style={{ fontSize: 30, color: t.txt, ...s.numXl }}>{fmtK(stats.totalCustomerDebt + stats.totalVitrinaDebt)}</div>
             <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Jami qarz</div>
           </div>
         </div>
