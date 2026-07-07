@@ -337,6 +337,14 @@ function App() {
   // Cloud holati (yashil/qizil ikonka) va sozlamalar menyusi
   const [cloudStatus, setCloudStatusState] = useState("ok");
   useEffect(() => onCloudStatus(setCloudStatusState), []);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  useEffect(() => {
+    const goOnline = () => setIsOnline(true);
+    const goOffline = () => setIsOnline(false);
+    window.addEventListener("online", goOnline);
+    window.addEventListener("offline", goOffline);
+    return () => { window.removeEventListener("online", goOnline); window.removeEventListener("offline", goOffline); };
+  }, []);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [importing, setImporting] = useState(false);
   const fileInputRef = useRef(null);
@@ -540,6 +548,28 @@ function App() {
   // HELPER FUNKSIYALAR
   // ═══════════════════════════════════════════════════════════
   const askConfirm = (title, message, onConfirm, danger = false) => setConfirmDialog({ title, message, onConfirm, danger });
+
+  // To'qnashuv himoyasi: yozishdan oldin shu unitlar boshqa birov tomonidan
+  // (masalan boshqa qurilmadan) allaqachon o'zgartirilmaganini tekshiradi.
+  const verifyUnitsUnchanged = async (unitIds) => {
+    if (!unitIds || unitIds.length === 0) return true;
+    try {
+      const { data: fresh } = await db.from("units").select("*").in("id", unitIds);
+      const localMap = new Map(units.map(u => [u.id, u]));
+      const changed = (fresh || []).filter(f => {
+        const local = localMap.get(f.id);
+        return local && (local.location !== f.location || local.status !== f.status);
+      });
+      if (changed.length > 0) {
+        const names = changed.map(u => u.unitId || u.unit_id).join(", ");
+        return window.confirm(`⚠️ Diqqat: ${names} — boshqa birov tomonidan allaqachon o'zgartirilgan (joyi/holati boshqacha bo'lib qolgan). Baribir davom etilsinmi?`);
+      }
+      return true;
+    } catch (e) {
+      console.error("verifyUnitsUnchanged xato:", e);
+      return true; // tekshiruv ishlamasa ham asosiy amalni to'xtatib qo'ymaymiz
+    }
+  };
   const generateUnitId = (sku, num) => `${sku}-#${num}`;
   const getWhUnits = (pid) => units.filter(u => u.productId === pid && u.location === "warehouse" && u.status === "available");
   const getStoreUnits = (sid, pid = null) => units.filter(u => u.location === sid && u.status === "available" && (pid === null || u.productId === pid));
@@ -1334,6 +1364,8 @@ function App() {
         toSend = availUnits.slice(0, qtyN);
       }
       if (toSend.length === 0) { setSaving(false); return alert("Mol tanlanmagan"); }
+      const ok = await verifyUnitsUnchanged(toSend.map(u => u.id));
+      if (!ok) { setSaving(false); return; }
       const updates = toSend.map(u => ({
         id: u.id,
         unit_id: u.unitId,
@@ -1486,6 +1518,8 @@ function App() {
       if (qtyN > availUnits.length) return alert(`Vitrinada ${availUnits.length} dona`);
       setSaving(true);
       const soldUnits = availUnits.slice(0, qtyN);
+      const ok = await verifyUnitsUnchanged(soldUnits.map(u => u.id));
+      if (!ok) { setSaving(false); return; }
 
       // Units sold qilish
       const updatedUnits = soldUnits.map(u => ({ ...u, unit_id: u.unitId, product_id: u.productId, added_at: u.addedAt, status: "sold" }));
@@ -1667,6 +1701,8 @@ function App() {
       if (q > availUnits.length) return alert(`Vitrinada ${availUnits.length} dona`);
       setSaving(true);
       const toRet = availUnits.slice(0, q);
+      const ok = await verifyUnitsUnchanged(toRet.map(u => u.id));
+      if (!ok) { setSaving(false); return; }
       const updates = toRet.map(u => ({ ...u, unit_id: u.unitId, product_id: u.productId, added_at: u.addedAt, location: "warehouse", sent_at: null }));
       await db.from("units").upsert(updates);
       setUnits(prev => prev.map(u => toRet.find(r => r.id === u.id) ? { ...u, location: "warehouse", sentAt: undefined } : u));
@@ -2741,8 +2777,8 @@ To'lov uchun:
             <div style={{ fontSize:14, fontWeight:700, color:t.txt }}>{navItems.find(n=>n.id===tab)?.l || "Bosh"}</div>
           </div>
           <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-            <div title={cloudStatus === "ok" ? "Cloud ulangan" : "Cloud xato"} style={{ width:32, height:32, borderRadius:9, background: cloudStatus === "ok" ? t.greenS : t.redS, display:"flex", alignItems:"center", justifyContent:"center", color: cloudStatus === "ok" ? t.green : t.red }}>
-              <Ic n={cloudStatus === "ok" ? "cloud" : "cloudOff"} s={15}/>
+            <div title={!isOnline ? "Internet yo'q" : cloudStatus === "ok" ? "Cloud ulangan" : "Cloud xato"} style={{ width:32, height:32, borderRadius:9, background: (isOnline && cloudStatus === "ok") ? t.greenS : t.redS, display:"flex", alignItems:"center", justifyContent:"center", color: (isOnline && cloudStatus === "ok") ? t.green : t.red }}>
+              <Ic n={(isOnline && cloudStatus === "ok") ? "cloud" : "cloudOff"} s={15}/>
             </div>
             <button onClick={loadAll} title="Yangilash" style={{ width:32, height:32, borderRadius:9, background:t.card, border:`1px solid ${t.border}`, display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }}>
               <Ic n="refresh" s={15}/>
