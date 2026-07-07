@@ -111,7 +111,7 @@ document.addEventListener('touchend', () => {
 });
 </script>
 <script type="text/babel">
-const{useState,useEffect,useMemo,useCallback}=React;
+const{useState,useEffect,useMemo,useCallback,useRef}=React;
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -130,6 +130,11 @@ firebase.initializeApp(firebaseConfig);
 const fsdb = firebase.firestore();
 // Offline rejim: internet uzilsa ham ishlaydi, qaytganda avtomatik sinxronlanadi
 fsdb.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+
+// Cloud holati (yashil/qizil indikator uchun) — oddiy pub-sub
+let _cloudListeners = [];
+const setCloudStatus = (status) => { _cloudListeners.forEach(fn => fn(status)); };
+const onCloudStatus = (fn) => { _cloudListeners.push(fn); return () => { _cloudListeners = _cloudListeners.filter(f => f !== fn); }; };
 
 const DEFAULT_USERS = [
   { id: "u1", username: "superadmin", password: "kabir0074", role: "superadmin" },
@@ -181,6 +186,7 @@ const db = {
             }
             if (q._limit != null) out = out.slice(0, q._limit);
             if (q._single) return { data: out[0] || null, error: out[0] ? null : { message: "not found" } };
+            setCloudStatus("ok");
             return { data: out, error: null };
           }
           if (q._op === "insert" || q._op === "upsert") {
@@ -192,6 +198,7 @@ const db = {
               batch.set(fsdb.collection(table).doc(String(id)), clean, { merge: q._op === "upsert" });
             });
             await batch.commit();
+            setCloudStatus("ok");
             return { data: items, error: null };
           }
           if (q._op === "update") {
@@ -200,6 +207,7 @@ const db = {
             const batch = fsdb.batch();
             rows.forEach(r => batch.update(fsdb.collection(table).doc(String(r.id)), clean));
             await batch.commit();
+            setCloudStatus("ok");
             return { data: null, error: null };
           }
           if (q._op === "delete") {
@@ -207,12 +215,14 @@ const db = {
             const batch = fsdb.batch();
             rows.forEach(r => batch.delete(fsdb.collection(table).doc(String(r.id))));
             await batch.commit();
+            setCloudStatus("ok");
             return { data: null, error: null };
           }
+          setCloudStatus("ok");
           return { data: null, error: { message: "unknown op" } };
         } catch (e) {
           console.error("DB xato:", table, q._op, e);
-          alert("Baza xatosi: " + e.message);
+          setCloudStatus("error"); alert("Baza xatosi: " + e.message);
           return { data: q._single ? null : [], error: e };
         }
       },
@@ -280,6 +290,12 @@ const Ic = ({ n, s = 20 }) => {
     case "send": return <svg {...p}><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>;
     case "money": return <svg {...p}><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>;
     case "pdf": return <svg {...p}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><path d="M9 15h1a1.5 1.5 0 0 0 0-3H9v4M13 12v4M13 12h1.2a1.4 1.4 0 0 1 0 4H13M17 12v4M17 14h1.3" strokeWidth="1.3" /></svg>;
+    case "cloud": return <svg {...p}><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" /></svg>;
+    case "cloudOff": return <svg {...p}><path d="M22.61 16.95A5 5 0 0 0 18 10h-1.26a8 8 0 0 0-7.05-6M5 5a8 8 0 0 0 4 15h9a5 5 0 0 0 1.7-.3" /><line x1="1" y1="1" x2="23" y2="23" /></svg>;
+    case "settings": return <svg {...p}><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>;
+    case "logout": return <svg {...p}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>;
+    case "download": return <svg {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>;
+    case "upload": return <svg {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>;
     default: return null;
   }
 };
@@ -317,6 +333,55 @@ function App() {
     return m ? decodeURIComponent(m[1]) : null;
   }, []);
   const [publicProd, setPublicProd] = useState(undefined); // undefined=yuklanmoqda, null=topilmadi
+
+  // Cloud holati (yashil/qizil ikonka) va sozlamalar menyusi
+  const [cloudStatus, setCloudStatusState] = useState("ok");
+  useEffect(() => onCloudStatus(setCloudStatusState), []);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const fileInputRef = useRef(null);
+
+  const exportBackup = () => {
+    const data = { products, units, stores, sales, orders, customers, exportDate: now() };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "kabir-erp-backup-" + today() + ".json";
+    a.click();
+    setSettingsOpen(false);
+  };
+
+  const importBackup = (file) => {
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+      let data;
+      try { data = JSON.parse(ev.target.result); } catch { alert("Fayl noto'g'ri (JSON emas)"); return; }
+      askConfirm("Backup tiklash", "Fayldagi ma'lumotlar mavjudlarga qo'shiladi (bir xil ID bo'lsa yangilanadi). Davom etilsinmi?", async () => {
+        setImporting(true);
+        try {
+          const tables = { products: setProducts, units: setUnits, stores: setStores, sales: setSales, orders: setOrders, customers: setCustomers };
+          for (const [tbl, setter] of Object.entries(tables)) {
+            const rows = data[tbl];
+            if (Array.isArray(rows) && rows.length) {
+              await db.from(tbl).upsert(rows);
+              setter(prev => {
+                const map = new Map(prev.map(r => [r.id, r]));
+                rows.forEach(r => map.set(r.id, r));
+                return Array.from(map.values());
+              });
+            }
+          }
+          await log("Backup tiklandi", file.name);
+          alert("Muvaffaqiyatli tiklandi ✅");
+        } catch (e) {
+          alert("Import xato: " + e.message);
+        }
+        setImporting(false);
+        setSettingsOpen(false);
+      }, true);
+    };
+    reader.readAsText(file);
+  };
   useEffect(() => {
     if (!publicSku) return;
     db.from("products").select("*").eq("sku", publicSku).single()
@@ -2675,14 +2740,53 @@ To'lov uchun:
             <button onClick={() => setSidebarOpen(o => !o)} className="sidebar-toggle" style={{ color:t.sub, padding:4, display:"flex" }}><Ic n="warehouse" s={18}/></button>
             <div style={{ fontSize:14, fontWeight:700, color:t.txt }}>{navItems.find(n=>n.id===tab)?.l || "Bosh"}</div>
           </div>
-          <button style={{ width:36, height:36, borderRadius:10, background:t.card, border:`1px solid ${t.border}`, display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }} onClick={() => { setDark(d => { 
+          <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+            <div title={cloudStatus === "ok" ? "Cloud ulangan" : "Cloud xato"} style={{ width:32, height:32, borderRadius:9, background: cloudStatus === "ok" ? t.greenS : t.redS, display:"flex", alignItems:"center", justifyContent:"center", color: cloudStatus === "ok" ? t.green : t.red }}>
+              <Ic n={cloudStatus === "ok" ? "cloud" : "cloudOff"} s={15}/>
+            </div>
+            <button onClick={loadAll} title="Yangilash" style={{ width:32, height:32, borderRadius:9, background:t.card, border:`1px solid ${t.border}`, display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }}>
+              <Ic n="refresh" s={15}/>
+            </button>
+            <button title="Tungi/kunduzgi rejim" style={{ width:32, height:32, borderRadius:9, background:t.card, border:`1px solid ${t.border}`, display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }} onClick={() => { setDark(d => { 
   const newDark = !d;
   localStorage.setItem("kabir_dark", newDark);
   document.body.style.background = newDark ? "#080810" : "#F2F2F8";
   return newDark;
 }); }}>
-            <Ic n={dark ? "sun" : "moon"} s={16}/>
-          </button>
+              <Ic n={dark ? "sun" : "moon"} s={15}/>
+            </button>
+            <div style={{ position:"relative" }}>
+              <button title="Sozlamalar" onClick={() => setSettingsOpen(o => !o)} style={{ width:32, height:32, borderRadius:9, background: settingsOpen ? t.acc : t.card, border:`1px solid ${settingsOpen ? t.acc : t.border}`, display:"flex", alignItems:"center", justifyContent:"center", color: settingsOpen ? "#fff" : t.txt }}>
+                <Ic n="settings" s={15}/>
+              </button>
+              {settingsOpen && (
+                <>
+                  <div onClick={() => setSettingsOpen(false)} style={{ position:"fixed", inset:0, zIndex:59 }} />
+                  <div style={{ position:"absolute", top:40, right:0, width:230, background:t.surf, border:`1px solid ${t.border}`, borderRadius:12, boxShadow:"0 8px 24px rgba(0,0,0,.18)", zIndex:60, overflow:"hidden" }}>
+                    <button onClick={exportBackup} style={{ width:"100%", display:"flex", alignItems:"center", gap:10, padding:"11px 12px", textAlign:"left" }}>
+                      <div style={{ width:30, height:30, borderRadius:9, background:t.card, display:"flex", alignItems:"center", justifyContent:"center", color:t.acc, flexShrink:0 }}><Ic n="download" s={15}/></div>
+                      <div>
+                        <div style={{ fontSize:13, fontWeight:700, color:t.txt }}>Backup yuklash</div>
+                        <div style={{ fontSize:10.5, color:t.sub }}>Barchasini JSON qilib saqlash</div>
+                      </div>
+                    </button>
+                    <div style={{ borderTop:`1px solid ${t.border}` }} />
+                    <button onClick={() => fileInputRef.current?.click()} disabled={importing} style={{ width:"100%", display:"flex", alignItems:"center", gap:10, padding:"11px 12px", textAlign:"left" }}>
+                      <div style={{ width:30, height:30, borderRadius:9, background:t.card, display:"flex", alignItems:"center", justifyContent:"center", color:t.amber, flexShrink:0 }}><Ic n="upload" s={15}/></div>
+                      <div>
+                        <div style={{ fontSize:13, fontWeight:700, color:t.txt }}>{importing ? "Tiklanmoqda..." : "Backup tiklash"}</div>
+                        <div style={{ fontSize:10.5, color:t.sub }}>JSON fayldan qayta yuklash</div>
+                      </div>
+                    </button>
+                    <input ref={fileInputRef} type="file" accept="application/json" style={{ display:"none" }} onChange={e => { const f = e.target.files[0]; if (f) importBackup(f); e.target.value = ""; }} />
+                  </div>
+                </>
+              )}
+            </div>
+            <button title="Chiqish" onClick={() => askConfirm("Chiqish", "Tizimdan chiqmoqchimisiz?", () => { setUser(null); localStorage.removeItem("kabir_user"); }, true)} style={{ width:32, height:32, borderRadius:9, background:t.redS, border:`1px solid ${t.red}44`, display:"flex", alignItems:"center", justifyContent:"center", color:t.red, marginLeft:2 }}>
+              <Ic n="logout" s={15}/>
+            </button>
+          </div>
         </header>
         <div id="main-scroll" style={{ padding:16, paddingBottom:80, overflowY:"auto", height:"calc(100vh - 52px)" }}>
           {/* Pull to refresh indicator */}
