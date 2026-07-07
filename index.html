@@ -1153,24 +1153,33 @@ function App() {
   // MODAL: STORE
   // ═══════════════════════════════════════════════════════════
   const StoreModal = () => {
-    const [f, setF] = useState({ name: "", address: "", manager: "", phone: "" });
+    const existing = sel?.editStore;
+    const [f, setF] = useState(existing
+      ? { name: existing.name || "", address: existing.address || "", manager: existing.manager || "", phone: existing.phone || "" }
+      : { name: "", address: "", manager: "", phone: "" });
     const [saving, setSaving] = useState(false);
     const save = async () => {
       if (!f.name) return alert("Nomi to'ldiring");
       setSaving(true);
-      const newStore = { id: uid(), ...f, created_at: now() };
-      await db.from("stores").insert(newStore);
-      setStores(p => [newStore, ...p]);
-      await log("Do'kon qo'shildi", f.name);
+      if (existing) {
+        await db.from("stores").update(f).eq("id", existing.id);
+        setStores(prev => prev.map(x => x.id === existing.id ? { ...x, ...f } : x));
+        await log("Do'kon tahrirlandi", f.name);
+      } else {
+        const newStore = { id: uid(), ...f, created_at: now() };
+        await db.from("stores").insert(newStore);
+        setStores(p => [newStore, ...p]);
+        await log("Do'kon qo'shildi", f.name);
+      }
       setSaving(false);
-      setModal(null);
+      setModal(null); setSel(null);
     };
     return (
-      <div style={s.overlay} onClick={() => setModal(null)}>
+      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
-            <span style={{ fontSize: 17, fontWeight: 800 }}>Yangi do'kon</span>
-            <button style={s.iBtn} onClick={() => setModal(null)}><Ic n="x" s={16} /></button>
+            <span style={{ fontSize: 17, fontWeight: 800 }}>{existing ? "Do'konni tahrirlash" : "Yangi do'kon"}</span>
+            <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
           </div>
           <Lbl>Do'kon nomi *</Lbl>
           <input style={s.inp} placeholder="Chilonzor Showroom" value={f.name} onChange={e => setF(p => ({ ...p, name: e.target.value }))} />
@@ -1180,7 +1189,7 @@ function App() {
           <input style={s.inp} placeholder="Ism Familiya" value={f.manager} onChange={e => setF(p => ({ ...p, manager: e.target.value }))} />
           <Lbl>Telefon</Lbl>
           <input style={s.inp} placeholder="+998 90 ..." value={f.phone} onChange={e => setF(p => ({ ...p, phone: e.target.value }))} />
-          <Btn bg={t.acc} onClick={save} disabled={saving}>{saving ? "Saqlanmoqda..." : "Qo'shish"}</Btn>
+          <Btn bg={t.acc} onClick={save} disabled={saving}>{saving ? "Saqlanmoqda..." : (existing ? "Saqlash" : "Qo'shish")}</Btn>
         </div>
       </div>
     );
@@ -1987,6 +1996,11 @@ function App() {
                     {store.manager && <div style={{ fontSize: 11, color: t.sub }}>👤 {store.manager}</div>}
                   </div>
                   <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                    {canSee("price") && <button onClick={(e) => {
+                      e.stopPropagation();
+                      setSel({ editStore: store });
+                      setModal("addstore");
+                    }} style={{ background: t.card, color: t.sub, border: `1px solid ${t.border}`, borderRadius: 8, padding: "6px 8px" }}><Ic n="edit" s={13} /></button>}
                     <button onClick={(e) => {
                       e.stopPropagation();
                       askConfirm("Do'konni o'chirish", `"${store.name}" o'chirilsinmi?${sUnits.length > 0 ? `\n\n⚠️ ${sUnits.length} ta mol omborga qaytariladi` : ''}`, async () => {
@@ -2059,7 +2073,8 @@ function App() {
           </button>
           <button onClick={() => pdfStore(store.id)} disabled={pdfLoading === "stores"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "stores" ? "refresh" : "pdf"} s={16} /></button>
         </div>
-        <div style={{ background: `linear-gradient(135deg, ${t.acc}, ${t.blue})`, borderRadius: 16, padding: 16, marginBottom: 14, color: "#fff" }}>
+        <div style={{ background: `linear-gradient(135deg, ${t.acc}, ${t.blue})`, borderRadius: 16, padding: 16, marginBottom: 14, color: "#fff", position: "relative" }}>
+          {canSee("price") && <button onClick={() => { setSel({ editStore: store }); setModal("addstore"); }} style={{ position: "absolute", top: 14, right: 14, background: "#ffffff22", borderRadius: 8, padding: "6px 8px", color: "#fff" }}><Ic n="edit" s={14} /></button>}
           <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>🏪 {store.name}</div>
           {store.address && <div style={{ fontSize: 12, opacity: 0.8 }}>📍 {store.address}</div>}
           {store.manager && <div style={{ fontSize: 12, opacity: 0.8 }}>👤 {store.manager}{store.phone ? ` · ${store.phone}` : ''}</div>}
