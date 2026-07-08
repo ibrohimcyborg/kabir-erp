@@ -384,7 +384,7 @@ function App() {
   const doLogin = async () => {
     if (!loginU || !loginP) { setLoginErr("To'ldiring"); return; }
     setLoginLoading(true);
-    const { data } = await db.from("users").select("*").eq("username", loginU).eq("password", loginP).single();
+    const { data } = await db.from("users").select("*").eq("username", loginU.trim().toLowerCase()).eq("password", loginP).single();
     setLoginLoading(false);
     if (data) {
       setUser(data);
@@ -437,7 +437,7 @@ function App() {
         db.from("customers").select("*").order("created_at", { ascending: false }),
         db.from("activity").select("*").order("time", { ascending: false }).limit(10000),
       ]);
-      if (p.data) setProducts(p.data.map(x => ({ ...x, costItems: x.cost_items || [] })));
+      if (p.data) setProducts(p.data.map(x => ({ ...x, costItems: x.cost_items || [], priceIncomplete: !!x.price_incomplete })));
       if (u.data) setUnits(u.data.map(x => ({ ...x, unitId: x.unit_id, productId: x.product_id, addedAt: x.added_at, sentAt: x.sent_at })));
       if (st.data) setStores(st.data);
       if (sa.data) setSales(sa.data.map(x => ({ ...x, unitIds: x.unit_ids || [], storeId: x.store_id, productId: x.product_id, customerId: x.customer_id, customerName: x.customer_name, totalAmount: x.total_amount, payDate: x.pay_date, payMethod: x.pay_method, partialPayments: x.partial_payments || [] })));
@@ -496,7 +496,7 @@ function App() {
   // ═══════════════════════════════════════════════════════════
   // HELPER FUNKSIYALAR
   // ═══════════════════════════════════════════════════════════
-  const askConfirm = (title, message, onConfirm, danger = false) => setConfirmDialog({ title, message, onConfirm, danger });
+  const askConfirm = (title, message, onConfirm, danger = false, opts = {}) => setConfirmDialog({ title, message, onConfirm, danger, icon: opts.icon, confirmLabel: opts.confirmLabel });
 
   // To'qnashuv himoyasi: yozishdan oldin shu unitlar boshqa birov tomonidan
   // (masalan boshqa qurilmadan) allaqachon o'zgartirilmaganini tekshiradi.
@@ -881,7 +881,7 @@ function App() {
         <div style={{ fontSize: 22, fontWeight: 800, color: "#EEEEF8", marginBottom: 4 }}>Kabir ERP</div>
         <div style={{ fontSize: 13, color: "#7777AA", marginBottom: 32 }}>Kabir Exclusive</div>
         <div style={{ width: "100%", maxWidth: 320 }}>
-          <input style={{ width: "100%", background: "#181824", border: "1px solid #22223A", borderRadius: 11, padding: "13px 15px", color: "#EEEEF8", fontSize: 15, marginBottom: 12, display: "block" }} placeholder="Login" value={loginU} onChange={e => setLoginU(e.target.value)} onKeyDown={e => e.key === "Enter" && doLogin()} />
+          <input autoCapitalize="none" autoCorrect="off" spellCheck="false" style={{ width: "100%", background: "#181824", border: "1px solid #22223A", borderRadius: 11, padding: "13px 15px", color: "#EEEEF8", fontSize: 15, marginBottom: 12, display: "block" }} placeholder="Login" value={loginU} onChange={e => setLoginU(e.target.value)} onKeyDown={e => e.key === "Enter" && doLogin()} />
           <input type="password" style={{ width: "100%", background: "#181824", border: "1px solid #22223A", borderRadius: 11, padding: "13px 15px", color: "#EEEEF8", fontSize: 15, marginBottom: loginErr ? 8 : 16, display: "block" }} placeholder="Parol" value={loginP} onChange={e => setLoginP(e.target.value)} onKeyDown={e => e.key === "Enter" && doLogin()} />
           {loginErr && <div style={{ color: "#FF4D6D", fontSize: 13, marginBottom: 12, textAlign: "center" }}>{loginErr}</div>}
           <button onClick={doLogin} disabled={loginLoading} style={{ width: "100%", background: "#7B73FF", color: "#fff", borderRadius: 11, padding: "14px", fontWeight: 700, fontSize: 15, border: "none", cursor: "pointer", opacity: loginLoading ? 0.7 : 1 }}>{loginLoading ? "Kirilmoqda..." : "Kirish"}</button>
@@ -948,10 +948,14 @@ function App() {
       setCName(""); setCAmt("");
     };
 
+    const isOmborRole = user?.role === "ombor";
+
     const save = async () => {
       if (!f.name || !f.sku) return alert("Nomi va SKU to'ldiring");
-      if (totalCost === 0) return alert("Kamida 1 ta xarajat kiriting");
-      if (!price) return alert("Sotuv narxi yoki ustamani yozing");
+      if (!isOmborRole) {
+        if (totalCost === 0) return alert("Kamida 1 ta xarajat kiriting");
+        if (!price) return alert("Sotuv narxi yoki ustamani yozing");
+      }
       setSaving(true);
       const initialStock = +f.initialStock || 0;
 
@@ -960,6 +964,7 @@ function App() {
         name: f.name, sku: f.sku, category: f.category,
         dimensions: f.dimensions, cost: totalCost, price, markup: markupN,
         cost_items: f.costItems,
+        price_incomplete: isOmborRole && (totalCost === 0 || !price),
         image: f.image || "",
         created_at: existing?.created_at || now(),
       };
@@ -967,10 +972,10 @@ function App() {
       await db.from("products").upsert(productData);
 
       if (existing) {
-        setProducts(prev => prev.map(p => p.id === existing.id ? { ...productData, costItems: f.costItems } : p));
+        setProducts(prev => prev.map(p => p.id === existing.id ? { ...productData, costItems: f.costItems, priceIncomplete: productData.price_incomplete } : p));
         await log("Mahsulot tahrirlandi", f.name);
       } else {
-        setProducts(prev => [{ ...productData, costItems: f.costItems }, ...prev]);
+        setProducts(prev => [{ ...productData, costItems: f.costItems, priceIncomplete: productData.price_incomplete }, ...prev]);
         if (initialStock > 0) {
           const existingCount = units.filter(u => u.productId === productData.id).length;
           const newUnits = [];
@@ -1055,68 +1060,77 @@ function App() {
               )}
             </>
           )}
-          <div style={{ borderTop: `2px dashed ${t.border}`, margin: "14px 0 12px", paddingTop: 14 }}>
-            <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 4 }}>💰 Tannarx tarkibi</div>
-            <div style={{ fontSize: 12, color: t.sub, marginBottom: 14 }}>Har bir xarajatni alohida yozing</div>
-            {f.costItems.map((item, i) => (
-              <div key={item.id} style={{ background: t.card, border: `1px solid ${editingCostId === item.id ? t.acc : t.border}`, borderRadius: 10, padding: "9px 12px", marginBottom: 7 }}>
-                {editingCostId === item.id ? (
-                  <div>
-                    <input style={s.inp} value={editCostName} onChange={e => setEditCostName(e.target.value)} />
-                    <div style={{ display: "flex", gap: 8 }}>
-                      <input type="number" inputMode="decimal" step="0.01" style={{ ...s.inp, marginBottom: 0, flex: 1 }} value={editCostAmt} onChange={e => setEditCostAmt(e.target.value)} />
-                      <button onClick={() => {
-                        setF(p => ({ ...p, costItems: p.costItems.map(x => x.id === item.id ? { ...x, name: editCostName, amount: +editCostAmt } : x) }));
-                        setEditingCostId(null);
-                      }} style={{ background: t.green, color: "#fff", borderRadius: 9, padding: "0 14px", fontWeight: 700, fontSize: 13 }}>✓</button>
-                      <button onClick={() => setEditingCostId(null)} style={{ background: t.card, border: `1px solid ${t.border}`, color: t.sub, borderRadius: 9, padding: "0 12px", fontWeight: 700 }}>✕</button>
-                    </div>
+          {isOmborRole ? (
+            <div style={{ background: t.amberS, border: `1px dashed ${t.amber}55`, borderRadius: 11, padding: 12, marginTop: 14, marginBottom: 4, fontSize: 12, color: t.amber, display: "flex", gap: 8, alignItems: "flex-start" }}>
+              <span>🔒</span>
+              <span>Narx maydonlari sizda ko'rinmaydi — mahsulot narxsiz saqlanadi va keyinroq superadmin/admin tomonidan to'ldiriladi.</span>
+            </div>
+          ) : (
+            <>
+              <div style={{ borderTop: `2px dashed ${t.border}`, margin: "14px 0 12px", paddingTop: 14 }}>
+                <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 4 }}>💰 Tannarx tarkibi</div>
+                <div style={{ fontSize: 12, color: t.sub, marginBottom: 14 }}>Har bir xarajatni alohida yozing</div>
+                {f.costItems.map((item, i) => (
+                  <div key={item.id} style={{ background: t.card, border: `1px solid ${editingCostId === item.id ? t.acc : t.border}`, borderRadius: 10, padding: "9px 12px", marginBottom: 7 }}>
+                    {editingCostId === item.id ? (
+                      <div>
+                        <input style={s.inp} value={editCostName} onChange={e => setEditCostName(e.target.value)} />
+                        <div style={{ display: "flex", gap: 8 }}>
+                          <input type="number" inputMode="decimal" step="0.01" style={{ ...s.inp, marginBottom: 0, flex: 1 }} value={editCostAmt} onChange={e => setEditCostAmt(e.target.value)} />
+                          <button onClick={() => {
+                            setF(p => ({ ...p, costItems: p.costItems.map(x => x.id === item.id ? { ...x, name: editCostName, amount: +editCostAmt } : x) }));
+                            setEditingCostId(null);
+                          }} style={{ background: t.green, color: "#fff", borderRadius: 9, padding: "0 14px", fontWeight: 700, fontSize: 13 }}>✓</button>
+                          <button onClick={() => setEditingCostId(null)} style={{ background: t.card, border: `1px solid ${t.border}`, color: t.sub, borderRadius: 9, padding: "0 12px", fontWeight: 700 }}>✕</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <div style={{ width: 24, height: 24, borderRadius: 6, background: t.accSoft, color: t.acc, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800 }}>{i + 1}</div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: 13, fontWeight: 600 }}>{item.name}</div>
+                          <div style={{ fontSize: 12, color: t.acc, fontWeight: 700, ...s.mono }}>${fmtN(item.amount)}</div>
+                        </div>
+                        <button style={{ color: t.acc, padding: 4 }} onClick={() => { setEditingCostId(item.id); setEditCostName(item.name); setEditCostAmt(item.amount); }}><Ic n="edit" s={15} /></button>
+                        <button style={{ color: t.red, padding: 4 }} onClick={() => setF(p => ({ ...p, costItems: p.costItems.filter(x => x.id !== item.id) }))}><Ic n="trash" s={15} /></button>
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <div style={{ width: 24, height: 24, borderRadius: 6, background: t.accSoft, color: t.acc, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800 }}>{i + 1}</div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 13, fontWeight: 600 }}>{item.name}</div>
-                      <div style={{ fontSize: 12, color: t.acc, fontWeight: 700, ...s.mono }}>${fmtN(item.amount)}</div>
-                    </div>
-                    <button style={{ color: t.acc, padding: 4 }} onClick={() => { setEditingCostId(item.id); setEditCostName(item.name); setEditCostAmt(item.amount); }}><Ic n="edit" s={15} /></button>
-                    <button style={{ color: t.red, padding: 4 }} onClick={() => setF(p => ({ ...p, costItems: p.costItems.filter(x => x.id !== item.id) }))}><Ic n="trash" s={15} /></button>
+                ))}
+                <div style={{ background: t.card, border: `1.5px dashed ${t.acc}55`, borderRadius: 11, padding: 12, marginBottom: 10 }}>
+                  <input style={s.inp} placeholder="Nomi: MDF / Lak / Zborka..." value={cName} onChange={e => setCName(e.target.value)} />
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <input type="number" inputMode="decimal" step="0.01" style={{ ...s.inp, marginBottom: 0, flex: 1 }} placeholder="Summa ($)" value={cAmt} onChange={e => setCAmt(e.target.value)} onKeyDown={e => e.key === "Enter" && addCost()} />
+                    <button onClick={addCost} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "0 16px", fontWeight: 700, fontSize: 18 }}>+</button>
+                  </div>
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 10 }}>
+                    {["MDF", "Lak", "Zborka", "Temir", "Yelim", "Mato", "Charm", "Shisha", "Dostavka", "Upakovka", "Ish haqi"].map(q => (
+                      <button key={q} onClick={() => setCName(q)} style={{ background: cName === q ? t.acc : t.surf, color: cName === q ? "#fff" : t.sub, border: `1px solid ${cName === q ? t.acc : t.border}`, borderRadius: 14, padding: "4px 10px", fontSize: 11, fontWeight: 600 }}>{q}</button>
+                    ))}
+                  </div>
+                </div>
+                {totalCost > 0 && (
+                  <div style={{ background: t.accSoft, borderRadius: 11, padding: 12, marginBottom: 12 }}>
+                    <div style={s.row}><span style={{ fontSize: 12, color: t.sub }}>JAMI TANNARX</span><span style={{ ...s.mono, fontWeight: 800, color: t.acc, fontSize: 16 }}>{fmt(totalCost)}</span></div>
                   </div>
                 )}
               </div>
-            ))}
-            <div style={{ background: t.card, border: `1.5px dashed ${t.acc}55`, borderRadius: 11, padding: 12, marginBottom: 10 }}>
-              <input style={s.inp} placeholder="Nomi: MDF / Lak / Zborka..." value={cName} onChange={e => setCName(e.target.value)} />
-              <div style={{ display: "flex", gap: 8 }}>
-                <input type="number" inputMode="decimal" step="0.01" style={{ ...s.inp, marginBottom: 0, flex: 1 }} placeholder="Summa ($)" value={cAmt} onChange={e => setCAmt(e.target.value)} onKeyDown={e => e.key === "Enter" && addCost()} />
-                <button onClick={addCost} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "0 16px", fontWeight: 700, fontSize: 18 }}>+</button>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 9 }}>
+                <div><Lbl>Ustama %</Lbl><NumInp value={f.markup} onChange={onMarkupChange} placeholder="30" /></div>
+                <div><Lbl>Sotuv narxi ($)</Lbl><NumInp value={f.salePrice} onChange={onPriceChange} placeholder="60" /></div>
               </div>
-              <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 10 }}>
-                {["MDF", "Lak", "Zborka", "Temir", "Yelim", "Mato", "Charm", "Shisha", "Dostavka", "Upakovka", "Ish haqi"].map(q => (
-                  <button key={q} onClick={() => setCName(q)} style={{ background: cName === q ? t.acc : t.surf, color: cName === q ? "#fff" : t.sub, border: `1px solid ${cName === q ? t.acc : t.border}`, borderRadius: 14, padding: "4px 10px", fontSize: 11, fontWeight: 600 }}>{q}</button>
-                ))}
-              </div>
-            </div>
-            {totalCost > 0 && (
-              <div style={{ background: t.accSoft, borderRadius: 11, padding: 12, marginBottom: 12 }}>
-                <div style={s.row}><span style={{ fontSize: 12, color: t.sub }}>JAMI TANNARX</span><span style={{ ...s.mono, fontWeight: 800, color: t.acc, fontSize: 16 }}>{fmt(totalCost)}</span></div>
-              </div>
-            )}
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 9 }}>
-            <div><Lbl>Ustama %</Lbl><NumInp value={f.markup} onChange={onMarkupChange} placeholder="30" /></div>
-            <div><Lbl>Sotuv narxi ($)</Lbl><NumInp value={f.salePrice} onChange={onPriceChange} placeholder="60" /></div>
-          </div>
-          <div style={{ fontSize: 11, color: t.sub, marginTop: -4, marginBottom: 12 }}>💡 Birortasini yozsangiz, ikkinchisi avtomatik</div>
-          {totalCost > 0 && price > 0 && (
-            <div style={{ background: `${t.green}12`, border: `1px solid ${t.green}30`, borderRadius: 12, padding: 14, marginBottom: 12 }}>
-              <div style={{ ...s.row, marginBottom: 8 }}><span style={{ fontSize: 12, color: t.sub }}>Tannarx</span><span style={{ ...s.mono, fontWeight: 700 }}>{fmt(totalCost)}</span></div>
-              <div style={{ ...s.row, marginBottom: 8 }}><span style={{ fontSize: 12, color: t.sub }}>Sotuv narxi</span><span style={{ ...s.mono, fontWeight: 700, color: t.acc }}>{fmt(price)}</span></div>
-              <div style={{ borderTop: `1px dashed ${t.border}`, paddingTop: 10 }}>
-                <div style={{ ...s.row, marginBottom: 4 }}><span style={{ fontSize: 13, fontWeight: 700 }}>FOYDA</span><span style={{ ...s.mono, fontWeight: 800, color: t.green, fontSize: 17 }}>{fmt(profit)}</span></div>
-                <div style={s.row}><span style={{ fontSize: 11, color: t.sub }}>Ustama</span><span style={{ ...s.mono, fontWeight: 700, color: profitPct >= 0 ? t.green : t.red }}>{profitPct}%</span></div>
-              </div>
-            </div>
+              <div style={{ fontSize: 11, color: t.sub, marginTop: -4, marginBottom: 12 }}>💡 Birortasini yozsangiz, ikkinchisi avtomatik</div>
+              {totalCost > 0 && price > 0 && (
+                <div style={{ background: `${t.green}12`, border: `1px solid ${t.green}30`, borderRadius: 12, padding: 14, marginBottom: 12 }}>
+                  <div style={{ ...s.row, marginBottom: 8 }}><span style={{ fontSize: 12, color: t.sub }}>Tannarx</span><span style={{ ...s.mono, fontWeight: 700 }}>{fmt(totalCost)}</span></div>
+                  <div style={{ ...s.row, marginBottom: 8 }}><span style={{ fontSize: 12, color: t.sub }}>Sotuv narxi</span><span style={{ ...s.mono, fontWeight: 700, color: t.acc }}>{fmt(price)}</span></div>
+                  <div style={{ borderTop: `1px dashed ${t.border}`, paddingTop: 10 }}>
+                    <div style={{ ...s.row, marginBottom: 4 }}><span style={{ fontSize: 13, fontWeight: 700 }}>FOYDA</span><span style={{ ...s.mono, fontWeight: 800, color: t.green, fontSize: 17 }}>{fmt(profit)}</span></div>
+                    <div style={s.row}><span style={{ fontSize: 11, color: t.sub }}>Ustama</span><span style={{ ...s.mono, fontWeight: 700, color: profitPct >= 0 ? t.green : t.red }}>{profitPct}%</span></div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
           <Btn bg={t.acc} onClick={save} disabled={saving}>{saving ? "Saqlanmoqda..." : existing ? "Saqlash" : "Mahsulot qo'shish"}</Btn>
         </div>
@@ -1267,6 +1281,7 @@ function App() {
       if (!unit) { setScanErr(`❌ ${trimmed} — omborda yo'q!`); return; }
       if (scannedIds.find(s => s.unitId === trimmed)) { setScanErr("⚠️ Allaqachon qo'shilgan!"); return; }
       const prod = products.find(p => p.id === unit.productId);
+      if (prod?.priceIncomplete) { setScanErr(`⚠️ ${prod.name} — narxi hali to'ldirilmagan, jo'natib bo'lmaydi`); return; }
       setScannedIds(prev => [...prev, { ...unit, prodName: prod?.name || "—" }]);
       setScanInput("");
       setScanErr("");
@@ -1286,7 +1301,7 @@ function App() {
       );
     }
 
-    const availProds = products.filter(p => getWhUnits(p.id).length > 0);
+    const availProds = products.filter(p => getWhUnits(p.id).length > 0 && !p.priceIncomplete);
     const availUnits = productId ? getWhUnits(productId) : [];
     const product = products.find(p => p.id === productId);
     const qtyN = +qty || 0;
@@ -1890,7 +1905,7 @@ function App() {
             <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {totalUnits} dona</div>
           </div>
           <div style={{ display: "flex", gap: 6 }}>
-            {canSee("price") && <button onClick={() => setModal("product")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
+            {(canSee("price") || user?.role === "ombor") && <button onClick={() => setModal("product")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
             <button onClick={pdfWarehouse} disabled={pdfLoading === "warehouse"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "warehouse" ? "refresh" : "pdf"} s={16} /></button>
           </div>
         </div>
@@ -1915,7 +1930,13 @@ function App() {
                         <div style={{ flex: 1 }}>
                           <div style={{ fontSize: 14, fontWeight: 700 }}>{p.name}</div>
                           <div style={{ fontSize: 11, color: t.sub, marginTop: 2, ...s.mono }}>{p.sku} · {p.category}</div>
+                          {p.priceIncomplete && canSee("price") && (
+                            <button onClick={() => { setSel({ editProduct: p }); setModal("product"); }} style={{ display: "inline-flex", alignItems: "center", gap: 4, background: t.amberS, color: t.amber, borderRadius: 20, padding: "3px 9px", fontSize: 10.5, fontWeight: 700, marginTop: 6 }}>
+                              ⚠️ NARX YO'Q — to'ldirish
+                            </button>
+                          )}
                         </div>
+                        {user?.role !== "ombor" && (
                         <div style={{ display: "flex", gap: 5 }}>
                           <button onClick={() => { setSel({ editProduct: p }); setModal("product"); }} style={{ background: t.accSoft, color: t.acc, borderRadius: 8, padding: "6px 8px" }}><Ic n="edit" s={13} /></button>
                           <button onClick={() => {
@@ -1929,6 +1950,7 @@ function App() {
                             }, true);
                           }} style={{ background: t.redS, color: t.red, borderRadius: 8, padding: "6px 8px" }}><Ic n="trash" s={13} /></button>
                         </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -2717,7 +2739,7 @@ To'lov uchun:
               {user?.role==="superadmin" ? "👑 Super" : user?.role==="admin" ? "📊 Admin" : "📦 Moder"}
             </div>
           </div>
-          <button onClick={() => { setUser(null); localStorage.removeItem("kabir_user"); }} style={{ color:t.red, flexShrink:0, padding:4 }}><Ic n="x" s={14}/></button>
+          <button onClick={() => askConfirm("Chiqish", "Tizimdan chiqmoqchimisiz?", () => { setUser(null); localStorage.removeItem("kabir_user"); }, true, { icon: "logout", confirmLabel: "Chiqish" })} style={{ color:t.red, flexShrink:0, padding:4 }}><Ic n="logout" s={14}/></button>
         </div>
       </aside>
 
@@ -2771,7 +2793,7 @@ To'lov uchun:
                 </>
               )}
             </div>
-            <button title="Chiqish" onClick={() => askConfirm("Chiqish", "Tizimdan chiqmoqchimisiz?", () => { setUser(null); localStorage.removeItem("kabir_user"); }, true)} style={{ width:32, height:32, borderRadius:9, background:t.redS, border:`1px solid ${t.red}44`, display:"flex", alignItems:"center", justifyContent:"center", color:t.red, marginLeft:2 }}>
+            <button title="Chiqish" onClick={() => askConfirm("Chiqish", "Tizimdan chiqmoqchimisiz?", () => { setUser(null); localStorage.removeItem("kabir_user"); }, true, { icon: "logout", confirmLabel: "Chiqish" })} style={{ width:32, height:32, borderRadius:9, background:t.redS, border:`1px solid ${t.red}44`, display:"flex", alignItems:"center", justifyContent:"center", color:t.red, marginLeft:2 }}>
               <Ic n="logout" s={15}/>
             </button>
           </div>
@@ -2819,14 +2841,14 @@ To'lov uchun:
           <div style={{ background:t.surf, borderRadius:18, width:"100%", maxWidth:360, padding:24, border:`1px solid ${t.border}`, margin:16 }} onClick={e => e.stopPropagation()} className="up">
             <div style={{ textAlign:"center", padding:"8px 0" }}>
               <div style={{ width:60, height:60, borderRadius:18, background:confirmDialog.danger ? t.redS : t.amberS, color:confirmDialog.danger ? t.red : t.amber, display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 14px" }}>
-                <Ic n={confirmDialog.danger ? "trash" : "alert"} s={26}/>
+                <Ic n={confirmDialog.icon || (confirmDialog.danger ? "trash" : "alert")} s={26}/>
               </div>
               <div style={{ fontSize:17, fontWeight:800, marginBottom:10 }}>{confirmDialog.title}</div>
               <div style={{ fontSize:13, color:t.sub, lineHeight:1.5, marginBottom:22, whiteSpace:"pre-line" }}>{confirmDialog.message}</div>
             </div>
             <div style={{ display:"flex", gap:9 }}>
               <button onClick={() => setConfirmDialog(null)} style={{ flex:1, background:t.card, border:`1px solid ${t.border}`, color:t.txt, borderRadius:11, padding:"13px", fontWeight:700, fontSize:14 }}>Bekor</button>
-              <button onClick={() => { confirmDialog.onConfirm(); setConfirmDialog(null); }} style={{ flex:1, background:confirmDialog.danger ? t.red : t.acc, color:"#fff", borderRadius:11, padding:"13px", fontWeight:700, fontSize:14 }}>{confirmDialog.danger ? "🗑️ O'chirish" : "✓ Tasdiqlash"}</button>
+              <button onClick={() => { confirmDialog.onConfirm(); setConfirmDialog(null); }} style={{ flex:1, background:confirmDialog.danger ? t.red : t.acc, color:"#fff", borderRadius:11, padding:"13px", fontWeight:700, fontSize:14 }}>{confirmDialog.confirmLabel || (confirmDialog.danger ? "🗑️ O'chirish" : "✓ Tasdiqlash")}</button>
             </div>
           </div>
         </div>
