@@ -1834,13 +1834,13 @@ function App() {
         <Sec>Tez amallar</Sec>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
           {[
-            { e: "📦", l: "Mol+", a: () => setModal("product") },
-            { e: "🚚", l: "Jo'nat", a: () => setModal("transfer") },
-            { e: "💵", l: "Sotuv", a: () => setModal("sell") },
-            { e: "📋", l: "Zakaz", a: () => setModal("order") },
+            { icn: "plus", l: "Mol+", a: () => setModal("product") },
+            { icn: "send", l: "Jo'nat", a: () => setModal("transfer") },
+            { icn: "money", l: "Sotuv", a: () => setModal("sell") },
+            { icn: "order", l: "Zakaz", a: () => setModal("order") },
           ].map((b, i) => (
             <button key={i} className="press" onClick={b.a} style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 13, padding: "16px 10px", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-              <div style={{ fontSize: 26 }}>{b.e}</div>
+              <div style={{ width: 40, height: 40, borderRadius: 11, background: t.accSoft, color: t.acc, display: "flex", alignItems: "center", justifyContent: "center" }}><Ic n={b.icn} s={19} /></div>
               <div style={{ fontSize: 12, fontWeight: 700, color: t.txt }}>{b.l}</div>
             </button>
           ))}
