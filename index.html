@@ -46,12 +46,15 @@ input[type=number]{-moz-appearance:textfield}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
 .actions-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .content-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.dash-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:8px}
+.dash-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
 /* Tablet */
 @media(max-width:1024px){
   .sidebar{width:180px}
   .main-content{margin-left:180px}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .content-grid{grid-template-columns:1fr}
+  .dash-grid-4{grid-template-columns:repeat(2,1fr)}
 }
 /* Mobile landscape */
 @media(max-width:768px){
@@ -61,6 +64,7 @@ input[type=number]{-moz-appearance:textfield}
   .main-content{margin-left:60px}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .actions-grid{grid-template-columns:repeat(4,1fr)}
+  .dash-grid-4{grid-template-columns:repeat(2,1fr)}
 }
 /* Mobile portrait */
 @media(max-width:480px){
@@ -1799,7 +1803,7 @@ function App() {
             </div>
           ) : null;
         })()}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 8 }}>
+        <div className="dash-grid-4">
           <div style={{ background: t.accSoft, border: `1px solid ${t.acc}22`, borderRadius: 13, padding: 14 }}>
             <div style={{ fontSize: 26, color: t.acc, ...s.numXl }}>{fmtK(stats.totalSales)}</div>
             <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Umumiy sotuv</div>
@@ -1817,7 +1821,7 @@ function App() {
             <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Mijoz qarzi</div>
           </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10, marginBottom: 14 }}>
+        <div className="dash-grid-2">
           <div style={{ background: t.amberS, border: `1px solid ${t.amber}22`, borderRadius: 13, padding: 14 }}>
             <div style={{ fontSize: 30, color: t.amber, ...s.numXl }}>{fmtK(stats.totalVitrinaDebt)}</div>
             <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Vitrina qarzi</div>
