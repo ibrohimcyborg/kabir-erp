@@ -120,17 +120,23 @@ const DEFAULT_USERS = [
   { id: "u1", username: "superadmin", password: "kabir0074", role: "superadmin" },
   { id: "u2", username: "admin",      password: "kabir0074", role: "admin" },
   { id: "u3", username: "moder1",     password: "kabir0074", role: "moder" },
+  { id: "u4", username: "ombor",      password: "kabir0074", role: "ombor" },
 ];
 
 const fsGetAll = async (table) => {
   const snap = await fsdb.collection(table).get();
   let rows = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  // Birinchi ishga tushirishda userlar bo'lmasa — avtomatik yaratamiz
-  if (table === "users" && rows.length === 0) {
-    const batch = fsdb.batch();
-    DEFAULT_USERS.forEach(u => batch.set(fsdb.collection("users").doc(u.id), u));
-    await batch.commit();
-    rows = DEFAULT_USERS.slice();
+  // Userlar jadvalida standart loginlardan biror-biri yetishmasa — avtomatik qo'shib qo'yamiz
+  // (birinchi ishga tushirishda hammasi, keyinchalik yangi qo'shilgan login ham shu tarzda paydo bo'ladi)
+  if (table === "users") {
+    const existingUsernames = new Set(rows.map(r => r.username));
+    const missing = DEFAULT_USERS.filter(u => !existingUsernames.has(u.username));
+    if (missing.length > 0) {
+      const batch = fsdb.batch();
+      missing.forEach(u => batch.set(fsdb.collection("users").doc(u.id), u));
+      await batch.commit();
+      rows = rows.concat(missing);
+    }
   }
   return rows;
 };
@@ -383,6 +389,7 @@ function App() {
     if (data) {
       setUser(data);
       localStorage.setItem("kabir_user", JSON.stringify(data));
+      if (data.role === "ombor") setTab("warehouse");
       setLoginErr("");
     }
     else setLoginErr("Login yoki parol xato!");
@@ -393,6 +400,7 @@ function App() {
     if (user.role === "superadmin") return true;
     if (user.role === "admin") { if (field === "users" || field === "price") return false; return true; }
     if (user.role === "moder") { if (field === "cost" || field === "profit" || field === "report") return false; return true; }
+    if (user.role === "ombor") { if (["cost", "profit", "report", "price", "users", "debt"].includes(field)) return false; return true; }
     return false;
   };
   const [modal, setModal] = useState(null);
@@ -2648,7 +2656,9 @@ To'lov uchun:
     }
   };
 
-  const navItems = [
+  const navItems = user?.role === "ombor" ? [
+    { id: "warehouse", l: "Ombor", i: "warehouse" },
+  ] : [
     { id: "home", l: "Bosh", i: "home" },
     { id: "warehouse", l: "Ombor", i: "warehouse" },
     { id: "stores", l: "Do'kon", i: "store" },
@@ -2660,8 +2670,8 @@ To'lov uchun:
   
 
 
-  const roleLabel = user?.role === "superadmin" ? "👑 Super Admin" : user?.role === "admin" ? "📊 Admin" : "📦 Moder";
-  const roleColor = user?.role === "superadmin" ? t.amber : user?.role === "admin" ? t.acc : t.green;
+  const roleLabel = user?.role === "superadmin" ? "👑 Super Admin" : user?.role === "admin" ? "📊 Admin" : user?.role === "ombor" ? "🏭 Ombor" : "📦 Moder";
+  const roleColor = user?.role === "superadmin" ? t.amber : user?.role === "admin" ? t.acc : user?.role === "ombor" ? t.blue : t.green;
 
   return (
     <div className="app-layout" style={{ background: t.bg, color: t.txt, minHeight: "100vh" }}>
