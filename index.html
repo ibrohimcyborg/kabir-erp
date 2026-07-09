@@ -918,7 +918,7 @@ function App() {
       salePrice: existing.price || "", 
       costItems: existing.costItems || [],
       image: existing.image || ""
-    } : { name: "", sku: "", category: CATEGORIES[0], dimensions: "", initialStock: "", markup: "", salePrice: "", costItems: [], image: "" });
+    } : { name: "", sku: "", category: sel?.defaultCategory || CATEGORIES[0], dimensions: "", initialStock: "", markup: "", salePrice: "", costItems: [], image: "" });
     const [cName, setCName] = useState("");
     const [cAmt, setCAmt] = useState("");
     const [saving, setSaving] = useState(false);
@@ -1888,36 +1888,67 @@ function App() {
   // ═══════════════════════════════════════════════════════════
   // PAGE: WAREHOUSE
   // ═══════════════════════════════════════════════════════════
+  const CATEGORY_ICONS = { "Jurnal stol": "🪑", "Divan": "🛋️", "Kreslo": "🪑", "Shkaf": "🗄️", "Stol": "🍽️", "Stul": "🪑", "Yotoq": "🛏️", "Boshqa": "📦" };
+
   const WarehousePage = () => {
     const [q, setQ] = useState("");
     const [expanded, setExpanded] = useState(null);
     const [selectedIds, setSelectedIds] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
     const totalUnits = units.filter(u => u.location === "warehouse" && u.status === "available").length;
+
+    const categoryStats = CATEGORIES.map(cat => {
+      const catProducts = products.filter(p => p.category === cat);
+      const whCount = catProducts.reduce((sum, p) => sum + getWhUnits(p.id).length, 0);
+      return { cat, count: catProducts.length, whCount };
+    });
+    const catQ = q.toLowerCase();
+    const visibleCategories = categoryStats.filter(c => c.cat.toLowerCase().includes(catQ));
+
     const list = products
+      .filter(p => p.category === selectedCategory)
       .filter(p => p.name.toLowerCase().includes(q.toLowerCase()) || p.sku.toLowerCase().includes(q.toLowerCase()))
       .map(p => ({ ...p, whUnits: getWhUnits(p.id), allUnits: units.filter(u => u.productId === p.id) }));
 
-    return (
-      <div className="fade">
-        <div style={{ ...s.row, marginBottom: 14 }}>
-          <div>
-            <div style={{ fontSize: 22, fontWeight: 800 }}>📦 Ombor</div>
-            <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {totalUnits} dona</div>
-          </div>
-          <div style={{ display: "flex", gap: 6 }}>
-            {(canSee("price") || user?.role === "ombor") && <button onClick={() => setModal("product")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
-            <button onClick={pdfWarehouse} disabled={pdfLoading === "warehouse"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "warehouse" ? "refresh" : "pdf"} s={16} /></button>
-          </div>
-        </div>
-        {products.length === 0 ? (
-          <Empty icon="warehouse" title="Ombor bo'sh" desc="Mahsulot qo'shing" btnText="Mahsulot qo'shish" onBtn={() => setModal("product")} />
-        ) : (
-          <>
-            <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 11, padding: "10px 13px", marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ color: t.sub }}><Ic n="search" s={16} /></div>
-              <input style={{ flex: 1, background: "none", color: t.txt, fontSize: 14, border: "none" }} placeholder="Qidirish..." value={q} onChange={e => setQ(e.target.value)} />
+    if (products.length === 0) {
+      return (
+        <div className="fade">
+          <div style={{ ...s.row, marginBottom: 14 }}>
+            <div>
+              <div style={{ fontSize: 22, fontWeight: 800 }}>📦 Ombor</div>
+              <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: 0 dona</div>
             </div>
-            {list.map(p => {
+          </div>
+          <Empty icon="warehouse" title="Ombor bo'sh" desc="Mahsulot qo'shing" btnText="Mahsulot qo'shish" onBtn={() => setModal("product")} />
+        </div>
+      );
+    }
+
+    // ═══ Kategoriya ichida — mahsulotlar royxati ═══
+    if (selectedCategory) {
+      return (
+        <div className="fade">
+          <div style={{ ...s.row, marginBottom: 14 }}>
+            <button onClick={() => { setSelectedCategory(null); setQ(""); }} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{ width: 34, height: 34, borderRadius: 10, background: t.card, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center" }}><Ic n="back" s={16} /></div>
+              <div style={{ textAlign: "left" }}>
+                <div style={{ fontSize: 18, fontWeight: 800 }}>{CATEGORY_ICONS[selectedCategory] || "📦"} {selectedCategory}</div>
+                <div style={{ fontSize: 11, color: t.sub }}>{list.length} mahsulot</div>
+              </div>
+            </button>
+            <div style={{ display: "flex", gap: 6 }}>
+              {(canSee("price") || user?.role === "ombor") && <button onClick={() => { setSel({ defaultCategory: selectedCategory }); setModal("product"); }} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
+              <button onClick={pdfWarehouse} disabled={pdfLoading === "warehouse"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "warehouse" ? "refresh" : "pdf"} s={16} /></button>
+            </div>
+          </div>
+          <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 11, padding: "10px 13px", marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ color: t.sub }}><Ic n="search" s={16} /></div>
+            <input style={{ flex: 1, background: "none", color: t.txt, fontSize: 14, border: "none" }} placeholder="Shu kategoriyada qidirish..." value={q} onChange={e => setQ(e.target.value)} />
+          </div>
+          {list.length === 0 ? (
+            <Empty icon="warehouse" title="Hali mahsulot yo'q" desc={`${selectedCategory} kategoriyasida mahsulot qo'shing`} btnText="Mahsulot qo'shish" onBtn={() => { setSel({ defaultCategory: selectedCategory }); setModal("product"); }} />
+          ) : (
+            list.map(p => {
               const isExp = expanded === p.id;
               return (
                 <div key={p.id} style={s.card}>
@@ -2031,9 +2062,40 @@ function App() {
                   )}
                 </div>
               );
-            })}
-          </>
-        )}
+            })
+          )}
+        </div>
+      );
+    }
+
+    // ═══ Kategoriyalar royxati (asosiy ekran) ═══
+    return (
+      <div className="fade">
+        <div style={{ ...s.row, marginBottom: 14 }}>
+          <div>
+            <div style={{ fontSize: 22, fontWeight: 800 }}>📦 Ombor</div>
+            <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {totalUnits} dona</div>
+          </div>
+          <div style={{ display: "flex", gap: 6 }}>
+            {(canSee("price") || user?.role === "ombor") && <button onClick={() => setModal("product")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
+            <button onClick={pdfWarehouse} disabled={pdfLoading === "warehouse"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "warehouse" ? "refresh" : "pdf"} s={16} /></button>
+          </div>
+        </div>
+        <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 11, padding: "10px 13px", marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{ color: t.sub }}><Ic n="search" s={16} /></div>
+          <input style={{ flex: 1, background: "none", color: t.txt, fontSize: 14, border: "none" }} placeholder="Kategoriya qidirish..." value={q} onChange={e => setQ(e.target.value)} />
+        </div>
+        <div style={{ fontSize: 11, color: t.sub, fontWeight: 700, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>Kategoriyalar</div>
+        {visibleCategories.map(({ cat, count, whCount }) => (
+          <button key={cat} onClick={() => { setSelectedCategory(cat); setQ(""); }} style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, background: t.card, border: `1px solid ${t.border}`, borderRadius: 13, padding: "12px 14px", marginBottom: 8, textAlign: "left" }}>
+            <div style={{ width: 42, height: 42, borderRadius: 12, background: t.accSoft, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>{CATEGORY_ICONS[cat] || "📦"}</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 700 }}>{cat}</div>
+              <div style={{ fontSize: 11.5, color: t.sub, marginTop: 2 }}>{count} mahsulot · {whCount} omborda</div>
+            </div>
+            <span style={{ color: t.sub, flexShrink: 0, display: "flex" }}><Ic n="right" s={16} /></span>
+          </button>
+        ))}
       </div>
     );
   };
