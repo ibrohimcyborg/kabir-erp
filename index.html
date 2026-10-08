@@ -298,6 +298,11 @@ const THEMES = {
   light: { bg: "#F2F2F8", surf: "#FFFFFF", card: "#F8F8FC", border: "#E0E0EE", acc: "#5B52F0", accSoft: "#5B52F015", txt: "#1A1A30", sub: "#6666AA", dim: "#AAAACC", green: "#00B87A", greenS: "#00B87A15", red: "#E53935", redS: "#E5393515", amber: "#F59E0B", amberS: "#F59E0B15", blue: "#0EA5E9", blueS: "#0EA5E915" },
 };
 
+// Sahifalar App ichida e'lon qilingan — har renderda yangi komponent turi bo'ladi va React
+// ularni qaytadan yaratadi (tanlangan kategoriya, filtr kabi ichki holat yo'qoladi).
+// Screen esa barqaror tur: sahifa funksiyasini o'z ichida chaqiradi, holat saqlanib qoladi.
+const Screen = ({ render }) => render();
+
 function App() {
   const [dark, setDark] = useState(() => {
     try { 
@@ -2112,7 +2117,7 @@ function App() {
   // PAGE: STORES
   // ═══════════════════════════════════════════════════════════
   const StoresPage = () => {
-    if (storeProfileId) return <StoreProfile />;
+    if (storeProfileId) return <Screen key={storeProfileId} render={StoreProfile} />;
     return (
       <div className="fade">
         <div style={{ ...s.row, marginBottom: 14 }}>
@@ -2738,13 +2743,13 @@ To'lov uchun:
 
   const renderPage = () => {
     switch (tab) {
-      case "home": return <HomePage />;
-      case "warehouse": return <WarehousePage />;
-      case "stores": return <StoresPage />;
-      case "orders": return <OrdersPage />;
-      case "debts": return <DebtsPage />;
-      case "report": return <ReportPage />;
-      default: return <HomePage />;
+      case "home": return <Screen key="home" render={HomePage} />;
+      case "warehouse": return <Screen key="warehouse" render={WarehousePage} />;
+      case "stores": return <Screen key="stores" render={StoresPage} />;
+      case "orders": return <Screen key="orders" render={OrdersPage} />;
+      case "debts": return <Screen key="debts" render={DebtsPage} />;
+      case "report": return <Screen key="report" render={ReportPage} />;
+      default: return <Screen key="home" render={HomePage} />;
     }
   };
 
