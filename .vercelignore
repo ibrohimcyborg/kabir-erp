@@ -1,0 +1,10 @@
+# Vercel bu fayllarni CHOP ETMAYDI (repoda qoladi, kabir-erp.vercel.app da ochilmaydi).
+# ⚠ FAYL NOMI NUQTA BILAN BOSHLANADI. Nuqtasiz bo'lsa Vercel umuman o'qimaydi
+#   va ichidagi hamma qoida jim ishlamaydi (Tilla ERP da 2026-09-18 gacha shunday bo'lgan).
+# ⚠ GitHub'da baribir ko'rinadi — repo PUBLIC.
+
+*.md
+mockups/
+__pycache__/
+
+# Chop ETILADI (tegmang): index.html, api/, requirements.txt
