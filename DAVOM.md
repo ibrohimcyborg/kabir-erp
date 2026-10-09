@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.05 — PRODDA** (2026-10-09)
+**Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.06 — PRODDA** (2026-10-09)
 
 ## ⏳ YARIM QOLDI — iOS uslubidagi yangi dizayn (2026-10-09) — HOZIRGI ASOSIY ISH
 
@@ -39,8 +39,16 @@ Ibrohim (2026-10-09): «hamma o'zgarishni asosiy saytda qilib yubor» + «umuman
 ✅ v1.04 — menyular: header shaffof + blur, PC `nav.pc-only` segment, o'ng tugmalar dumaloq,
            `mobile-nav` iOS tab bar (`Ic` ga ixtiyoriy `f` — to'ldirish rangi). PRODDA.
 ✅ v1.05 — telefon Bosh (`HomePage`) maketdagidek; `pcCommon()` dan F/hair/Tile qayta ishlatildi. PRODDA.
-Keyingi qadam: v1.06 — umumiy: emoji, KATTA HARFLI yorliqlar (`Lbl`, `Sec`), rangli ramkali
-           kartochkalar, `s.card`/`s.iBtn`/`s.inp`, login ekrani va body foni ranglari.
+✅ v1.06 — umumiy: UI'dan emoji olindi (PAYMENT_INFO/ORDER_STATUS `emoji` maydoni qoldi, UI'da
+           ishlatilmaydi); sahifa sarlavhalari 30px; `Lbl`/`Sec` KATTA HARFsiz; `s.inp` kulrang
+           to'ldirilgan (16px — iPhone'da zoom bo'lmaydi); `s.iBtn` dumaloq; `s.card` hairline+soya;
+           `Btn` 16px/600; login ekrani `t` ranglarida; body foni `t.bg`. Yangi ikonkalar: print,
+           camera, lock. PRODDA.
+           Tegilmagan (ataylab): log()/activity matnlari, alert/confirm matnlari, chop etiladigan
+           yorliq/garantiya HTML, Telegram xabari, mijoz QR sahifasi (eski qorong'i ranglar),
+           chop etish oynasi tugmalari (#7B73FF), planshet sidebar CSS ranglari (#101018),
+           do'kon profilidagi gradient sarlavha.
+Keyingi qadam: Ibrohim prodda tekshiradi → tuzatishlar BITTA-BITTA (v1.07…).
 
 ## ✅ PC versiya (2026-10-09) — v1.01 prodda
 

@@ -2,6 +2,14 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.06 — 2026-10-09 — umumiy iOS tozalash
+
+Ilova ekranlaridan emoji olib tashlandi (sarlavha, tugma, ro'yxat, holat yorliqlari); sahifa
+sarlavhalari katta; KATTA HARFLI mayda yorliqlar oddiy yozuvga; maydonlar iOS kabi kulrang
+to'ldirilgan, ramkasiz; rangli ramkali kartochkalar oddiy; tugmalar va oyna yumshoqroq; login
+ekrani tanlangan rejim ranglarida. Bazaga yoziladigan matnlar, chop etiladigan yorliq/garantiya,
+Telegram xabari va mijoz QR sahifasi o'zgarmagan.
+
 ## v1.05 — 2026-10-09 — telefon Bosh iOS uslubida
 
 Telefondagi Bosh: katta sarlavha, ogohlantirishlar ro'yxat ko'rinishida rangli plitka bilan,

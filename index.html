@@ -1,4 +1,4 @@
-<!-- v1.05 -->
+<!-- v1.06 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -106,7 +106,7 @@ input[type=number]{-moz-appearance:textfield}
 <div id="root"></div>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.05";
+const APP_VER = "v1.06";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -308,6 +308,9 @@ const Ic = ({ n, s = 20, f }) => {
     case "bag": return <svg {...p}><path d="M5.5 8h13l-1 12.5h-11ZM9 8V6.5a3 3 0 0 1 6 0V8" /></svg>;
     case "banknote": return <svg {...p}><path d="M4.5 6h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-15a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2ZM9.4 12a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0M6 9.5h.01M18 14.5h.01" /></svg>;
     case "undo": return <svg {...p}><path d="M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11" /></svg>;
+    case "print": return <svg {...p}><path d="M7 9V4h10v5M7 17H5.5A1.5 1.5 0 0 1 4 15.5v-5A1.5 1.5 0 0 1 5.5 9h13a1.5 1.5 0 0 1 1.5 1.5v5a1.5 1.5 0 0 1-1.5 1.5H17M7 14h10v6H7Z" /></svg>;
+    case "camera": return <svg {...p}><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.3l1.5-2.5h5.4L16.2 7h2.3A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5ZM8.6 12.8a3.4 3.4 0 1 0 6.8 0a3.4 3.4 0 1 0 -6.8 0" /></svg>;
+    case "lock": return <svg {...p}><path d="M6.5 11h11A1.5 1.5 0 0 1 19 12.5v6a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 18.5v-6A1.5 1.5 0 0 1 6.5 11ZM8.5 11V8a3.5 3.5 0 0 1 7 0v3" /></svg>;
     default: return null;
   }
 };
@@ -482,8 +485,8 @@ function App() {
   useEffect(() => { if (user) loadAll(); }, [user, loadAll]);
 
   useEffect(() => {
-    document.body.style.background = dark ? "#080810" : "#F2F2F8";
-    document.body.style.color = dark ? "#EEEEF8" : "#1A1A30";
+    document.body.style.background = t.bg;
+    document.body.style.color = t.txt;
   }, [dark]);
 
   const doRefresh = async () => {
@@ -843,19 +846,19 @@ function App() {
     hdr: { background: t.surf, borderBottom: `1px solid ${t.border}`, padding: "13px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50 },
     body: { padding: 16, paddingBottom: 20 },
     nav: { position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 430, background: t.surf, borderTop: `1px solid ${t.border}`, display: "flex", padding: "8px 0 14px", zIndex: 100 },
-    card: { background: t.card, border: `1px solid ${t.border}`, borderRadius: 14, padding: 14, marginBottom: 10 },
+    card: { background: t.card, border: `0.5px solid ${t.border}`, borderRadius: 14, padding: 14, marginBottom: 10, boxShadow: dark ? "none" : "0 1px 2px rgba(0,0,0,0.04)" },
     overlay: { position: "fixed", inset: 0, background: "#00000099", zIndex: 9999, display: "flex", alignItems: "flex-end", justifyContent: "center" },
-    sheet: { background: t.surf, borderRadius: "20px 20px 0 0", width: "100%", maxWidth: "100%", maxHeight: "90vh", overflowY: "auto", padding: 20, borderTop: `1px solid ${t.border}`, position: "relative", zIndex: 10000 },
+    sheet: { background: t.surf, borderRadius: "14px 14px 0 0", width: "100%", maxWidth: "100%", maxHeight: "90vh", overflowY: "auto", padding: 20, position: "relative", zIndex: 10000 },
     row: { display: "flex", justifyContent: "space-between", alignItems: "center" },
-    inp: { width: "100%", background: t.card, border: `1px solid ${t.border}`, borderRadius: 10, padding: "11px 13px", color: t.txt, fontSize: 14, marginBottom: 11 },
-    iBtn: { width: 36, height: 36, borderRadius: 10, background: t.card, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: t.txt },
+    inp: { width: "100%", background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), border: "none", borderRadius: 10, padding: "12px 13px", color: t.txt, fontSize: 16, marginBottom: 11 },
+    iBtn: { width: 36, height: 36, borderRadius: 18, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), display: "flex", alignItems: "center", justifyContent: "center", color: t.acc },
     mono: { fontVariantNumeric: "tabular-nums", letterSpacing: "-0.01em" },
     numXl: { fontWeight: 700, fontVariantNumeric: "tabular-nums", letterSpacing: "-0.02em" },
   };
 
-  const Lbl = ({ children }) => <label style={{ fontSize: 11, fontWeight: 600, color: t.sub, textTransform: "uppercase", letterSpacing: ".5px", marginBottom: 5, display: "block" }}>{children}</label>;
-  const Btn = ({ bg, c = "#fff", mt = 0, onClick, children, disabled, small }) => <button disabled={disabled} style={{ width: "100%", background: disabled ? t.border : bg, color: c, borderRadius: 11, padding: small ? "9px" : "13px", fontWeight: 700, fontSize: small ? 12 : 14, marginTop: mt, opacity: disabled ? 0.5 : 1 }} onClick={onClick}>{children}</button>;
-  const Sec = ({ children, right, mt = 16 }) => <div style={{ fontSize: 11, fontWeight: 700, color: t.sub, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: 9, marginTop: mt, display: "flex", justifyContent: "space-between", alignItems: "center" }}><span>{children}</span>{right}</div>;
+  const Lbl = ({ children }) => <label style={{ fontSize: 13, fontWeight: 500, color: t.sub, marginBottom: 6, display: "block" }}>{children}</label>;
+  const Btn = ({ bg, c = "#fff", mt = 0, onClick, children, disabled, small }) => <button disabled={disabled} style={{ width: "100%", background: disabled ? t.border : bg, color: c, borderRadius: 12, padding: small ? "10px" : "14px", fontWeight: 600, fontSize: small ? 13 : 16, marginTop: mt, opacity: disabled ? 0.5 : 1 }} onClick={onClick}>{children}</button>;
+  const Sec = ({ children, right, mt = 16 }) => <div style={{ fontSize: 17, fontWeight: 600, color: t.txt, letterSpacing: "-0.01em", marginBottom: 10, marginTop: mt + 4, display: "flex", justifyContent: "space-between", alignItems: "center" }}><span>{children}</span>{right}</div>;
   const Div = () => <div style={{ borderTop: `1px solid ${t.border}`, margin: "11px 0" }} />;
   const Badge = ({ c, bg, children }) => <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 9px", borderRadius: 20, fontSize: 10, fontWeight: 700, color: c, background: bg }}>{children}</span>;
   const NumInp = ({ value, onChange, ...rest }) => (
@@ -907,15 +910,15 @@ function App() {
       );
     }
     return (
-      <div style={{ background: "#080810", minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
-        <div style={{ width: 70, height: 70, borderRadius: 20, background: "linear-gradient(135deg,#7B73FF,#00B8D9)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 32, marginBottom: 16 }}>K</div>
-        <div style={{ fontSize: 22, fontWeight: 800, color: "#EEEEF8", marginBottom: 4 }}>Kabir ERP</div>
-        <div style={{ fontSize: 13, color: "#7777AA", marginBottom: 32 }}>Kabir Exclusive</div>
+      <div style={{ background: t.bg, minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
+        <div style={{ width: 70, height: 70, borderRadius: 18, background: `linear-gradient(135deg, ${t.acc}, ${t.blue})`, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 32, marginBottom: 16 }}>K</div>
+        <div style={{ fontSize: 28, fontWeight: 700, color: t.txt, marginBottom: 4 }}>Kabir ERP</div>
+        <div style={{ fontSize: 15, color: t.sub, marginBottom: 32 }}>Kabir Exclusive</div>
         <div style={{ width: "100%", maxWidth: 320 }}>
-          <input autoCapitalize="none" autoCorrect="off" spellCheck="false" style={{ width: "100%", background: "#181824", border: "1px solid #22223A", borderRadius: 11, padding: "13px 15px", color: "#EEEEF8", fontSize: 15, marginBottom: 12, display: "block" }} placeholder="Login" value={loginU} onChange={e => setLoginU(e.target.value)} onKeyDown={e => e.key === "Enter" && doLogin()} />
-          <input type="password" style={{ width: "100%", background: "#181824", border: "1px solid #22223A", borderRadius: 11, padding: "13px 15px", color: "#EEEEF8", fontSize: 15, marginBottom: loginErr ? 8 : 16, display: "block" }} placeholder="Parol" value={loginP} onChange={e => setLoginP(e.target.value)} onKeyDown={e => e.key === "Enter" && doLogin()} />
-          {loginErr && <div style={{ color: "#FF4D6D", fontSize: 13, marginBottom: 12, textAlign: "center" }}>{loginErr}</div>}
-          <button onClick={doLogin} disabled={loginLoading} style={{ width: "100%", background: "#7B73FF", color: "#fff", borderRadius: 11, padding: "14px", fontWeight: 700, fontSize: 15, border: "none", cursor: "pointer", opacity: loginLoading ? 0.7 : 1 }}>{loginLoading ? "Kirilmoqda..." : "Kirish"}</button>
+          <input autoCapitalize="none" autoCorrect="off" spellCheck="false" style={{ width: "100%", background: t.card, border: `0.5px solid ${t.border}`, borderRadius: 12, padding: "14px 15px", color: t.txt, fontSize: 16, marginBottom: 12, display: "block" }} placeholder="Login" value={loginU} onChange={e => setLoginU(e.target.value)} onKeyDown={e => e.key === "Enter" && doLogin()} />
+          <input type="password" style={{ width: "100%", background: t.card, border: `0.5px solid ${t.border}`, borderRadius: 12, padding: "14px 15px", color: t.txt, fontSize: 16, marginBottom: loginErr ? 8 : 16, display: "block" }} placeholder="Parol" value={loginP} onChange={e => setLoginP(e.target.value)} onKeyDown={e => e.key === "Enter" && doLogin()} />
+          {loginErr && <div style={{ color: t.red, fontSize: 13, marginBottom: 12, textAlign: "center" }}>{loginErr}</div>}
+          <button onClick={doLogin} disabled={loginLoading} style={{ width: "100%", background: t.acc, color: "#fff", borderRadius: 12, padding: "14px", fontWeight: 600, fontSize: 16, border: "none", cursor: "pointer", opacity: loginLoading ? 0.7 : 1 }}>{loginLoading ? "Kirilmoqda..." : "Kirish"}</button>
         </div>
       </div>
     );
@@ -1061,14 +1064,14 @@ function App() {
             }} />
             <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
               <div onClick={() => document.getElementById("imgInput").click()} style={{ width: 72, height: 72, borderRadius: 12, background: f.image ? "transparent" : t.card, border: `2px dashed ${f.image ? t.acc : t.border}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", overflow: "hidden", flexShrink: 0 }}>
-                {f.image ? <img src={f.image} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <span style={{ fontSize: 28 }}>📷</span>}
+                {f.image ? <img src={f.image} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <span style={{ color: t.sub, display: "flex" }}><Ic n="camera" s={28} /></span>}
               </div>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>Mahsulot rasmi</div>
                 <button onClick={() => document.getElementById("imgInput").click()} style={{ background: t.accSoft, color: t.acc, borderRadius: 8, padding: "6px 12px", fontSize: 12, fontWeight: 700 }}>
-                  {f.image ? "✏️ O'zgartirish" : "📷 Rasm qo'shish"}
+                  {f.image ? "O'zgartirish" : "Rasm qo'shish"}
                 </button>
-                {f.image && <button onClick={() => setF(p => ({ ...p, image: "" }))} style={{ background: t.redS, color: t.red, borderRadius: 8, padding: "6px 12px", fontSize: 12, fontWeight: 700, marginLeft: 6 }}>🗑️</button>}
+                {f.image && <button onClick={() => setF(p => ({ ...p, image: "" }))} style={{ background: t.redS, color: t.red, borderRadius: 8, padding: "6px 12px", fontSize: 12, fontWeight: 700, marginLeft: 6, display: "inline-flex", alignItems: "center" }}><Ic n="trash" s={15} /></button>}
               </div>
             </div>
           </div>
@@ -1086,20 +1089,20 @@ function App() {
               <NumInp value={f.initialStock} onChange={v => setF(p => ({ ...p, initialStock: v }))} placeholder="Masalan: 10" />
               {+f.initialStock > 0 && f.sku && (
                 <div style={{ background: t.accSoft, borderRadius: 9, padding: "8px 11px", marginTop: -4, marginBottom: 11, fontSize: 11, color: t.acc }}>
-                  📦 ID: <b>{f.sku}-#0001</b> → <b>{f.sku}-#{pad4(+f.initialStock)}</b>
+                  ID: <b>{f.sku}-#0001</b> → <b>{f.sku}-#{pad4(+f.initialStock)}</b>
                 </div>
               )}
             </>
           )}
           {isOmborRole ? (
             <div style={{ background: t.amberS, border: `1px dashed ${t.amber}55`, borderRadius: 11, padding: 12, marginTop: 14, marginBottom: 4, fontSize: 12, color: t.amber, display: "flex", gap: 8, alignItems: "flex-start" }}>
-              <span>🔒</span>
+              <span style={{ display: "flex" }}><Ic n="lock" s={15} /></span>
               <span>Narx maydonlari sizda ko'rinmaydi — mahsulot narxsiz saqlanadi va keyinroq superadmin/admin tomonidan to'ldiriladi.</span>
             </div>
           ) : (
             <>
               <div style={{ borderTop: `2px dashed ${t.border}`, margin: "14px 0 12px", paddingTop: 14 }}>
-                <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 4 }}>💰 Tannarx tarkibi</div>
+                <div style={{ fontSize: 14, fontWeight: 800, marginBottom: 4 }}>Tannarx tarkibi</div>
                 <div style={{ fontSize: 12, color: t.sub, marginBottom: 14 }}>Har bir xarajatni alohida yozing</div>
                 {f.costItems.map((item, i) => (
                   <div key={item.id} style={{ background: t.card, border: `1px solid ${editingCostId === item.id ? t.acc : t.border}`, borderRadius: 10, padding: "9px 12px", marginBottom: 7 }}>
@@ -1142,7 +1145,7 @@ function App() {
                 </div>
                 {totalCost > 0 && (
                   <div style={{ background: t.accSoft, borderRadius: 11, padding: 12, marginBottom: 12 }}>
-                    <div style={s.row}><span style={{ fontSize: 12, color: t.sub }}>JAMI TANNARX</span><span style={{ ...s.mono, fontWeight: 800, color: t.acc, fontSize: 16 }}>{fmt(totalCost)}</span></div>
+                    <div style={s.row}><span style={{ fontSize: 12, color: t.sub }}>Jami tannarx</span><span style={{ ...s.mono, fontWeight: 800, color: t.acc, fontSize: 16 }}>{fmt(totalCost)}</span></div>
                   </div>
                 )}
               </div>
@@ -1150,9 +1153,9 @@ function App() {
                 <div><Lbl>Ustama %</Lbl><NumInp value={f.markup} onChange={onMarkupChange} placeholder="30" /></div>
                 <div><Lbl>Sotuv narxi ($)</Lbl><NumInp value={f.salePrice} onChange={onPriceChange} placeholder="60" /></div>
               </div>
-              <div style={{ fontSize: 11, color: t.sub, marginTop: -4, marginBottom: 12 }}>💡 Birortasini yozsangiz, ikkinchisi avtomatik</div>
+              <div style={{ fontSize: 11, color: t.sub, marginTop: -4, marginBottom: 12 }}>Birortasini yozsangiz, ikkinchisi avtomatik</div>
               {totalCost > 0 && price > 0 && (
-                <div style={{ background: `${t.green}12`, border: `1px solid ${t.green}30`, borderRadius: 12, padding: 14, marginBottom: 12 }}>
+                <div style={{ background: `${t.green}12`, borderRadius: 12, padding: 14, marginBottom: 12 }}>
                   <div style={{ ...s.row, marginBottom: 8 }}><span style={{ fontSize: 12, color: t.sub }}>Tannarx</span><span style={{ ...s.mono, fontWeight: 700 }}>{fmt(totalCost)}</span></div>
                   <div style={{ ...s.row, marginBottom: 8 }}><span style={{ fontSize: 12, color: t.sub }}>Sotuv narxi</span><span style={{ ...s.mono, fontWeight: 700, color: t.acc }}>{fmt(price)}</span></div>
                   <div style={{ borderTop: `1px dashed ${t.border}`, paddingTop: 10 }}>
@@ -1208,7 +1211,7 @@ function App() {
       <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
-            <span style={{ fontSize: 17, fontWeight: 800 }}>➕ Omborga qo'shish</span>
+            <span style={{ fontSize: 17, fontWeight: 700 }}>Omborga qo'shish</span>
             <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
           </div>
           <div style={{ background: t.accSoft, borderRadius: 11, padding: 13, marginBottom: 14 }}>
@@ -1219,8 +1222,8 @@ function App() {
           <input type="date" style={s.inp} value={addedDate} onChange={e => setAddedDate(e.target.value)} />
           <Lbl>Joylashuv</Lbl>
           <select style={s.inp} value={location} onChange={e => setLocation(e.target.value)}>
-            <option value="warehouse">📦 Ombor</option>
-            {stores.map(st => <option key={st.id} value={st.id}>🏪 {st.name}</option>)}
+            <option value="warehouse">Ombor</option>
+            {stores.map(st => <option key={st.id} value={st.id}>{st.name}</option>)}
           </select>
           <Lbl>Nechta qo'shasiz</Lbl>
           <NumInp value={qty} onChange={setQty} placeholder="Masalan: 10" />
@@ -1230,10 +1233,10 @@ function App() {
               <div style={{ ...s.mono, color: t.acc, fontWeight: 700 }}>
                 {generateUnitId(product.sku, pad4(existingCount + 1))} → {generateUnitId(product.sku, pad4(existingCount + (+qty)))}
               </div>
-              {location !== "warehouse" && <div style={{ marginTop: 8, padding: "7px 10px", background: t.amberS, borderRadius: 8, fontSize: 11, color: t.amber }}>⚠️ Vitrinaga to'g'ridan qo'shiladi</div>}
+              {location !== "warehouse" && <div style={{ marginTop: 8, padding: "7px 10px", background: t.amberS, borderRadius: 8, fontSize: 11, color: t.amber }}>Vitrinaga to'g'ridan qo'shiladi</div>}
             </div>
           )}
-          <Btn bg={t.acc} onClick={add} disabled={saving}>{saving ? "Saqlanmoqda..." : "✓ Qo'shish"}</Btn>
+          <Btn bg={t.acc} onClick={add} disabled={saving}>{saving ? "Saqlanmoqda..." : "Qo'shish"}</Btn>
         </div>
       </div>
     );
@@ -1309,10 +1312,10 @@ function App() {
       const trimmed = scanInput.trim();
       if (!trimmed) return;
       const unit = units.find(u => u.unitId === trimmed && u.location === "warehouse" && u.status === "available");
-      if (!unit) { setScanErr(`❌ ${trimmed} — omborda yo'q!`); return; }
-      if (scannedIds.find(s => s.unitId === trimmed)) { setScanErr("⚠️ Allaqachon qo'shilgan!"); return; }
+      if (!unit) { setScanErr(`${trimmed} — omborda yo'q`); return; }
+      if (scannedIds.find(s => s.unitId === trimmed)) { setScanErr("Allaqachon qo'shilgan"); return; }
       const prod = products.find(p => p.id === unit.productId);
-      if (prod?.priceIncomplete) { setScanErr(`⚠️ ${prod.name} — narxi hali to'ldirilmagan, jo'natib bo'lmaydi`); return; }
+      if (prod?.priceIncomplete) { setScanErr(`${prod.name} — narxi hali to'ldirilmagan, jo'natib bo'lmaydi`); return; }
       setScannedIds(prev => [...prev, { ...unit, prodName: prod?.name || "—" }]);
       setScanInput("");
       setScanErr("");
@@ -1326,7 +1329,7 @@ function App() {
               <span style={{ fontSize: 17, fontWeight: 800 }}>Jo'natish</span>
               <button style={s.iBtn} onClick={() => setModal(null)}><Ic n="x" s={16} /></button>
             </div>
-            <div style={{ textAlign: "center", padding: 30, color: t.sub, fontSize: 13 }}>{stores.length === 0 ? "⚠️ Avval do'kon qo'shing" : "⚠️ Avval mahsulot qo'shing"}</div>
+            <div style={{ textAlign: "center", padding: 30, color: t.sub, fontSize: 13 }}>{stores.length === 0 ? "Avval do'kon qo'shing" : "Avval mahsulot qo'shing"}</div>
           </div>
         </div>
       );
@@ -1384,7 +1387,7 @@ function App() {
       <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
-            <span style={{ fontSize: 17, fontWeight: 800 }}>📦 Vitrinaga jo'natish</span>
+            <span style={{ fontSize: 17, fontWeight: 700 }}>Vitrinaga jo'natish</span>
             <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
           </div>
           <Lbl>Jo'natish sanasi</Lbl>
@@ -1399,8 +1402,8 @@ function App() {
           {product && <div style={{ background: t.accSoft, borderRadius: 10, padding: "10px 12px", marginBottom: 11, fontSize: 12 }}><div style={s.row}><span style={{ color: t.sub }}>Omborda:</span><span style={{ ...s.mono, fontWeight: 800, color: t.acc }}>{availUnits.length} dona</span></div></div>}
           {/* Scanner/Qo'lda rejimi */}
           <div style={{ display: "flex", gap: 6, marginBottom: 11 }}>
-            <button onClick={() => { setScanMode(false); setScannedIds([]); }} style={{ flex: 1, padding: "9px", borderRadius: 9, background: !scanMode ? t.acc : t.card, color: !scanMode ? "#fff" : t.sub, border: `1px solid ${!scanMode ? t.acc : t.border}`, fontWeight: 700, fontSize: 12 }}>📋 Qo'lda</button>
-            <button onClick={() => setScanMode(true)} style={{ flex: 1, padding: "9px", borderRadius: 9, background: scanMode ? t.acc : t.card, color: scanMode ? "#fff" : t.sub, border: `1px solid ${scanMode ? t.acc : t.border}`, fontWeight: 700, fontSize: 12 }}>📷 Scanner</button>
+            <button onClick={() => { setScanMode(false); setScannedIds([]); }} style={{ flex: 1, padding: "9px", borderRadius: 9, background: !scanMode ? t.acc : t.card, color: !scanMode ? "#fff" : t.sub, border: `1px solid ${!scanMode ? t.acc : t.border}`, fontWeight: 700, fontSize: 12 }}>Qo'lda</button>
+            <button onClick={() => setScanMode(true)} style={{ flex: 1, padding: "9px", borderRadius: 9, background: scanMode ? t.acc : t.card, color: scanMode ? "#fff" : t.sub, border: `1px solid ${scanMode ? t.acc : t.border}`, fontWeight: 700, fontSize: 12 }}>Scanner</button>
           </div>
 
           {!scanMode ? (
@@ -1433,12 +1436,12 @@ function App() {
                       <button onClick={() => setTransferList(prev => prev.filter((_, j) => j !== i))} style={{ color:t.red, padding:4 }}><Ic n="trash" s={14}/></button>
                     </div>
                   ))}
-                  <div style={{ marginTop:8, fontSize:12, color:t.amber }}>⚠️ Jami: {transferList.reduce((s,x)=>s+x.qty,0)} dona</div>
+                  <div style={{ marginTop:8, fontSize:12, color:t.amber }}>Jami: {transferList.reduce((s,x)=>s+x.qty,0)} dona</div>
                 </div>
               )}
 
               <Btn bg={t.acc} onClick={send} disabled={(transferList.length === 0 && (!product || !qtyN)) || saving}>
-                {saving ? "Jo'natilmoqda..." : transferList.length > 0 ? `✓ Jo'natish (${transferList.reduce((s,x)=>s+x.qty,0)} dona)` : "✓ Jo'natish"}
+                {saving ? "Jo'natilmoqda..." : transferList.length > 0 ? `Jo'natish (${transferList.reduce((s,x)=>s+x.qty,0)} dona)` : "Jo'natish"}
               </Btn>
             </>
           ) : (
@@ -1473,7 +1476,7 @@ function App() {
                   ))}
                 </div>
               )}
-              <Btn bg={t.acc} onClick={send} disabled={scannedIds.length === 0 || saving}>{saving ? "Jo'natilmoqda..." : `✓ Jo'natish (${scannedIds.length} dona)`}</Btn>
+              <Btn bg={t.acc} onClick={send} disabled={scannedIds.length === 0 || saving}>{saving ? "Jo'natilmoqda..." : `Jo'natish (${scannedIds.length} dona)`}</Btn>
             </>
           )}
         </div>
@@ -1556,7 +1559,7 @@ function App() {
       <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
-            <span style={{ fontSize: 17, fontWeight: 800 }}>💵 Sotuv yozish</span>
+            <span style={{ fontSize: 17, fontWeight: 700 }}>Sotuv yozish</span>
             <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
           </div>
           <Lbl>Do'kon</Lbl>
@@ -1571,7 +1574,7 @@ function App() {
                 <option value="">— tanlang —</option>
                 {storeProds.map(({ product: p, units: us }) => <option key={p.id} value={p.id}>{p.name} ({us.length} dona)</option>)}
               </select>
-              {storeProds.length === 0 && <div style={{ background: t.amberS, borderRadius: 9, padding: 10, marginBottom: 11, fontSize: 12, color: t.amber }}>⚠️ Vitrinada yo'q.</div>}
+              {storeProds.length === 0 && <div style={{ background: t.amberS, borderRadius: 9, padding: 10, marginBottom: 11, fontSize: 12, color: t.amber }}>Vitrinada yo'q.</div>}
             </>
           )}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 9 }}>
@@ -1594,12 +1597,12 @@ function App() {
           <Lbl>Sana</Lbl>
           <input type="date" style={s.inp} value={date} onChange={e => setDate(e.target.value)} />
           <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 11, padding: 12, marginBottom: 11 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: t.sub, marginBottom: 10, textTransform: "uppercase" }}>To'lov holati</div>
+            <div style={{ fontSize: 13, fontWeight: 500, color: t.sub, marginBottom: 10 }}>To'lov holati</div>
             <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-              <button onClick={() => setIsPaid(true)} style={{ flex: 1, padding: "10px", borderRadius: 9, background: isPaid ? t.green : t.card, border: `1.5px solid ${isPaid ? t.green : t.border}`, color: isPaid ? "#fff" : t.sub, fontWeight: 700, fontSize: 13 }}>✓ To'landi</button>
-              <button onClick={() => setIsPaid(false)} style={{ flex: 1, padding: "10px", borderRadius: 9, background: !isPaid ? t.red : t.card, border: `1.5px solid ${!isPaid ? t.red : t.border}`, color: !isPaid ? "#fff" : t.sub, fontWeight: 700, fontSize: 13 }}>📝 Qarzga</button>
+              <button onClick={() => setIsPaid(true)} style={{ flex: 1, padding: "10px", borderRadius: 9, background: isPaid ? t.green : t.card, border: `1.5px solid ${isPaid ? t.green : t.border}`, color: isPaid ? "#fff" : t.sub, fontWeight: 700, fontSize: 13 }}>To'landi</button>
+              <button onClick={() => setIsPaid(false)} style={{ flex: 1, padding: "10px", borderRadius: 9, background: !isPaid ? t.red : t.card, border: `1.5px solid ${!isPaid ? t.red : t.border}`, color: !isPaid ? "#fff" : t.sub, fontWeight: 700, fontSize: 13 }}>Qarzga</button>
             </div>
-            {isPaid && <select style={{ ...s.inp, marginBottom: 0 }} value={payMethod} onChange={e => setPayMethod(e.target.value)}>{Object.entries(PAYMENT_INFO).map(([k, v]) => <option key={k} value={k}>{v.emoji} {v.label}</option>)}</select>}
+            {isPaid && <select style={{ ...s.inp, marginBottom: 0 }} value={payMethod} onChange={e => setPayMethod(e.target.value)}>{Object.entries(PAYMENT_INFO).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}</select>}
             {!isPaid && (
               <div>
                 <Lbl>To'lash muddati</Lbl>
@@ -1613,7 +1616,7 @@ function App() {
               {canSee("profit") && <div style={s.row}><span style={{ fontSize: 12, color: t.sub }}>Foyda</span><span style={{ ...s.mono, fontWeight: 700, color: t.green }}>{fmt(total - product.cost * qtyN)}</span></div>}
             </div>
           )}
-          <Btn bg={isPaid ? t.green : t.amber} onClick={sell} disabled={!product || saving}>{saving ? "Saqlanmoqda..." : isPaid ? "✓ Tasdiqlash" : "📝 Qarzga"}</Btn>
+          <Btn bg={isPaid ? t.green : t.amber} onClick={sell} disabled={!product || saving}>{saving ? "Saqlanmoqda..." : isPaid ? "Tasdiqlash" : "Qarzga"}</Btn>
         </div>
       </div>
     );
@@ -1660,7 +1663,7 @@ function App() {
       <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
-            <span style={{ fontSize: 17, fontWeight: 800 }}>💰 Pul qabul qilish</span>
+            <span style={{ fontSize: 17, fontWeight: 700 }}>Pul qabul qilish</span>
             <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
           </div>
           <div style={{ background: t.card, borderRadius: 12, padding: 14, marginBottom: 14 }}>
@@ -1673,10 +1676,10 @@ function App() {
           <Lbl>Olingan summa</Lbl>
           <NumInp value={amount} onChange={setAmount} placeholder="0" />
           <Lbl>To'lov usuli</Lbl>
-          <select style={s.inp} value={method} onChange={e => setMethod(e.target.value)}>{Object.entries(PAYMENT_INFO).map(([k, v]) => <option key={k} value={k}>{v.emoji} {v.label}</option>)}</select>
+          <select style={s.inp} value={method} onChange={e => setMethod(e.target.value)}>{Object.entries(PAYMENT_INFO).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}</select>
           <Lbl>Sana</Lbl>
           <input type="date" style={s.inp} value={date} onChange={e => setDate(e.target.value)} />
-          <Btn bg={t.green} onClick={conf} disabled={saving}>{saving ? "Saqlanmoqda..." : `✓ Pul olindi — ${fmt(+amount || 0)}`}</Btn>
+          <Btn bg={t.green} onClick={conf} disabled={saving}>{saving ? "Saqlanmoqda..." : `Pul olindi — ${fmt(+amount || 0)}`}</Btn>
         </div>
       </div>
     );
@@ -1710,13 +1713,13 @@ function App() {
       <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
-            <span style={{ fontSize: 17, fontWeight: 800 }}>↩️ Qaytarish</span>
+            <span style={{ fontSize: 17, fontWeight: 700 }}>Qaytarish</span>
             <button style={s.iBtn} onClick={() => { setModal(null); setSel(null); }}><Ic n="x" s={16} /></button>
           </div>
           <div style={{ background: t.amberS, borderRadius: 11, padding: 12, marginBottom: 14, fontSize: 12, color: t.amber }}><b>{product.name}</b><br />{store.name} → omborga</div>
           <Lbl>Nechta (mavjud: {availUnits.length})</Lbl>
           <NumInp value={qty} onChange={setQty} placeholder="1" />
-          <Btn bg={t.amber} onClick={ret} disabled={saving}>{saving ? "Qaytarilmoqda..." : "✓ Qaytarish"}</Btn>
+          <Btn bg={t.amber} onClick={ret} disabled={saving}>{saving ? "Qaytarilmoqda..." : "Qaytarish"}</Btn>
         </div>
       </div>
     );
@@ -1792,7 +1795,7 @@ function App() {
           {existing && (
             <>
               <Lbl>Status</Lbl>
-              <select style={s.inp} value={f.status} onChange={e => setF(p => ({ ...p, status: e.target.value }))}>{Object.entries(ORDER_STATUS).map(([k, v]) => <option key={k} value={k}>{v.emoji} {v.label}</option>)}</select>
+              <select style={s.inp} value={f.status} onChange={e => setF(p => ({ ...p, status: e.target.value }))}>{Object.entries(ORDER_STATUS).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}</select>
             </>
           )}
           <Btn bg={t.acc} onClick={save} disabled={saving}>{saving ? "Saqlanmoqda..." : existing ? "Saqlash" : "Zakaz qo'shish"}</Btn>
@@ -1809,10 +1812,10 @@ function App() {
       return (
         <div className="fade">
           <div style={{ marginBottom: 20 }}>
-            <div style={{ fontSize: 12, color: t.sub }}>Xush kelibsiz 👋</div>
+            <div style={{ fontSize: 12, color: t.sub }}>Xush kelibsiz</div>
             <div style={{ fontSize: 22, fontWeight: 800 }}>Mebel ERP</div>
           </div>
-          <Empty icon="warehouse" title="Boshlash uchun" desc={"1️⃣ Mahsulot qo'shing\n2️⃣ Do'kon qo'shing\n3️⃣ Vitrinaga jo'nating\n4️⃣ Sotuv yozing"} btnText="Mahsulot qo'shish" onBtn={() => setModal("product")} />
+          <Empty icon="warehouse" title="Boshlash uchun" desc={"1. Mahsulot qo'shing\n2. Do'kon qo'shing\n3. Vitrinaga jo'nating\n4. Sotuv yozing"} btnText="Mahsulot qo'shish" onBtn={() => setModal("product")} />
         </div>
       );
     }
@@ -2148,7 +2151,7 @@ function App() {
         <div className="fade">
           <div style={{ ...s.row, marginBottom: 14 }}>
             <div>
-              <div style={{ fontSize: 22, fontWeight: 800 }}>📦 Ombor</div>
+              <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: "-0.01em" }}>Ombor</div>
               <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: 0 dona</div>
             </div>
           </div>
@@ -2188,7 +2191,7 @@ function App() {
                 <div key={p.id} style={s.card}>
                   <div style={{ display: "flex", gap: 11, alignItems: "flex-start" }}>
                     <div style={{ width: 48, height: 48, borderRadius: 12, background: `${t.acc}22`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, overflow: "hidden", flexShrink: 0 }}>
-                      {p.image ? <img src={p.image} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <span>🪑</span>}
+                      {p.image ? <img src={p.image} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <span style={{ color: t.sub, display: "flex" }}><Ic n="sofa" s={22} /></span>}
                     </div>
                     <div style={{ flex: 1 }}>
                       <div style={{ ...s.row, alignItems: "flex-start" }}>
@@ -2197,7 +2200,7 @@ function App() {
                           <div style={{ fontSize: 11, color: t.sub, marginTop: 2, ...s.mono }}>{p.sku} · {p.category}</div>
                           {p.priceIncomplete && canSee("price") && (
                             <button onClick={() => { setSel({ editProduct: p }); setModal("product"); }} style={{ display: "inline-flex", alignItems: "center", gap: 4, background: t.amberS, color: t.amber, borderRadius: 20, padding: "3px 9px", fontSize: 10.5, fontWeight: 700, marginTop: 6 }}>
-                              ⚠️ NARX YO'Q — to'ldirish
+                              Narx yo'q — to'ldirish
                             </button>
                           )}
                         </div>
@@ -2206,7 +2209,7 @@ function App() {
                           <button onClick={() => { setSel({ editProduct: p }); setModal("product"); }} style={{ background: t.accSoft, color: t.acc, borderRadius: 8, padding: "6px 8px" }}><Ic n="edit" s={13} /></button>
                           <button onClick={() => {
                             const uc = p.allUnits.length;
-                            askConfirm("Mahsulotni o'chirish", `"${p.name}" o'chirilsinmi?${uc > 0 ? `\n\n⚠️ ${uc} ta unit ham o'chiriladi` : ''}`, async () => {
+                            askConfirm("Mahsulotni o'chirish", `"${p.name}" o'chirilsinmi?${uc > 0 ? `\n\n${uc} ta unit ham o'chiriladi` : ''}`, async () => {
                               await db.from("units").delete().eq("product_id", p.id);
                               await db.from("products").delete().eq("id", p.id);
                               setUnits(prev => prev.filter(u => u.productId !== p.id));
@@ -2225,7 +2228,7 @@ function App() {
                       <div style={{ fontSize: 17, fontWeight: 800, color: t.acc, ...s.mono }}>{p.whUnits.length}</div>
                     </div>
                     <div style={{ background: t.blueS, borderRadius: 9, padding: "9px 10px" }}>
-                      <div style={{ fontSize: 10, color: t.sub }}>VITRINADA</div>
+                      <div style={{ fontSize: 12, color: t.sub }}>Vitrinada</div>
                       <div style={{ fontSize: 17, fontWeight: 800, color: t.blue, ...s.mono }}>{p.allUnits.filter(u => u.location !== "warehouse" && u.status === "available").length}</div>
                     </div>
                     <div style={{ background: t.greenS, borderRadius: 9, padding: "9px 10px" }}>
@@ -2240,7 +2243,7 @@ function App() {
                   </div>
                   {canSee("cost") && p.costItems?.length > 0 && (
                     <div style={{ background: t.surf, borderRadius: 9, padding: "9px 11px", marginTop: 10 }}>
-                      <div style={{ fontSize: 10, color: t.sub, fontWeight: 700, marginBottom: 6, textTransform: "uppercase" }}>Tannarx tarkibi</div>
+                      <div style={{ fontSize: 12, color: t.sub, fontWeight: 500, marginBottom: 6 }}>Tannarx tarkibi</div>
                       {p.costItems.map(ci => (
                         <div key={ci.id} style={{ ...s.row, marginBottom: 3, fontSize: 12 }}>
                           <span style={{ color: t.sub }}>{ci.name}</span>
@@ -2262,14 +2265,14 @@ function App() {
                           if (allSel) setSelectedIds(prev => prev.filter(id => !ids.includes(id)));
                           else setSelectedIds(prev => [...new Set([...prev, ...ids])]);
                         }} style={{ fontSize: 11, color: t.acc, fontWeight: 700, background: t.accSoft, borderRadius: 7, padding: "4px 10px" }}>
-                          {p.allUnits.every(u => selectedIds.includes(u.id)) ? "✕ Barchasini olib tashla" : "☑ Hammasini belgilab"}
+                          {p.allUnits.every(u => selectedIds.includes(u.id)) ? "Barchasini olib tashlash" : "Hammasini belgilash"}
                         </button>
                         {selectedIds.filter(id => p.allUnits.find(u => u.id === id)).length > 0 && (
                           <button onClick={() => {
                             const ids = selectedIds.filter(id => p.allUnits.find(u => u.id === id));
                             printYorliq(ids);
                           }} style={{ fontSize: 11, color: "#fff", fontWeight: 700, background: t.acc, borderRadius: 7, padding: "4px 10px" }}>
-                            🖨️ Chiqar ({selectedIds.filter(id => p.allUnits.find(u => u.id === id)).length})
+                            Chiqar ({selectedIds.filter(id => p.allUnits.find(u => u.id === id)).length})
                           </button>
                         )}
                       </div>
@@ -2288,7 +2291,7 @@ function App() {
                               <span style={{ ...s.mono, color: lc, fontWeight: 700 }}>{loc}</span>
                               <div style={{ color: t.sub, fontSize: 10 }}>{dateStr(u.addedAt)}</div>
                             </div>
-                            <button onClick={() => printYorliq([u.id])} style={{ color: t.sub, padding: "2px 4px", fontSize: 13 }}>🖨️</button>
+                            <button onClick={() => printYorliq([u.id])} style={{ color: t.acc, padding: "2px 4px", display: "flex" }} title="Yorliq chiqarish"><Ic n="print" s={16} /></button>
                           </div>
                         );
                       })}
@@ -2307,7 +2310,7 @@ function App() {
       <div className="fade">
         <div style={{ ...s.row, marginBottom: 14 }}>
           <div>
-            <div style={{ fontSize: 22, fontWeight: 800 }}>📦 Ombor</div>
+            <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: "-0.01em" }}>Ombor</div>
             <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {totalUnits} dona</div>
           </div>
           <div style={{ display: "flex", gap: 6 }}>
@@ -2319,7 +2322,7 @@ function App() {
           <div style={{ color: t.sub }}><Ic n="search" s={16} /></div>
           <input style={{ flex: 1, background: "none", color: t.txt, fontSize: 14, border: "none" }} placeholder="Kategoriya qidirish..." value={q} onChange={e => setQ(e.target.value)} />
         </div>
-        <div style={{ fontSize: 11, color: t.sub, fontWeight: 700, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.5 }}>Kategoriyalar</div>
+        <div style={{ fontSize: 13, color: t.sub, fontWeight: 500, marginBottom: 8 }}>Kategoriyalar</div>
         {visibleCategories.map(({ cat, count, whCount }) => (
           <button key={cat} onClick={() => { setSelectedCategory(cat); setQ(""); }} style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, background: t.card, border: `1px solid ${t.border}`, borderRadius: 13, padding: "12px 14px", marginBottom: 8, textAlign: "left" }}>
             <div style={{ width: 42, height: 42, borderRadius: 12, background: t.accSoft, color: t.acc, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Ic n={CATEGORY_ICONS[cat] || "grid"} s={20} /></div>
@@ -2343,7 +2346,7 @@ function App() {
       <div className="fade">
         <div style={{ ...s.row, marginBottom: 14 }}>
           <div>
-            <div style={{ fontSize: 22, fontWeight: 800 }}>🏪 Do'konlar</div>
+            <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: "-0.01em" }}>Do'konlar</div>
             <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {stores.length} ta</div>
           </div>
           {canSee("price") && <button onClick={() => setModal("addstore")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
@@ -2360,9 +2363,9 @@ function App() {
               <button key={store.id} onClick={() => setStoreProfileId(store.id)} className="press" style={{ ...s.card, width: "100%", textAlign: "left" }}>
                 <div style={s.row}>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 15, fontWeight: 700 }}>🏪 {store.name}</div>
-                    {store.address && <div style={{ fontSize: 11, color: t.sub, marginTop: 2 }}>📍 {store.address}</div>}
-                    {store.manager && <div style={{ fontSize: 11, color: t.sub }}>👤 {store.manager}</div>}
+                    <div style={{ fontSize: 15, fontWeight: 700 }}>{store.name}</div>
+                    {store.address && <div style={{ fontSize: 11, color: t.sub, marginTop: 2 }}>{store.address}</div>}
+                    {store.manager && <div style={{ fontSize: 11, color: t.sub }}>{store.manager}</div>}
                   </div>
                   <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
                     {canSee("price") && <button onClick={(e) => {
@@ -2372,7 +2375,7 @@ function App() {
                     }} style={{ background: t.card, color: t.sub, border: `1px solid ${t.border}`, borderRadius: 8, padding: "6px 8px" }}><Ic n="edit" s={13} /></button>}
                     <button onClick={(e) => {
                       e.stopPropagation();
-                      askConfirm("Do'konni o'chirish", `"${store.name}" o'chirilsinmi?${sUnits.length > 0 ? `\n\n⚠️ ${sUnits.length} ta mol omborga qaytariladi` : ''}`, async () => {
+                      askConfirm("Do'konni o'chirish", `"${store.name}" o'chirilsinmi?${sUnits.length > 0 ? `\n\n${sUnits.length} ta mol omborga qaytariladi` : ''}`, async () => {
                         const toReturn = sUnits.map(u => ({ ...u, unit_id: u.unitId, product_id: u.productId, added_at: u.addedAt, location: "warehouse", sent_at: null }));
                         if (toReturn.length > 0) await db.from("units").upsert(toReturn);
                         await db.from("stores").delete().eq("id", store.id);
@@ -2388,7 +2391,7 @@ function App() {
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
                   <div style={{ background: t.blueS, borderRadius: 8, padding: "8px 10px", textAlign: "center" }}>
                     <div style={{ fontSize: 16, fontWeight: 800, color: t.blue, ...s.mono }}>{sUnits.length}</div>
-                    <div style={{ fontSize: 9, color: t.sub }}>VITRINADA</div>
+                    <div style={{ fontSize: 11, color: t.sub }}>Vitrinada</div>
                   </div>
                   <div style={{ background: t.redS, borderRadius: 8, padding: "8px 10px", textAlign: "center" }}>
                     <div style={{ fontSize: 14, fontWeight: 800, color: t.red, ...s.mono }}>{fmtK(sDebt)}</div>
@@ -2446,15 +2449,15 @@ function App() {
         </div>
         <div style={{ background: `linear-gradient(135deg, ${t.acc}, ${t.blue})`, borderRadius: 16, padding: 16, marginBottom: 14, color: "#fff", position: "relative" }}>
           {canSee("price") && <button onClick={() => { setSel({ editStore: store }); setModal("addstore"); }} style={{ position: "absolute", top: 14, right: 14, background: "#ffffff22", borderRadius: 8, padding: "6px 8px", color: "#fff" }}><Ic n="edit" s={14} /></button>}
-          <div style={{ fontSize: 18, fontWeight: 800, marginBottom: 4 }}>🏪 {store.name}</div>
-          {store.address && <div style={{ fontSize: 12, opacity: 0.8 }}>📍 {store.address}</div>}
-          {store.manager && <div style={{ fontSize: 12, opacity: 0.8 }}>👤 {store.manager}{store.phone ? ` · ${store.phone}` : ''}</div>}
+          <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 4 }}>{store.name}</div>
+          {store.address && <div style={{ fontSize: 12, opacity: 0.8 }}>{store.address}</div>}
+          {store.manager && <div style={{ fontSize: 12, opacity: 0.8 }}>{store.manager}{store.phone ? ` · ${store.phone}` : ''}</div>}
           <div style={{ borderTop: "1px solid #ffffff22", margin: "12px 0" }} />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            <div style={{ background: "#ffffff15", borderRadius: 9, padding: 10 }}><div style={{ fontSize: 10, opacity: 0.7 }}>VITRINA QARZI</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(sDebt)}</div></div>
-            <div style={{ background: "#ffffff15", borderRadius: 9, padding: 10 }}><div style={{ fontSize: 10, opacity: 0.7 }}>MIJOZ QARZI</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono, color: custDebt > 0 ? "#FFAAAA" : "#fff" }}>{fmtK(custDebt)}</div></div>
-            <div style={{ background: "#ffffff15", borderRadius: 9, padding: 10 }}><div style={{ fontSize: 10, opacity: 0.7 }}>JAMI SOTUV</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(totalRev)}</div></div>
-            <div style={{ background: "#ffffff15", borderRadius: 9, padding: 10 }}><div style={{ fontSize: 10, opacity: 0.7 }}>OLINGAN PUL</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(totalPaidStore)}</div></div>
+            <div style={{ background: "#ffffff15", borderRadius: 9, padding: 10 }}><div style={{ fontSize: 12, opacity: 0.8 }}>Vitrina qarzi</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(sDebt)}</div></div>
+            <div style={{ background: "#ffffff15", borderRadius: 9, padding: 10 }}><div style={{ fontSize: 12, opacity: 0.8 }}>Mijoz qarzi</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono, color: custDebt > 0 ? "#FFAAAA" : "#fff" }}>{fmtK(custDebt)}</div></div>
+            <div style={{ background: "#ffffff15", borderRadius: 9, padding: 10 }}><div style={{ fontSize: 12, opacity: 0.8 }}>Jami sotuv</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(totalRev)}</div></div>
+            <div style={{ background: "#ffffff15", borderRadius: 9, padding: 10 }}><div style={{ fontSize: 12, opacity: 0.8 }}>Olingan pul</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(totalPaidStore)}</div></div>
           </div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 14 }}>
@@ -2492,7 +2495,7 @@ function App() {
                 </div>
                 <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
                   <button onClick={() => { setSel({ storeId: store.id, productId: pid }); setModal("sell"); }} style={{ flex: 1, background: t.green, color: "#fff", borderRadius: 8, padding: "8px", fontSize: 12, fontWeight: 700 }}>Sotish</button>
-                  <button onClick={() => { setSel({ storeId: store.id, productId: pid }); setModal("return"); }} style={{ background: t.amberS, color: t.amber, borderRadius: 8, padding: "8px 12px", fontSize: 12, fontWeight: 700 }}>↩️ Qaytar</button>
+                  <button onClick={() => { setSel({ storeId: store.id, productId: pid }); setModal("return"); }} style={{ background: t.amberS, color: t.amber, borderRadius: 8, padding: "8px 12px", fontSize: 12, fontWeight: 700 }}>Qaytarish</button>
                 </div>
               </div>
             );
@@ -2511,19 +2514,19 @@ function App() {
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 14, fontWeight: 700 }}>{prod?.name}</div>
                     <div style={{ fontSize: 11, color: t.sub }}>{dateStr(sr.date)} · {sr.qty} dona</div>
-                    {sr.customerName && <div style={{ fontSize: 11, color: t.sub }}>👤 {sr.customerName}</div>}
+                    {sr.customerName && <div style={{ fontSize: 11, color: t.sub }}>{sr.customerName}</div>}
                   </div>
                   <div style={{ textAlign: "right" }}>
                     <div style={{ fontSize: 15, fontWeight: 800, color: sr.paid ? t.green : t.red, ...s.mono }}>{fmt(sr.totalAmount)}</div>
-                    {sr.paid ? <div style={{ fontSize: 10, color: t.green }}>✓ {PAYMENT_INFO[sr.payMethod]?.emoji}</div> : <Badge c={t.red} bg={t.redS}>QARZ: {fmtK(remaining)}</Badge>}
+                    {sr.paid ? <div style={{ fontSize: 10, color: t.green }}>{PAYMENT_INFO[sr.payMethod]?.label || "To'langan"}</div> : <Badge c={t.red} bg={t.redS}>Qarz: {fmtK(remaining)}</Badge>}
                   </div>
                 </div>
-                {!sr.paid && <Btn bg={t.amber} mt={9} small onClick={() => { setSel({ saleId: sr.id }); setModal("pay"); }}>💰 Pul olish</Btn>}
+                {!sr.paid && <Btn bg={t.amber} mt={9} small onClick={() => { setSel({ saleId: sr.id }); setModal("pay"); }}>Pul olish</Btn>}
                 <button onClick={() => {
                   const saleUnitIds = units.filter(u => sr.unitIds?.includes(u.unitId)).map(u => u.id);
                   if(saleUnitIds.length > 0) printGarantiya(saleUnitIds);
                 }} style={{ width: "100%", marginTop: 6, background: t.card, border: `1px solid ${t.border}`, borderRadius: 8, padding: "7px", fontSize: 11, fontWeight: 700, color: t.sub, display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
-                  🖨️ Garantiya taloni
+                  Garantiya taloni
                 </button>
               </div>
             );
@@ -2539,8 +2542,8 @@ function App() {
                 <div style={s.row}>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 14, fontWeight: 700 }}>{prod?.name}</div>
-                    <div style={{ fontSize: 11, color: t.sub }}>{dateStr(pmt.date)} · {PAYMENT_INFO[pmt.method]?.emoji} {PAYMENT_INFO[pmt.method]?.label}</div>
-                    {pmt.customerName && <div style={{ fontSize: 11, color: t.sub }}>👤 {pmt.customerName}</div>}
+                    <div style={{ fontSize: 11, color: t.sub }}>{dateStr(pmt.date)} · {PAYMENT_INFO[pmt.method]?.label}</div>
+                    {pmt.customerName && <div style={{ fontSize: 11, color: t.sub }}>{pmt.customerName}</div>}
                   </div>
                   <div style={{ ...s.mono, fontWeight: 800, color: t.green, fontSize: 15 }}>+{fmt(pmt.amount)}</div>
                 </div>
@@ -2563,7 +2566,7 @@ function App() {
                     <div style={{ fontSize: 13, fontWeight: 700, marginTop: 2 }}>{prod?.name} × {o.qty}</div>
                     {o.note && <div style={{ fontSize: 11, color: t.sub, marginTop: 3, fontStyle: "italic" }}>"{o.note}"</div>}
                   </div>
-                  <Badge c={t[stInfo.color]} bg={t[stInfo.color + "S"]}>{stInfo.emoji} {stInfo.label}</Badge>
+                  <Badge c={t[stInfo.color]} bg={t[stInfo.color + "S"]}>{stInfo.label}</Badge>
                 </div>
                 <div style={{ ...s.row, marginTop: 9, fontSize: 11 }}>
                   <span style={{ color: dl !== null && dl <= 3 ? t.red : t.sub }}>{dateStr(o.deadline)}{dl !== null && ` (${dl < 0 ? `${Math.abs(dl)} kun o'tdi` : `${dl} kun qoldi`})`}</span>
@@ -2591,7 +2594,7 @@ function App() {
       <div className="fade">
         <div style={{ ...s.row, marginBottom: 14 }}>
           <div>
-            <div style={{ fontSize: 22, fontWeight: 800 }}>📋 Zakazlar</div>
+            <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: "-0.01em" }}>Zakazlar</div>
             <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {orders.length} ta</div>
           </div>
           <div style={{ display: "flex", gap: 6 }}>
@@ -2600,7 +2603,7 @@ function App() {
           </div>
         </div>
         <div style={{ display: "flex", gap: 6, overflowX: "auto", marginBottom: 12, paddingBottom: 4 }}>
-          {[{ id: "all", l: "Hammasi" }, ...Object.entries(ORDER_STATUS).map(([k, v]) => ({ id: k, l: `${v.emoji} ${v.label}` }))].map(x => (
+          {[{ id: "all", l: "Hammasi" }, ...Object.entries(ORDER_STATUS).map(([k, v]) => ({ id: k, l: v.label }))].map(x => (
             <button key={x.id} onClick={() => setFilter(x.id)} style={{ padding: "7px 14px", borderRadius: 18, background: filter === x.id ? t.acc : t.card, color: filter === x.id ? "#fff" : t.sub, fontSize: 12, fontWeight: 700, border: `1px solid ${filter === x.id ? t.acc : t.border}`, whiteSpace: "nowrap", flexShrink: 0 }}>{x.l}</button>
           ))}
         </div>
@@ -2618,10 +2621,10 @@ function App() {
                 <div style={{ flex: 1 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
                     <span style={{ ...s.mono, fontSize: 13, color: t.acc, fontWeight: 800 }}>{o.orderId}</span>
-                    <Badge c={t[stInfo.color]} bg={t[stInfo.color + "S"]}>{stInfo.emoji} {stInfo.label}</Badge>
+                    <Badge c={t[stInfo.color]} bg={t[stInfo.color + "S"]}>{stInfo.label}</Badge>
                   </div>
                   <div style={{ fontSize: 14, fontWeight: 700 }}>{prod?.name} × {o.qty}</div>
-                  <div style={{ fontSize: 11, color: t.sub, marginTop: 2 }}>🏪 {store?.name}</div>
+                  <div style={{ fontSize: 11, color: t.sub, marginTop: 2 }}>{store?.name}</div>
                   {o.note && <div style={{ fontSize: 11, color: t.sub, marginTop: 4, fontStyle: "italic", padding: "6px 9px", background: t.surf, borderRadius: 7 }}>"{o.note}"</div>}
                 </div>
                 <button onClick={() => askConfirm("Zakazni o'chirish", `${o.orderId} o'chirilsinmi?`, async () => {
@@ -2632,7 +2635,7 @@ function App() {
               </div>
               <Div />
               <div style={{ ...s.row, fontSize: 11 }}>
-                <div style={{ color: isUrg ? t.red : t.sub, fontWeight: 700 }}>📅 {dateStr(o.deadline)}{dl !== null && <span> ({dl < 0 ? `${Math.abs(dl)} kun kechikdi!` : dl === 0 ? "BUGUN!" : `${dl} kun qoldi`})</span>}</div>
+                <div style={{ color: isUrg ? t.red : t.sub, fontWeight: 700 }}>{dateStr(o.deadline)}{dl !== null && <span> ({dl < 0 ? `${Math.abs(dl)} kun kechikdi!` : dl === 0 ? "BUGUN!" : `${dl} kun qoldi`})</span>}</div>
                 <div style={{ ...s.mono, color: t.sub }}>{fmtK(o.prepaid)}/{fmtK(o.price)}</div>
               </div>
               <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
@@ -2645,7 +2648,7 @@ function App() {
                     setOrders(prev => prev.map(x => x.id === o.id ? { ...x, status: ns, statusHistory: newHistory } : x));
                     await log("Zakaz statusi", `${o.orderId} → ${ORDER_STATUS[ns].label}`);
                   }} style={{ flex: 1, background: t.card, border: `1px solid ${t.border}`, borderRadius: 8, padding: "8px", fontSize: 12, fontWeight: 700, color: t.txt }}>
-                    {Object.entries(ORDER_STATUS).map(([k, v]) => <option key={k} value={k}>{v.emoji} {v.label}</option>)}
+                    {Object.entries(ORDER_STATUS).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
                   </select>
                 )}
               </div>
@@ -2665,25 +2668,25 @@ function App() {
       <div className="fade">
         <div style={{ ...s.row, marginBottom: 14 }}>
           <div>
-            <div style={{ fontSize: 22, fontWeight: 800 }}>💳 Qarzlar</div>
+            <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: "-0.01em" }}>Qarzlar</div>
             <div style={{ fontSize: 13, color: t.sub, marginTop: 2 }}>Jami: <span style={{ color: t.red, fontWeight: 700 }}>{fmt(stats.totalCustomerDebt)}</span></div>
           </div>
           <button onClick={pdfDebts} disabled={pdfLoading === "debts"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "debts" ? "refresh" : "pdf"} s={16} /></button>
         </div>
         {unpaid.length === 0 ? (
-          <Empty icon="debt" title="Qarz yo'q 🎉" desc="Barcha sotuvlar to'langan" />
+          <Empty icon="debt" title="Qarz yo'q" desc="Barcha sotuvlar to'langan" />
         ) : unpaid.map(sr => {
           const prod = products.find(p => p.id === sr.productId);
           const store = stores.find(s => s.id === sr.storeId);
           const pp = (sr.partialPayments || []).reduce((a, p) => a + p.amount, 0);
           const remaining = sr.totalAmount - pp;
           return (
-            <div key={sr.id} style={{ ...s.card, border: `1px solid ${t.red}33` }}>
+            <div key={sr.id} style={s.card}>
               <div style={s.row}>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: 14, fontWeight: 700 }}>{prod?.name}</div>
                   <div style={{ fontSize: 11, color: t.sub }}>{store?.name} · {dateStr(sr.date)}</div>
-                  {sr.customerName && <div style={{ fontSize: 11, color: t.sub }}>👤 {sr.customerName}</div>}
+                  {sr.customerName && <div style={{ fontSize: 11, color: t.sub }}>{sr.customerName}</div>}
                   {pp > 0 && <div style={{ fontSize: 11, color: t.green, marginTop: 3 }}>✓ To'langan: {fmt(pp)}</div>}
                 </div>
                 <div style={{ textAlign: "right" }}>
@@ -2695,10 +2698,10 @@ function App() {
               {sr.debt_due && (() => {
                 const dl = daysLeft(sr.debt_due);
                 const color = dl < 0 ? t.red : dl <= 3 ? t.amber : t.sub;
-                const text = dl < 0 ? `⚠️ ${Math.abs(dl)} kun kechikdi!` : dl === 0 ? "⚠️ Bugun muddati!" : `📅 ${dl} kun qoldi`;
+                const text = dl < 0 ? `${Math.abs(dl)} kun kechikdi` : dl === 0 ? "Bugun muddati" : `${dl} kun qoldi`;
                 return <div style={{ background: dl < 0 ? t.redS : t.amberS, borderRadius: 8, padding: "7px 10px", marginTop: 8, fontSize: 12, color, fontWeight: 700 }}>{text} — {dateStr(sr.debt_due)}</div>;
               })()}
-              <Btn bg={t.amber} mt={8} small onClick={() => { setSel({ saleId: sr.id }); setModal("pay"); }}>💰 Pul qabul qilish</Btn>
+              <Btn bg={t.amber} mt={8} small onClick={() => { setSel({ saleId: sr.id }); setModal("pay"); }}>Pul qabul qilish</Btn>
               {/* Telegram xabar */}
               {(() => {
                 const cust = customers.find(c => c.id === sr.customerId);
@@ -2720,7 +2723,7 @@ To'lov uchun:
                 const tgLink = `https://t.me/${phone.replace(/\D/g, "").replace(/^998/, "998")}?text=${msg}`;
                 return (
                   <button onClick={() => window.open(`https://t.me/+${phone.replace(/\D/g, "")}`, "_blank")} style={{ width: "100%", marginTop: 6, background: "#229ED9", color: "#fff", borderRadius: 8, padding: "7px", fontSize: 11, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
-                    📨 Telegram xabar yuborish
+                    Telegram xabar yuborish
                   </button>
                 );
               })()}
@@ -2728,7 +2731,7 @@ To'lov uchun:
                 const saleUnitIds = units.filter(u => sr.unitIds?.includes(u.unitId)).map(u => u.id);
                 if(saleUnitIds.length > 0) printGarantiya(saleUnitIds);
               }} style={{ width: "100%", marginTop: 6, background: t.card, border: `1px solid ${t.border}`, borderRadius: 8, padding: "7px", fontSize: 11, fontWeight: 700, color: t.sub, display: "flex", alignItems: "center", justifyContent: "center", gap: 5 }}>
-                🖨️ Garantiya taloni
+                Garantiya taloni
               </button>
             </div>
           );
@@ -2756,7 +2759,7 @@ To'lov uchun:
       <div className="fade">
         <div style={{ ...s.row, marginBottom: 16 }}>
           <div>
-            <div style={{ fontSize: 22, fontWeight: 800 }}>📊 Hisobot</div>
+            <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: "-0.01em" }}>Hisobot</div>
             <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Umumiy biznes holati</div>
           </div>
           <div style={{ display: "flex", gap: 6 }}>
@@ -2776,7 +2779,7 @@ To'lov uchun:
               a.href = URL.createObjectURL(blob);
               a.download = "kabir-erp-sotuv-"+today()+".csv";
               a.click();
-            }} style={{ ...s.iBtn, color: t.green }} title="Excel yuklash">📥</button>
+            }} style={{ ...s.iBtn, color: t.green }} title="Excel yuklash"><Ic n="download" s={17} /></button>
             <button onClick={() => {
               const data = { products, units, stores, sales, orders, customers, exportDate: now() };
               const blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
@@ -2784,7 +2787,7 @@ To'lov uchun:
               a.href = URL.createObjectURL(blob);
               a.download = "kabir-erp-backup-"+today()+".json";
               a.click();
-            }} style={{ ...s.iBtn, color: t.amber }} title="Backup">💾</button>
+            }} style={{ ...s.iBtn, color: t.amber }} title="Backup"><Ic n="upload" s={17} /></button>
           </div>
         </div>
         <Sec mt={4}>Bu oy</Sec>
@@ -2840,15 +2843,15 @@ To'lov uchun:
                 <div key={c.id} style={s.card}>
                   <div style={s.row}>
                     <div>
-                      <div style={{ fontSize: 14, fontWeight: 700 }}>👤 {c.name}</div>
-                      {c.phone && <div style={{ fontSize: 11, color: t.acc }}>📞 {c.phone}</div>}
+                      <div style={{ fontSize: 14, fontWeight: 700 }}>{c.name}</div>
+                      {c.phone && <div style={{ fontSize: 11, color: t.acc }}>{c.phone}</div>}
                       <div style={{ fontSize: 11, color: t.sub }}>{cSales.length} ta sotuv · {fmtK(cTotal)}</div>
                     </div>
                     <div style={{ textAlign: "right" }}>
                       {cDebt > 0 && <Badge c={t.red} bg={t.redS}>Qarz: {fmtK(cDebt)}</Badge>}
                       {c.phone && (
                         <button onClick={() => window.open(`https://t.me/+${c.phone.replace(/\D/g,"")}`, "_blank")} style={{ marginTop: 6, background: "#229ED9", color: "#fff", borderRadius: 8, padding: "4px 10px", fontSize: 11, fontWeight: 700, display: "block" }}>
-                          📨 Telegram
+                          Telegram
                         </button>
                       )}
                     </div>
@@ -2930,7 +2933,7 @@ To'lov uchun:
               return (
                 <div key={st.id} style={{ ...s.card, marginBottom: 8 }}>
                   <div style={{ ...s.row, marginBottom: 8 }}>
-                    <span style={{ fontSize: 13, fontWeight: 700 }}>🏪 {st.name}</span>
+                    <span style={{ fontSize: 13, fontWeight: 700 }}>{st.name}</span>
                     <span style={{ ...s.mono, fontWeight: 700, color: t.acc }}>{fmtK(stRev)}</span>
                   </div>
                   <div style={{ background: t.border, borderRadius: 4, height: 6, marginBottom: 6 }}>
@@ -2990,7 +2993,7 @@ To'lov uchun:
   
 
 
-  const roleLabel = user?.role === "superadmin" ? "👑 Super Admin" : user?.role === "admin" ? "📊 Admin" : user?.role === "ombor" ? "🏭 Ombor" : "📦 Moder";
+  const roleLabel = user?.role === "superadmin" ? "Super Admin" : user?.role === "admin" ? "Admin" : user?.role === "ombor" ? "Ombor" : "Moder";
   const roleColor = user?.role === "superadmin" ? t.amber : user?.role === "admin" ? t.acc : user?.role === "ombor" ? t.blue : t.green;
 
   return (
@@ -3006,7 +3009,7 @@ To'lov uchun:
           <div style={{ width:36, height:36, borderRadius:10, background:`linear-gradient(135deg, ${t.acc}, ${t.blue})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:800, fontSize:16, flexShrink:0 }}>M</div>
           <div className="sid-text">
             <div style={{ fontSize:13, fontWeight:700, color:t.txt }}>Mebel ERP</div>
-            <div style={{ fontSize:9, color:syncing ? t.amber : t.green }}>{ syncing ? "⏳ Saqlanmoqda..." : "☁️ Cloud" }</div>
+            <div style={{ fontSize:9, color:syncing ? t.amber : t.green }}>{ syncing ? "Saqlanmoqda..." : "Cloud" }</div>
           </div>
         </div>
         <nav style={{ flex:1, padding:"10px 8px", overflowY:"auto" }}>
@@ -3034,7 +3037,7 @@ To'lov uchun:
           <div className="sid-text" style={{ flex:1, minWidth:0 }}>
             <div style={{ fontSize:12, fontWeight:700, color:t.txt, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{user?.username}</div>
             <div style={{ fontSize:10, color: user?.role==="superadmin" ? t.amber : user?.role==="admin" ? t.acc : t.green }}>
-              {user?.role==="superadmin" ? "👑 Super" : user?.role==="admin" ? "📊 Admin" : "📦 Moder"}
+              {user?.role==="superadmin" ? "Super" : user?.role==="admin" ? "Admin" : "Moder"}
             </div>
           </div>
           <button onClick={() => askConfirm("Chiqish", "Tizimdan chiqmoqchimisiz?", () => { setUser(null); localStorage.removeItem("kabir_user"); }, true, { icon: "logout", confirmLabel: "Chiqish" })} style={{ color:t.red, flexShrink:0, padding:4 }}><Ic n="logout" s={14}/></button>
@@ -3073,7 +3076,7 @@ To'lov uchun:
             <button title="Tungi/kunduzgi rejim" style={{ width:34, height:34, borderRadius:17, background:(dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), display:"flex", alignItems:"center", justifyContent:"center", color:t.acc }} onClick={() => { setDark(d => { 
   const newDark = !d;
   localStorage.setItem("kabir_dark", newDark);
-  document.body.style.background = newDark ? "#080810" : "#F2F2F8";
+  document.body.style.background = newDark ? THEMES.dark.bg : THEMES.light.bg;
   return newDark;
 }); }}>
               <Ic n={dark ? "sun" : "moon"} s={18}/>
@@ -3114,7 +3117,7 @@ To'lov uchun:
         <div id="main-scroll" style={{ padding:16, paddingBottom:80, overflowY:"auto", height:"calc(100vh - 52px)" }}>
           {refreshing && (
             <div style={{ textAlign:"center", padding:"8px", color:t.acc, fontSize:13, fontWeight:700, marginBottom:8 }}>
-              <span className="ptr-spin">🔄</span> Yangilanmoqda...
+              <span className="ptr-spin" style={{ display:"inline-flex" }}><Ic n="refresh" s={14}/></span> Yangilanmoqda...
             </div>
           )}
           <div className={user?.role !== "ombor" ? "pc-split" : ""}>
@@ -3163,7 +3166,7 @@ To'lov uchun:
             </div>
             <div style={{ display:"flex", gap:9 }}>
               <button onClick={() => setConfirmDialog(null)} style={{ flex:1, background:t.card, border:`1px solid ${t.border}`, color:t.txt, borderRadius:11, padding:"13px", fontWeight:700, fontSize:14 }}>Bekor</button>
-              <button onClick={() => { confirmDialog.onConfirm(); setConfirmDialog(null); }} style={{ flex:1, background:confirmDialog.danger ? t.red : t.acc, color:"#fff", borderRadius:11, padding:"13px", fontWeight:700, fontSize:14 }}>{confirmDialog.confirmLabel || (confirmDialog.danger ? "🗑️ O'chirish" : "✓ Tasdiqlash")}</button>
+              <button onClick={() => { confirmDialog.onConfirm(); setConfirmDialog(null); }} style={{ flex:1, background:confirmDialog.danger ? t.red : t.acc, color:"#fff", borderRadius:11, padding:"13px", fontWeight:700, fontSize:14 }}>{confirmDialog.confirmLabel || (confirmDialog.danger ? "O'chirish" : "Tasdiqlash")}</button>
             </div>
           </div>
         </div>
@@ -3174,13 +3177,13 @@ To'lov uchun:
           <div style={{ background:"#1A1A30", padding:"12px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", flexShrink:0 }}>
             <div>
               <div style={{ fontSize:14, fontWeight:800, color:"#fff" }}>
-                {printData.type === 'yorliq' ? `🖨️ Yorliq — ${printData.count} ta` : '📜 Garantiya taloni'}
+                {printData.type === 'yorliq' ? `Yorliq — ${printData.count} ta` : 'Garantiya taloni'}
               </div>
               <div style={{ fontSize:11, color:"#7777AA", marginTop:2 }}>Ko'rib Ctrl+P bosing</div>
             </div>
             <div style={{ display:"flex", gap:8 }}>
               <button onClick={() => { document.getElementById('printFrame').contentWindow.focus(); document.getElementById('printFrame').contentWindow.print(); }}
-                style={{ background:"#7B73FF", color:"#fff", borderRadius:10, padding:"9px 18px", fontWeight:700, fontSize:13, border:"none", cursor:"pointer" }}>🖨️ Print</button>
+                style={{ background:"#7B73FF", color:"#fff", borderRadius:10, padding:"9px 18px", fontWeight:700, fontSize:13, border:"none", cursor:"pointer" }}>Chop etish</button>
               <button onClick={() => setPrintData(null)}
                 style={{ background:"#22223A", color:"#fff", borderRadius:10, padding:"9px 14px", fontWeight:700, fontSize:13, border:"none", cursor:"pointer" }}>✕</button>
             </div>
