@@ -1,4 +1,4 @@
-<!-- v1.04 -->
+<!-- v1.05 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -106,7 +106,7 @@ input[type=number]{-moz-appearance:textfield}
 <div id="root"></div>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.04";
+const APP_VER = "v1.05";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -1825,91 +1825,83 @@ function App() {
       });
       return Object.entries(map).map(([pid, prof]) => ({ product: products.find(p => p.id === pid), profit: prof })).filter(x => x.product).sort((a, b) => b.profit - a.profit).slice(0, 3);
     })();
+    const { F, hair, Tile } = pcCommon();
+    const shadow = dark ? "none" : "0 1px 2px rgba(0,0,0,0.04)";
+    const overdueDebts = stats.debtCount > 0 ? sales.filter(s => {
+      if (s.paid) return false;
+      if (!s.payDate) return false;
+      return new Date(s.payDate) < new Date();
+    }) : [];
+    const alerts = [
+      urgent > 0 && { key: "o", c: F.red, n: "alert", l: `${urgent} ta zakaz sroki yaqin`, go: () => setTab("orders") },
+      overdueDebts.length > 0 && { key: "d", c: F.orange, n: "debt", l: `${overdueDebts.length} ta qarz muddati o'tdi`, go: () => setTab("debts") },
+    ].filter(Boolean);
+    const h2 = { fontSize: 20, fontWeight: 700, letterSpacing: "-0.01em", margin: "22px 0 10px" };
     return (
       <div className="fade">
-        <div style={{ ...s.row, marginBottom: 16 }}>
-          <div>
-            <div style={{ fontSize: 12, color: t.sub }}>Dashboard</div>
-            <div style={{ fontSize: 22, fontWeight: 800 }}>Umumiy holat</div>
-          </div>
-          <button onClick={pdfHome} disabled={pdfLoading === "home"} style={{ ...s.iBtn, color: t.acc }} title="PDF"><Ic n={pdfLoading === "home" ? "refresh" : "pdf"} s={16} /></button>
+        <div style={{ ...s.row, alignItems: "flex-end", marginBottom: 16 }}>
+          <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.15 }}>Umumiy holat</div>
+          <button onClick={pdfHome} disabled={pdfLoading === "home"} title="PDF" style={{ width: 40, height: 40, borderRadius: 20, background: t.accSoft, color: t.acc, display: "flex", alignItems: "center", justifyContent: "center" }}><Ic n={pdfLoading === "home" ? "refresh" : "pdf"} s={19} /></button>
         </div>
-        {urgent > 0 && (
-          <div onClick={() => setTab("orders")} style={{ background: t.redS, border: `1px solid ${t.red}33`, borderRadius: 12, padding: "12px 14px", marginBottom: 10, display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
-            <div style={{ color: t.red }}><Ic n="alert" s={18} /></div>
-            <div style={{ flex: 1, fontSize: 13, color: t.red, fontWeight: 700 }}>⚠️ {urgent} ta zakaz sroki yaqin!</div>
-            <Ic n="right" s={16} />
+        {alerts.length > 0 && (
+          <div style={{ background: t.card, borderRadius: 12, overflow: "hidden", marginBottom: 16, boxShadow: shadow }}>
+            {alerts.map((al, i) => (
+              <button key={al.key} onClick={al.go} style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, paddingLeft: 14, textAlign: "left", color: t.txt }}>
+                <Tile c={al.c} n={al.n} sz={30} />
+                <span style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 8, minHeight: 52, paddingRight: 12, borderTop: i ? hair : "none" }}>
+                  <span style={{ flex: 1, fontSize: 15, fontWeight: 500 }}>{al.l}</span>
+                  <span style={{ color: t.dim, display: "flex" }}><Ic n="right" s={14} /></span>
+                </span>
+              </button>
+            ))}
           </div>
         )}
-        {stats.debtCount > 0 && (() => {
-          const overdueDebts = sales.filter(s => {
-            if (s.paid) return false;
-            if (!s.payDate) return false;
-            return new Date(s.payDate) < new Date();
-          });
-          return overdueDebts.length > 0 ? (
-            <div onClick={() => setTab("debts")} style={{ background: t.amberS, border: `1px solid ${t.amber}33`, borderRadius: 12, padding: "12px 14px", marginBottom: 10, display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
-              <div style={{ color: t.amber }}><Ic n="debt" s={18} /></div>
-              <div style={{ flex: 1, fontSize: 13, color: t.amber, fontWeight: 700 }}>💰 {overdueDebts.length} ta qarz muddati o'tdi!</div>
-              <Ic n="right" s={16} />
-            </div>
-          ) : null;
-        })()}
-        <div className="dash-grid-4">
-          <div style={{ background: t.accSoft, border: `1px solid ${t.acc}22`, borderRadius: 13, padding: 14 }}>
-            <div style={{ fontSize: 26, color: t.acc, ...s.numXl }}>{fmtK(stats.totalSales)}</div>
-            <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Umumiy sotuv</div>
-          </div>
-          <div style={{ background: t.greenS, border: `1px solid ${t.green}22`, borderRadius: 13, padding: 14 }}>
-            <div style={{ fontSize: 26, color: t.green, ...s.numXl }}>{fmtK(stats.totalProfit)}</div>
-            <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Foyda</div>
-          </div>
-          <div style={{ background: t.blueS, border: `1px solid ${t.blue}22`, borderRadius: 13, padding: 14 }}>
-            <div style={{ fontSize: 26, color: t.blue, ...s.numXl }}>{fmtK(stats.totalPaid)}</div>
-            <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Kassada</div>
-          </div>
-          <div style={{ background: t.redS, border: `1px solid ${t.red}22`, borderRadius: 13, padding: 14 }}>
-            <div style={{ fontSize: 26, color: t.red, ...s.numXl }}>{fmtK(stats.totalCustomerDebt)}</div>
-            <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Mijoz qarzi</div>
-          </div>
-        </div>
-        <div className="dash-grid-2">
-          <div style={{ background: t.amberS, border: `1px solid ${t.amber}22`, borderRadius: 13, padding: 14 }}>
-            <div style={{ fontSize: 30, color: t.amber, ...s.numXl }}>{fmtK(stats.totalVitrinaDebt)}</div>
-            <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Vitrina qarzi</div>
-          </div>
-          <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 13, padding: 14 }}>
-            <div style={{ fontSize: 30, color: t.txt, ...s.numXl }}>{fmtK(stats.totalCustomerDebt + stats.totalVitrinaDebt)}</div>
-            <div style={{ fontSize: 11, color: t.sub, marginTop: 5 }}>Jami qarz</div>
-          </div>
-        </div>
-        <Sec>Tez amallar</Sec>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 10 }}>
           {[
-            { icn: "plus", l: "Mol+", a: () => setModal("product") },
-            { icn: "send", l: "Jo'nat", a: () => setModal("transfer") },
+            ["Umumiy sotuv", stats.totalSales, t.txt],
+            ["Foyda", stats.totalProfit, t.green],
+            ["Kassada", stats.totalPaid, t.txt],
+            ["Mijoz qarzi", stats.totalCustomerDebt, t.red],
+            ["Vitrina qarzi", stats.totalVitrinaDebt, t.amber],
+            ["Jami qarz", stats.totalCustomerDebt + stats.totalVitrinaDebt, t.txt],
+          ].map(([l, v, c]) => (
+            <div key={l} style={{ background: t.card, borderRadius: 16, padding: "12px 14px", boxShadow: shadow }}>
+              <div style={{ fontSize: 13, fontWeight: 500, color: t.sub }}>{l}</div>
+              <div style={{ ...s.numXl, fontSize: 26, lineHeight: 1.25, color: c, marginTop: 2 }}>{fmtK(v)}</div>
+            </div>
+          ))}
+        </div>
+        <div style={h2}>Tez amallar</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))", gap: 8 }}>
+          {[
+            { icn: "plus", l: "Mol qo'shish", a: () => setModal("product") },
+            { icn: "send", l: "Jo'natish", a: () => setModal("transfer") },
             { icn: "money", l: "Sotuv", a: () => setModal("sell") },
             { icn: "order", l: "Zakaz", a: () => setModal("order") },
           ].map((b, i) => (
-            <button key={i} className="press" onClick={b.a} style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 13, padding: "18px 10px", display: "flex", flexDirection: "column", alignItems: "center", gap: 9 }}>
-              <div style={{ width: 48, height: 48, borderRadius: 13, background: t.accSoft, color: t.acc, display: "flex", alignItems: "center", justifyContent: "center" }}><Ic n={b.icn} s={23} /></div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: t.txt }}>{b.l}</div>
+            <button key={i} className="press" onClick={b.a} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, color: t.txt }}>
+              <span style={{ width: 58, height: 58, borderRadius: 29, background: t.card, color: t.acc, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: shadow }}><Ic n={b.icn} s={24} /></span>
+              <span style={{ fontSize: 12, fontWeight: 500 }}>{b.l}</span>
             </button>
           ))}
         </div>
         {topProducts.length > 0 && (
           <>
-            <Sec>Eng foydali mahsulotlar</Sec>
-            {topProducts.map((x, i) => (
-              <div key={x.product.id} style={{ ...s.card, display: "flex", alignItems: "center", gap: 12 }}>
-                <div style={{ width: 32, height: 32, borderRadius: 9, background: i === 0 ? t.amberS : t.accSoft, color: i === 0 ? t.amber : t.acc, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, ...s.mono }}>#{i + 1}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 14, fontWeight: 700 }}>{x.product.name}</div>
-                  <div style={{ fontSize: 11, color: t.sub }}>{x.product.sku}</div>
+            <div style={h2}>Eng foydali mahsulotlar</div>
+            <div style={{ background: t.card, borderRadius: 12, overflow: "hidden", boxShadow: shadow }}>
+              {topProducts.map((x, i) => (
+                <div key={x.product.id} style={{ display: "flex", alignItems: "center", gap: 12, paddingLeft: 14 }}>
+                  <span style={{ width: 30, height: 30, borderRadius: 15, background: t.accSoft, color: t.acc, fontSize: 14, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}>{i + 1}</span>
+                  <span style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 10, minHeight: 58, paddingRight: 14, borderTop: i ? hair : "none" }}>
+                    <span style={{ flex: 1, minWidth: 0 }}>
+                      <span style={{ display: "block", fontSize: 15, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{x.product.name}</span>
+                      <span style={{ display: "block", fontSize: 13, color: t.sub }}>{x.product.sku}</span>
+                    </span>
+                    <span style={{ ...s.mono, fontSize: 15, fontWeight: 600, color: t.green }}>{fmtK(x.profit)}</span>
+                  </span>
                 </div>
-                <div style={{ ...s.mono, fontWeight: 800, color: t.green }}>{fmtK(x.profit)}</div>
-              </div>
-            ))}
+              ))}
+            </div>
           </>
         )}
       </div>

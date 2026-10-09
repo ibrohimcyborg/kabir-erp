@@ -2,6 +2,12 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.05 — 2026-10-09 — telefon Bosh iOS uslubida
+
+Telefondagi Bosh: katta sarlavha, ogohlantirishlar ro'yxat ko'rinishida rangli plitka bilan,
+6 ta oq kartochka (rang faqat raqamda), tez amallar dumaloq tugmalar, eng foydali mahsulotlar
+ro'yxati. Hisob-kitob o'zgarmagan.
+
 ## v1.04 — 2026-10-09 — menyular iOS uslubida
 
 Tepa panel shaffof, PC menyusi iOS segment ko'rinishida, o'ng tugmalar dumaloq ramkasiz,
