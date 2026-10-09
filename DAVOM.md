@@ -8,14 +8,19 @@
 ## ⏳ YARIM QOLDI — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09)
 
 Branch:    kod yo'q — faqat maket
-Qilingan:  maket https://claude.ai/artifact/XhhrDbaA74qHjcEHtEm17A (HOZIRGI vs TAKLIF + tashxis)
-           Tashxis: do'kon profilida «OLINGAN PUL $400» — PayModal bilan yopilgan sotuv ikki marta
-           sanaladi (index.html:2199–2200, `StoreProfile` → `allPayments`); haqiqatda $200.
-           Kartochkada mahsulot nomi yo'q — mahsulot o'chirilgan bo'lishi mumkin (taxmin).
-Qolgan:    Ibrohim 6 ta savolga javob beradi (maketda): $400 ni avval tuzatishmi, unitlar qayerga
-           qaytadi, kim tahrirlaydi, nima tahrirlanadi, Qarz sahifasida kerakmi, tartib.
-Keyingi qadam: javobdan keyin 1-qadam (taklif: $400 tuzatish) — alohida sikl.
-Javobsiz savol: maketdagi 1–6 savollar.
+Maket:     https://claude.ai/artifact/XhhrDbaA74qHjcEHtEm17A (v2: qarorlar + 1-qadam rejasi)
+Qarorlar (Ibrohim, 2026-10-09):
+  - Qayerda: `StoreProfile` → Sotuv va To'lov ro'yxatlari. Qarz va Hisobot sahifasida YO'Q.
+  - Kim: superadmin va admin.
+  - Sotuv o'chirilsa: unitlar o'sha do'kon vitrinasiga qaytadi (status "available").
+  - Sotuvda tahrirlanadi: sana, mijoz, summa, to'lov usuli. Soni/mahsulot/do'kon — YO'Q.
+  - Tartib: 1) $400 → 2) to'lov o'chirish → 3) to'lov tahrir → 4) sotuv o'chirish → 5) sotuv tahrir.
+1-qadam ($400): `StoreProfile` → `allPayments` (index.html:2199) to'langan sotuvni totalAmount
+           bilan + har partialPayments bilan qo'shadi → PayModal bilan yopilgan sotuv 2 marta.
+           Taklif: qisman to'lovlar + (to'langan bo'lsa) faqat qolgan qism. Faqat ekran, ~3 qator.
+           Xuddi shu xato `pdfStore` (index.html:619) da ham.
+Keyingi qadam: Ibrohim 1-qadamga «ha» deydi va PDF ham shu qadamdami (A) yoki alohidami (B) aytadi.
+Javobsiz savol: 1-qadam «ha»? PDF — A yoki B?
 
 ## Ochiq branchlar (main'ga merge qilinmagan)
 
