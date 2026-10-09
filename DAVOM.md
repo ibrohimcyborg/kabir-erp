@@ -5,7 +5,20 @@
 
 **Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: v1 (`claude/sotuv-tolov`, main'da hali yo'q)
 
-## ⏳ YARIM QOLDI — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09)
+## ⏳ YARIM QOLDI — PC versiya maketi (2026-10-09) — HOZIRGI ASOSIY ISH
+
+Ibrohim: «endi KABIR ERPni maketda shakllantiramiz — PC versiya: chap tarafda ombor
+oldi-berdi, foyda; o'ng tarafda klientlar».
+Branch:    kod yo'q — faqat maket
+Maket:     https://claude.ai/artifact/QLgzuvDWmSc7zF5YL1wGMZ (v1: TAKLIF 1440px kadr + HOZIRGI
+           skrinshot + raqamlar manbai + 6 savol)
+Qolgan:    Ibrohim 6 savolga javob beradi (klient = diler yoki mijoz; o'rtada nima; menyu
+           qayerda; davr; qaysi sahifa; foyda kimga), keyin maket ustida BITTA-BITTA.
+Keyingi qadam: javoblarga qarab maketni bittadan yangilash (har gap — alohida nashr).
+Javobsiz savol: maketdagi 1–6.
+Eslatma:   hozirgi PC'da brend «Mebel ERP» (sidebar) — maketda «Kabir ERP».
+
+## ⏸ TO'XTATILGAN — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09; PC maketi ustuvor)
 
 Branch:    `claude/sotuv-tolov` (claude/claude-md ustida — qoidalar fayllari ham shu branch'da)
 Maket:     https://claude.ai/artifact/XhhrDbaA74qHjcEHtEm17A (v2: qarorlar + 1-qadam rejasi)
