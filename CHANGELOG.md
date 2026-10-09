@@ -2,6 +2,11 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v2 — 2026-10-09 — PC'da menyu tepada
+
+Kompyuterda (1024px dan keng) chap menyu yashiriladi, tepada «Kabir ERP» + versiya + menyu
+tugmalari (Qarz raqami bilan). Planshet va telefon o'zgarmagan. PC versiyaning 1-qadami.
+
 ## v1.1 — 2026-10-09 — ombor tahririda joyida qolish
 
 `claude/ombor-joyida-qolish` qo'shildi: sahifalar barqaror `Screen` orqali chiziladi —

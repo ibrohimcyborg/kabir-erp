@@ -1,4 +1,4 @@
-<!-- v1.1 -->
+<!-- v2 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -87,13 +87,21 @@ input[type=number]{-moz-appearance:textfield}
   .sidebar{width:58px}
   .main-content{margin-left:58px}
 }
+/* PC (1024px dan keng): menyu tepada, chap menyu yo'q */
+.pc-only{display:none}
+@media(min-width:1025px){
+  .sidebar{display:none}
+  .main-content{margin-left:0}
+  .pc-only{display:flex}
+  .tab-title,.sidebar-toggle{display:none!important}
+}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.1";
+const APP_VER = "v2";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -2827,7 +2835,22 @@ To'lov uchun:
         <header style={{ background:t.surf, borderBottom:`1px solid ${t.border}`, padding:"11px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:50 }}>
           <div style={{ display:"flex", alignItems:"center", gap:10 }}>
             <button onClick={() => setSidebarOpen(o => !o)} className="sidebar-toggle" style={{ color:t.sub, padding:4, display:"flex" }}><Ic n="warehouse" s={18}/></button>
-            <div style={{ fontSize:14, fontWeight:700, color:t.txt }}>{navItems.find(n=>n.id===tab)?.l || "Bosh"}<span style={{ fontSize:10, fontWeight:600, color:t.sub, marginLeft:6 }}>{APP_VER}</span></div>
+            <div className="tab-title" style={{ fontSize:14, fontWeight:700, color:t.txt }}>{navItems.find(n=>n.id===tab)?.l || "Bosh"}<span style={{ fontSize:10, fontWeight:600, color:t.sub, marginLeft:6 }}>{APP_VER}</span></div>
+            <div className="pc-only" style={{ alignItems:"center", gap:10, marginRight:12 }}>
+              <div style={{ width:32, height:32, borderRadius:9, background:`linear-gradient(135deg, ${t.acc}, ${t.blue})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:800, fontSize:15 }}>K</div>
+              <div style={{ fontSize:15, fontWeight:800, color:t.txt, whiteSpace:"nowrap" }}>Kabir ERP<span style={{ fontSize:10, fontWeight:600, color:t.sub, marginLeft:5 }}>{APP_VER}</span></div>
+            </div>
+            <nav className="pc-only" style={{ alignItems:"center", gap:4 }}>
+              {navItems.map(item => {
+                const active = tab === item.id;
+                return (
+                  <button key={item.id} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }} style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", borderRadius:9, fontSize:13, fontWeight:active ? 700 : 600, background:active ? t.accSoft : "transparent", color:active ? t.acc : t.sub }}>
+                    {item.l}
+                    {item.id === "debts" && stats.debtCount > 0 && <span style={{ minWidth:16, height:16, padding:"0 4px", borderRadius:8, background:t.red, color:"#fff", fontSize:9, fontWeight:800, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</span>}
+                  </button>
+                );
+              })}
+            </nav>
           </div>
           <div style={{ display:"flex", alignItems:"center", gap:6 }}>
             <div title={!isOnline ? "Internet yo'q" : cloudStatus === "ok" ? "Cloud ulangan" : "Cloud xato"} style={{ width:32, height:32, borderRadius:9, background: (isOnline && cloudStatus === "ok") ? t.greenS : t.redS, display:"flex", alignItems:"center", justifyContent:"center", color: (isOnline && cloudStatus === "ok") ? t.green : t.red }}>

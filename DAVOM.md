@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: v1.1 (`claude/pc-versiya`, main'da hali yo'q)
+**Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: v2 (`claude/pc-versiya`, main'da hali yo'q)
 
 ## ⏳ YARIM QOLDI — PC versiya maketi (2026-10-09) — HOZIRGI ASOSIY ISH
 
@@ -15,8 +15,11 @@ Qarorlar (2026-10-09): klient = diler (do'kon); ikki ustun, o'rtasi yo'q; menyu 
            davr — shu oy; PC'da «Bosh» o'rniga (telefon o'zgarmaydi); foyda — canSee("profit");
            avval Screen tuzatishi (v1.1); ikki qadam: v2 menyu tepaga, v3 yangi Bosh.
 ✅ v1.1 — `claude/ombor-joyida-qolish` merge qilindi (Screen).
-Keyingi qadam: v2 — PC'da (>1024px) menyu tepaga; keyin Ibrohim ko'radi → v3.
-Javobsiz savol: yo'q.
+✅ v2 — PC'da (>1024px) menyu tepada: `.pc-only` CSS + sarlavhadagi `nav.pc-only` (navItems'dan).
+           Sinov: 1440/1024/700/400px va ombor roli — sidebar/menyu to'g'ri, xatolar yo'q.
+Keyingi qadam: Ibrohim v2 skrinshotini ko'radi → «ha» bo'lsa v3: PC Bosh sahifa (chap: ombor
+           oldi-berdi + foyda; o'ng: klientlar), maketdagidek.
+Javobsiz savol: v2 ma'qulmi → v3 ga o'taymi?
 Eslatma:   hozirgi PC'da brend «Mebel ERP» (sidebar) — maketda «Kabir ERP».
 
 ## ⏸ TO'XTATILGAN — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09; PC maketi ustuvor)
