@@ -1,4 +1,4 @@
-<!-- v1.03 -->
+<!-- v1.04 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -106,7 +106,7 @@ input[type=number]{-moz-appearance:textfield}
 <div id="root"></div>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.03";
+const APP_VER = "v1.04";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -268,8 +268,8 @@ const ORDER_STATUS = {
   delivered: { label: "Topshirildi", color: "acc", emoji: "✅" },
 };
 
-const Ic = ({ n, s = 20 }) => {
-  const p = { width: s, height: s, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.7", strokeLinecap: "round", strokeLinejoin: "round" };
+const Ic = ({ n, s = 20, f }) => {
+  const p = { width: s, height: s, viewBox: "0 0 24 24", fill: f || "none", stroke: "currentColor", strokeWidth: "1.7", strokeLinecap: "round", strokeLinejoin: "round" };
   switch (n) {
     case "home": return <svg {...p}><path d="M4 10.6 12 4l8 6.6V19a1.5 1.5 0 0 1-1.5 1.5H15v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5H5.5A1.5 1.5 0 0 1 4 19Z" /></svg>;
     case "warehouse": return <svg {...p}><path d="M12 3 4 7v10l8 4 8-4V7ZM4 7l8 4 8-4M12 11v10M8 5l8 4" /></svg>;
@@ -3051,44 +3051,44 @@ To'lov uchun:
 
       {/* MAIN */}
       <main className="main-content">
-        <header style={{ background:t.surf, borderBottom:`1px solid ${t.border}`, padding:"11px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:50 }}>
+        <header style={{ background:dark ? "rgba(22,22,24,0.86)" : "rgba(249,249,251,0.86)", backdropFilter:"saturate(180%) blur(20px)", WebkitBackdropFilter:"saturate(180%) blur(20px)", borderBottom:`0.5px solid ${t.border}`, padding:"9px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:50 }}>
           <div style={{ display:"flex", alignItems:"center", gap:10 }}>
             <button onClick={() => setSidebarOpen(o => !o)} className="sidebar-toggle" style={{ color:t.sub, padding:4, display:"flex" }}><Ic n="warehouse" s={18}/></button>
-            <div className="tab-title" style={{ fontSize:14, fontWeight:700, color:t.txt }}>{navItems.find(n=>n.id===tab)?.l || "Bosh"}<span style={{ fontSize:10, fontWeight:600, color:t.sub, marginLeft:6 }}>{APP_VER}</span></div>
+            <div className="tab-title" style={{ fontSize:17, fontWeight:600, color:t.txt }}>{navItems.find(n=>n.id===tab)?.l || "Bosh"}<span style={{ fontSize:12, fontWeight:400, color:t.sub, marginLeft:6 }}>{APP_VER}</span></div>
             <div className="pc-only" style={{ alignItems:"center", gap:10, marginRight:12 }}>
-              <div style={{ width:32, height:32, borderRadius:9, background:`linear-gradient(135deg, ${t.acc}, ${t.blue})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:800, fontSize:15 }}>K</div>
-              <div style={{ fontSize:15, fontWeight:800, color:t.txt, whiteSpace:"nowrap" }}>Kabir ERP<span style={{ fontSize:10, fontWeight:600, color:t.sub, marginLeft:5 }}>{APP_VER}</span></div>
+              <div style={{ width:30, height:30, borderRadius:8, background:`linear-gradient(135deg, ${t.acc}, ${t.blue})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:700, fontSize:15 }}>K</div>
+              <div style={{ fontSize:16, fontWeight:600, color:t.txt, whiteSpace:"nowrap" }}>Kabir ERP<span style={{ fontSize:12, fontWeight:400, color:t.sub, marginLeft:6 }}>{APP_VER}</span></div>
             </div>
-            <nav className="pc-only" style={{ alignItems:"center", gap:4 }}>
+            <nav className="pc-only" style={{ alignItems:"center", gap:2, padding:2, borderRadius:9, background:dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)" }}>
               {navItems.filter(item => item.id !== "stores").map(item => {
                 const active = tab === item.id;
                 return (
-                  <button key={item.id} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }} style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", borderRadius:9, fontSize:13, fontWeight:active ? 700 : 600, background:active ? t.accSoft : "transparent", color:active ? t.acc : t.sub }}>
+                  <button key={item.id} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }} style={{ display:"flex", alignItems:"center", gap:6, height:30, padding:"0 18px", borderRadius:7, fontSize:13, fontWeight:active ? 600 : 500, background:active ? (dark ? "#636366" : "#fff") : "transparent", boxShadow:active ? "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)" : "none", color:t.txt, whiteSpace:"nowrap" }}>
                     {item.l}
-                    {item.id === "debts" && stats.debtCount > 0 && <span style={{ minWidth:16, height:16, padding:"0 4px", borderRadius:8, background:t.red, color:"#fff", fontSize:9, fontWeight:800, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</span>}
+                    {item.id === "debts" && stats.debtCount > 0 && <span style={{ minWidth:17, height:17, padding:"0 5px", borderRadius:9, background:t.red, color:"#fff", fontSize:11, fontWeight:600, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</span>}
                   </button>
                 );
               })}
             </nav>
           </div>
           <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-            <div title={!isOnline ? "Internet yo'q" : cloudStatus === "ok" ? "Cloud ulangan" : "Cloud xato"} style={{ width:32, height:32, borderRadius:9, background: (isOnline && cloudStatus === "ok") ? t.greenS : t.redS, display:"flex", alignItems:"center", justifyContent:"center", color: (isOnline && cloudStatus === "ok") ? t.green : t.red }}>
-              <Ic n={(isOnline && cloudStatus === "ok") ? "cloud" : "cloudOff"} s={15}/>
+            <div title={!isOnline ? "Internet yo'q" : cloudStatus === "ok" ? "Cloud ulangan" : "Cloud xato"} style={{ width:34, height:34, borderRadius:17, background: (isOnline && cloudStatus === "ok") ? t.greenS : t.redS, display:"flex", alignItems:"center", justifyContent:"center", color: (isOnline && cloudStatus === "ok") ? t.green : t.red }}>
+              <Ic n={(isOnline && cloudStatus === "ok") ? "cloud" : "cloudOff"} s={18}/>
             </div>
-            <button onClick={doRefresh} disabled={refreshing} title="Yangilash" style={{ width:32, height:32, borderRadius:9, background:t.card, border:`1px solid ${t.border}`, display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }}>
-              <span className={refreshing ? "ptr-spin" : ""} style={{ display:"flex" }}><Ic n="refresh" s={15}/></span>
+            <button onClick={doRefresh} disabled={refreshing} title="Yangilash" style={{ width:34, height:34, borderRadius:17, background:(dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), display:"flex", alignItems:"center", justifyContent:"center", color:t.acc }}>
+              <span className={refreshing ? "ptr-spin" : ""} style={{ display:"flex" }}><Ic n="refresh" s={18}/></span>
             </button>
-            <button title="Tungi/kunduzgi rejim" style={{ width:32, height:32, borderRadius:9, background:t.card, border:`1px solid ${t.border}`, display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }} onClick={() => { setDark(d => { 
+            <button title="Tungi/kunduzgi rejim" style={{ width:34, height:34, borderRadius:17, background:(dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), display:"flex", alignItems:"center", justifyContent:"center", color:t.acc }} onClick={() => { setDark(d => { 
   const newDark = !d;
   localStorage.setItem("kabir_dark", newDark);
   document.body.style.background = newDark ? "#080810" : "#F2F2F8";
   return newDark;
 }); }}>
-              <Ic n={dark ? "sun" : "moon"} s={15}/>
+              <Ic n={dark ? "sun" : "moon"} s={18}/>
             </button>
             <div style={{ position:"relative" }}>
-              <button title="Sozlamalar" onClick={() => setSettingsOpen(o => !o)} style={{ width:32, height:32, borderRadius:9, background: settingsOpen ? t.acc : t.card, border:`1px solid ${settingsOpen ? t.acc : t.border}`, display:"flex", alignItems:"center", justifyContent:"center", color: settingsOpen ? "#fff" : t.txt }}>
-                <Ic n="settings" s={15}/>
+              <button title="Sozlamalar" onClick={() => setSettingsOpen(o => !o)} style={{ width:34, height:34, borderRadius:17, background: settingsOpen ? t.acc : (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), display:"flex", alignItems:"center", justifyContent:"center", color: settingsOpen ? "#fff" : t.acc }}>
+                <Ic n="settings" s={18}/>
               </button>
               {settingsOpen && (
                 <>
@@ -3114,8 +3114,8 @@ To'lov uchun:
                 </>
               )}
             </div>
-            <button title="Chiqish" onClick={() => askConfirm("Chiqish", "Tizimdan chiqmoqchimisiz?", () => { setUser(null); localStorage.removeItem("kabir_user"); }, true, { icon: "logout", confirmLabel: "Chiqish" })} style={{ width:32, height:32, borderRadius:9, background:t.redS, border:`1px solid ${t.red}44`, display:"flex", alignItems:"center", justifyContent:"center", color:t.red, marginLeft:2 }}>
-              <Ic n="logout" s={15}/>
+            <button title="Chiqish" onClick={() => askConfirm("Chiqish", "Tizimdan chiqmoqchimisiz?", () => { setUser(null); localStorage.removeItem("kabir_user"); }, true, { icon: "logout", confirmLabel: "Chiqish" })} style={{ width:34, height:34, borderRadius:17, background:t.redS, display:"flex", alignItems:"center", justifyContent:"center", color:t.red, marginLeft:2 }}>
+              <Ic n="logout" s={18}/>
             </button>
           </div>
         </header>
@@ -3133,19 +3133,18 @@ To'lov uchun:
       </main>
 
       {/* MOBILE BOTTOM NAV */}
-      <nav className="mobile-nav" style={{ background:t.surf, borderTop:`1px solid ${t.border}`, padding:"8px 0 14px" }}>
+      <nav className="mobile-nav" style={{ background:dark ? "rgba(22,22,24,0.86)" : "rgba(249,249,251,0.86)", backdropFilter:"saturate(180%) blur(20px)", WebkitBackdropFilter:"saturate(180%) blur(20px)", borderTop:`0.5px solid ${t.border}`, padding:"7px 0 calc(10px + env(safe-area-inset-bottom))" }}>
         {navItems.map(item => {
           const active = tab === item.id;
           return (
-            <button key={item.id} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:2, color:active ? t.acc : t.sub, position:"relative" }} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }}>
-              <div style={{ position:"absolute", top:0, left:"50%", transform:"translateX(-50%)", height:3, width:active?22:0, background:t.acc, borderRadius:2, transition:"width .25s" }}/>
+            <button key={item.id} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:3, color:active ? t.acc : t.sub, position:"relative" }} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }}>
               <div style={{ position:"relative" }}>
-                <Ic n={item.i} s={19}/>
+                <Ic n={item.i} s={25} f={active ? t.accSoft : undefined}/>
                 {item.id==="debts" && stats.debtCount > 0 && (
-                  <div style={{ position:"absolute", top:-4, right:-7, minWidth:14, height:14, padding:"0 3px", borderRadius:7, background:t.red, color:"#fff", fontSize:8, fontWeight:800, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</div>
+                  <div style={{ position:"absolute", top:-4, right:-9, minWidth:17, height:17, padding:"0 5px", borderRadius:9, background:t.red, color:"#fff", fontSize:11, fontWeight:600, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</div>
                 )}
               </div>
-              <span style={{ fontSize:9, fontWeight:active?700:500 }}>{item.l}</span>
+              <span style={{ fontSize:10, fontWeight:500 }}>{item.l}</span>
             </button>
           );
         })}

@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.03 — PRODDA** (2026-10-09)
+**Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.04 — PRODDA** (2026-10-09)
 
 ## ⏳ YARIM QOLDI — iOS uslubidagi yangi dizayn (2026-10-09) — HOZIRGI ASOSIY ISH
 
@@ -36,7 +36,9 @@ Ibrohim (2026-10-09): «hamma o'zgarishni asosiy saytda qilib yubor» + «umuman
            → reja: v1.03 PC Bosh; v1.04 telefon Bosh; v1.05 menyular (PC segment, telefon tab bar,
            sarlavha tugmalari); v1.06 umumiy (emoji, KATTA HARFLI yorliqlar, rangli ramkalar, login).
 ✅ v1.03 — PC Bosh (`pcCommon`, `PcOmborPane`, `DokonlarPane`) maketdagidek; hisob o'sha. PRODDA.
-Keyingi qadam: v1.04 — telefon Bosh (`HomePage`) maketdagidek.
+✅ v1.04 — menyular: header shaffof + blur, PC `nav.pc-only` segment, o'ng tugmalar dumaloq,
+           `mobile-nav` iOS tab bar (`Ic` ga ixtiyoriy `f` — to'ldirish rangi). PRODDA.
+Keyingi qadam: v1.05 — telefon Bosh (`HomePage`) maketdagidek.
 
 ## ✅ PC versiya (2026-10-09) — v1.01 prodda
 

@@ -2,6 +2,11 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.04 — 2026-10-09 — menyular iOS uslubida
+
+Tepa panel shaffof, PC menyusi iOS segment ko'rinishida, o'ng tugmalar dumaloq ramkasiz,
+telefondagi pastki menyu iOS tab bar kabi (tanlangan ikonka to'ldirilgan, chiziq olib tashlandi).
+
 ## v1.03 — 2026-10-09 — PC Bosh iOS uslubida
 
 Kompyuterda «Ombor oldi-berdi» va «Do'konlar» maketdagidek: rangli plitkali ikonkalar, oq
