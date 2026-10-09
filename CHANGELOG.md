@@ -2,6 +2,12 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v3 — 2026-10-09 — PC'da yangi Bosh sahifa
+
+Kompyuterda «Bosh» o'rniga ikki ustun: chapda «Ombor oldi-berdi» (shu oy: keldi, do'konga ketdi,
+sotildi, omborda; foyda bloki; harakatlar jadvali), o'ngda «Do'konlar» (vitrinadagi mol, qarz,
+olingan pul, qidiruv; bosilsa profil ochiladi). Telefon o'zgarmagan. Bazaga yozuv yo'q.
+
 ## v2 — 2026-10-09 — PC'da menyu tepada
 
 Kompyuterda (1024px dan keng) chap menyu yashiriladi, tepada «Kabir ERP» + versiya + menyu

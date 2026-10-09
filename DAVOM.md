@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: v2 (`claude/pc-versiya`, main'da hali yo'q)
+**Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: v3 (`claude/pc-versiya`, main'da hali yo'q)
 
 ## ⏳ YARIM QOLDI — PC versiya maketi (2026-10-09) — HOZIRGI ASOSIY ISH
 
@@ -17,9 +17,14 @@ Qarorlar (2026-10-09): klient = diler (do'kon); ikki ustun, o'rtasi yo'q; menyu 
 ✅ v1.1 — `claude/ombor-joyida-qolish` merge qilindi (Screen).
 ✅ v2 — PC'da (>1024px) menyu tepada: `.pc-only` CSS + sarlavhadagi `nav.pc-only` (navItems'dan).
            Sinov: 1440/1024/700/400px va ombor roli — sidebar/menyu to'g'ri, xatolar yo'q.
-Keyingi qadam: Ibrohim v2 skrinshotini ko'radi → «ha» bo'lsa v3: PC Bosh sahifa (chap: ombor
-           oldi-berdi + foyda; o'ng: klientlar), maketdagidek.
-Javobsiz savol: v2 ma'qulmi → v3 ga o'taymi?
+✅ v3 — `PcHomePage` (renderPage «home»: `.pc-block` PC'da, `.mob-block` telefonda). Ibrohim:
+           «klientlar emas — Do'konlar», o'ng tomon ham shu qadamda. Maket v2 ham shunga moslandi.
+           [MEN] qarorlar: jadval units/sales/to'lovlardan + «Qaytdi» activity'dan; keldi = «Sexdan»;
+           tannarx canSee("cost"); do'konlar oxirgi amal bo'yicha saralanadi; oy — UTC (ReportPage kabi).
+           Sinov: superadmin/moder/telefon, do'kon bosilsa profil — xatolar yo'q.
+Keyingi qadam: Ibrohim v3 ni ko'radi → maket ustida keyingi o'zgarishlar (BITTA-BITTA) yoki
+           «prodga chiqar».
+Javobsiz savol: v3 ma'qulmi? Push / «prodga chiqar»?
 Eslatma:   hozirgi PC'da brend «Mebel ERP» (sidebar) — maketda «Kabir ERP».
 
 ## ⏸ TO'XTATILGAN — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09; PC maketi ustuvor)
