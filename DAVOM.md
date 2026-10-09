@@ -7,7 +7,7 @@
 
 ## ⏳ YARIM QOLDI — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09)
 
-Branch:    kod yo'q — faqat maket
+Branch:    `claude/sotuv-tolov` (claude/claude-md ustida — qoidalar fayllari ham shu branch'da)
 Maket:     https://claude.ai/artifact/XhhrDbaA74qHjcEHtEm17A (v2: qarorlar + 1-qadam rejasi)
 Qarorlar (Ibrohim, 2026-10-09):
   - Qayerda: `StoreProfile` → Sotuv va To'lov ro'yxatlari. Qarz va Hisobot sahifasida YO'Q.
@@ -15,12 +15,12 @@ Qarorlar (Ibrohim, 2026-10-09):
   - Sotuv o'chirilsa: unitlar o'sha do'kon vitrinasiga qaytadi (status "available").
   - Sotuvda tahrirlanadi: sana, mijoz, summa, to'lov usuli. Soni/mahsulot/do'kon — YO'Q.
   - Tartib: 1) $400 → 2) to'lov o'chirish → 3) to'lov tahrir → 4) sotuv o'chirish → 5) sotuv tahrir.
-1-qadam ($400): `StoreProfile` → `allPayments` (index.html:2199) to'langan sotuvni totalAmount
-           bilan + har partialPayments bilan qo'shadi → PayModal bilan yopilgan sotuv 2 marta.
-           Taklif: qisman to'lovlar + (to'langan bo'lsa) faqat qolgan qism. Faqat ekran, ~3 qator.
-           Xuddi shu xato `pdfStore` (index.html:619) da ham.
-Keyingi qadam: Ibrohim 1-qadamga «ha» deydi va PDF ham shu qadamdami (A) yoki alohidami (B) aytadi.
-Javobsiz savol: 1-qadam «ha»? PDF — A yoki B?
+✅ 1-qadam ($400) — branch `claude/sotuv-tolov`: `StoreProfile` → `allPayments` endi qisman
+           to'lovlar + faqat qolgan qism. Soxta baza: $1.1K/7 qator → $650/5 qator = Hisobot.
+           PDF (`pdfStore`, index.html:619) — TEGILMADI (Ibrohim A/B demadi → B: alohida qadam).
+Keyingi qadam: v1 versiya belgisi (Ibrohim 2026-10-09: «versiya qo'sh qayergadir, o'zgarganini
+           tekshirib turaman»), keyin 2-qadam: to'lovni o'chirish (avval maket).
+Javobsiz savol: PDF ham tuzatilsinmi? Tekshirish uchun push / «prodga chiqar»?
 
 ## Ochiq branchlar (main'ga merge qilinmagan)
 

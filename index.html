@@ -2196,7 +2196,9 @@ function App() {
     const sOrders = orders.filter(o => o.storeId === store.id);
     const allPayments = [];
     sSales.forEach(s => {
-      if (s.paid && s.payDate) allPayments.push({ id: s.id + "-full", saleId: s.id, amount: s.totalAmount, method: s.payMethod, date: s.payDate, customerName: s.customerName, productId: s.productId });
+      const ppSum = (s.partialPayments || []).reduce((a, p) => a + p.amount, 0);
+      const rest = Math.round((s.totalAmount - ppSum) * 100) / 100;
+      if (s.paid && s.payDate && rest > 0) allPayments.push({ id: s.id + "-full", saleId: s.id, amount: rest, method: s.payMethod, date: s.payDate, customerName: s.customerName, productId: s.productId });
       (s.partialPayments || []).forEach(p => allPayments.push({ id: p.id, saleId: s.id, amount: p.amount, method: p.method, date: p.date, customerName: s.customerName, productId: s.productId }));
     });
     allPayments.sort((a, b) => b.date.localeCompare(a.date));

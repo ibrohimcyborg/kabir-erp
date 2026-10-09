@@ -2,6 +2,12 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## 2026-10-09 — do'kon profilida to'lov ikki marta sanalmaydi
+
+«Pul olish» bilan yopilgan sotuv do'kon profilida (OLINGAN PUL, To'lov ro'yxati) ikki marta
+sanalardi. Endi qisman to'lovlar + faqat qolgan qism. Hisobot bilan teng. Faqat ekran
+(`StoreProfile`). Do'kon PDF'ida xuddi shu xato hali bor — alohida qadam.
+
 ## 2026-10-08 — qoidalar tizimi (versiyasiz, index.html ga tegilmadi)
 
 `CLAUDE.md` (Tilla ERP qoidalaridan moslangan), `DAVOM.md`, `CHANGELOG.md`, `.vercelignore`
