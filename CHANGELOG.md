@@ -2,6 +2,11 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.01 — 2026-10-09 — raqamlash qaytadan
+
+Kod v4 bilan bir xil, faqat versiya belgisi v4 → v1.01. Bundan keyin har o'zgarish +0.01:
+v1.02, v1.03… (Ibrohim qarori). Pastdagi v1…v4 — eski raqamlash.
+
 ## v4 — 2026-10-09 — PC'da Do'konlar o'ngda doim
 
 Kompyuterda tepa menyudan «Do'kon» olib tashlandi. O'ngdagi «Do'konlar» paneli endi hamma

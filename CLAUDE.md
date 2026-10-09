@@ -305,15 +305,16 @@ Ibrohim (2026-10-08): *«Tilla kabi to'liq»*.
 - `index.html` ning **ENG BIRINCHI qatori**: `<!-- vN -->` — `<!DOCTYPE html>` dan **oldin**.
   Faqat raqam, boshqa hech narsa.
 - `APP_VER` o'zgaruvchisi shu 1-qator bilan **doim bir xil**.
-- `index.html` yoki `api/pdf.py` ning har o'zgarishida ikkalasi birga oshadi: v1 → v2 → …
-  (kichik tuzatish: v2.1, v2.2).
+- `index.html` yoki `api/pdf.py` ning har o'zgarishida ikkalasi birga **+0.01** oshadi:
+  v1.01 → v1.02 → … → v1.09 → v1.10 → v1.11 (Ibrohim, 2026-10-09: «v1.01 qil», Tilla POS kabi).
+  Raqamlash v1.01 dan qayta boshlangan — `CHANGELOG.md` dagi v1…v4 undan OLDINGI.
 - Commit sarlavhasi: `vN — <qisqa mazmun>` (o'zbekcha). «Update index.html» kabi hech narsa
   demaydigan sarlavha yozilmaydi.
 - O'zgarishlar **tafsiloti** `index.html` ichiga **YOZILMAYDI** (`// v5: …` izohlari yo'q) —
   faqat `CHANGELOG.md` ga. Yangi yozuv **tepaga**: `## vN — <sana> — <mazmun>` + 1–3 qator.
 - Repo public — `CHANGELOG.md` ga parol, kalit, mijoz ismi, summa YOZILMAYDI.
 
-**Joriy versiya** — `head -1 index.html` (v1 2026-10-09 da joriy qilingan). Ekranda: sarlavhada sahifa nomi yonida kichik `APP_VER`
+**Joriy versiya** — `head -1 index.html` (v1 2026-10-09 da joriy qilingan; v4 dan keyin v1.01 dan qayta boshlandi). Ekranda: sarlavhada sahifa nomi yonida kichik `APP_VER`
 (Ibrohim prod qaysi versiyada ekanini telefonda shundan ko'radi). Faqat `.md` fayllarga tegadigan
 commit versiyani oshirmaydi.
 

@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: v4 (`claude/pc-versiya`, main'da hali yo'q)
+**Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: v1.01 (`claude/pc-versiya`, main'da hali yo'q)
 
 ## ⏳ YARIM QOLDI — PC versiya maketi (2026-10-09) — HOZIRGI ASOSIY ISH
 
@@ -31,9 +31,11 @@ Qarorlar (2026-10-09): klient = diler (do'kon); ikki ustun, o'rtasi yo'q; menyu 
            [MEN] qarorlar: ustunlar teng; o'ng panel sticky; qidiruv sahifa almashganda saqlanadi;
            profildagi «← Do'konlar» o'zgarmadi (bosilsa chapda eski do'konlar ro'yxati ochiladi).
            Sinov: superadmin 5 sahifa, do'kon bosish, moder, omborchi, 400/1024px — xatolar yo'q.
-Keyingi qadam: Ibrohim v4 ni ko'radi → maket ustida keyingi o'zgarishlar (BITTA-BITTA) yoki
+✅ v1.01 — Ibrohim: «v1.01 qil». Kod = v4, faqat belgi v4 → v1.01. Bundan keyin +0.01
+           (v1.02, v1.03…) — CLAUDE.md §5 yangilandi.
+Keyingi qadam: Ibrohim v1.01 ni ko'radi → maket ustida keyingi o'zgarishlar (BITTA-BITTA) yoki
            «prodga chiqar».
-Javobsiz savol: Ibrohim v4 ni tekshiradi → «prodga chiqar»?
+Javobsiz savol: Ibrohim v1.01 ni tekshiradi → «prodga chiqar»?
 Eslatma:   hozirgi PC'da brend «Mebel ERP» (sidebar) — maketda «Kabir ERP».
 
 ## ⏸ TO'XTATILGAN — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09; PC maketi ustuvor)
@@ -59,7 +61,7 @@ Javobsiz savol: PDF ham tuzatilsinmi? Tekshirish uchun push / «prodga chiqar»?
   saqlaganda kategoriya va scroll joyida qoladi (sahifalar `Screen` orqali chiziladi;
   do'kon profili tabi va zakaz filtri ham saqlanadi). Soxta baza bilan brauzerda sinalgan.
   Ibrohim tekshiradi → PR yoki main'ga qo'shish qarori.
-- `claude/pc-versiya` — qoidalar fayllari + $400 + v1…v4 (claude/claude-md va claude/sotuv-tolov shuning ichida). PUSH QILINGAN.
+- `claude/pc-versiya` — qoidalar fayllari + $400 + v1…v4, v1.01 (claude/claude-md va claude/sotuv-tolov shuning ichida). PUSH QILINGAN.
 
 ## ⬜ Navbatda (Ibrohim tanlaydi)
 
