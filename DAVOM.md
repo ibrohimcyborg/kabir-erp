@@ -3,7 +3,19 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-08 · main = e0323b8 (2026-07-10) · versiya: hali yo'q (§5)
+**Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: hali yo'q (§5)
+
+## ⏳ YARIM QOLDI — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09)
+
+Branch:    kod yo'q — faqat maket
+Qilingan:  maket https://claude.ai/artifact/XhhrDbaA74qHjcEHtEm17A (HOZIRGI vs TAKLIF + tashxis)
+           Tashxis: do'kon profilida «OLINGAN PUL $400» — PayModal bilan yopilgan sotuv ikki marta
+           sanaladi (index.html:2199–2200, `StoreProfile` → `allPayments`); haqiqatda $200.
+           Kartochkada mahsulot nomi yo'q — mahsulot o'chirilgan bo'lishi mumkin (taxmin).
+Qolgan:    Ibrohim 6 ta savolga javob beradi (maketda): $400 ni avval tuzatishmi, unitlar qayerga
+           qaytadi, kim tahrirlaydi, nima tahrirlanadi, Qarz sahifasida kerakmi, tartib.
+Keyingi qadam: javobdan keyin 1-qadam (taklif: $400 tuzatish) — alohida sikl.
+Javobsiz savol: maketdagi 1–6 savollar.
 
 ## Ochiq branchlar (main'ga merge qilinmagan)
 
