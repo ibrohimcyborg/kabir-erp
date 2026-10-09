@@ -2,6 +2,12 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v4 — 2026-10-09 — PC'da Do'konlar o'ngda doim
+
+Kompyuterda tepa menyudan «Do'kon» olib tashlandi. O'ngdagi «Do'konlar» paneli endi hamma
+sahifada (Bosh, Ombor, Zakaz, Qarz, Hisobot) turadi; do'kon bosilsa profili chapda ochiladi,
+o'ng ro'yxat joyida qoladi. Omborchida o'ng panel yo'q. Telefon va planshet o'zgarmagan.
+
 ## v3 — 2026-10-09 — PC'da yangi Bosh sahifa
 
 Kompyuterda «Bosh» o'rniga ikki ustun: chapda «Ombor oldi-berdi» (shu oy: keldi, do'konga ketdi,

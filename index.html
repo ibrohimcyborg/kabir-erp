@@ -1,4 +1,4 @@
-<!-- v3 -->
+<!-- v4 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -93,6 +93,8 @@ input[type=number]{-moz-appearance:textfield}
 @media(min-width:1025px){
   .pc-block{display:block}
   .mob-block{display:none}
+  .pc-split{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+  .pc-side{position:sticky;top:0;max-height:calc(100vh - 90px);overflow-y:auto}
   .sidebar{display:none}
   .main-content{margin-left:0}
   .pc-only{display:flex}
@@ -104,7 +106,7 @@ input[type=number]{-moz-appearance:textfield}
 <div id="root"></div>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v3";
+const APP_VER = "v4";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -1911,10 +1913,9 @@ function App() {
   };
 
   // ═══════════════════════════════════════════════════════════
-  // PAGE: PC BOSH (1024px dan keng ekranda Bosh o'rniga)
+  // PAGE: PC (1024px dan keng) — chap: Bosh'da ombor oldi-berdi, o'ng: Do'konlar (hamma sahifada)
   // ═══════════════════════════════════════════════════════════
-  const PcHomePage = () => {
-    const [q, setQ] = useState("");
+  const pcCommon = () => {
     const OYLAR = ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun", "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"];
     const month = new Date().toISOString().slice(0, 7);
     const monthLabel = OYLAR[+month.slice(5, 7) - 1] + " " + month.slice(0, 4);
@@ -1932,8 +1933,19 @@ function App() {
       (s.partialPayments || []).forEach(p => payRows.push({ date: p.date, amount: p.amount, storeId: s.storeId }));
       if (s.paid && s.payDate && rest > 0) payRows.push({ date: s.payDate, amount: rest, storeId: s.storeId });
     });
+    const paidMonth = payRows.filter(p => inMonth(p.date)).reduce((a, p) => a + p.amount, 0);
 
-    // CHAP: shu oydagi ombor oldi-berdi
+    const pane = { background: t.surf, border: `1px solid ${t.border}`, borderRadius: 16, padding: 16, display: "grid", gap: 14, alignContent: "start", minWidth: 0 };
+    const kpi = (c) => ({ background: t.card, border: `1px solid ${t.border}`, borderTop: c ? `2px solid ${c}` : `1px solid ${t.border}`, borderRadius: 12, padding: "11px 12px", display: "grid", gap: 2 });
+    const kl = { fontSize: 10, fontWeight: 700, color: t.sub, letterSpacing: ".6px", textTransform: "uppercase" };
+    const kv = { fontSize: 22, fontWeight: 700, lineHeight: 1.2, ...s.numXl };
+    const kx = { fontSize: 11, color: t.sub };
+    return { monthLabel, inMonth, dm, prodOf, storeName, costOf, payRows, paidMonth, pane, kpi, kl, kv, kx };
+  };
+
+  // Chap: shu oydagi ombor oldi-berdi (Bosh sahifa, PC)
+  const PcOmborPane = () => {
+    const { monthLabel, inMonth, dm, prodOf, storeName, costOf, payRows, paidMonth, pane, kpi, kl, kv, kx } = pcCommon();
     const came = units.filter(u => inMonth(u.addedAt));
     const sent = units.filter(u => u.sentAt && inMonth(u.sentAt));
     const monthSales = sales.filter(s => inMonth(s.date));
@@ -1942,7 +1954,6 @@ function App() {
     const salesSum = monthSales.reduce((a, s) => a + s.totalAmount, 0);
     const salesCost = monthSales.reduce((a, s) => a + (s.cost || 0) * (+s.qty || 0), 0);
     const profit = salesSum - salesCost;
-    const paidMonth = payRows.filter(p => inMonth(p.date)).reduce((a, p) => a + p.amount, 0);
 
     const rows = [];
     const group = (list, keyFn, mk) => {
@@ -1960,8 +1971,62 @@ function App() {
     activity.filter(a => a.action === "Vitrinadan qaytarildi" && inMonth(a.time)).forEach(a => rows.push({ date: a.time, type: "back", prod: a.details, qty: null, who: "→ Ombor", amount: null }));
     rows.sort((a, b) => (b.date || "").slice(0, 10).localeCompare((a.date || "").slice(0, 10)));
     const TAG = { in: ["Keldi", t.blue, t.blueS], out: ["Jo'natildi", t.acc, t.accSoft], sold: ["Sotildi", t.green, t.greenS], pay: ["Pul olindi", t.txt, t.card], back: ["Qaytdi", t.amber, t.amberS] };
+    const th = { textAlign: "left", fontSize: 10, fontWeight: 700, color: t.sub, letterSpacing: ".6px", textTransform: "uppercase", padding: "8px 10px", background: t.card };
+    const td = { padding: "8px 10px", borderTop: `1px solid ${t.border}`, fontSize: 12.5, verticalAlign: "middle" };
 
-    // O'NG: do'konlar
+    return (
+      <div className="fade" style={pane}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+          <div style={{ fontSize: 17, fontWeight: 800 }}>Ombor oldi-berdi</div>
+          <div style={{ fontSize: 12, color: t.sub }}>{monthLabel}</div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+          <div style={kpi(t.blue)}><span style={kl}>Keldi</span><span style={kv}>{came.length}</span><span style={kx}>dona{canSee("cost") ? ` · tannarx ${fmt(costOf(came))}` : ""}</span></div>
+          <div style={kpi(t.acc)}><span style={kl}>Do'konga ketdi</span><span style={kv}>{sent.length}</span><span style={kx}>dona · {new Set(sent.map(u => u.location)).size} do'kon</span></div>
+          <div style={kpi(t.green)}><span style={kl}>Sotildi</span><span style={kv}>{soldQty}</span><span style={kx}>dona · {fmt(salesSum)}</span></div>
+          <div style={kpi(t.amber)}><span style={kl}>Omborda</span><span style={kv}>{inWh.length}</span><span style={kx}>dona{canSee("cost") ? ` · ${fmt(costOf(inWh))}` : ""}</span></div>
+        </div>
+        {canSee("profit") && (
+          <div style={{ background: `${t.green}12`, border: `1px solid ${t.green}33`, borderRadius: 12, padding: "12px 14px", display: "grid", gridTemplateColumns: "1.2fr 1fr 1fr 1fr", gap: 10, alignItems: "end" }}>
+            <div><div style={kl}>Foyda</div><div style={{ ...s.numXl, fontSize: 28, color: t.green }}>{fmt(profit)}</div><div style={{ fontSize: 12, color: t.green, fontWeight: 600 }}>ustama {salesCost > 0 ? Math.round(profit / salesCost * 100) : 0}%</div></div>
+            <div><div style={kl}>Sotuv</div><div style={{ ...s.numXl, fontSize: 18 }}>{fmt(salesSum)}</div></div>
+            <div><div style={kl}>Tannarx</div><div style={{ ...s.numXl, fontSize: 18 }}>{fmt(salesCost)}</div></div>
+            <div><div style={kl}>Olingan pul</div><div style={{ ...s.numXl, fontSize: 18 }}>{fmt(paidMonth)}</div></div>
+          </div>
+        )}
+        <div style={{ border: `1px solid ${t.border}`, borderRadius: 12, overflow: "hidden" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead><tr><th style={th}>Sana</th><th style={th}>Amal</th><th style={th}>Mahsulot</th><th style={{ ...th, textAlign: "right" }}>Soni</th><th style={th}>Kimdan / kimga</th><th style={{ ...th, textAlign: "right" }}>Summa</th></tr></thead>
+            <tbody>
+              {rows.length === 0 ? (
+                <tr><td colSpan={6} style={{ ...td, textAlign: "center", color: t.sub, padding: 24 }}>{monthLabel}da harakat yo'q</td></tr>
+              ) : rows.map((r, i) => {
+                const [tl, tc, tb] = TAG[r.type];
+                return (
+                  <tr key={i}>
+                    <td style={{ ...td, color: t.sub, ...s.mono }}>{dm(r.date)}</td>
+                    <td style={td}><span style={{ fontSize: 10.5, fontWeight: 700, padding: "2px 8px", borderRadius: 10, background: tb, color: tc, whiteSpace: "nowrap" }}>{tl}</span></td>
+                    <td style={{ ...td, color: r.prod ? t.txt : t.sub }}>{r.prod || "—"}</td>
+                    <td style={{ ...td, textAlign: "right", ...s.mono }}>{r.qty ?? "—"}</td>
+                    <td style={td}>{r.who}</td>
+                    <td style={{ ...td, textAlign: "right", whiteSpace: "nowrap", ...s.mono, color: r.type === "pay" ? t.green : r.amount == null ? t.sub : t.txt }}>
+                      {r.amount == null ? "—" : (r.type === "pay" ? "+" : "") + fmt(r.amount)}
+                      {r.debt > 0 && <span style={{ color: t.red }}> · qarz {fmt(r.debt)}</span>}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  };
+
+  // O'ng: Do'konlar (PC, hamma sahifada; omborchida yo'q)
+  const DokonlarPane = () => {
+    const [q, setQ] = useState("");
+    const { monthLabel, dm, prodOf, payRows, paidMonth, pane, kpi, kl, kv, kx } = pcCommon();
     const storeRows = stores.map(st => {
       const vit = units.filter(u => u.location === st.id && u.status === "available");
       const sSales = sales.filter(s => s.storeId === st.id);
@@ -1982,92 +2047,36 @@ function App() {
       .filter(r => r.st.name.toLowerCase().includes(q.toLowerCase()))
       .sort((a, b) => (b.last?.[0] || "").localeCompare(a.last?.[0] || ""));
 
-    const pane = { background: t.surf, border: `1px solid ${t.border}`, borderRadius: 16, padding: 16, display: "grid", gap: 14, alignContent: "start", minWidth: 0 };
-    const kpi = (c) => ({ background: t.card, border: `1px solid ${t.border}`, borderTop: c ? `2px solid ${c}` : `1px solid ${t.border}`, borderRadius: 12, padding: "11px 12px", display: "grid", gap: 2 });
-    const kl = { fontSize: 10, fontWeight: 700, color: t.sub, letterSpacing: ".6px", textTransform: "uppercase" };
-    const kv = { fontSize: 22, fontWeight: 700, lineHeight: 1.2, ...s.numXl };
-    const kx = { fontSize: 11, color: t.sub };
-    const th = { textAlign: "left", fontSize: 10, fontWeight: 700, color: t.sub, letterSpacing: ".6px", textTransform: "uppercase", padding: "8px 10px", background: t.card };
-    const td = { padding: "8px 10px", borderTop: `1px solid ${t.border}`, fontSize: 12.5, verticalAlign: "middle" };
-
     return (
-      <div className="fade" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18, alignItems: "start" }}>
-        <div style={pane}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-            <div style={{ fontSize: 17, fontWeight: 800 }}>Ombor oldi-berdi</div>
-            <div style={{ fontSize: 12, color: t.sub }}>{monthLabel}</div>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
-            <div style={kpi(t.blue)}><span style={kl}>Keldi</span><span style={kv}>{came.length}</span><span style={kx}>dona{canSee("cost") ? ` · tannarx ${fmt(costOf(came))}` : ""}</span></div>
-            <div style={kpi(t.acc)}><span style={kl}>Do'konga ketdi</span><span style={kv}>{sent.length}</span><span style={kx}>dona · {new Set(sent.map(u => u.location)).size} do'kon</span></div>
-            <div style={kpi(t.green)}><span style={kl}>Sotildi</span><span style={kv}>{soldQty}</span><span style={kx}>dona · {fmt(salesSum)}</span></div>
-            <div style={kpi(t.amber)}><span style={kl}>Omborda</span><span style={kv}>{inWh.length}</span><span style={kx}>dona{canSee("cost") ? ` · ${fmt(costOf(inWh))}` : ""}</span></div>
-          </div>
-          {canSee("profit") && (
-            <div style={{ background: `${t.green}12`, border: `1px solid ${t.green}33`, borderRadius: 12, padding: "12px 14px", display: "grid", gridTemplateColumns: "1.2fr 1fr 1fr 1fr", gap: 10, alignItems: "end" }}>
-              <div><div style={kl}>Foyda</div><div style={{ ...s.numXl, fontSize: 28, color: t.green }}>{fmt(profit)}</div><div style={{ fontSize: 12, color: t.green, fontWeight: 600 }}>ustama {salesCost > 0 ? Math.round(profit / salesCost * 100) : 0}%</div></div>
-              <div><div style={kl}>Sotuv</div><div style={{ ...s.numXl, fontSize: 18 }}>{fmt(salesSum)}</div></div>
-              <div><div style={kl}>Tannarx</div><div style={{ ...s.numXl, fontSize: 18 }}>{fmt(salesCost)}</div></div>
-              <div><div style={kl}>Olingan pul</div><div style={{ ...s.numXl, fontSize: 18 }}>{fmt(paidMonth)}</div></div>
-            </div>
-          )}
-          <div style={{ border: `1px solid ${t.border}`, borderRadius: 12, overflow: "hidden" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead><tr><th style={th}>Sana</th><th style={th}>Amal</th><th style={th}>Mahsulot</th><th style={{ ...th, textAlign: "right" }}>Soni</th><th style={th}>Kimdan / kimga</th><th style={{ ...th, textAlign: "right" }}>Summa</th></tr></thead>
-              <tbody>
-                {rows.length === 0 ? (
-                  <tr><td colSpan={6} style={{ ...td, textAlign: "center", color: t.sub, padding: 24 }}>{monthLabel}da harakat yo'q</td></tr>
-                ) : rows.map((r, i) => {
-                  const [tl, tc, tb] = TAG[r.type];
-                  return (
-                    <tr key={i}>
-                      <td style={{ ...td, color: t.sub, ...s.mono }}>{dm(r.date)}</td>
-                      <td style={td}><span style={{ fontSize: 10.5, fontWeight: 700, padding: "2px 8px", borderRadius: 10, background: tb, color: tc, whiteSpace: "nowrap" }}>{tl}</span></td>
-                      <td style={{ ...td, color: r.prod ? t.txt : t.sub }}>{r.prod || "—"}</td>
-                      <td style={{ ...td, textAlign: "right", ...s.mono }}>{r.qty ?? "—"}</td>
-                      <td style={td}>{r.who}</td>
-                      <td style={{ ...td, textAlign: "right", whiteSpace: "nowrap", ...s.mono, color: r.type === "pay" ? t.green : r.amount == null ? t.sub : t.txt }}>
-                        {r.amount == null ? "—" : (r.type === "pay" ? "+" : "") + fmt(r.amount)}
-                        {r.debt > 0 && <span style={{ color: t.red }}> · qarz {fmt(r.debt)}</span>}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+      <div style={pane}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+          <div style={{ fontSize: 17, fontWeight: 800 }}>Do'konlar</div>
+          <div style={{ fontSize: 12, color: t.sub }}>{stores.length} ta do'kon</div>
         </div>
-
-        <div style={pane}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-            <div style={{ fontSize: 17, fontWeight: 800 }}>Do'konlar</div>
-            <div style={{ fontSize: 12, color: t.sub }}>{stores.length} ta do'kon</div>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
-            <div style={kpi()}><span style={kl}>Vitrinadagi mol</span><span style={kv}>{fmt(vitVal)}</span><span style={kx}>{vitN} dona</span></div>
-            <div style={kpi()}><span style={kl}>Qarz</span><span style={{ ...kv, color: debtTotal > 0 ? t.red : t.txt }}>{fmt(debtTotal)}</span><span style={kx}>{debtStores} do'kon</span></div>
-            <div style={kpi()}><span style={kl}>Bu oy olingan</span><span style={{ ...kv, color: t.green }}>{fmt(paidMonth)}</span><span style={kx}>{monthLabel}</span></div>
-          </div>
-          <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 10, padding: "9px 12px", display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ color: t.sub, display: "flex" }}><Ic n="search" s={15} /></span>
-            <input style={{ flex: 1, background: "none", border: "none", color: t.txt, fontSize: 13 }} placeholder="Do'kon qidirish..." value={q} onChange={e => setQ(e.target.value)} />
-          </div>
-          <div style={{ border: `1px solid ${t.border}`, borderRadius: 12, overflow: "hidden" }}>
-            {shown.length === 0 ? (
-              <div style={{ padding: 24, textAlign: "center", color: t.sub, fontSize: 13 }}>{stores.length === 0 ? "Do'kon yo'q" : "Topilmadi"}</div>
-            ) : shown.map((r, i) => (
-              <button key={r.st.id} onClick={() => { setTab("stores"); localStorage.setItem("kabir_tab", "stores"); setStoreProfileId(r.st.id); }} style={{ width: "100%", display: "grid", gridTemplateColumns: "34px 1fr auto auto auto", gap: 14, alignItems: "center", padding: "10px 12px", borderTop: i ? `1px solid ${t.border}` : "none", textAlign: "left", color: t.txt }}>
-                <div style={{ width: 34, height: 34, borderRadius: 10, background: t.card, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, color: t.acc, fontSize: 13 }}>{(r.st.name || "?")[0].toUpperCase()}</div>
-                <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: 13.5, fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.st.name}</div>
-                  <div style={{ fontSize: 11, color: t.sub }}>{r.last ? `oxirgi: ${dm(r.last[0])} · ${r.last[1]}` : "harakat yo'q"}</div>
-                </div>
-                <div style={{ textAlign: "right", minWidth: 92 }}><div style={kl}>Vitrinada</div><div style={{ ...s.numXl, fontSize: 14, color: r.vitN ? t.txt : t.sub }}>{r.vitN ? `${r.vitN} · ${fmt(r.vitVal)}` : "0"}</div></div>
-                <div style={{ textAlign: "right", minWidth: 80 }}><div style={kl}>Qarz</div><div style={{ ...s.numXl, fontSize: 14, color: r.debt > 0 ? t.red : t.sub }}>{fmt(r.debt)}</div></div>
-                <div style={{ textAlign: "right", minWidth: 80 }}><div style={kl}>Olingan</div><div style={{ ...s.numXl, fontSize: 14, color: r.paid > 0 ? t.green : t.sub }}>{fmt(r.paid)}</div></div>
-              </button>
-            ))}
-          </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+          <div style={kpi()}><span style={kl}>Vitrinadagi mol</span><span style={kv}>{fmt(vitVal)}</span><span style={kx}>{vitN} dona</span></div>
+          <div style={kpi()}><span style={kl}>Qarz</span><span style={{ ...kv, color: debtTotal > 0 ? t.red : t.txt }}>{fmt(debtTotal)}</span><span style={kx}>{debtStores} do'kon</span></div>
+          <div style={kpi()}><span style={kl}>Bu oy olingan</span><span style={{ ...kv, color: t.green }}>{fmt(paidMonth)}</span><span style={kx}>{monthLabel}</span></div>
+        </div>
+        <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 10, padding: "9px 12px", display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ color: t.sub, display: "flex" }}><Ic n="search" s={15} /></span>
+          <input style={{ flex: 1, background: "none", border: "none", color: t.txt, fontSize: 13 }} placeholder="Do'kon qidirish..." value={q} onChange={e => setQ(e.target.value)} />
+        </div>
+        <div style={{ border: `1px solid ${t.border}`, borderRadius: 12, overflow: "hidden" }}>
+          {shown.length === 0 ? (
+            <div style={{ padding: 24, textAlign: "center", color: t.sub, fontSize: 13 }}>{stores.length === 0 ? "Do'kon yo'q" : "Topilmadi"}</div>
+          ) : shown.map((r, i) => (
+            <button key={r.st.id} onClick={() => { setTab("stores"); localStorage.setItem("kabir_tab", "stores"); setStoreProfileId(r.st.id); }} style={{ width: "100%", display: "grid", gridTemplateColumns: "34px 1fr auto auto auto", gap: 14, alignItems: "center", padding: "10px 12px", borderTop: i ? `1px solid ${t.border}` : "none", textAlign: "left", color: t.txt }}>
+              <div style={{ width: 34, height: 34, borderRadius: 10, background: t.card, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, color: t.acc, fontSize: 13 }}>{(r.st.name || "?")[0].toUpperCase()}</div>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: 13.5, fontWeight: 700, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.st.name}</div>
+                <div style={{ fontSize: 11, color: t.sub }}>{r.last ? `oxirgi: ${dm(r.last[0])} · ${r.last[1]}` : "harakat yo'q"}</div>
+              </div>
+              <div style={{ textAlign: "right", minWidth: 92 }}><div style={kl}>Vitrinada</div><div style={{ ...s.numXl, fontSize: 14, color: r.vitN ? t.txt : t.sub }}>{r.vitN ? `${r.vitN} · ${fmt(r.vitVal)}` : "0"}</div></div>
+              <div style={{ textAlign: "right", minWidth: 80 }}><div style={kl}>Qarz</div><div style={{ ...s.numXl, fontSize: 14, color: r.debt > 0 ? t.red : t.sub }}>{fmt(r.debt)}</div></div>
+              <div style={{ textAlign: "right", minWidth: 80 }}><div style={kl}>Olingan</div><div style={{ ...s.numXl, fontSize: 14, color: r.paid > 0 ? t.green : t.sub }}>{fmt(r.paid)}</div></div>
+            </button>
+          ))}
         </div>
       </div>
     );
@@ -2921,7 +2930,7 @@ To'lov uchun:
 
   const renderPage = () => {
     switch (tab) {
-      case "home": return <><div className="pc-block"><Screen key="pchome" render={PcHomePage} /></div><div className="mob-block"><Screen key="home" render={HomePage} /></div></>;
+      case "home": return <><div className="pc-block"><Screen key="pchome" render={PcOmborPane} /></div><div className="mob-block"><Screen key="home" render={HomePage} /></div></>;
       case "warehouse": return <Screen key="warehouse" render={WarehousePage} />;
       case "stores": return <Screen key="stores" render={StoresPage} />;
       case "orders": return <Screen key="orders" render={OrdersPage} />;
@@ -3007,7 +3016,7 @@ To'lov uchun:
               <div style={{ fontSize:15, fontWeight:800, color:t.txt, whiteSpace:"nowrap" }}>Kabir ERP<span style={{ fontSize:10, fontWeight:600, color:t.sub, marginLeft:5 }}>{APP_VER}</span></div>
             </div>
             <nav className="pc-only" style={{ alignItems:"center", gap:4 }}>
-              {navItems.map(item => {
+              {navItems.filter(item => item.id !== "stores").map(item => {
                 const active = tab === item.id;
                 return (
                   <button key={item.id} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }} style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", borderRadius:9, fontSize:13, fontWeight:active ? 700 : 600, background:active ? t.accSoft : "transparent", color:active ? t.acc : t.sub }}>
@@ -3072,7 +3081,10 @@ To'lov uchun:
               <span className="ptr-spin">🔄</span> Yangilanmoqda...
             </div>
           )}
-          {renderPage()}
+          <div className={user?.role !== "ombor" ? "pc-split" : ""}>
+            <div style={{ minWidth: 0 }}>{renderPage()}</div>
+            {user?.role !== "ombor" && <div className="pc-block pc-side"><Screen key="dokonlar" render={DokonlarPane} /></div>}
+          </div>
         </div>
       </main>
 
