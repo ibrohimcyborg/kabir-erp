@@ -3,13 +3,13 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: v1.01 (`claude/pc-versiya`, main'da hali yo'q)
+**Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil (kod 8667e88 + shu DAVOM commiti) · versiya: **v1.01 — PRODDA** (2026-10-09, Ibrohim «prodga chiqar»)
 
-## ⏳ YARIM QOLDI — PC versiya maketi (2026-10-09) — HOZIRGI ASOSIY ISH
+## ⏳ PC versiya (2026-10-09) — HOZIRGI ASOSIY ISH, v1.01 prodda
 
 Ibrohim: «endi KABIR ERPni maketda shakllantiramiz — PC versiya: chap tarafda ombor
 oldi-berdi, foyda; o'ng tarafda klientlar».
-Branch:    `claude/pc-versiya` (claude/sotuv-tolov + ombor-joyida-qolish merge) — push: HA (2026-10-09, Ibrohim «push qil»)
+Branch:    `claude/pc-versiya` (claude/sotuv-tolov + ombor-joyida-qolish merge) — push: HA, main'ga qo'shildi (fast-forward, 2026-10-09)
 Maket:     https://claude.ai/artifact/QLgzuvDWmSc7zF5YL1wGMZ — Ibrohim: «shu yoqti» (tasdiqlandi)
 Qarorlar (2026-10-09): klient = diler (do'kon); ikki ustun, o'rtasi yo'q; menyu tepada;
            davr — shu oy; PC'da «Bosh» o'rniga (telefon o'zgarmaydi); foyda — canSee("profit");
@@ -33,14 +33,16 @@ Qarorlar (2026-10-09): klient = diler (do'kon); ikki ustun, o'rtasi yo'q; menyu 
            Sinov: superadmin 5 sahifa, do'kon bosish, moder, omborchi, 400/1024px — xatolar yo'q.
 ✅ v1.01 — Ibrohim: «v1.01 qil». Kod = v4, faqat belgi v4 → v1.01. Bundan keyin +0.01
            (v1.02, v1.03…) — CLAUDE.md §5 yangilandi.
-Keyingi qadam: Ibrohim v1.01 ni ko'radi → maket ustida keyingi o'zgarishlar (BITTA-BITTA) yoki
-           «prodga chiqar».
-Javobsiz savol: Ibrohim v1.01 ni tekshiradi → «prodga chiqar»?
+✅ PROD — 2026-10-09: Ibrohim «vercel preview kerak emas, push qilgandan keyin kirib tekshiraman»
+           → tasdiq «Ha, prodga chiqar» → `main` e0323b8 → `claude/pc-versiya` (fast-forward).
+Keyingi qadam: Ibrohim kabir-erp.vercel.app da tekshiradi → keyingi o'zgarish v1.02 (BITTA-BITTA).
+           Preview havola Ibrohimga KERAK EMAS — tekshirish prodda.
+Javobsiz savol: Ibrohimning prod tekshiruvi natijasi.
 Eslatma:   hozirgi PC'da brend «Mebel ERP» (sidebar) — maketda «Kabir ERP».
 
 ## ⏸ TO'XTATILGAN — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09; PC maketi ustuvor)
 
-Branch:    `claude/sotuv-tolov` (claude/claude-md ustida — qoidalar fayllari ham shu branch'da)
+Branch:    1-qadam va v1 `main`da (claude/pc-versiya orqali). 2-qadam yangi `claude/*` branch'da `main`dan.
 Maket:     https://claude.ai/artifact/XhhrDbaA74qHjcEHtEm17A (v2: qarorlar + 1-qadam rejasi)
 Qarorlar (Ibrohim, 2026-10-09):
   - Qayerda: `StoreProfile` → Sotuv va To'lov ro'yxatlari. Qarz va Hisobot sahifasida YO'Q.
@@ -53,20 +55,15 @@ Qarorlar (Ibrohim, 2026-10-09):
            PDF (`pdfStore`, index.html:619) — TEGILMADI (Ibrohim A/B demadi → B: alohida qadam).
 ✅ v1 — versiya belgisi: 1-qator `<!-- v1 -->`, `APP_VER`, sarlavhada «Do'kon v1».
 Keyingi qadam: 2-qadam — to'lovni o'chirish (avval maket, keyin «ha»).
-Javobsiz savol: PDF ham tuzatilsinmi? Tekshirish uchun push / «prodga chiqar»?
+Javobsiz savol: PDF ham tuzatilsinmi?
 
 ## Ochiq branchlar (main'ga merge qilinmagan)
 
-- `claude/ombor-joyida-qolish` @ 6454f56 — PUSH QILINGAN, `claude/pc-versiya` ga merge qilingan (v1.1). Ombordagi mahsulotni tahrirlab
-  saqlaganda kategoriya va scroll joyida qoladi (sahifalar `Screen` orqali chiziladi;
-  do'kon profili tabi va zakaz filtri ham saqlanadi). Soxta baza bilan brauzerda sinalgan.
-  Ibrohim tekshiradi → PR yoki main'ga qo'shish qarori.
-- `claude/pc-versiya` — qoidalar fayllari + $400 + v1…v4, v1.01 (claude/claude-md va claude/sotuv-tolov shuning ichida). PUSH QILINGAN.
+- Yo'q (2026-10-09). `claude/pc-versiya` va `claude/ombor-joyida-qolish` `main`ga qo'shildi —
+  remote'dagi branchlar o'chirilmagan (o'chirish — Ibrohim qarori).
 
 ## ⬜ Navbatda (Ibrohim tanlaydi)
 
-- v1: `index.html` 1-qatoriga `<!-- v1 -->` + `APP_VER` (alohida sikl, maket bilan;
-  APP_VER ekranda ko'rinadimi — Ibrohim qarori).
 - Tahlildagi tezkor tuzatishlar (har biri alohida sikl, avval maket): QR `#p=SKU` havolasi
   ilovani yiqitishi; PDF kirill/ʻ shrifti; PDF holat ranglari; chop HTML da nomlarni tozalash.
 - Xavfsizlik: standart parollarni almashtirish, repo'ni private qilish — Ibrohim o'zi
@@ -74,13 +71,14 @@ Javobsiz savol: PDF ham tuzatilsinmi? Tekshirish uchun push / «prodga chiqar»?
 
 ## ❓ Javobsiz savollar
 
-- `claude/ombor-joyida-qolish` — PR ochilsinmi yoki to'g'ridan main'ga qo'shilsinmi?
-- `claude/claude-md` push qilinsinmi? (bulut seansi tugasa push qilinmagan ish yo'qoladi)
 - Soxta baza sinov vositalari repoga (`sinov/`) qo'shilsinmi?
 - CLAUDE.md §6 «Nimaga tegilmaydi» ro'yxati — Ibrohim tasdiqlaydimi?
 
 ## ✅ Oxirgi tugaganlar
 
+- 2026-10-09 — v1.01 prodga chiqdi: PC versiya (menyu tepada, Bosh'da ombor oldi-berdi, o'ngda
+  Do'konlar hamma sahifada), ombor tahririda joyida qolish, do'kon profilida to'lov ikki marta
+  sanalmasligi, versiya belgisi, qoidalar fayllari.
 - 2026-10-08 — Tilla ERP `CLAUDE.md` qoidalari Kabir'ga moslandi (branch `claude/claude-md`).
   Ibrohim qarorlari: push faqat aytganda; workflow to'liq taqiq; `.vercelignore` qo'shildi;
   versiya Tilla kabi to'liq.
