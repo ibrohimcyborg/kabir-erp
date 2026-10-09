@@ -5,7 +5,25 @@
 
 **Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil (kod 8667e88 + shu DAVOM commiti) · versiya: **v1.01 — PRODDA** (2026-10-09, Ibrohim «prodga chiqar»)
 
-## ⏳ PC versiya (2026-10-09) — HOZIRGI ASOSIY ISH, v1.01 prodda
+## ⏳ YARIM QOLDI — iOS uslubidagi yangi dizayn (2026-10-09) — HOZIRGI ASOSIY ISH
+
+Ibrohim: «boshidan dizaynini o'zgartir, iOS'dagidek qilish kerak, SVG'larni o'zgartir —
+           10 $ lik ko'rinadi». Hozircha faqat superadmin ko'rinishi.
+Branch:    `claude/pc-versiya` — kod HALI YOZILMAGAN (faqat maket). index.html ga tegilmadi.
+Maket:     https://claude.ai/artifact/BqTVowKxnr1tgQ3SPYmoJ4 (Design canvas, soxta ma'lumot):
+           PC Bosh (yorug'/qorong'i tugmasi), telefon Bosh, ikonkalar (hozirgi → taklif),
+           hozirgi v1.01 skrinshotlari, «Qaror nuqtalari» va «Nega arzon ko'rinadi» stikerlari.
+Taklif:    bitta shrift (Apple'da SF Pro, Windows'da Inter); iOS ranglari (fon #F2F2F7, oq
+           kartochka, indigo #5856D6, yashil=pul, qizil=qarz); katta sarlavha; guruhlangan
+           ro'yxatlar; rangli plitkadagi ingichka o'zim chizgan SVG ikonkalar; emoji yo'q;
+           PC menyusi segment ko'rinishida. Ma'lumot/mantiq o'zgarmaydi — faqat ko'rinish.
+Javobsiz savollar (maketdagi «Qaror nuqtalari»): 1) yorug' yoki qorong'i; 2) indigo yoki
+           iOS ko'k; 3) PC menyu tepada segment yoki chapda yon panel; 4) shrift; 5) ikonkalar;
+           6) tartib — avval Bosh (PC+telefon), keyin boshqa sahifalar, har biri alohida versiya.
+Keyingi qadam: Ibrohim maketni ko'rib BITTA-BITTA tuzatadi → «shunaqa qil» → TAXMIN BLOKI →
+           kod (v1.02 — birinchi sahifa).
+
+## ✅ PC versiya (2026-10-09) — v1.01 prodda
 
 Ibrohim: «endi KABIR ERPni maketda shakllantiramiz — PC versiya: chap tarafda ombor
 oldi-berdi, foyda; o'ng tarafda klientlar».
