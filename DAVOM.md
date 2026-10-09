@@ -3,13 +3,14 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil (kod 8667e88 + shu DAVOM commiti) · versiya: prodda **v1.01**; `claude/pc-versiya` da **v1.02** (main'da yo'q)
+**Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.02 — PRODDA** (2026-10-09)
 
 ## ⏳ YARIM QOLDI — iOS uslubidagi yangi dizayn (2026-10-09) — HOZIRGI ASOSIY ISH
 
 Ibrohim: «boshidan dizaynini o'zgartir, iOS'dagidek qilish kerak, SVG'larni o'zgartir —
            10 $ lik ko'rinadi». Hozircha faqat superadmin ko'rinishi.
-Branch:    `claude/pc-versiya` — v1.02 yozildi va push qilindi (main'da YO'Q, prod v1.01 da).
+Branch:    `claude/pc-versiya` — v1.02 push qilindi va PRODGA chiqdi (Ibrohim: «push qil diganim prodga
+           chiqar digani, deploy qil» → CLAUDE.md §8: «push qil» = prod).
 Maket:     https://claude.ai/artifact/BqTVowKxnr1tgQ3SPYmoJ4 (Design canvas, soxta ma'lumot):
            PC Bosh (yorug'/qorong'i tugmasi), telefon Bosh, ikonkalar (hozirgi → taklif),
            hozirgi v1.01 skrinshotlari, «Qaror nuqtalari» va «Nega arzon ko'rinadi» stikerlari.

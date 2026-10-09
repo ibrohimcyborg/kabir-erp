@@ -496,10 +496,11 @@ Tekshirilmagan fix ustiga tekshirilmagan fix qo'yish — kod izlanmaydigan bo'li
   shuning uchun har o'zgarish oxirida so'ra (§0.1, 2-band).
 - `"push qil"` = ish branch'ini push qilish: `git push -u origin claude/<mavzu>` — branch nomini
   doim **aniq yoz** (seans branch'ining upstream'i `main` bo'lishi mumkin).
-  Ibrohim (2026-10-09): *«prodga qo'shma, push qil diman, tekshiraman — push qilganingdan keyin
-  versiyani solishtirib»*. «push qil», «push qilgandan keyin kirib tekshiraman» — bu PROD EMAS;
-  Ibrohim push'dan keyin versiyani o'zi solishtiradi. Preview havola so'ralmasa berilmaydi.
-  **Nega bu bor:** 2026-10-09 da shu gap prod deb tushunilib, v1.01 `main`ga chiqarib yuborilgan.
+  ⚠ **OXIRGI QAROR — Ibrohim (2026-10-09):** *«push qil diganim prodga chiqar digani, deploy qil»*.
+  Demak **«push qil» = ish branch'ini push + `main`ga fast-forward = prod deploy** (TEKSHIRUV va
+  JSX sinov OK bo'lsa). Ibrohim prodda (kabir-erp.vercel.app) versiyani solishtiradi: *«asosiy
+  saytga qil, boshqa sayt qilib tekshirish kerak emas»*. Preview havola berilmaydi. Shu kuni oldinroq aksini aytgan edi («prodga qo'shma, push qil
+  diman») — oxirgi qaror kuchda. Ikkilansang — so'ra.
 - `"prodga chiqar"` / `"main'ga qo'sh"` = `main`ga merge = **Vercel darhol deploy**. Faqat shu
   aniq so'zlardan keyin, TEKSHIRUV va JSX sinov OK bo'lsa.
 - **Hech qachon:** `--force`, `main` tarixini qayta yozish, so'ralmagan merge.
