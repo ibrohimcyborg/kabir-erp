@@ -39,7 +39,10 @@ Qarorlar (2026-10-09): klient = diler (do'kon); ikki ustun, o'rtasi yo'q; menyu 
            NOTO'G'RI tushunilgan edi. Qaror: «Qolsin» — v1.01 prodda qoladi, revert yo'q.
            Qoida (CLAUDE.md §8): «push qil» = faqat ish branch'i; Ibrohim push'dan keyin versiyani
            o'zi solishtiradi; preview havola berilmaydi; prod faqat «prodga chiqar» bilan.
-Keyingi qadam: Ibrohim v1.01 ni tekshiradi → keyingi o'zgarish v1.02 (BITTA-BITTA).
+Yo'nalish (Ibrohim, 2026-10-09): «endi faqat SUPERADMINni to'g'irlaymiz, keyin qolgan ishlarni
+           qilamiz» — hozircha o'zgarishlar superadmin ko'rinishi uchun; boshqa rollar (admin, moder,
+           ombor) va to'xtatilgan ishlar (sotuv/to'lov tahriri, PDF) — keyin.
+Keyingi qadam: Ibrohim v1.01 ni tekshiradi → superadmin uchun keyingi o'zgarish v1.02 (BITTA-BITTA).
 Javobsiz savol: Ibrohimning tekshiruvi natijasi.
 Eslatma:   hozirgi PC'da brend «Mebel ERP» (sidebar) — maketda «Kabir ERP».
 
