@@ -3,19 +3,20 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: v1 (`claude/sotuv-tolov`, main'da hali yo'q)
+**Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: v1.1 (`claude/pc-versiya`, main'da hali yo'q)
 
 ## ⏳ YARIM QOLDI — PC versiya maketi (2026-10-09) — HOZIRGI ASOSIY ISH
 
 Ibrohim: «endi KABIR ERPni maketda shakllantiramiz — PC versiya: chap tarafda ombor
 oldi-berdi, foyda; o'ng tarafda klientlar».
-Branch:    kod yo'q — faqat maket
-Maket:     https://claude.ai/artifact/QLgzuvDWmSc7zF5YL1wGMZ (v1: TAKLIF 1440px kadr + HOZIRGI
-           skrinshot + raqamlar manbai + 6 savol)
-Qolgan:    Ibrohim 6 savolga javob beradi (klient = diler yoki mijoz; o'rtada nima; menyu
-           qayerda; davr; qaysi sahifa; foyda kimga), keyin maket ustida BITTA-BITTA.
-Keyingi qadam: javoblarga qarab maketni bittadan yangilash (har gap — alohida nashr).
-Javobsiz savol: maketdagi 1–6.
+Branch:    `claude/pc-versiya` (claude/sotuv-tolov + ombor-joyida-qolish merge) — push: yo'q
+Maket:     https://claude.ai/artifact/QLgzuvDWmSc7zF5YL1wGMZ — Ibrohim: «shu yoqti» (tasdiqlandi)
+Qarorlar (2026-10-09): klient = diler (do'kon); ikki ustun, o'rtasi yo'q; menyu tepada;
+           davr — shu oy; PC'da «Bosh» o'rniga (telefon o'zgarmaydi); foyda — canSee("profit");
+           avval Screen tuzatishi (v1.1); ikki qadam: v2 menyu tepaga, v3 yangi Bosh.
+✅ v1.1 — `claude/ombor-joyida-qolish` merge qilindi (Screen).
+Keyingi qadam: v2 — PC'da (>1024px) menyu tepaga; keyin Ibrohim ko'radi → v3.
+Javobsiz savol: yo'q.
 Eslatma:   hozirgi PC'da brend «Mebel ERP» (sidebar) — maketda «Kabir ERP».
 
 ## ⏸ TO'XTATILGAN — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09; PC maketi ustuvor)
@@ -37,7 +38,7 @@ Javobsiz savol: PDF ham tuzatilsinmi? Tekshirish uchun push / «prodga chiqar»?
 
 ## Ochiq branchlar (main'ga merge qilinmagan)
 
-- `claude/ombor-joyida-qolish` @ 6454f56 — PUSH QILINGAN. Ombordagi mahsulotni tahrirlab
+- `claude/ombor-joyida-qolish` @ 6454f56 — PUSH QILINGAN, `claude/pc-versiya` ga merge qilingan (v1.1). Ombordagi mahsulotni tahrirlab
   saqlaganda kategoriya va scroll joyida qoladi (sahifalar `Screen` orqali chiziladi;
   do'kon profili tabi va zakaz filtri ham saqlanadi). Soxta baza bilan brauzerda sinalgan.
   Ibrohim tekshiradi → PR yoki main'ga qo'shish qarori.

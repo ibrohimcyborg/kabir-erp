@@ -2,6 +2,12 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.1 — 2026-10-09 — ombor tahririda joyida qolish
+
+`claude/ombor-joyida-qolish` qo'shildi: sahifalar barqaror `Screen` orqali chiziladi —
+tahrirlab saqlaganda kategoriya va scroll joyida qoladi, do'kon profili tabi va zakaz filtri
+saqlanadi. PC versiya (v2, v3) uchun asos. Branch: `claude/pc-versiya`.
+
 ## v1 — 2026-10-09 — versiya belgisi
 
 `index.html` 1-qatori `<!-- v1 -->`, `APP_VER = "v1"`, sarlavhada sahifa nomi yonida «v1».
