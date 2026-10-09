@@ -33,11 +33,14 @@ Qarorlar (2026-10-09): klient = diler (do'kon); ikki ustun, o'rtasi yo'q; menyu 
            Sinov: superadmin 5 sahifa, do'kon bosish, moder, omborchi, 400/1024px — xatolar yo'q.
 ✅ v1.01 — Ibrohim: «v1.01 qil». Kod = v4, faqat belgi v4 → v1.01. Bundan keyin +0.01
            (v1.02, v1.03…) — CLAUDE.md §5 yangilandi.
-✅ PROD — 2026-10-09: Ibrohim «vercel preview kerak emas, push qilgandan keyin kirib tekshiraman»
-           → tasdiq «Ha, prodga chiqar» → `main` e0323b8 → `claude/pc-versiya` (fast-forward).
-Keyingi qadam: Ibrohim kabir-erp.vercel.app da tekshiradi → keyingi o'zgarish v1.02 (BITTA-BITTA).
-           Preview havola Ibrohimga KERAK EMAS — tekshirish prodda.
-Javobsiz savol: Ibrohimning prod tekshiruvi natijasi.
+⚠ PROD — 2026-10-09: Ibrohim «vercel preview kerak emas, push qilgandan keyin kirib tekshiraman»
+           — Claude buni PROD deb tushundi, so'radi, «Ha, prodga chiqar» tanlandi → `main` e0323b8 →
+           b9ca49f (fast-forward). Keyin Ibrohim: «prodga qo'shma, push qil diman, tekshiraman» —
+           NOTO'G'RI tushunilgan edi. Qaror: «Qolsin» — v1.01 prodda qoladi, revert yo'q.
+           Qoida (CLAUDE.md §8): «push qil» = faqat ish branch'i; Ibrohim push'dan keyin versiyani
+           o'zi solishtiradi; preview havola berilmaydi; prod faqat «prodga chiqar» bilan.
+Keyingi qadam: Ibrohim v1.01 ni tekshiradi → keyingi o'zgarish v1.02 (BITTA-BITTA).
+Javobsiz savol: Ibrohimning tekshiruvi natijasi.
 Eslatma:   hozirgi PC'da brend «Mebel ERP» (sidebar) — maketda «Kabir ERP».
 
 ## ⏸ TO'XTATILGAN — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09; PC maketi ustuvor)
