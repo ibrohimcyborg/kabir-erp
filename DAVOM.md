@@ -9,7 +9,7 @@
 
 Ibrohim: «endi KABIR ERPni maketda shakllantiramiz — PC versiya: chap tarafda ombor
 oldi-berdi, foyda; o'ng tarafda klientlar».
-Branch:    `claude/pc-versiya` (claude/sotuv-tolov + ombor-joyida-qolish merge) — push: yo'q
+Branch:    `claude/pc-versiya` (claude/sotuv-tolov + ombor-joyida-qolish merge) — push: HA (2026-10-09, Ibrohim «push qil»)
 Maket:     https://claude.ai/artifact/QLgzuvDWmSc7zF5YL1wGMZ — Ibrohim: «shu yoqti» (tasdiqlandi)
 Qarorlar (2026-10-09): klient = diler (do'kon); ikki ustun, o'rtasi yo'q; menyu tepada;
            davr — shu oy; PC'da «Bosh» o'rniga (telefon o'zgarmaydi); foyda — canSee("profit");
@@ -24,7 +24,7 @@ Qarorlar (2026-10-09): klient = diler (do'kon); ikki ustun, o'rtasi yo'q; menyu 
            Sinov: superadmin/moder/telefon, do'kon bosilsa profil — xatolar yo'q.
 Keyingi qadam: Ibrohim v3 ni ko'radi → maket ustida keyingi o'zgarishlar (BITTA-BITTA) yoki
            «prodga chiqar».
-Javobsiz savol: v3 ma'qulmi? Push / «prodga chiqar»?
+Javobsiz savol: Ibrohim v3 ni tekshiradi → «prodga chiqar»?
 Eslatma:   hozirgi PC'da brend «Mebel ERP» (sidebar) — maketda «Kabir ERP».
 
 ## ⏸ TO'XTATILGAN — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09; PC maketi ustuvor)
@@ -50,7 +50,7 @@ Javobsiz savol: PDF ham tuzatilsinmi? Tekshirish uchun push / «prodga chiqar»?
   saqlaganda kategoriya va scroll joyida qoladi (sahifalar `Screen` orqali chiziladi;
   do'kon profili tabi va zakaz filtri ham saqlanadi). Soxta baza bilan brauzerda sinalgan.
   Ibrohim tekshiradi → PR yoki main'ga qo'shish qarori.
-- `claude/claude-md` — CLAUDE.md, DAVOM.md, CHANGELOG.md, .vercelignore. Push: Ibrohim aytganda.
+- `claude/pc-versiya` — qoidalar fayllari + $400 + v1…v3 (claude/claude-md va claude/sotuv-tolov shuning ichida). PUSH QILINGAN.
 
 ## ⬜ Navbatda (Ibrohim tanlaydi)
 
