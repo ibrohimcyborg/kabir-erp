@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.06 — PRODDA** (2026-10-09)
+**Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.07 — PRODDA** (2026-10-09)
 
 ## ⏳ YARIM QOLDI — iOS uslubidagi yangi dizayn (2026-10-09) — HOZIRGI ASOSIY ISH
 
@@ -48,7 +48,13 @@ Ibrohim (2026-10-09): «hamma o'zgarishni asosiy saytda qilib yubor» + «umuman
            yorliq/garantiya HTML, Telegram xabari, mijoz QR sahifasi (eski qorong'i ranglar),
            chop etish oynasi tugmalari (#7B73FF), planshet sidebar CSS ranglari (#101018),
            do'kon profilidagi gradient sarlavha.
-Keyingi qadam: Ibrohim prodda tekshiradi → tuzatishlar BITTA-BITTA (v1.07…).
+✅ v1.07 — Ibrohim: «umuman yoqmadi, rang-barang bo'lib ketgan, iOS style qil, rangsiz icon SVG'lar
+           bilan». Qaror [MEN]: ikonkalar rangsiz (kulrang fon + t.txt), raqamlar t.txt, faqat qarz
+           t.red; tugmalar faqat iOS ko'k (`Btn` green/amber → t.acc), o'chirish qizil; pastki menyu
+           tanlangani qora/oq; do'kon profili gradientsiz. PRODDA.
+           Hali rangli qolganlar: zakaz holat yorliqlari (Badge), ogohlantirish qutilari (amberS),
+           ProductModal tannarx qutisi (yashil fon), SellModal «Qarzga» qizil.
+Keyingi qadam: Ibrohim prodda tekshiradi → tuzatishlar BITTA-BITTA (v1.08…).
 
 ## ✅ PC versiya (2026-10-09) — v1.01 prodda
 

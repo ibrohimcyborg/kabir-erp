@@ -2,6 +2,13 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.07 — 2026-10-09 — rangsiz ikonkalar, kam rang
+
+Ibrohim: «rang-barang bo'lib ketgan, rangsiz ikonkalar bilan». Rangli plitkalar va avatarlar
+kulrang fonli qora/oq ikonkaga o'tdi; raqamlar qora, faqat qarz qizil; tepa panel, pastki menyu,
+do'kon profili (gradient o'rniga oq kartochka, iOS segment) rangsiz; yashil/sariq tugmalar
+bitta iOS ko'k tugmaga. O'chirish tugmalari qizil qoldi.
+
 ## v1.06 — 2026-10-09 — umumiy iOS tozalash
 
 Ilova ekranlaridan emoji olib tashlandi (sarlavha, tugma, ro'yxat, holat yorliqlari); sahifa
