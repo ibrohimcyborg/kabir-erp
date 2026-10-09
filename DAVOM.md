@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: hali yo'q (§5)
+**Oxirgi yangilanish:** 2026-10-09 · main = e0323b8 (2026-07-10) · versiya: v1 (`claude/sotuv-tolov`, main'da hali yo'q)
 
 ## ⏳ YARIM QOLDI — sotuv va to'lovni tahrirlash/o'chirish (2026-10-09)
 
@@ -18,8 +18,8 @@ Qarorlar (Ibrohim, 2026-10-09):
 ✅ 1-qadam ($400) — branch `claude/sotuv-tolov`: `StoreProfile` → `allPayments` endi qisman
            to'lovlar + faqat qolgan qism. Soxta baza: $1.1K/7 qator → $650/5 qator = Hisobot.
            PDF (`pdfStore`, index.html:619) — TEGILMADI (Ibrohim A/B demadi → B: alohida qadam).
-Keyingi qadam: v1 versiya belgisi (Ibrohim 2026-10-09: «versiya qo'sh qayergadir, o'zgarganini
-           tekshirib turaman»), keyin 2-qadam: to'lovni o'chirish (avval maket).
+✅ v1 — versiya belgisi: 1-qator `<!-- v1 -->`, `APP_VER`, sarlavhada «Do'kon v1».
+Keyingi qadam: 2-qadam — to'lovni o'chirish (avval maket, keyin «ha»).
 Javobsiz savol: PDF ham tuzatilsinmi? Tekshirish uchun push / «prodga chiqar»?
 
 ## Ochiq branchlar (main'ga merge qilinmagan)

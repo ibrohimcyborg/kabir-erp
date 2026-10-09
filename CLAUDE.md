@@ -313,10 +313,9 @@ Ibrohim (2026-10-08): *«Tilla kabi to'liq»*.
   faqat `CHANGELOG.md` ga. Yangi yozuv **tepaga**: `## vN — <sana> — <mazmun>` + 1–3 qator.
 - Repo public — `CHANGELOG.md` ga parol, kalit, mijoz ismi, summa YOZILMAYDI.
 
-⏳ **Hali joriy qilinmagan** (`main` @ e0323b8: 1-qator `<!DOCTYPE html>`, `APP_VER` yo'q).
-Birinchi versiyali o'zgarish `<!-- v1 -->` + `APP_VER` ni qo'shadi — bu `index.html`
-o'zgarishi, shuning uchun alohida sikl, maket bilan (APP_VER ekranda ko'rinadimi — Ibrohim
-qarori). Ungacha `index.html` ga tegmaydigan commitlar versiyasiz, mazmunli sarlavha bilan.
+**Joriy: v1** (2026-10-09). Ekranda: sarlavhada sahifa nomi yonida kichik `APP_VER`
+(Ibrohim prod qaysi versiyada ekanini telefonda shundan ko'radi). Faqat `.md` fayllarga tegadigan
+commit versiyani oshirmaydi.
 
 ---
 
