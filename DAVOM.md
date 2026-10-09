@@ -5,7 +5,22 @@
 
 **Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.07 — PRODDA** (2026-10-09)
 
-## ⏳ YARIM QOLDI — iOS uslubidagi yangi dizayn (2026-10-09) — HOZIRGI ASOSIY ISH
+## ⏳ YARIM QOLDI — YANGI DIZAYN TANLOVI (2026-10-09) — HOZIRGI ASOSIY ISH
+
+Ibrohim (v1.07 dan keyin): «umuman yoqmadi; dizaynni eskisidan olmagin, o'zing boshqa dizayn qil,
+           mockupda variant ko'rsat» + «uslubi xuddi 2 ta ekran 1 ta monitorda bo'lsin».
+Maket:     https://claude.ai/artifact/6ff1rKagzSst6EJ27rUsvo (Design canvas, soxta ma'lumot) —
+           3 variant, har biri kompyuter (2 ekran: chap Ombor, o'ng Do'konlar) + telefon:
+           A «Yong'oq» — iliq qog'oz fon, Fraunces serif raqamlar, yong'oq-jigarrang urg'u;
+           B «Grafit» — qora fon, Manrope, oltin urg'u, foyda + kunlik sotuv ustunchalari;
+           C «Ish stoli» — oq, Geist/Geist Mono, ixcham jadvallar, chapda ikonka-menyu, yashil urg'u.
+           Hammasida ikonkalar rangsiz chiziqli; rang faqat bitta urg'u + qarz qizil.
+Kod:       YOZILMAGAN. Prodda hozir v1.07 (Ibrohimga yoqmagan iOS/rangsiz urinish).
+Keyingi qadam: Ibrohim A/B/C (yoki aralash) tanlaydi → maket BITTA-BITTA tuzatiladi →
+           «shunaqa qil» → TAXMIN BLOKI → kod sahifama-sahifa (v1.08…).
+Javobsiz savol: qaysi variant?
+
+## ⏸ iOS uslubi urinishi (2026-10-09) — v1.02…v1.07 prodda, Ibrohimga YOQMADI
 
 Ibrohim: «boshidan dizaynini o'zgartir, iOS'dagidek qilish kerak, SVG'larni o'zgartir —
            10 $ lik ko'rinadi». Hozircha faqat superadmin ko'rinishi.
