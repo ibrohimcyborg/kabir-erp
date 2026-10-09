@@ -2,6 +2,12 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.02 — 2026-10-09 — iOS uslubi: ranglar, shrift, ikonkalar
+
+Butun ilovada: iOS ranglari (yorug' va qorong'i, asosiy rang — iOS ko'k), bitta shrift (Apple'da
+SF Pro, qolganida Inter), menyu va tugma ikonkalari yangi ingichka chizmalar. Sahifa tuzilishi va
+hisob-kitob o'zgarmagan. Maket: iOS dizayn maketi (Design canvas).
+
 ## v1.01 — 2026-10-09 — raqamlash qaytadan
 
 Kod v4 bilan bir xil, faqat versiya belgisi v4 → v1.01. Bundan keyin har o'zgarish +0.01:

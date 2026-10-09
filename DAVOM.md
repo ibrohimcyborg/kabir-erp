@@ -3,13 +3,13 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil (kod 8667e88 + shu DAVOM commiti) · versiya: **v1.01 — PRODDA** (2026-10-09, Ibrohim «prodga chiqar»)
+**Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil (kod 8667e88 + shu DAVOM commiti) · versiya: prodda **v1.01**; `claude/pc-versiya` da **v1.02** (main'da yo'q)
 
 ## ⏳ YARIM QOLDI — iOS uslubidagi yangi dizayn (2026-10-09) — HOZIRGI ASOSIY ISH
 
 Ibrohim: «boshidan dizaynini o'zgartir, iOS'dagidek qilish kerak, SVG'larni o'zgartir —
            10 $ lik ko'rinadi». Hozircha faqat superadmin ko'rinishi.
-Branch:    `claude/pc-versiya` — kod HALI YOZILMAGAN (faqat maket). index.html ga tegilmadi.
+Branch:    `claude/pc-versiya` — v1.02 yozildi va push qilindi (main'da YO'Q, prod v1.01 da).
 Maket:     https://claude.ai/artifact/BqTVowKxnr1tgQ3SPYmoJ4 (Design canvas, soxta ma'lumot):
            PC Bosh (yorug'/qorong'i tugmasi), telefon Bosh, ikonkalar (hozirgi → taklif),
            hozirgi v1.01 skrinshotlari, «Qaror nuqtalari» va «Nega arzon ko'rinadi» stikerlari.
@@ -17,11 +17,21 @@ Taklif:    bitta shrift (Apple'da SF Pro, Windows'da Inter); iOS ranglari (fon #
            kartochka, indigo #5856D6, yashil=pul, qizil=qarz); katta sarlavha; guruhlangan
            ro'yxatlar; rangli plitkadagi ingichka o'zim chizgan SVG ikonkalar; emoji yo'q;
            PC menyusi segment ko'rinishida. Ma'lumot/mantiq o'zgarmaydi — faqat ko'rinish.
-Javobsiz savollar (maketdagi «Qaror nuqtalari»): 1) yorug' yoki qorong'i; 2) indigo yoki
-           iOS ko'k; 3) PC menyu tepada segment yoki chapda yon panel; 4) shrift; 5) ikonkalar;
-           6) tartib — avval Bosh (PC+telefon), keyin boshqa sahifalar, har biri alohida versiya.
-Keyingi qadam: Ibrohim maketni ko'rib BITTA-BITTA tuzatadi → «shunaqa qil» → TAXMIN BLOKI →
-           kod (v1.02 — birinchi sahifa).
+Qarorlar (Ibrohim, 2026-10-09): maket «shunaqa qil»; rejim — ikkalasi, tugma bilan (hozirgidek);
+           asosiy rang — iOS KO'K (maketdagi indigo emas); tartib — avval umumiy uslub, keyin
+           sahifalar bittadan.
+✅ v1.02 — umumiy uslub: `THEMES` qiymatlari iOS (kalitlar o'zgarmagan; light acc #007AFF, dark
+           #0A84FF; card = surf = oq / #1C1C1E); shrift — head'dagi Outfit havolasi → Inter,
+           `css` dan Sora/JetBrains @import olindi, font-family SF Pro → Inter; `s.mono`/`s.numXl`
+           tabular-nums; `Ic` — chiziq 2 → 1.7, 26 ta menyu/tugma ikonkasi yangi (nomlari o'sha),
+           mebel ikonkalari (table, sofa, armchair, cabinet, chair, bed, grid) shakli o'sha.
+           Sinov: PC va telefon, yorug'/qorong'i, 5 sahifa, modal, moder, ombor — xato yo'q.
+Qolgan (keyingi versiyalar, har biri alohida): sahifalar tuzilishi maketdagidek (Bosh PC+telefon,
+           Ombor, Zakaz, Qarz, Hisobot, do'kon profili); emoji va KATTA HARFLI yorliqlar (`Lbl`,
+           `Sec`); rangli ramkali kartochkalar; PC menyu segment ko'rinishi.
+           Tegilmagan eski ranglar: login ekrani (qattiq yozilgan qorong'i ranglar), body foni
+           (`useEffect [dark]` va tugma ichida #080810/#F2F2F8), `meta theme-color`, mijoz QR sahifasi.
+Keyingi qadam: Ibrohim v1.02 ni tekshiradi → keyingi sahifa (BITTA-BITTA, v1.03).
 
 ## ✅ PC versiya (2026-10-09) — v1.01 prodda
 

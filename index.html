@@ -1,4 +1,4 @@
-<!-- v1.01 -->
+<!-- v1.02 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -15,7 +15,7 @@
 <title>Kabir ERP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -106,7 +106,7 @@ input[type=number]{-moz-appearance:textfield}
 <div id="root"></div>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.01";
+const APP_VER = "v1.02";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -269,12 +269,12 @@ const ORDER_STATUS = {
 };
 
 const Ic = ({ n, s = 20 }) => {
-  const p = { width: s, height: s, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" };
+  const p = { width: s, height: s, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.7", strokeLinecap: "round", strokeLinejoin: "round" };
   switch (n) {
-    case "home": return <svg {...p}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>;
-    case "warehouse": return <svg {...p}><path d="M22 8.35V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8.35A2 2 0 0 1 3.26 6.5l8-3.2a2 2 0 0 1 1.48 0l8 3.2A2 2 0 0 1 22 8.35z" /><path d="M6 18h12" /><path d="M6 14h12" /><path d="M6 10h12" /></svg>;
-    case "store": return <svg {...p}><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" /><path d="M3 9V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2" /><line x1="12" y1="12" x2="12" y2="19" /></svg>;
-    case "order": return <svg {...p}><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>;
+    case "home": return <svg {...p}><path d="M4 10.6 12 4l8 6.6V19a1.5 1.5 0 0 1-1.5 1.5H15v-5a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v5H5.5A1.5 1.5 0 0 1 4 19Z" /></svg>;
+    case "warehouse": return <svg {...p}><path d="M12 3 4 7v10l8 4 8-4V7ZM4 7l8 4 8-4M12 11v10M8 5l8 4" /></svg>;
+    case "store": return <svg {...p}><path d="M4 9.5 5.6 4.5h12.8L20 9.5M4 9.5a2.67 2.67 0 0 0 5.33 0a2.67 2.67 0 0 0 5.34 0a2.67 2.67 0 0 0 5.33 0M5.2 12v8h13.6v-8M10 20v-4.5h4V20" /></svg>;
+    case "order": return <svg {...p}><path d="M10 6.5h10M10 12h10M10 17.5h10M3.8 6.6l1.3 1.3 2.4-2.6M3.8 12.1l1.3 1.3 2.4-2.6M3.8 17.6l1.3 1.3 2.4-2.6" /></svg>;
     case "table": return <svg {...p}><rect x="2.5" y="6" width="19" height="3.5" rx="1" /><line x1="6" y1="9.5" x2="6" y2="19" /><line x1="18" y1="9.5" x2="18" y2="19" /></svg>;
     case "sofa": return <svg {...p}><path d="M5 13V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4" /><path d="M2.5 13h19v5a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 18z" /><line x1="4.5" y1="18.5" x2="4.5" y2="21" /><line x1="19.5" y1="18.5" x2="19.5" y2="21" /></svg>;
     case "armchair": return <svg {...p}><path d="M7 12V8a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4" /><path d="M4.5 12h15v5.5A1.5 1.5 0 0 1 18 19H6a1.5 1.5 0 0 1-1.5-1.5z" /><line x1="6" y1="19" x2="6" y2="21.5" /><line x1="18" y1="19" x2="18" y2="21.5" /></svg>;
@@ -282,35 +282,35 @@ const Ic = ({ n, s = 20 }) => {
     case "chair": return <svg {...p}><path d="M6 3.5h12" /><line x1="7" y1="3.5" x2="7" y2="13" /><line x1="17" y1="3.5" x2="17" y2="13" /><rect x="5" y="13" width="14" height="3" rx="0.8" /><line x1="6.5" y1="16" x2="5.5" y2="21.5" /><line x1="17.5" y1="16" x2="18.5" y2="21.5" /></svg>;
     case "bed": return <svg {...p}><path d="M2.5 19v-7a2 2 0 0 1 2-2h15a2 2 0 0 1 2 2v7" /><path d="M2.5 19h19" /><path d="M2.5 15h19" /><path d="M5 10V5.5A1.5 1.5 0 0 1 6.5 4h11A1.5 1.5 0 0 1 19 5.5V10" /><line x1="2.5" y1="19" x2="2.5" y2="21" /><line x1="21.5" y1="19" x2="21.5" y2="21" /></svg>;
     case "grid": return <svg {...p}><rect x="3" y="3" width="7.5" height="7.5" rx="1.5" /><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5" /><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5" /><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5" /></svg>;
-    case "debt": return <svg {...p}><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>;
-    case "report": return <svg {...p}><path d="M3 3v18h18" /><path d="M7 16l4-4 4 4 5-5" /></svg>;
-    case "plus": return <svg {...p} strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>;
-    case "x": return <svg {...p} strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>;
-    case "back": return <svg {...p} strokeWidth="2.5"><polyline points="15 18 9 12 15 6" /></svg>;
-    case "right": return <svg {...p}><polyline points="9 18 15 12 9 6" /></svg>;
-    case "search": return <svg {...p}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>;
-    case "trash": return <svg {...p}><polyline points="3 6 5 6 21 6" /><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6" /></svg>;
-    case "edit": return <svg {...p}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>;
-    case "alert": return <svg {...p}><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>;
-    case "sun": return <svg {...p}><circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" /></svg>;
-    case "moon": return <svg {...p}><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>;
-    case "refresh": return <svg {...p}><polyline points="23 4 23 10 17 10" /><polyline points="1 20 1 14 7 14" /><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" /></svg>;
-    case "send": return <svg {...p}><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>;
-    case "money": return <svg {...p}><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>;
-    case "pdf": return <svg {...p}><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><path d="M9 15h1a1.5 1.5 0 0 0 0-3H9v4M13 12v4M13 12h1.2a1.4 1.4 0 0 1 0 4H13M17 12v4M17 14h1.3" strokeWidth="1.3" /></svg>;
-    case "cloud": return <svg {...p}><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" /></svg>;
-    case "cloudOff": return <svg {...p}><path d="M22.61 16.95A5 5 0 0 0 18 10h-1.26a8 8 0 0 0-7.05-6M5 5a8 8 0 0 0 4 15h9a5 5 0 0 0 1.7-.3" /><line x1="1" y1="1" x2="23" y2="23" /></svg>;
-    case "settings": return <svg {...p}><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>;
-    case "logout": return <svg {...p}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>;
-    case "download": return <svg {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>;
-    case "upload": return <svg {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>;
+    case "debt": return <svg {...p}><path d="M5.5 5.5h13A2.5 2.5 0 0 1 21 8v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 16V8a2.5 2.5 0 0 1 2.5-2.5ZM3 10h18M6.5 15h4" /></svg>;
+    case "report": return <svg {...p}><path d="M4.5 13.5h3V20h-3ZM10.5 8h3v12h-3ZM16.5 4.5h3V20h-3Z" /></svg>;
+    case "plus": return <svg {...p} strokeWidth="2.2"><path d="M12 5v14M5 12h14" /></svg>;
+    case "x": return <svg {...p} strokeWidth="2.2"><path d="M6 6l12 12M18 6 6 18" /></svg>;
+    case "back": return <svg {...p} strokeWidth="2.2"><path d="M15 5.5 8.5 12l6.5 6.5" /></svg>;
+    case "right": return <svg {...p} strokeWidth="2"><path d="M9 5.5 15.5 12 9 18.5" /></svg>;
+    case "search": return <svg {...p}><path d="M4.0 10.5a6.5 6.5 0 1 0 13.0 0a6.5 6.5 0 1 0 -13.0 0M15.3 15.3 20 20" /></svg>;
+    case "trash": return <svg {...p}><path d="M4 6.5h16M9.5 6.5v-2h5v2M6.5 6.5l1 13a1.5 1.5 0 0 0 1.5 1.4h6a1.5 1.5 0 0 0 1.5-1.4l1-13M10 10.5v6M14 10.5v6" /></svg>;
+    case "edit": return <svg {...p}><path d="M11 4.5H6.5A2.5 2.5 0 0 0 4 7v10.5A2.5 2.5 0 0 0 6.5 20H17a2.5 2.5 0 0 0 2.5-2.5V13M17.6 3.9a1.9 1.9 0 0 1 2.7 2.7L12 14.9l-3.6.9.9-3.6Z" /></svg>;
+    case "alert": return <svg {...p}><path d="M10.3 4.9 2.9 17.6A2 2 0 0 0 4.6 20.6h14.8a2 2 0 0 0 1.7-3L13.7 4.9a2 2 0 0 0-3.4 0ZM12 10v4M12 17h.01" /></svg>;
+    case "sun": return <svg {...p}><path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0M18.6 12h2.2M16.67 16.67l1.55 1.55M12 18.6v2.2M7.33 16.67l-1.55 1.55M5.4 12H3.2M7.33 7.33 5.78 5.78M12 5.4V3.2M16.67 7.33l1.55-1.55" /></svg>;
+    case "moon": return <svg {...p}><path d="M20 14.6A8 8 0 0 1 9.4 4a8 8 0 1 0 10.6 10.6Z" /></svg>;
+    case "refresh": return <svg {...p}><path d="M19 12a7 7 0 1 1-2.05-4.95M17.4 3.6v3.9h-3.9" /></svg>;
+    case "send": return <svg {...p}><path d="M21 3 3 10.4l7.4 3.2L13.6 21ZM10.4 13.6 21 3" /></svg>;
+    case "money": return <svg {...p}><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0M14.6 9.3c-.4-1-1.4-1.6-2.6-1.6-1.5 0-2.6.8-2.6 2s1.1 1.7 2.6 2 2.7.8 2.7 2.1-1.2 2.1-2.7 2.1c-1.2 0-2.2-.6-2.6-1.6M12 6.3v1.4M12 16.3v1.4" /></svg>;
+    case "pdf": return <svg {...p}><path d="M7.5 3H14l5 5v11.5a1.5 1.5 0 0 1-1.5 1.5h-10A1.5 1.5 0 0 1 6 19.5v-15A1.5 1.5 0 0 1 7.5 3ZM14 3v5h5M9 13h6M9 16.5h6" /></svg>;
+    case "cloud": return <svg {...p}><path d="M7 18.5h10.6a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7.5 9.2 4.7 4.7 0 0 0 7 18.5Z" /></svg>;
+    case "cloudOff": return <svg {...p}><path d="M7 18.5h10.6a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 7.5 9.2 4.7 4.7 0 0 0 7 18.5ZM3.5 3.5l17 17" /></svg>;
+    case "settings": return <svg {...p}><path d="M19.07 9.81 21.41 10.09 21.41 13.91 19.07 14.19 18.55 15.45 20 17.3 17.3 20 15.45 18.55 14.19 19.07 13.91 21.41 10.09 21.41 9.81 19.07 8.55 18.55 6.7 20 4 17.3 5.45 15.45 4.93 14.19 2.59 13.91 2.59 10.09 4.93 9.81 5.45 8.55 4 6.7 6.7 4 8.55 5.45 9.81 4.93 10.09 2.59 13.91 2.59 14.19 4.93 15.45 5.45 17.3 4 20 6.7 18.55 8.55ZM9 12a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /></svg>;
+    case "logout": return <svg {...p}><path d="M10 20H6.5A1.5 1.5 0 0 1 5 18.5v-13A1.5 1.5 0 0 1 6.5 4H10M10.5 12H20M16.5 8.5 20 12l-3.5 3.5" /></svg>;
+    case "download": return <svg {...p}><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14" /></svg>;
+    case "upload": return <svg {...p}><path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 19.5h14" /></svg>;
     default: return null;
   }
 };
 
 const THEMES = {
-  dark: { bg: "#080810", surf: "#101018", card: "#181824", border: "#22223A", acc: "#7B73FF", accSoft: "#7B73FF22", txt: "#EEEEF8", sub: "#7777AA", dim: "#44445A", green: "#00D68F", greenS: "#00D68F18", red: "#FF4D6D", redS: "#FF4D6D18", amber: "#FFB800", amberS: "#FFB80018", blue: "#00B8D9", blueS: "#00B8D918" },
-  light: { bg: "#F2F2F8", surf: "#FFFFFF", card: "#F8F8FC", border: "#E0E0EE", acc: "#5B52F0", accSoft: "#5B52F015", txt: "#1A1A30", sub: "#6666AA", dim: "#AAAACC", green: "#00B87A", greenS: "#00B87A15", red: "#E53935", redS: "#E5393515", amber: "#F59E0B", amberS: "#F59E0B15", blue: "#0EA5E9", blueS: "#0EA5E915" },
+  dark: { bg: "#000000", surf: "#1C1C1E", card: "#1C1C1E", border: "#38383A", acc: "#0A84FF", accSoft: "#0A84FF26", txt: "#FFFFFF", sub: "#98989F", dim: "#636366", green: "#30D158", greenS: "#30D1581F", red: "#FF453A", redS: "#FF453A1F", amber: "#FF9F0A", amberS: "#FF9F0A1F", blue: "#64D2FF", blueS: "#64D2FF1F" },
+  light: { bg: "#F2F2F7", surf: "#FFFFFF", card: "#FFFFFF", border: "#E5E5EA", acc: "#007AFF", accSoft: "#007AFF1A", txt: "#000000", sub: "#6E6E73", dim: "#AEAEB2", green: "#248A3D", greenS: "#34C7591F", red: "#D70015", redS: "#FF3B301A", amber: "#A85F00", amberS: "#FF95001F", blue: "#00788A", blueS: "#30B0C71F" },
 };
 
 // Sahifalar App ichida e'lon qilingan — har renderda yangi komponent turi bo'ladi va React
@@ -832,7 +832,7 @@ function App() {
   // ═══════════════════════════════════════════════════════════
   // STYLES
   // ═══════════════════════════════════════════════════════════
-  const css = `@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body,html{font-family:'Sora',system-ui,sans-serif;background:${t.bg}}input,select,textarea,button{font-family:inherit;outline:none}button{cursor:pointer;border:none;background:none}input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}input[type=number]{-moz-appearance:textfield}::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:${t.border};border-radius:3px}@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes spin{to{transform:rotate(360deg)}}.up{animation:up .3s cubic-bezier(.16,1,.3,1) forwards}.fade{animation:fade .2s ease}.press{transition:transform .12s}.press:active{transform:scale(.97)}.spin{animation:spin 1s linear infinite}`;
+  const css = `*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body,html{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,sans-serif;background:${t.bg};-webkit-font-smoothing:antialiased}input,select,textarea,button{font-family:inherit;outline:none}button{cursor:pointer;border:none;background:none}input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}input[type=number]{-moz-appearance:textfield}::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:${t.border};border-radius:3px}@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes spin{to{transform:rotate(360deg)}}.up{animation:up .3s cubic-bezier(.16,1,.3,1) forwards}.fade{animation:fade .2s ease}.press{transition:transform .12s}.press:active{transform:scale(.97)}.spin{animation:spin 1s linear infinite}`;
 
   const s = {
     root: { background: t.bg, minHeight: "100vh", maxWidth: 430, margin: "0 auto", color: t.txt, position: "relative" },
@@ -845,8 +845,8 @@ function App() {
     row: { display: "flex", justifyContent: "space-between", alignItems: "center" },
     inp: { width: "100%", background: t.card, border: `1px solid ${t.border}`, borderRadius: 10, padding: "11px 13px", color: t.txt, fontSize: 14, marginBottom: 11 },
     iBtn: { width: 36, height: 36, borderRadius: 10, background: t.card, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: t.txt },
-    mono: { fontFamily: "'Outfit', sans-serif", letterSpacing: "-0.01em" },
-    numXl: { fontFamily: "'Outfit', sans-serif", fontWeight: 700, letterSpacing: "-0.01em" },
+    mono: { fontVariantNumeric: "tabular-nums", letterSpacing: "-0.01em" },
+    numXl: { fontWeight: 700, fontVariantNumeric: "tabular-nums", letterSpacing: "-0.02em" },
   };
 
   const Lbl = ({ children }) => <label style={{ fontSize: 11, fontWeight: 600, color: t.sub, textTransform: "uppercase", letterSpacing: ".5px", marginBottom: 5, display: "block" }}>{children}</label>;
