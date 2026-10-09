@@ -2,6 +2,12 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.03 — 2026-10-09 — PC Bosh iOS uslubida
+
+Kompyuterda «Ombor oldi-berdi» va «Do'konlar» maketdagidek: rangli plitkali ikonkalar, oq
+kartochkalar, harakatlar jadval o'rniga iOS ro'yxat, do'konlar ro'yxati yumaloq harf bilan.
+Hisob-kitob o'zgarmagan. Yangi ikonkalar: tray, bag, banknote, undo.
+
 ## v1.02 — 2026-10-09 — iOS uslubi: ranglar, shrift, ikonkalar
 
 Butun ilovada: iOS ranglari (yorug' va qorong'i, asosiy rang — iOS ko'k), bitta shrift (Apple'da
