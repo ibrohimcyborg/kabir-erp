@@ -34,6 +34,9 @@ Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vit
            A Shisha rgba(255,255,255,.07)+blur · B Olxo'ri #3A1A2A→#24111B · C Kulrang #2A→#1F ·
            D pastgacha olxo'ri fon (glow 100%) + Shisha. Hammasida nomlar tuzatilgan. Kod YOZILMAGAN.
            Javobsiz savol: A/B/C/D? Tanlangani `pcCommon` box/kpi ga ham qo'llanadi.
+⚠ 2026-10-10 (keyin): Ibrohim «to'g'risi bu dizayn ham yoqmay qoldi» — v1.08 (Vaulta uslubi) ham yoqmadi.
+           A/B/C/D javobsiz qoldi. Prodda v1.08 turibdi. Keyingi qadam: nima yoqmaganini va yo'nalishni so'rash
+           (v1.08 qolsinmi / v1.07 ga qaytarishmi / boshqa namuna). Kod YOZILMAGAN.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
