@@ -3,9 +3,31 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-09 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.07 — PRODDA** (2026-10-09)
+**Oxirgi yangilanish:** 2026-10-10 · main = `9ab7421` (v1.07) · `claude/pc-versiya` main'dan faqat DAVOM commitlari bilan oldinda · versiya: **v1.07 — PRODDA** (2026-10-09)
 
-## ⏳ YARIM QOLDI — YANGI DIZAYN TANLOVI (2026-10-09) — HOZIRGI ASOSIY ISH
+## ⏳ YARIM QOLDI — YANGI DIZAYN «1:1» MAKETI (2026-10-10) — HOZIRGI ASOSIY ISH
+
+Ibrohim: «qani manga to'g'ri mockup jo'nat, man yuborgan rasmlarimga umuman yaqin emas» →
+           «rasmdagi ranglar, dizayn hammasini 1:1 qilib ERP'ga dizayn qil, PC, TABLET, PHONE bilan».
+Maket:     https://claude.ai/artifact/REU5tztaMQ37N2ByomxAyk (oddiy HTML Artifact, soxta ma'lumot).
+           Manba: `scratchpad/kabir-d/kabir-dizayn.html` (bulutda o'chadi — yagona nusxa Artifact).
+           Rasmlar (Vaulta Analytics, ikonka plitkalari, palitra) piksel bo'yicha o'lchangan:
+           ekran tepasi #6A3247→#451A36→#3B152D→qora, kartochka #111111, plitka #101010–#2C2C2C,
+           kasr raqam #CFB5C9, shrift Inter Tight 300–600.
+           Telefon 4 ekran: Bosh (Analytics nusxasi: chiplar, katta raqam, oltin+pushti grafik,
+           «Oylik reja 91/100» shar+yoylar, «Qarz xavfi» o'lchagich, «Ombor holati» ustunchalar),
+           Do'konlar (Signals: 68 o'lchagich, binafsha «Vitrina band», kartochkalar+nuqta ustunlar),
+           Ombor (Assets: ogohlantirish kartochkasi shar+2 tugma, mahsulot qatorlari),
+           Sotuv yozish (Exchange: 2 shisha kartochka, oq aylana, oq tugma, raqam klaviaturasi).
+           Planshet 834×1194: grafik tepada, chapda reja+o'lchagich+ustunchalar, o'ngda ogohlantirish+ro'yxat.
+           Kompyuter: 1 monitor, 2 ekran — chap «Ombor oldi-berdi», o'ng «Do'konlar».
+Kod:       YOZILMAGAN. Prodda hozir v1.07.
+Keyingi qadam: Ibrohim maketni ko'radi → BITTA-BITTA tuzatish (har gap alohida nashr, shu havolaga) →
+           «shunaqa qil» → TAXMIN BLOKI → kod sahifama-sahifa (v1.08…).
+Javobsiz savol: maket rasmlarga yetarlicha yaqinmi, nimani o'zgartirish kerak?
+Eslatma:   oldingi A/B/C/D variantlar maketi (pastda) — Ibrohim «yaqin emas» degan, endi shu yangisi asosiy.
+
+## ⏸ (eski) YANGI DIZAYN TANLOVI — A/B/C/D variantlar (2026-10-09)
 
 Ibrohim (v1.07 dan keyin): «umuman yoqmadi; dizaynni eskisidan olmagin, o'zing boshqa dizayn qil,
            mockupda variant ko'rsat» + «uslubi xuddi 2 ta ekran 1 ta monitorda bo'lsin».
