@@ -29,6 +29,11 @@ Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vit
            `WarehousePage` kategoriya tugmasi (index.html:2327) va `StoresPage` do'kon kartochkasi (index.html:2363).
            Tuzatish: `color: t.txt` (har biri 1 qator); oq rejim piksel bo'yicha o'zgarmaydi. Kod YOZILMAGAN.
            Javobsiz savol: A (faqat Ombor) yoki B (Ombor + Do'konlar, tavsiya)? → «shunaqa qil» → v1.09 → push main.
+⏳ Kartochka foni (2026-10-10): Ibrohim skrinshot bilan «qora fon bo'lgani yoqmadi» (do'kon kartochkalari).
+           Xuddi shu maketga (versiya 2) variantlar qo'shildi — haqiqiy ilova, faqat dark `t.card` + `s.card` foni:
+           A Shisha rgba(255,255,255,.07)+blur · B Olxo'ri #3A1A2A→#24111B · C Kulrang #2A→#1F ·
+           D pastgacha olxo'ri fon (glow 100%) + Shisha. Hammasida nomlar tuzatilgan. Kod YOZILMAGAN.
+           Javobsiz savol: A/B/C/D? Tanlangani `pcCommon` box/kpi ga ham qo'llanadi.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
