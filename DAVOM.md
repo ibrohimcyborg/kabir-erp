@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-10 · main = `9ab7421` (v1.07) · `claude/pc-versiya` main'dan faqat DAVOM commitlari bilan oldinda · versiya: **v1.07 — PRODDA** (2026-10-09)
+**Oxirgi yangilanish:** 2026-10-10 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.07 — PRODDA** (2026-10-09); 2026-10-10 dagi commitlar faqat `DAVOM.md`
 
 ## ⏳ YARIM QOLDI — YANGI DIZAYN «1:1» MAKETI (2026-10-10) — HOZIRGI ASOSIY ISH
 
