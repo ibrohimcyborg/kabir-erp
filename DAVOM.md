@@ -15,10 +15,17 @@ Maket:     https://claude.ai/artifact/6ff1rKagzSst6EJ27rUsvo (Design canvas, sox
            B «Grafit» — qora fon, Manrope, oltin urg'u, foyda + kunlik sotuv ustunchalari;
            C «Ish stoli» — oq, Geist/Geist Mono, ixcham jadvallar, chapda ikonka-menyu, yashil urg'u.
            Hammasida ikonkalar rangsiz chiziqli; rang faqat bitta urg'u + qarz qizil.
+           + D (2026-10-10) — Ibrohim Behance «Vaulta AI trading app» skrinshotlarini yubordi
+           («shundan ol ranglarni, dizaynini»): qora fon, tepada #412330→#E8A189 nur, oltin #EEC77A,
+           oq, kulrang #868586; shisha kartochkalar; ingichka katta raqamlar; to'q kvadrat-plitkali
+           kulrang ikonkalar; oltin/pushti chiziqli grafik; yoy-o'lchagich; oltin ustunchalar;
+           suzuvchi tab bar markazida binafsha shar. D da 3 ekran: kompyuter (2 ekran),
+           telefon Bosh, telefon «Sotuv yozish» (raqam klaviaturasi bilan). Behance sayti bulut
+           tarmog'ida bloklangan (www.behance.net) — faqat skrinshotlardan.
 Kod:       YOZILMAGAN. Prodda hozir v1.07 (Ibrohimga yoqmagan iOS/rangsiz urinish).
 Keyingi qadam: Ibrohim A/B/C (yoki aralash) tanlaydi → maket BITTA-BITTA tuzatiladi →
            «shunaqa qil» → TAXMIN BLOKI → kod sahifama-sahifa (v1.08…).
-Javobsiz savol: qaysi variant?
+Javobsiz savol: qaysi variant? (D eng yangisi, Ibrohim yuborgan uslubda)
 
 ## ⏸ iOS uslubi urinishi (2026-10-09) — v1.02…v1.07 prodda, Ibrohimga YOQMADI
 
