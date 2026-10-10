@@ -23,8 +23,12 @@ Qolgan:    1) oq rejim maketi (Artifact) → «shunaqa qil» → kod;
            3) markazdagi binafsha shar-tugma (pastki menyuda) — yangi amal, qaror kerak.
 Keyingi qadam: oq rejim maketini ko'rsatish (maketga oq variant qo'shish, shu havolaga).
 Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vitrina band 68» qanday hisoblanadi?
-Ko'rilgan xato (tuzatilmagan, v1.07 da ham bor): Ombor sahifasida kategoriya nomi tugmasida rang yo'q —
-           qora rejimda nom ko'rinmaydi (`WarehousePage`, `visibleCategories.map` → `<button>` color yo'q).
+⏳ Ko'rinmas nomlar (2026-10-10): Ibrohim «ha tuzatib push qil, lekin oldin mockupda ko'rsat».
+           Maket: https://claude.ai/artifact/D83QfYR9wwDsvKduKEyr4g (haqiqiy kod, soxta ma'lumot, oldin/keyin).
+           Sabab: tugmada `color` yo'q → brauzer qora qiladi. Avtomatik tekshiruv 2 joy topdi:
+           `WarehousePage` kategoriya tugmasi (index.html:2327) va `StoresPage` do'kon kartochkasi (index.html:2363).
+           Tuzatish: `color: t.txt` (har biri 1 qator); oq rejim piksel bo'yicha o'zgarmaydi. Kod YOZILMAGAN.
+           Javobsiz savol: A (faqat Ombor) yoki B (Ombor + Do'konlar, tavsiya)? → «shunaqa qil» → v1.09 → push main.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
