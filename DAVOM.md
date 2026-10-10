@@ -55,6 +55,10 @@ Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vit
              glow radial(rgba(232,161,137,.55)) + linear(#F3D6CF 0px, #F6E4E6 220px, #F7EFF1 480px).
            Nomlar tuzatishi: `WarehousePage` kategoriya tugmasi va `StoresPage` do'kon kartochkasi stiliga `color: t.txt`.
            Javobsiz savol: 1, 2 yoki 3? → «shunaqa qil» → v1.09 (ranglar + nomlar) → push main.
+❌ 2026-10-10 (keyin): Ibrohim «bo'lmadi, umuman yoqmadi, yangi UI dizayn jo'nataman» — 1/2/3 HAMMASI RAD.
+           KUTILMOQDA: Ibrohim yangi UI namunasini (rasm) yuboradi. Kelganda: rasmlarni piksel bo'yicha o'lchab,
+           haqiqiy ilova rasmlari bilan maket → «shunaqa qil» → kod. Prodda v1.08 qoladi (Ibrohim: «qolsin»).
+           Nomlar tuzatishi (`color: t.txt`, 2 joy) hali kodda YO'Q — yangi dizayn bilan birga yoki alohida.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
