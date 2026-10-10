@@ -1,4 +1,4 @@
-<!-- v1.07 -->
+<!-- v1.08 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -15,7 +15,7 @@
 <title>Kabir ERP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -106,7 +106,7 @@ input[type=number]{-moz-appearance:textfield}
 <div id="root"></div>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.07";
+const APP_VER = "v1.08";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -316,8 +316,8 @@ const Ic = ({ n, s = 20, f }) => {
 };
 
 const THEMES = {
-  dark: { bg: "#000000", surf: "#1C1C1E", card: "#1C1C1E", border: "#38383A", acc: "#0A84FF", accSoft: "#0A84FF26", txt: "#FFFFFF", sub: "#98989F", dim: "#636366", green: "#30D158", greenS: "#30D1581F", red: "#FF453A", redS: "#FF453A1F", amber: "#FF9F0A", amberS: "#FF9F0A1F", blue: "#64D2FF", blueS: "#64D2FF1F" },
-  light: { bg: "#F2F2F7", surf: "#FFFFFF", card: "#FFFFFF", border: "#E5E5EA", acc: "#007AFF", accSoft: "#007AFF1A", txt: "#000000", sub: "#6E6E73", dim: "#AEAEB2", green: "#248A3D", greenS: "#34C7591F", red: "#D70015", redS: "#FF3B301A", amber: "#A85F00", amberS: "#FF95001F", blue: "#00788A", blueS: "#30B0C71F" },
+  dark: { bg: "#020202", surf: "#111111", card: "#111111", border: "#262626", acc: "#FFFFFF", accSoft: "#FFFFFF1A", accTxt: "#141113", txt: "#FFFFFF", sub: "#9C9C9C", dim: "#5E5E5E", green: "#5BD08A", greenS: "#5BD08A1F", red: "#F0566B", redS: "#F0566B1F", amber: "#EEC77A", amberS: "#EEC77A1F", blue: "#E8A189", blueS: "#E8A1891F", glass: "rgba(255,255,255,0.10)", glassB: "rgba(255,255,255,0.15)", nav: "rgba(38,38,38,0.92)", navOn: "#0B0B0B", glow: "radial-gradient(90% 300px at 50% -60px, rgba(232,161,137,0.40), rgba(232,161,137,0) 70%), linear-gradient(180deg, #6A3247 0px, #4A1C38 90px, #3B152D 200px, #26101E 320px, #0E0509 440px, #020202 560px)" },
+  light: { bg: "#F2F2F7", surf: "#FFFFFF", card: "#FFFFFF", border: "#E5E5EA", acc: "#007AFF", accSoft: "#007AFF1A", txt: "#000000", sub: "#6E6E73", dim: "#AEAEB2", green: "#248A3D", greenS: "#34C7591F", red: "#D70015", redS: "#FF3B301A", amber: "#A85F00", amberS: "#FF95001F", blue: "#00788A", blueS: "#30B0C71F", accTxt: "#FFFFFF", glass: "rgba(118,118,128,0.12)", glassB: "rgba(0,0,0,0)", nav: "rgba(255,255,255,0.92)", navOn: "rgba(118,118,128,0.16)", glow: "none" },
 };
 
 // Sahifalar App ichida e'lon qilingan — har renderda yangi komponent turi bo'ladi va React
@@ -839,25 +839,25 @@ function App() {
   // ═══════════════════════════════════════════════════════════
   // STYLES
   // ═══════════════════════════════════════════════════════════
-  const css = `*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body,html{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',system-ui,sans-serif;background:${t.bg};-webkit-font-smoothing:antialiased}input,select,textarea,button{font-family:inherit;outline:none}button{cursor:pointer;border:none;background:none}input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}input[type=number]{-moz-appearance:textfield}::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:${t.border};border-radius:3px}@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes spin{to{transform:rotate(360deg)}}.up{animation:up .3s cubic-bezier(.16,1,.3,1) forwards}.fade{animation:fade .2s ease}.press{transition:transform .12s}.press:active{transform:scale(.97)}.spin{animation:spin 1s linear infinite}`;
+  const css = `*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body,html{font-family:'Inter Tight',-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;background:${t.bg};-webkit-font-smoothing:antialiased}input,select,textarea,button{font-family:inherit;outline:none}button{cursor:pointer;border:none;background:none}input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}input[type=number]{-moz-appearance:textfield}::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:${t.border};border-radius:3px}@keyframes up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}@keyframes fade{from{opacity:0}to{opacity:1}}@keyframes spin{to{transform:rotate(360deg)}}.up{animation:up .3s cubic-bezier(.16,1,.3,1) forwards}.fade{animation:fade .2s ease}.press{transition:transform .12s}.press:active{transform:scale(.97)}.spin{animation:spin 1s linear infinite}`;
 
   const s = {
     root: { background: t.bg, minHeight: "100vh", maxWidth: 430, margin: "0 auto", color: t.txt, position: "relative" },
     hdr: { background: t.surf, borderBottom: `1px solid ${t.border}`, padding: "13px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50 },
     body: { padding: 16, paddingBottom: 20 },
     nav: { position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 430, background: t.surf, borderTop: `1px solid ${t.border}`, display: "flex", padding: "8px 0 14px", zIndex: 100 },
-    card: { background: t.card, border: `0.5px solid ${t.border}`, borderRadius: 14, padding: 14, marginBottom: 10, boxShadow: dark ? "none" : "0 1px 2px rgba(0,0,0,0.04)" },
+    card: { background: dark ? "linear-gradient(180deg,#151515,#0F0F0F)" : t.card, border: dark ? "1px solid rgba(255,255,255,0.075)" : `0.5px solid ${t.border}`, borderRadius: 22, padding: 16, marginBottom: 10, boxShadow: dark ? "none" : "0 1px 2px rgba(0,0,0,0.04)" },
     overlay: { position: "fixed", inset: 0, background: "#00000099", zIndex: 9999, display: "flex", alignItems: "flex-end", justifyContent: "center" },
-    sheet: { background: t.surf, borderRadius: "14px 14px 0 0", width: "100%", maxWidth: "100%", maxHeight: "90vh", overflowY: "auto", padding: 20, position: "relative", zIndex: 10000 },
+    sheet: { background: t.surf, borderRadius: "28px 28px 0 0", width: "100%", maxWidth: "100%", maxHeight: "90vh", overflowY: "auto", padding: 20, position: "relative", zIndex: 10000 },
     row: { display: "flex", justifyContent: "space-between", alignItems: "center" },
     inp: { width: "100%", background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), border: "none", borderRadius: 10, padding: "12px 13px", color: t.txt, fontSize: 16, marginBottom: 11 },
-    iBtn: { width: 36, height: 36, borderRadius: 18, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), display: "flex", alignItems: "center", justifyContent: "center", color: t.txt },
+    iBtn: { width: 40, height: 40, borderRadius: 13, background: t.glass, border: `1px solid ${t.glassB}`, display: "flex", alignItems: "center", justifyContent: "center", color: t.txt },
     mono: { fontVariantNumeric: "tabular-nums", letterSpacing: "-0.01em" },
-    numXl: { fontWeight: 700, fontVariantNumeric: "tabular-nums", letterSpacing: "-0.02em" },
+    numXl: { fontWeight: 400, fontVariantNumeric: "tabular-nums", letterSpacing: "-0.03em" },
   };
 
   const Lbl = ({ children }) => <label style={{ fontSize: 13, fontWeight: 500, color: t.sub, marginBottom: 6, display: "block" }}>{children}</label>;
-  const Btn = ({ bg, c = "#fff", mt = 0, onClick, children, disabled, small }) => <button disabled={disabled} style={{ width: "100%", background: disabled ? t.border : (bg === t.green || bg === t.amber ? t.acc : bg), color: c, borderRadius: 12, padding: small ? "10px" : "14px", fontWeight: 600, fontSize: small ? 13 : 16, marginTop: mt, opacity: disabled ? 0.5 : 1 }} onClick={onClick}>{children}</button>;
+  const Btn = ({ bg, c = "#fff", mt = 0, onClick, children, disabled, small }) => { const b = bg === t.green || bg === t.amber ? t.acc : bg; return <button disabled={disabled} style={{ width: "100%", background: disabled ? t.border : b, color: b === t.acc && c === "#fff" ? (disabled ? (dark ? t.sub : "#fff") : t.accTxt) : c, borderRadius: 30, padding: small ? "11px" : "16px", fontWeight: 600, fontSize: small ? 13 : 16, marginTop: mt, opacity: disabled ? 0.5 : 1, boxShadow: !disabled && dark && b === t.acc ? "0 0 26px rgba(255,255,255,0.16)" : "none" }} onClick={onClick}>{children}</button>; };
   const Sec = ({ children, right, mt = 16 }) => <div style={{ fontSize: 17, fontWeight: 600, color: t.txt, letterSpacing: "-0.01em", marginBottom: 10, marginTop: mt + 4, display: "flex", justifyContent: "space-between", alignItems: "center" }}><span>{children}</span>{right}</div>;
   const Div = () => <div style={{ borderTop: `1px solid ${t.border}`, margin: "11px 0" }} />;
   const Badge = ({ c, bg, children }) => <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 9px", borderRadius: 20, fontSize: 10, fontWeight: 700, color: c, background: bg }}>{children}</span>;
@@ -871,7 +871,7 @@ function App() {
       <div style={{ width: 72, height: 72, borderRadius: 22, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), margin: "0 auto 18px", display: "flex", alignItems: "center", justifyContent: "center", color: t.sub }}><Ic n={icon} s={32} /></div>
       <div style={{ fontSize: 17, fontWeight: 800, marginBottom: 8 }}>{title}</div>
       <div style={{ fontSize: 13, color: t.sub, lineHeight: 1.55, marginBottom: 22, whiteSpace: "pre-line" }}>{desc}</div>
-      {btnText && <button onClick={onBtn} style={{ background: t.acc, color: "#fff", borderRadius: 11, padding: "11px 22px", fontWeight: 700, fontSize: 13, display: "inline-flex", alignItems: "center", gap: 8 }}><Ic n="plus" s={15} />{btnText}</button>}
+      {btnText && <button onClick={onBtn} style={{ background: t.acc, color: t.accTxt, borderRadius: 11, padding: "11px 22px", fontWeight: 700, fontSize: 13, display: "inline-flex", alignItems: "center", gap: 8 }}><Ic n="plus" s={15} />{btnText}</button>}
     </div>
   );
 
@@ -911,14 +911,14 @@ function App() {
     }
     return (
       <div style={{ background: t.bg, minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24 }}>
-        <div style={{ width: 70, height: 70, borderRadius: 18, background: `linear-gradient(135deg, ${t.acc}, ${t.blue})`, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 32, marginBottom: 16 }}>K</div>
+        <div style={{ width: 70, height: 70, borderRadius: 18, background: `linear-gradient(135deg, ${t.acc}, ${t.blue})`, display: "flex", alignItems: "center", justifyContent: "center", color: t.accTxt, fontWeight: 800, fontSize: 32, marginBottom: 16 }}>K</div>
         <div style={{ fontSize: 28, fontWeight: 700, color: t.txt, marginBottom: 4 }}>Kabir ERP</div>
         <div style={{ fontSize: 15, color: t.sub, marginBottom: 32 }}>Kabir Exclusive</div>
         <div style={{ width: "100%", maxWidth: 320 }}>
           <input autoCapitalize="none" autoCorrect="off" spellCheck="false" style={{ width: "100%", background: t.card, border: `0.5px solid ${t.border}`, borderRadius: 12, padding: "14px 15px", color: t.txt, fontSize: 16, marginBottom: 12, display: "block" }} placeholder="Login" value={loginU} onChange={e => setLoginU(e.target.value)} onKeyDown={e => e.key === "Enter" && doLogin()} />
           <input type="password" style={{ width: "100%", background: t.card, border: `0.5px solid ${t.border}`, borderRadius: 12, padding: "14px 15px", color: t.txt, fontSize: 16, marginBottom: loginErr ? 8 : 16, display: "block" }} placeholder="Parol" value={loginP} onChange={e => setLoginP(e.target.value)} onKeyDown={e => e.key === "Enter" && doLogin()} />
           {loginErr && <div style={{ color: t.red, fontSize: 13, marginBottom: 12, textAlign: "center" }}>{loginErr}</div>}
-          <button onClick={doLogin} disabled={loginLoading} style={{ width: "100%", background: t.acc, color: "#fff", borderRadius: 12, padding: "14px", fontWeight: 600, fontSize: 16, border: "none", cursor: "pointer", opacity: loginLoading ? 0.7 : 1 }}>{loginLoading ? "Kirilmoqda..." : "Kirish"}</button>
+          <button onClick={doLogin} disabled={loginLoading} style={{ width: "100%", background: t.acc, color: t.accTxt, borderRadius: 12, padding: "14px", fontWeight: 600, fontSize: 16, border: "none", cursor: "pointer", opacity: loginLoading ? 0.7 : 1 }}>{loginLoading ? "Kirilmoqda..." : "Kirish"}</button>
         </div>
       </div>
     );
@@ -929,7 +929,7 @@ function App() {
     return (
       <div style={{ background: THEMES.dark.bg, minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20 }}>
         <style>{css}</style>
-        <div style={{ width: 60, height: 60, borderRadius: 18, background: `linear-gradient(135deg, ${THEMES.dark.acc}, ${THEMES.dark.blue})`, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 800, fontSize: 28 }}>M</div>
+        <div style={{ width: 60, height: 60, borderRadius: 18, background: `linear-gradient(135deg, ${THEMES.dark.acc}, ${THEMES.dark.blue})`, display: "flex", alignItems: "center", justifyContent: "center", color: THEMES.dark.accTxt, fontWeight: 800, fontSize: 28 }}>M</div>
         <div style={{ color: THEMES.dark.acc, fontSize: 18, fontWeight: 800 }}>Mebel ERP</div>
         <div style={{ color: THEMES.dark.sub, fontSize: 13 }}>Ma'lumotlar yuklanmoqda...</div>
         <div style={{ width: 32, height: 32, border: `3px solid ${THEMES.dark.border}`, borderTopColor: THEMES.dark.acc, borderRadius: "50%" }} className="spin" />
@@ -1135,11 +1135,11 @@ function App() {
                   <input style={s.inp} placeholder="Nomi: MDF / Lak / Zborka..." value={cName} onChange={e => setCName(e.target.value)} />
                   <div style={{ display: "flex", gap: 8 }}>
                     <input type="number" inputMode="decimal" step="0.01" style={{ ...s.inp, marginBottom: 0, flex: 1 }} placeholder="Summa ($)" value={cAmt} onChange={e => setCAmt(e.target.value)} onKeyDown={e => e.key === "Enter" && addCost()} />
-                    <button onClick={addCost} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "0 16px", fontWeight: 700, fontSize: 18 }}>+</button>
+                    <button onClick={addCost} style={{ background: t.acc, color: t.accTxt, borderRadius: 10, padding: "0 16px", fontWeight: 700, fontSize: 18 }}>+</button>
                   </div>
                   <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 10 }}>
                     {["MDF", "Lak", "Zborka", "Temir", "Yelim", "Mato", "Charm", "Shisha", "Dostavka", "Upakovka", "Ish haqi"].map(q => (
-                      <button key={q} onClick={() => setCName(q)} style={{ background: cName === q ? t.acc : t.surf, color: cName === q ? "#fff" : t.sub, border: `1px solid ${cName === q ? t.acc : t.border}`, borderRadius: 14, padding: "4px 10px", fontSize: 11, fontWeight: 600 }}>{q}</button>
+                      <button key={q} onClick={() => setCName(q)} style={{ background: cName === q ? t.acc : t.surf, color: cName === q ? t.accTxt : t.sub, border: `1px solid ${cName === q ? t.acc : t.border}`, borderRadius: 14, padding: "4px 10px", fontSize: 11, fontWeight: 600 }}>{q}</button>
                     ))}
                   </div>
                 </div>
@@ -1402,8 +1402,8 @@ function App() {
           {product && <div style={{ background: t.accSoft, borderRadius: 10, padding: "10px 12px", marginBottom: 11, fontSize: 12 }}><div style={s.row}><span style={{ color: t.sub }}>Omborda:</span><span style={{ ...s.mono, fontWeight: 800, color: t.acc }}>{availUnits.length} dona</span></div></div>}
           {/* Scanner/Qo'lda rejimi */}
           <div style={{ display: "flex", gap: 6, marginBottom: 11 }}>
-            <button onClick={() => { setScanMode(false); setScannedIds([]); }} style={{ flex: 1, padding: "9px", borderRadius: 9, background: !scanMode ? t.acc : t.card, color: !scanMode ? "#fff" : t.sub, border: `1px solid ${!scanMode ? t.acc : t.border}`, fontWeight: 700, fontSize: 12 }}>Qo'lda</button>
-            <button onClick={() => setScanMode(true)} style={{ flex: 1, padding: "9px", borderRadius: 9, background: scanMode ? t.acc : t.card, color: scanMode ? "#fff" : t.sub, border: `1px solid ${scanMode ? t.acc : t.border}`, fontWeight: 700, fontSize: 12 }}>Scanner</button>
+            <button onClick={() => { setScanMode(false); setScannedIds([]); }} style={{ flex: 1, padding: "9px", borderRadius: 9, background: !scanMode ? t.acc : t.card, color: !scanMode ? t.accTxt : t.sub, border: `1px solid ${!scanMode ? t.acc : t.border}`, fontWeight: 700, fontSize: 12 }}>Qo'lda</button>
+            <button onClick={() => setScanMode(true)} style={{ flex: 1, padding: "9px", borderRadius: 9, background: scanMode ? t.acc : t.card, color: scanMode ? t.accTxt : t.sub, border: `1px solid ${scanMode ? t.acc : t.border}`, fontWeight: 700, fontSize: 12 }}>Scanner</button>
           </div>
 
           {!scanMode ? (
@@ -1421,7 +1421,7 @@ function App() {
                     setTransferList(prev => [...prev, { productId, name: product?.name, qty: qtyN }]);
                   }
                   setProductId(""); setQty("");
-                }} style={{ background: t.acc, color:"#fff", borderRadius:10, padding:"0 16px", fontWeight:700, fontSize:18, marginBottom:11 }}>+</button>
+                }} style={{ background: t.acc, color: t.accTxt, borderRadius:10, padding:"0 16px", fontWeight:700, fontSize:18, marginBottom:11 }}>+</button>
               </div>
 
               {transferList.length > 0 && (
@@ -1456,7 +1456,7 @@ function App() {
                   onKeyDown={e => e.key === "Enter" && addScannedId()}
                   autoFocus
                 />
-                <button onClick={addScannedId} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "0 16px", fontWeight: 700, fontSize: 18 }}>+</button>
+                <button onClick={addScannedId} style={{ background: t.acc, color: t.accTxt, borderRadius: 10, padding: "0 16px", fontWeight: 700, fontSize: 18 }}>+</button>
               </div>
               {scanErr && <div style={{ color: t.red, fontSize: 12, marginBottom: 8 }}>{scanErr}</div>}
               {scannedIds.length > 0 && (
@@ -1599,7 +1599,7 @@ function App() {
           <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 11, padding: 12, marginBottom: 11 }}>
             <div style={{ fontSize: 13, fontWeight: 500, color: t.sub, marginBottom: 10 }}>To'lov holati</div>
             <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
-              <button onClick={() => setIsPaid(true)} style={{ flex: 1, padding: "10px", borderRadius: 9, background: isPaid ? t.acc : t.card, border: `1.5px solid ${isPaid ? t.acc : t.border}`, color: isPaid ? "#fff" : t.sub, fontWeight: 700, fontSize: 13 }}>To'landi</button>
+              <button onClick={() => setIsPaid(true)} style={{ flex: 1, padding: "10px", borderRadius: 9, background: isPaid ? t.acc : t.card, border: `1.5px solid ${isPaid ? t.acc : t.border}`, color: isPaid ? t.accTxt : t.sub, fontWeight: 700, fontSize: 13 }}>To'landi</button>
               <button onClick={() => setIsPaid(false)} style={{ flex: 1, padding: "10px", borderRadius: 9, background: !isPaid ? t.red : t.card, border: `1.5px solid ${!isPaid ? t.red : t.border}`, color: !isPaid ? "#fff" : t.sub, fontWeight: 700, fontSize: 13 }}>Qarzga</button>
             </div>
             {isPaid && <select style={{ ...s.inp, marginBottom: 0 }} value={payMethod} onChange={e => setPayMethod(e.target.value)}>{Object.entries(PAYMENT_INFO).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}</select>}
@@ -1941,13 +1941,13 @@ function App() {
     const shadow = dark ? "none" : "0 1px 2px rgba(0,0,0,0.04)";
     const hair = `0.5px solid ${t.border}`;
     const pane = { display: "grid", gap: 14, alignContent: "start", minWidth: 0 };
-    const h2 = { fontSize: 22, fontWeight: 700, letterSpacing: "-0.01em" };
-    const box = { background: t.card, borderRadius: 14, overflow: "hidden", boxShadow: shadow };
-    const kpi = { flex: "1 1 130px", background: t.card, borderRadius: 16, padding: 14, display: "grid", gap: 6, boxShadow: shadow, minWidth: 0 };
+    const h2 = { fontSize: 24, fontWeight: 400, letterSpacing: "-0.015em" };
+    const box = { background: t.card, borderRadius: 22, overflow: "hidden", boxShadow: shadow, border: dark ? "1px solid rgba(255,255,255,0.075)" : "none" };
+    const kpi = { flex: "1 1 130px", background: t.card, borderRadius: 22, padding: 16, display: "grid", gap: 6, boxShadow: shadow, minWidth: 0, border: dark ? "1px solid rgba(255,255,255,0.075)" : "none" };
     const kl = { fontSize: 13, fontWeight: 500, color: t.sub };
     const kv = { fontSize: 28, lineHeight: 1.15, ...s.numXl };
     const kx = { fontSize: 13, color: t.sub };
-    const Tile = ({ c, n, sz = 26 }) => <span style={{ width: sz, height: sz, borderRadius: sz * 0.27, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}><Ic n={n} s={Math.round(sz * 0.62)} /></span>;
+    const Tile = ({ c, n, sz = 26 }) => <span style={{ width: sz, height: sz, borderRadius: sz * 0.3, background: dark ? "linear-gradient(150deg,#262626,#151515)" : "rgba(118,118,128,0.12)", color: t.txt, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}><Ic n={n} s={Math.round(sz * 0.62)} /></span>;
     return { monthLabel, inMonth, dm, prodOf, storeName, costOf, payRows, paidMonth, F, hair, pane, h2, box, kpi, kl, kv, kx, Tile };
   };
 
@@ -2174,7 +2174,7 @@ function App() {
               </div>
             </button>
             <div style={{ display: "flex", gap: 6 }}>
-              {(canSee("price") || user?.role === "ombor") && <button onClick={() => { setSel({ defaultCategory: selectedCategory }); setModal("product"); }} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
+              {(canSee("price") || user?.role === "ombor") && <button onClick={() => { setSel({ defaultCategory: selectedCategory }); setModal("product"); }} style={{ background: t.acc, color: t.accTxt, borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
               <button onClick={pdfWarehouse} disabled={pdfLoading === "warehouse"} style={s.iBtn} title="PDF"><Ic n={pdfLoading === "warehouse" ? "refresh" : "pdf"} s={16} /></button>
             </div>
           </div>
@@ -2253,7 +2253,7 @@ function App() {
                     </div>
                   )}
                   <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
-                    <button onClick={() => { setSel({ productId: p.id }); setModal("addStock"); }} style={{ flex: 1, background: t.acc, color: "#fff", borderRadius: 9, padding: "9px", fontSize: 12, fontWeight: 700 }}>+ Qo'shish</button>
+                    <button onClick={() => { setSel({ productId: p.id }); setModal("addStock"); }} style={{ flex: 1, background: t.acc, color: t.accTxt, borderRadius: 9, padding: "9px", fontSize: 12, fontWeight: 700 }}>+ Qo'shish</button>
                     <button onClick={() => setExpanded(isExp ? null : p.id)} style={{ flex: 1, background: t.card, border: `1px solid ${t.border}`, color: t.txt, borderRadius: 9, padding: "9px", fontSize: 12, fontWeight: 700 }}>{isExp ? "Yashirish" : `ID lar (${p.allUnits.length})`}</button>
                   </div>
                   {isExp && p.allUnits.length > 0 && (
@@ -2271,7 +2271,7 @@ function App() {
                           <button onClick={() => {
                             const ids = selectedIds.filter(id => p.allUnits.find(u => u.id === id));
                             printYorliq(ids);
-                          }} style={{ fontSize: 11, color: "#fff", fontWeight: 700, background: t.acc, borderRadius: 7, padding: "4px 10px" }}>
+                          }} style={{ fontSize: 11, color: t.accTxt, fontWeight: 700, background: t.acc, borderRadius: 7, padding: "4px 10px" }}>
                             Chiqar ({selectedIds.filter(id => p.allUnits.find(u => u.id === id)).length})
                           </button>
                         )}
@@ -2284,7 +2284,7 @@ function App() {
                           <div key={u.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0", borderBottom: `1px solid ${t.border}33`, fontSize: 11 }}>
                             <button onClick={() => setSelectedIds(prev => isChecked ? prev.filter(id => id !== u.id) : [...prev, u.id])}
                               style={{ width: 20, height: 20, borderRadius: 5, border: `2px solid ${isChecked ? t.acc : t.border}`, background: isChecked ? t.acc : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                              {isChecked && <span style={{ color: "#fff", fontSize: 10, fontWeight: 800 }}>✓</span>}
+                              {isChecked && <span style={{ color: t.accTxt, fontSize: 10, fontWeight: 800 }}>✓</span>}
                             </button>
                             <span style={{ ...s.mono, fontWeight: 700, flex: 1 }}>{u.unitId}</span>
                             <div style={{ textAlign: "right" }}>
@@ -2314,7 +2314,7 @@ function App() {
             <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {totalUnits} dona</div>
           </div>
           <div style={{ display: "flex", gap: 6 }}>
-            {(canSee("price") || user?.role === "ombor") && <button onClick={() => setModal("product")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
+            {(canSee("price") || user?.role === "ombor") && <button onClick={() => setModal("product")} style={{ background: t.acc, color: t.accTxt, borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
             <button onClick={pdfWarehouse} disabled={pdfLoading === "warehouse"} style={s.iBtn} title="PDF"><Ic n={pdfLoading === "warehouse" ? "refresh" : "pdf"} s={16} /></button>
           </div>
         </div>
@@ -2349,7 +2349,7 @@ function App() {
             <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: "-0.01em" }}>Do'konlar</div>
             <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {stores.length} ta</div>
           </div>
-          {canSee("price") && <button onClick={() => setModal("addstore")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
+          {canSee("price") && <button onClick={() => setModal("addstore")} style={{ background: t.acc, color: t.accTxt, borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
         </div>
         {stores.length === 0 ? (
           <Empty icon="store" title="Do'kon yo'q" desc="Birinchi do'koningizni qo'shing" btnText="Do'kon qo'shish" onBtn={() => setModal("addstore")} />
@@ -2494,7 +2494,7 @@ function App() {
                   ))}
                 </div>
                 <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
-                  <button onClick={() => { setSel({ storeId: store.id, productId: pid }); setModal("sell"); }} style={{ flex: 1, background: t.acc, color: "#fff", borderRadius: 10, padding: "9px", fontSize: 14, fontWeight: 600 }}>Sotish</button>
+                  <button onClick={() => { setSel({ storeId: store.id, productId: pid }); setModal("sell"); }} style={{ flex: 1, background: t.acc, color: t.accTxt, borderRadius: 10, padding: "9px", fontSize: 14, fontWeight: 600 }}>Sotish</button>
                   <button onClick={() => { setSel({ storeId: store.id, productId: pid }); setModal("return"); }} style={{ background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 10, padding: "9px 12px", fontSize: 14, fontWeight: 600 }}>Qaytarish</button>
                 </div>
               </div>
@@ -2598,13 +2598,13 @@ function App() {
             <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {orders.length} ta</div>
           </div>
           <div style={{ display: "flex", gap: 6 }}>
-            <button onClick={() => setModal("order")} style={{ background: t.acc, color: "#fff", borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>
+            <button onClick={() => setModal("order")} style={{ background: t.acc, color: t.accTxt, borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>
             <button onClick={pdfOrders} disabled={pdfLoading === "orders"} style={s.iBtn} title="PDF"><Ic n={pdfLoading === "orders" ? "refresh" : "pdf"} s={16} /></button>
           </div>
         </div>
         <div style={{ display: "flex", gap: 6, overflowX: "auto", marginBottom: 12, paddingBottom: 4 }}>
           {[{ id: "all", l: "Hammasi" }, ...Object.entries(ORDER_STATUS).map(([k, v]) => ({ id: k, l: v.label }))].map(x => (
-            <button key={x.id} onClick={() => setFilter(x.id)} style={{ padding: "7px 14px", borderRadius: 18, background: filter === x.id ? t.acc : t.card, color: filter === x.id ? "#fff" : t.sub, fontSize: 12, fontWeight: 700, border: `1px solid ${filter === x.id ? t.acc : t.border}`, whiteSpace: "nowrap", flexShrink: 0 }}>{x.l}</button>
+            <button key={x.id} onClick={() => setFilter(x.id)} style={{ padding: "7px 14px", borderRadius: 18, background: filter === x.id ? t.acc : t.card, color: filter === x.id ? t.accTxt : t.sub, fontSize: 12, fontWeight: 700, border: `1px solid ${filter === x.id ? t.acc : t.border}`, whiteSpace: "nowrap", flexShrink: 0 }}>{x.l}</button>
           ))}
         </div>
         {filtered.length === 0 ? (
@@ -2997,7 +2997,7 @@ To'lov uchun:
   const roleColor = user?.role === "superadmin" ? t.amber : user?.role === "admin" ? t.acc : user?.role === "ombor" ? t.blue : t.green;
 
   return (
-    <div className="app-layout" style={{ background: t.bg, color: t.txt, minHeight: "100vh" }}>
+    <div className="app-layout" style={{ background: t.bg, backgroundImage: t.glow, backgroundRepeat: "no-repeat", backgroundSize: "100% 560px", color: t.txt, minHeight: "100vh" }}>
       <style>{css}</style>
 
       {/* SIDEBAR OVERLAY mobile */}
@@ -3006,7 +3006,7 @@ To'lov uchun:
       {/* SIDEBAR */}
       <aside className={sidebarOpen ? "sidebar sidebar-open" : "sidebar"} style={{ background: t.surf, borderRight: `1px solid ${t.border}` }}>
         <div style={{ padding:"16px 14px", borderBottom:`1px solid ${t.border}`, display:"flex", alignItems:"center", gap:10 }}>
-          <div style={{ width:36, height:36, borderRadius:10, background:`linear-gradient(135deg, ${t.acc}, ${t.blue})`, display:"flex", alignItems:"center", justifyContent:"center", color:"#fff", fontWeight:800, fontSize:16, flexShrink:0 }}>M</div>
+          <div style={{ width:36, height:36, borderRadius:10, background:`linear-gradient(135deg, ${t.acc}, ${t.blue})`, display:"flex", alignItems:"center", justifyContent:"center", color:t.accTxt, fontWeight:800, fontSize:16, flexShrink:0 }}>M</div>
           <div className="sid-text">
             <div style={{ fontSize:13, fontWeight:700, color:t.txt }}>Mebel ERP</div>
             <div style={{ fontSize:9, color:syncing ? t.amber : t.green }}>{ syncing ? "Saqlanmoqda..." : "Cloud" }</div>
@@ -3046,19 +3046,19 @@ To'lov uchun:
 
       {/* MAIN */}
       <main className="main-content">
-        <header style={{ background:dark ? "rgba(22,22,24,0.86)" : "rgba(249,249,251,0.86)", backdropFilter:"saturate(180%) blur(20px)", WebkitBackdropFilter:"saturate(180%) blur(20px)", borderBottom:`0.5px solid ${t.border}`, padding:"9px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:50 }}>
+        <header style={{ background:"transparent", padding:"9px 16px", height:60, display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, zIndex:50 }}>
           <div style={{ display:"flex", alignItems:"center", gap:10 }}>
             <button onClick={() => setSidebarOpen(o => !o)} className="sidebar-toggle" style={{ color:t.sub, padding:4, display:"flex" }}><Ic n="warehouse" s={18}/></button>
-            <div className="tab-title" style={{ fontSize:17, fontWeight:600, color:t.txt }}>{navItems.find(n=>n.id===tab)?.l || "Bosh"}<span style={{ fontSize:12, fontWeight:400, color:t.sub, marginLeft:6 }}>{APP_VER}</span></div>
+            <div className="tab-title" style={{ fontSize:24, fontWeight:300, letterSpacing:"-0.015em", color:t.txt }}>{navItems.find(n=>n.id===tab)?.l || "Bosh"}<span style={{ fontSize:12, fontWeight:400, color:t.sub, marginLeft:6 }}>{APP_VER}</span></div>
             <div className="pc-only" style={{ alignItems:"center", gap:10, marginRight:12 }}>
-              <div style={{ width:30, height:30, borderRadius:8, background:t.txt, display:"flex", alignItems:"center", justifyContent:"center", color:t.bg, fontWeight:700, fontSize:15 }}>K</div>
-              <div style={{ fontSize:16, fontWeight:600, color:t.txt, whiteSpace:"nowrap" }}>Kabir ERP<span style={{ fontSize:12, fontWeight:400, color:t.sub, marginLeft:6 }}>{APP_VER}</span></div>
+              <div style={{ width:42, height:42, borderRadius:14, background:t.txt, display:"flex", alignItems:"center", justifyContent:"center", color:t.bg, fontWeight:600, fontSize:18 }}>K</div>
+              <div style={{ fontSize:18, fontWeight:400, color:t.txt, whiteSpace:"nowrap" }}>Kabir ERP<span style={{ fontSize:12, fontWeight:400, color:t.sub, marginLeft:6 }}>{APP_VER}</span></div>
             </div>
-            <nav className="pc-only" style={{ alignItems:"center", gap:2, padding:2, borderRadius:9, background:dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)" }}>
+            <nav className="pc-only" style={{ alignItems:"center", gap:8 }}>
               {navItems.filter(item => item.id !== "stores").map(item => {
                 const active = tab === item.id;
                 return (
-                  <button key={item.id} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }} style={{ display:"flex", alignItems:"center", gap:6, height:30, padding:"0 18px", borderRadius:7, fontSize:13, fontWeight:active ? 600 : 500, background:active ? (dark ? "#636366" : "#fff") : "transparent", boxShadow:active ? "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)" : "none", color:t.txt, whiteSpace:"nowrap" }}>
+                  <button key={item.id} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }} style={{ display:"flex", alignItems:"center", gap:6, height:40, padding:"0 18px", borderRadius:20, fontSize:14, fontWeight:active ? 600 : 400, background:active ? t.acc : t.glass, border:`1px solid ${active ? t.acc : t.glassB}`, boxShadow:active && dark ? "0 0 22px rgba(255,255,255,0.22)" : "none", color:active ? t.accTxt : t.txt, whiteSpace:"nowrap" }}>
                     {item.l}
                     {item.id === "debts" && stats.debtCount > 0 && <span style={{ minWidth:17, height:17, padding:"0 5px", borderRadius:9, background:t.red, color:"#fff", fontSize:11, fontWeight:600, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</span>}
                   </button>
@@ -3067,13 +3067,13 @@ To'lov uchun:
             </nav>
           </div>
           <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-            <div title={!isOnline ? "Internet yo'q" : cloudStatus === "ok" ? "Cloud ulangan" : "Cloud xato"} style={{ width:34, height:34, borderRadius:17, background: (isOnline && cloudStatus === "ok") ? (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)") : t.redS, display:"flex", alignItems:"center", justifyContent:"center", color: (isOnline && cloudStatus === "ok") ? t.sub : t.red }}>
+            <div title={!isOnline ? "Internet yo'q" : cloudStatus === "ok" ? "Cloud ulangan" : "Cloud xato"} style={{ width:42, height:42, borderRadius:14, border:`1px solid ${t.glassB}`, background: (isOnline && cloudStatus === "ok") ? t.glass : t.redS, display:"flex", alignItems:"center", justifyContent:"center", color: (isOnline && cloudStatus === "ok") ? t.sub : t.red }}>
               <Ic n={(isOnline && cloudStatus === "ok") ? "cloud" : "cloudOff"} s={18}/>
             </div>
-            <button onClick={doRefresh} disabled={refreshing} title="Yangilash" style={{ width:34, height:34, borderRadius:17, background:(dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }}>
+            <button onClick={doRefresh} disabled={refreshing} title="Yangilash" style={{ width:42, height:42, borderRadius:14, border:`1px solid ${t.glassB}`, background:t.glass, display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }}>
               <span className={refreshing ? "ptr-spin" : ""} style={{ display:"flex" }}><Ic n="refresh" s={18}/></span>
             </button>
-            <button title="Tungi/kunduzgi rejim" style={{ width:34, height:34, borderRadius:17, background:(dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }} onClick={() => { setDark(d => { 
+            <button title="Tungi/kunduzgi rejim" style={{ width:42, height:42, borderRadius:14, border:`1px solid ${t.glassB}`, background:t.glass, display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }} onClick={() => { setDark(d => { 
   const newDark = !d;
   localStorage.setItem("kabir_dark", newDark);
   document.body.style.background = newDark ? THEMES.dark.bg : THEMES.light.bg;
@@ -3082,7 +3082,7 @@ To'lov uchun:
               <Ic n={dark ? "sun" : "moon"} s={18}/>
             </button>
             <div style={{ position:"relative" }}>
-              <button title="Sozlamalar" onClick={() => setSettingsOpen(o => !o)} style={{ width:34, height:34, borderRadius:17, background: settingsOpen ? t.txt : (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), display:"flex", alignItems:"center", justifyContent:"center", color: settingsOpen ? t.bg : t.txt }}>
+              <button title="Sozlamalar" onClick={() => setSettingsOpen(o => !o)} style={{ width:42, height:42, borderRadius:14, border:`1px solid ${t.glassB}`, background: settingsOpen ? t.txt : t.glass, display:"flex", alignItems:"center", justifyContent:"center", color: settingsOpen ? t.bg : t.txt }}>
                 <Ic n="settings" s={18}/>
               </button>
               {settingsOpen && (
@@ -3109,12 +3109,12 @@ To'lov uchun:
                 </>
               )}
             </div>
-            <button title="Chiqish" onClick={() => askConfirm("Chiqish", "Tizimdan chiqmoqchimisiz?", () => { setUser(null); localStorage.removeItem("kabir_user"); }, true, { icon: "logout", confirmLabel: "Chiqish" })} style={{ width:34, height:34, borderRadius:17, background:(dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), display:"flex", alignItems:"center", justifyContent:"center", color:t.red, marginLeft:2 }}>
+            <button title="Chiqish" onClick={() => askConfirm("Chiqish", "Tizimdan chiqmoqchimisiz?", () => { setUser(null); localStorage.removeItem("kabir_user"); }, true, { icon: "logout", confirmLabel: "Chiqish" })} style={{ width:42, height:42, borderRadius:14, border:`1px solid ${t.glassB}`, background:t.glass, display:"flex", alignItems:"center", justifyContent:"center", color:t.red, marginLeft:2 }}>
               <Ic n="logout" s={18}/>
             </button>
           </div>
         </header>
-        <div id="main-scroll" style={{ padding:16, paddingBottom:80, overflowY:"auto", height:"calc(100vh - 52px)" }}>
+        <div id="main-scroll" style={{ padding:16, paddingBottom:110, overflowY:"auto", height:"calc(100vh - 60px)" }}>
           {refreshing && (
             <div style={{ textAlign:"center", padding:"8px", color:t.acc, fontSize:13, fontWeight:700, marginBottom:8 }}>
               <span className="ptr-spin" style={{ display:"inline-flex" }}><Ic n="refresh" s={14}/></span> Yangilanmoqda...
@@ -3128,18 +3128,15 @@ To'lov uchun:
       </main>
 
       {/* MOBILE BOTTOM NAV */}
-      <nav className="mobile-nav" style={{ background:dark ? "rgba(22,22,24,0.86)" : "rgba(249,249,251,0.86)", backdropFilter:"saturate(180%) blur(20px)", WebkitBackdropFilter:"saturate(180%) blur(20px)", borderTop:`0.5px solid ${t.border}`, padding:"7px 0 calc(10px + env(safe-area-inset-bottom))" }}>
+      <nav className="mobile-nav" style={{ left:12, right:12, bottom:"calc(12px + env(safe-area-inset-bottom))", height:64, borderRadius:32, background:t.nav, backdropFilter:"blur(18px)", WebkitBackdropFilter:"blur(18px)", border:`1px solid ${t.glassB}`, boxShadow:dark ? "0 14px 34px rgba(0,0,0,0.5)" : "0 6px 20px rgba(0,0,0,0.10)", alignItems:"center", justifyContent:"space-around", padding:"0 8px" }}>
         {navItems.map(item => {
           const active = tab === item.id;
           return (
-            <button key={item.id} style={{ flex:1, display:"flex", flexDirection:"column", alignItems:"center", gap:3, color:active ? t.txt : t.sub, position:"relative" }} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }}>
-              <div style={{ position:"relative" }}>
-                <Ic n={item.i} s={25} f={active ? (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)") : undefined}/>
-                {item.id==="debts" && stats.debtCount > 0 && (
-                  <div style={{ position:"absolute", top:-4, right:-9, minWidth:17, height:17, padding:"0 5px", borderRadius:9, background:t.red, color:"#fff", fontSize:11, fontWeight:600, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</div>
-                )}
-              </div>
-              <span style={{ fontSize:10, fontWeight:500 }}>{item.l}</span>
+            <button key={item.id} aria-label={item.l} title={item.l} style={{ width:48, height:48, borderRadius:24, display:"flex", alignItems:"center", justifyContent:"center", background:active ? t.navOn : "transparent", border:`1px solid ${active ? t.glassB : "transparent"}`, color:active ? t.txt : t.sub, position:"relative" }} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }}>
+              <Ic n={item.i} s={23}/>
+              {item.id==="debts" && stats.debtCount > 0 && (
+                <div style={{ position:"absolute", top:3, right:0, minWidth:17, height:17, padding:"0 5px", borderRadius:9, background:t.red, color:"#fff", fontSize:11, fontWeight:600, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</div>
+              )}
             </button>
           );
         })}

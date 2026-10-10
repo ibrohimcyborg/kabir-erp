@@ -2,6 +2,11 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.08 — 2026-10-10 — yangi qora dizayn: umumiy uslub (Behance «Vaulta» uslubi)
+- Qora rejim ranglari: fon #020202 + tepada olxo'ri–shaftoli nur, kartochka #111, urg'u oq (matni qora), oltin #EEC77A, pushti #E8A189. Shrift Inter Tight, katta raqamlar ingichka.
+- Sarlavha shaffof, tugmalar shisha kvadratchalar; kompyuter menyusi chiplar (tanlangani oq); telefon pastki menyusi suzuvchi, faqat ikonkalar.
+- Tugmalar dumaloq-oq; oq rejim ranglari o'zgarmagan (alohida maket kutilmoqda). Hisob-kitob o'zgarmagan.
+
 ## v1.07 — 2026-10-09 — rangsiz ikonkalar, kam rang
 
 Ibrohim: «rang-barang bo'lib ketgan, rangsiz ikonkalar bilan». Rangli plitkalar va avatarlar

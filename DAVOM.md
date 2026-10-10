@@ -3,9 +3,31 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-10 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.07 — PRODDA** (2026-10-09); 2026-10-10 dagi commitlar faqat `DAVOM.md`
+**Oxirgi yangilanish:** 2026-10-10 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.08 — PRODDA** (2026-10-10)
 
-## ⏳ YARIM QOLDI — YANGI DIZAYN «1:1» MAKETI (2026-10-10) — HOZIRGI ASOSIY ISH
+## ⏳ YARIM QOLDI — YANGI DIZAYN KODGA TUSHMOQDA (2026-10-10) — HOZIRGI ASOSIY ISH
+
+Ibrohim: «saytga yoz; push qil = main'ga yangi versiyada push». Savollarga javoblari (2026-10-10):
+  oq rejim → «Oqqa ham moslab chiz» (avval oq varianti MAKETDA, keyin kod);
+  tugma/tanlangan → oq, matni qora; telefon pastki menyu → faqat ikonkalar; v1.08 → «Ha, boshla».
+Qilingan:  v1.08 PRODDA — umumiy uslub (faqat ko'rinish, hisob-kitob yo'q):
+           `THEMES.dark` yangi ranglar + yangi tokenlar ikkala temada: accTxt, glass, glassB, nav, navOn, glow;
+           shrift Inter Tight; `.app-layout` fonida `t.glow`; `s.card`/`s.iBtn`/`s.sheet`/`s.numXl`/`Btn`;
+           sarlavha (shaffof, 42px shisha tugmalar, balandlik 60 → `#main-scroll` calc(100vh - 60px));
+           PC menyu chiplar; `mobile-nav` suzuvchi pill (aria-label bilan); `pcCommon` box/kpi/h2/Tile;
+           t.acc fonli 21 joyda oq matn → `t.accTxt` (aks holda oq ustida oq bo'lardi).
+Qolgan:    1) oq rejim maketi (Artifact) → «shunaqa qil» → kod;
+           2) sahifalar ichi maketdagidek: Bosh (grafik sotuv/to'lov, «Oylik reja», «Qarz xavfi», «Ombor holati»),
+              Do'konlar (o'lchagich, kartochkalar), Ombor ro'yxati, Sotuv modali — bular YANGI HISOB-KITOB
+              (LOGIKA): har biri uchun avval ta'rif/qaror Ibrohimdan;
+           3) markazdagi binafsha shar-tugma (pastki menyuda) — yangi amal, qaror kerak.
+Keyingi qadam: oq rejim maketini ko'rsatish (maketga oq variant qo'shish, shu havolaga).
+Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vitrina band 68» qanday hisoblanadi?
+Ko'rilgan xato (tuzatilmagan, v1.07 da ham bor): Ombor sahifasida kategoriya nomi tugmasida rang yo'q —
+           qora rejimda nom ko'rinmaydi (`WarehousePage`, `visibleCategories.map` → `<button>` color yo'q).
+
+## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
+
 
 Ibrohim: «qani manga to'g'ri mockup jo'nat, man yuborgan rasmlarimga umuman yaqin emas» →
            «rasmdagi ranglar, dizayn hammasini 1:1 qilib ERP'ga dizayn qil, PC, TABLET, PHONE bilan».
