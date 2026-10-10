@@ -37,6 +37,24 @@ Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vit
 ⚠ 2026-10-10 (keyin): Ibrohim «to'g'risi bu dizayn ham yoqmay qoldi» — v1.08 (Vaulta uslubi) ham yoqmadi.
            A/B/C/D javobsiz qoldi. Prodda v1.08 turibdi. Keyingi qadam: nima yoqmaganini va yo'nalishni so'rash
            (v1.08 qolsinmi / v1.07 ga qaytarishmi / boshqa namuna). Kod YOZILMAGAN.
+⏳ OCHROQ VARIANTLAR (2026-10-10, HOZIRGI): Ibrohim javobi — «v1.08 qolsin, ustida ishlaymiz»,
+           yoqmagani: «rangini ochartir» + «juda qorong'i / og'ir».
+           Maket (versiya 3, shu havola): https://claude.ai/artifact/D83QfYR9wwDsvKduKEyr4g —
+           haqiqiy ilova rasmlari, faqat THEMES ranglari almashgan (shakllar v1.08 dagidek), nomlar tuzatilgan:
+           1 «Olxo'ri» (tavsiya) — THEMES.dark: bg #3A1B30, surf/card #4A2A3E, border #64435A, sub #D7C3CE,
+             dim #9E8394, glass rgba(255,255,255,.14)/glassB .20, nav rgba(74,42,62,.92), navOn #2C1424,
+             glow: radial(rgba(240,179,159,.55)) + linear(#8A4A62 0%, #6A3550 22%, #52273F 50%, #3A1B30 100%),
+             `.app-layout` backgroundSize "100% 100%"; s.card dark bg rgba(255,255,255,.10), border rgba(255,255,255,.16).
+           2 «Yumshoq kulrang» — bg #2C2729, surf/card #3B3538, border #544C50, sub #CBC2C6, dim #8E8589,
+             nav rgba(59,53,56,.94), navOn #211D1F, glow linear(#6E4553 0px, #4E3740 200px, #2C2729 520px);
+             s.card dark linear(#423B3E,#383234), border rgba(255,255,255,.10).
+           1 va 2 da umumiy: acc #FFFFFF, accTxt #141113, green #6FE0A0, red #FF7A8C, amber #F3D08A, blue #F0B39F.
+           3 «Ochiq» — THEMES.light: bg #F7EFF1, card #FFFFFF, border #EBDDE2, acc #412330 (tugma olxo'ri, matn oq),
+             txt #2A1520, sub #7B6871, red #C8324A, green #23864F, amber #A9731A, blue #B5644E,
+             glass rgba(65,35,48,.06)/glassB .10, navOn rgba(65,35,48,.10),
+             glow radial(rgba(232,161,137,.55)) + linear(#F3D6CF 0px, #F6E4E6 220px, #F7EFF1 480px).
+           Nomlar tuzatishi: `WarehousePage` kategoriya tugmasi va `StoresPage` do'kon kartochkasi stiliga `color: t.txt`.
+           Javobsiz savol: 1, 2 yoki 3? → «shunaqa qil» → v1.09 (ranglar + nomlar) → push main.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
