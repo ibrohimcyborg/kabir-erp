@@ -3,7 +3,24 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · **main = v1.24 commiti — PUSH QILINDI (prod)** (v1.24 — «Sonlarni 0 qilish»). Ibrohim tekshiradi: v1.23 surish/scroll (iPhone), v1.24 sozlamalar → «Sonlarni 0 qilish» (superadmin). Navbatda: hisobot tahriri (5–10) · v1.20 soya: superadmin ochadi → birinchi nusxa · DAFTAR'dan o'qishga o'tish (7/7 dan keyin)
+**Oxirgi yangilanish:** 2026-10-13 · main = a2591c5 (v1.24 prodda). **Hozir:** «0 qilingandan keyin do'kon tarixi» maketi javob kutmoqda (TjCUZvCmrbXgqAr7KrcF8M, v1.25). **Navbatda:** «jo'natganda har do'konga har xil narx» — maket hali yo'q. Ibrohim tekshiradi: v1.23 surish/scroll, v1.24 0 qilish
+
+## ⏳ 0 QILINGANDAN KEYIN DO'KON TARIXI — MAKET, JAVOB KUTILMOQDA (2026-10-13)
+
+Ibrohim (skrinshot: do'kon hisoboti «Jo'natildi 2 dona», vitrinada 0): «0 qilganimdan keyin tarixida qolib ketyapti».
+Maket:     https://claude.ai/artifact/TjCUZvCmrbXgqAr7KrcF8M — hozir / A (0 qilingan dona hisobotdan chiqadi) /
+           B (tavsiya: «0 qilindi» qatori va 5-son; manba activity «Sonlar 0 qilindi» — do'kon nomi + soni; bazaga yozuv yo'q).
+Tashxis:   `hisobot()` «Jo'natildi» (~2796) do'kondagi hamma donani `sentAt` bo'yicha sanaydi, status "nol" ham.
+           0 qilish hisobotda alohida ko'rinmaydi → jo'natildi 2, vitrinada 0, farq tushuntirilmagan.
+Qarorlar:  1) A yoki B (tavsiya B); 2) B da «0 qilindi» Qaytish filtrida (tavsiya) yoki alohida 6-tugma.
+Keyingi qadam: Ibrohim tanlovi → TAXMIN BLOKI → kod (v1.25).
+
+## ⏳ NAVBATDA — JO'NATGANDA HAR DO'KONGA HAR XIL NARX (2026-10-13), maket yo'q
+
+Ibrohim: «do'konga ombordan jo'natganda stol-stulning narxini ham har xil beramiz-ku, shuni qo'shimcha qil».
+LOGIKA (narx: vitrina qarzi `stats`/StoreProfile/DokonlarPane product.price dan; SellModal narxi; hisobot; PDF) → avval maket.
+Hozir narx faqat `products.price` (bitta). Maketda: jo'natish oynasida narx maydoni, dona/jo'natishga narx yozish (yangi
+maydon units.* — §6.2 ehtiyot), vitrina qarzi va sotuvga ta'siri, eski donalar (narxsiz) qanday hisoblanadi.
 
 ## ✅ v1.24 — SONLARNI 0 QILISH (2026-10-13) — PUSH QILINDI (prod)
 
