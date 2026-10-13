@@ -2,6 +2,10 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.12 — 2026-10-13 — «Ombor oldi-berdi» ko'rsatkichlari surib o'tiladi
+- Telefon/iPad (barmoq bilan) da Keldi/Do'konga ketdi/Sotildi/Omborda bir qatorda chapga-o'ngga suriladi, pastda nuqtalar.
+- Sichqonchali kompyuterda to'rttasi bitta kartochka ichida, ingichka chiziq bilan ajratilgan (4 ta alohida bo'lak emas).
+
 ## v1.11 — 2026-10-13 — yangi yuklanish ekrani
 - Sayt ochilayotganda eski «M · Mebel ERP» qora ekran o'rniga: och kulrang fon, qora-tilla «K» belgi (iPhone belgisi bilan bir xil), «Kabir ERP».
 - Ekran ilova kodi yuklanguncha ham ko'rinadi; boshidagi to'q ko'k lahza va theme-color ham yangi fonga almashdi.

@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.11 — PRODDA** (2026-10-13)
+**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.12 — PRODDA** (2026-10-13)
 
 ## ⏳ YARIM QOLDI — YANGI DIZAYN KODGA TUSHMOQDA (2026-10-10) — HOZIRGI ASOSIY ISH
 
@@ -142,6 +142,12 @@ Ochiq: ko'rsatkichlar A/B/C/D (https://claude.ai/artifact/LW3cHx3BtH223DVfp6TpLY
            createRoot uni almashtiradi) + kichik oddiy <script> belgini apple-touch-icon havolasidan oladi;
            `App` `if (loading)` ham `.boot` (o'sha belgi); body bg #F2F4F5, theme-color #F2F4F5.
            Sinov: statik splash (ilova kodisiz) va loading holati bir xil; regressiya + menyu sinovlari xato 0.
+✅ v1.12 PRODDA: Ibrohim «D ni qilib push qil» (ko'rsatkichlar). `PcOmborPane` 4 ta kpi → `.kpi-strip` + `.kpi-it`
+           + `.kpi-dots` (CSS head'da): (pointer:fine) = bitta kartochka 4 ustun (A); (pointer:coarse) = scroll-snap
+           surish, kartochka 78% (maks 300px), nuqtalar onScroll bilan (hook yo'q). Ranglar CSS o'zgaruvchilari orqali
+           (--kc/--kb/--kh/--kd/--ka). Telefondagi HomePage 6 ta kartochkasi O'ZGARMAGAN. «Do'konlar» 3 kartochkasi
+           (`DokonlarPane`) ham O'ZGARMAGAN — Ibrohim javob bermagan.
+           Sinov: PC sichqoncha (oq/qora) = A; iPad 1180 barmoq = surish, nuqtalar 1000→0010→0001; regressiya xato 0.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 

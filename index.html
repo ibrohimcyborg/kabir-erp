@@ -1,4 +1,4 @@
-<!-- v1.11 -->
+<!-- v1.12 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -45,6 +45,20 @@ input[type=number]{-moz-appearance:textfield}
 .boot-t{color:#20252E;font-size:19px;font-weight:600}
 .boot-s{color:#6B6F78;font-size:13px}
 .boot-sp{width:28px;height:28px;border:3px solid #E1E4ED;border-top-color:#20252E;border-radius:50%}
+/* Ombor oldi-berdi ko'rsatkichlari: sichqonchada bitta kartochka 4 ustun, barmoqli ekranda surib o'tiladi */
+.kpi-strip{display:flex;flex-wrap:nowrap;background:var(--kc);border:var(--kb);border-radius:22px;overflow:hidden}
+.kpi-it{flex:1 1 0;min-width:0;padding:16px 18px;display:grid;gap:6px}
+.kpi-it+.kpi-it{border-left:var(--kh)}
+.kpi-dots{display:none;justify-content:center;gap:6px;margin-top:-4px}
+.kpi-dots i{width:7px;height:7px;border-radius:4px;background:var(--kd);display:block;transition:width .2s,background .2s}
+.kpi-dots i[data-on="1"]{width:20px;background:var(--ka)}
+@media (pointer:coarse){
+  .kpi-strip{background:none;border:none;border-radius:0;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .kpi-strip::-webkit-scrollbar{display:none}
+  .kpi-it{flex:0 0 78%;max-width:300px;scroll-snap-align:start;background:var(--kc);border:var(--kb);border-radius:22px}
+  .kpi-it+.kpi-it{border-left:var(--kb)}
+  .kpi-dots{display:flex}
+}
 /* RESPONSIVE LAYOUT */
 .app-layout{display:flex;min-height:100vh}
 .sidebar{width:220px;background:#101018;border-right:1px solid #22223A;display:flex;flex-direction:column;position:fixed;left:0;top:0;height:100vh;z-index:10;transition:transform .3s}
@@ -116,7 +130,7 @@ input[type=number]{-moz-appearance:textfield}
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.11";
+const APP_VER = "v1.12";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -1998,20 +2012,24 @@ function App() {
           <div style={h2}>Ombor oldi-berdi</div>
           <div style={{ fontSize: 15, color: t.sub }}>{monthLabel}</div>
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+        <div className="kpi-strip" style={{ "--kc": t.card, "--kb": dark ? "1px solid rgba(255,255,255,0.075)" : "0px solid transparent", "--kh": hair, "--kd": t.border, "--ka": t.acc }}
+          onScroll={e => { const el = e.currentTarget, c = el.children, dots = el.nextElementSibling; if (!dots || !c.length) return;
+            const end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4, i = end ? c.length - 1 : Math.round(el.scrollLeft / (c[0].offsetWidth + 12));
+            [...dots.children].forEach((d, k) => { d.dataset.on = k === i ? "1" : "0"; }); }}>
           {[
             ["Keldi", F.blue, "tray", came.length, canSee("cost") ? `tannarx ${fmt(costOf(came))}` : ""],
             ["Do'konga ketdi", F.teal, "send", sent.length, `${new Set(sent.map(u => u.location)).size} do'kon`],
             ["Sotildi", F.indigo, "bag", soldQty, fmt(salesSum)],
             ["Omborda", F.orange, "warehouse", inWh.length, canSee("cost") ? fmt(costOf(inWh)) : ""],
           ].map(([l, c, n, v, x]) => (
-            <div key={l} style={kpi}>
+            <div key={l} className="kpi-it">
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}><Tile c={c} n={n} /><span style={kl}>{l}</span></div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 5 }}><span style={kv}>{v}</span><span style={{ fontSize: 15, color: t.sub }}>dona</span></div>
-              <div style={kx}>{x || " "}</div>
+              <div style={kx}>{x || " "}</div>
             </div>
           ))}
         </div>
+        <div className="kpi-dots" style={{ "--kd": t.border, "--ka": t.acc }}>{[0, 1, 2, 3].map(k => <i key={k} data-on={k === 0 ? "1" : "0"} />)}</div>
         {canSee("profit") && (
           <div style={{ ...box, padding: "16px 18px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "14px 0" }}>
             <div style={{ flex: "1 1 190px", paddingRight: 18 }}>
