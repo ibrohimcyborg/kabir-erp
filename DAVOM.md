@@ -3,19 +3,19 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.13 — PRODDA** (2026-10-13)
+**Oxirgi yangilanish:** 2026-10-13 · versiya: **v1.14** (tepada xiralashish) — push kutilmoqda
 
-## ⏳ YARIM QOLDI — TEPADA XIRALASHIB YO'QOLISH (2026-10-13) — ENG OXIRGI ISH
+## ⏳ YARIM QOLDI — TEPADA VA PASTDA XIRALASHISH (2026-10-13) — ENG OXIRGI ISH
 
-Ibrohim (iPhone Sozlamalari rasmi bilan): «tepaga chiqarganda xiralashib yo'q bo'lib ketyapti, Kabir ERP'ni ham shunaqa qiling».
-Branch:    claude/pc-versiya — kod YOZILMAGAN, prodda v1.13.
-Maket:     https://claude.ai/artifact/SS11Za8sdqdbgfvphtSgfh (ikki jonli telefon: hozirgi keskin kesilish / taklif).
-Tashxis:   `#main-scroll` (index.html:3209) sarlavhaning PASTIDAN boshlanadi (height calc(100vh - 60px)) → tepada keskin kesiladi.
-Taklif:    faqat telefonda (@media max-width:480px): `#main-scroll` height 100vh, margin-top -60px, padding-top 76px,
-           mask-image linear-gradient(transparent 22px → #000 72px); sarlavhaga backdrop-filter blur(8px) qatlam (mask bilan
-           pastga so'nadi). Planshet/PC o'zgarmaydi (.pc-side sticky top:0 yashirinib qolardi). ~7 qator CSS + 1 qator JSX.
-Keyingi qadam: Ibrohim «shunaqa qil»/«push qil» desa → TAXMIN BLOKI → kod → v1.14 → push main.
-Javobsiz savol: maket ma'qulmi? Xiralashish kuchi yetarlimi?
+Ibrohim (iPhone Sozlamalari rasmi bilan): «tepaga chiqarganda xiralashib yo'q bo'lib ketyapti, Kabir ERP'ni ham shunaqa qiling»;
+keyin «push qil tekshiraman» + «pastdan ham xiralashib chiqsin, tepaga o'xshab».
+Maket:     https://claude.ai/artifact/SS11Za8sdqdbgfvphtSgfh
+Qilingan:  v1.14 (tepa) — faqat telefonda (@media max-width:480px): `#main-scroll` height 100vh, margin-top -60px,
+           padding-top 76px, mask-image (transparent 22px → #000 72px); `<span className="hdr-fx" />` sarlavhada
+           (backdrop blur 8px, pastga so'nadi). Planshet/PC o'zgarmagan (sinovda tekshirildi).
+Qolgan:    v1.15 (past) — mask pastki to'xtashlari + `.nav-fx` qatlam menyu ustida + pastki bo'shliq safe-area bilan;
+           keyin push (branch + main).
+Keyingi qadam: v1.15 ni yozish, sinash, push.
 
 ## ⏳ YARIM QOLDI — MA'LUMOT KO'PAYSA / XOTIRA TELEFONDA (2026-10-13) — ENG OXIRGI ISH
 

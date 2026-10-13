@@ -2,6 +2,9 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.14 — 2026-10-13 — telefonda ro'yxat tepada iPhone kabi xiralashib yo'qoladi
+- Telefonda (≤480px) ro'yxat sarlavha ostidan o'tadi: tepaga yaqinlashganda xiralashadi va asta yo'qoladi (keskin kesilmaydi). Planshet/PC o'zgarmagan.
+
 ## v1.13 — 2026-10-13 — menyu doirasi Telegram kabi barmoqqa yopishib yuradi
 - Pastki va chap menyuni ushlab surganda oq doira tugmadan tugmaga sakramaydi, barmoq ortidan silliq yuradi, biroz kattalashadi; qo'yganda eng yaqin bo'limga o'tiradi.
 - Telefonda sahifani chapga-o'ngga surganda pastki menyudagi doira ham birga yuradi.
