@@ -5,6 +5,24 @@
 
 **Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.13 — PRODDA** (2026-10-13)
 
+## ⏳ YARIM QOLDI — MA'LUMOT KO'PAYSA / XOTIRA TELEFONDA (2026-10-13) — ENG OXIRGI ISH
+
+Ibrohim: «buni cloud ushlashi qanaqa qilingan, blob bo'lganmi?» (men buni avval menyu haqida deb noto'g'ri tushundim),
+keyin: «ma'lumot ko'paysa nima bo'ladi? mockupda ko'rsat, keyin xotira telefonda bo'lishi kerak, Safari'dan chiqarish kerak».
+Branch:    claude/pc-versiya — kod YOZILMAGAN, prodda v1.13.
+Maket:     https://claude.ai/artifact/U4v1n2mnAqr5q3AwbWsjug (jonli hisob: slayderlar → o'qish/kun, MB, soniya; grafik 1–36 oy).
+Tashxis (grep bilan tasdiqlangan): `loadAll` (index.html:489) 7 kolleksiyani to'liq o'qiydi; activity `limit(10000)` telefonda
+           (:499); rasm base64 600px JPEG products ichida (:1085); `verifyUnitsUnchanged` (:564) har sotuv/jo'natish/qaytarishda
+           butun `units`; `update`/`delete` (:230/:239) butun kolleksiyani o'qiydi; QR (:440) butun products; enablePersistence
+           (:151) bor, lekin sayt fayllari keshlanmagan (service worker/manifest yo'q) → internetsiz ochilmaydi.
+           Ma'lumot Firebase Firestore'da, Vercel Blob ishlatilmagan.
+Taklif:    1) rasmlar alohida omborga (Vercel Blob / Firebase Storage); 2) id bo'yicha o'qish (yozishda butun kolleksiya emas);
+           3) activity serverda oxirgi 300; 4) «xotira telefonda» — delta sync (`updated_at` + o'chirilgan belgisi).
+           Safari'dan chiqarish: Bosh ekran ikonka (bor) → manifest + service worker (2 yangi fayl, ruxsat kerak) → App Store (tavsiya emas).
+Keyingi qadam: Ibrohim javobini kutish, keyin tanlangan qadam uchun alohida maket → TAXMIN BLOKI → kod.
+Javobsiz savol: Firebase tarifi (Spark/Blaze) va Usage'dagi kunlik o'qishlar soni? Qaysi qadamdan (tavsiya 2→3→1→4)?
+           Manifest + service worker (yangi fayllar): ha/yo'q?
+
 ## ✅ v1.13 — MENYU TELEGRAM KABI O'TADI (2026-10-13) — PRODDA
 
 Ibrohim (Telegram papkalar menyusi rasmi bilan): «o'tishini shunaqa qiling, bu yerda bosiladigan bo'lib qolibdi».
