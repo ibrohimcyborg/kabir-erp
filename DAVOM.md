@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.19 — PRODDA** (2026-10-13)
+**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` (6c21743) · versiya: **v1.19 main'da, lekin SAYTDA HALI v1.18** — Vercel kunlik chegarasi (pastga qara)
 
 ## ⏳ KEYINGI ISH — DAFTAR TIZIMIGA O'TISH (2026-10-13) — QARORLAR OLINDI, 1-BOSQICHDAN BOSHLASH
 
@@ -40,7 +40,16 @@ BOSQICHLAR: 1) `daftar.js` (yangi fayl, index.html ga ULANMAYDI) + Node birlik s
 Keyingi qadam: 1-bosqich — TAXMIN BLOKI → `daftar.js` dvigateli (Kabir kalitlari) + Node sinovlari; index.html ga tegmaslik.
 Ibrohimdan kerak (2-bosqichgacha): Firebase konsol → Firestore → Rules rasmi; tarif (Spark/Blaze).
 
-## ✅ v1.19 — HAMMA QIDIRUVDA «×» (2026-10-13) — PRODDA
+## ⚠️ VERCEL KUNLIK CHEGARASI (2026-10-13) — v1.19 SAYTGA CHIQMAGAN
+
+main = 6c21743 (v1.19 ichida), lekin Vercel production yig'ishi BOSHLANMAGAN: bepul tarif «kuniga 100 ta yig'ish»
+(`api-deployments-free-per-day`, 402) to'lgan. Branch preview (dpl_JEHFfprpWd2Xjeuu4fMWsGJisvZz) sig'gan, main'niki yo'q.
+Promote (422 — preview'ni promote qilib bo'lmaydi) va create_deployment (402) ham rad etildi. Prodda: d637887 (v1.18).
+Keyingi qadam: chegara tiklangach (Vercel: 24 soatgacha) main'ga keyingi push v1.19 ni chiqaradi, yoki Ibrohim Vercel'da
+           Deployments → oxirgi main → Redeploy bosadi. Har push 2 ta yig'ish qiladi (claude/* branch + main) — kvotani
+           tejash uchun branch preview'larni o'chirish (Vercel → Settings → Git) — Ibrohim qarori, o'zim o'zgartirmayman.
+
+## ⏳ v1.19 — HAMMA QIDIRUVDA «×» (2026-10-13) — MAIN'DA, SAYTGA CHIQISHI KUTILMOQDA
 
 Ibrohim: «poiskning yoniga x qo'y» → maket (https://claude.ai/artifact/UTfNjZBeSRKvRXnm512B2A, 2-versiya) → «hammasiga qo'y pc tablet mobilega».
 Qilingan:  `s.clr` uslubi (iBtn dan keyin); 4 qidiruvga `{q && <button aria-label="Qidiruvni tozalash" …>×</button>}`:
