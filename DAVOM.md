@@ -5,6 +5,12 @@
 
 **Oxirgi yangilanish:** 2026-10-13 · **main = v1.22 commiti — PUSH QILINDI (prod)** (v1.20 soya + v1.21 do'kon hisoboti + v1.22 hisobot tugmalari dumaloq). Keyingi: Ibrohim (superadmin) ilovani ochadi → daftar birinchi nusxasi avtomatik; hamma telefonlar ilovani yopib qayta ochsin · «Sonlarni 0 qilish» maketi javob kutmoqda (Sxp3CPzHU84XwYwGW2FU7m) · hisobot tahriri (5–10) keyin
 
+## 📌 QOIDA — DIZAYN USLUBI iOS + TELEGRAM (2026-10-13)
+
+Ibrohim: «bo'ldi, o'zingga qoida qilib qo'y: menga iOS Telegram'dagidek uslub yoqadi — swipe qilganda, scroll qilganda,
+ro'yxatdagi xiralashishlar». → CLAUDE.md §1 «DIZAYN USLUBI» (jadval: tab/segment, suriladigan qator, swipe, scroll
+xiralashishi, ochiladigan bo'lim, oyna — har biri koddagi namunasi bilan). Har yangi ekran va maket shu uslubda.
+
 ## ✅ v1.22 — HISOBOT TUGMALARI iOS/TELEGRAM KABI DUMALOQ (2026-10-13) — PUSH QILINDI (prod)
 
 Ibrohim (skrinshot, ikkala qator belgilangan): «shularniyam qilsa bo'ladimi, iOS Telegram'dagidek» → vizual, «ha».

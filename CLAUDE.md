@@ -168,6 +168,24 @@ Ko'rinishi vizual, lekin **vizual EMAS** (= LOGIKA):
 - `PAYMENT_INFO` / `ORDER_STATUS` kalitlari — bazada saqlanadi (faqat `label` vizual).
 - PDF'dagi matn — `api/pdf.py` kalitlari bilan bog'liq (§10).
 
+### DIZAYN USLUBI — iOS + Telegram (Ibrohim, 2026-10-13)
+
+Ibrohim: *«menga iOS Telegram'dagidek uslub yoqadi — swipe qilganda, scroll qilganda, ro'yxatdagi xiralashishlar»*.
+Har yangi yoki o'zgaradigan ekran, komponent va **maket** shu uslubda — so'ralmasa ham, standart. Yangidan o'ylab
+topma: ilovada bor namunani takrorla.
+
+| Element | Uslub | Namuna (kodda) |
+|---|---|---|
+| Tab / segment | To'liq dumaloq (`borderRadius: 999`); tanlangani oq belgi, joyiga prujina bilan suriladi (`transform .38s cubic-bezier(.3,1.35,.5,1)`) | `StoreProfile` → `hisobot()` davr va tur qatorlari |
+| Sig'magan tugmalar qatori | Telegram papkalaridek yonga suriladi, scrollbar ko'rinmaydi, bosilgani ko'rinishga suriladi | `.tg-tabs`, do'kon profili bo'limlari |
+| Swipe | Sahifa barmoq bilan chapga-o'ngga; menyu doirasi barmoqqa yopishadi, qo'yganda prujina | `swStart` / `swMove` / `swEnd`, `navDrag` (v1.13) |
+| Scroll | Ro'yxat tepada (sarlavha ostida) va pastda (menyu oldida) xiralashib yo'qoladi — mask + blur. Yangi suriladigan ro'yxat yoki oynada ham | `#main-scroll` mask, `.hdr-fx`, `.nav-fx` (v1.14–v1.15) |
+| Ochiladigan bo'lim | Silliq ochiladi (`grid-template-rows` 0fr → 1fr, .3s), o'q 90° buriladi | hisobot kunlari |
+| Oyna | Pastdan chiqadi (sheet), tepasi 28px dumaloq, orqasi qimirlamaydi | `s.overlay`, `s.sheet` |
+
+Harakat yumshoq — sakramaydi, miltillamaydi. Bu qoida tartibni o'zgartirmaydi: vizual o'zgarish baribir so'rab
+yoziladi, logika — avval maket (yuqorida). Faqat «qanday ko'rinadi» savoliga javob doim shu uslub.
+
 ### Ikkilanish
 
 Ikkilangan holat = **LOGIKA** deb hisobla, mockup qil. `"Bu oddiy-ku"` degan qarorni
