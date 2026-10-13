@@ -59,6 +59,17 @@ Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vit
            KUTILMOQDA: Ibrohim yangi UI namunasini (rasm) yuboradi. Kelganda: rasmlarni piksel bo'yicha o'lchab,
            haqiqiy ilova rasmlari bilan maket → «shunaqa qil» → kod. Prodda v1.08 qoladi (Ibrohim: «qolsin»).
            Nomlar tuzatishi (`color: t.txt`, 2 joy) hali kodda YO'Q — yangi dizayn bilan birga yoki alohida.
+⏳ YANGI UI — OQ-KO'K DASHBOARD (2026-10-13, HOZIRGI ASOSIY ISH): Ibrohim rasm yubordi (oq dashboard:
+           chap ikonka menyu, oq kartochkalar mini-grafiklar bilan, bitta ko'k gradient kartochka, o'ng «My tasks»
+           paneli) — «shu ranglardan shu stilda qil».
+           Ranglar (piksel): fon #F2F4F5, kartochka #FFFFFF r16, matn #20252E, kulrang #6B6F78, ko'k #2F63F6
+           (gradient #4A7EFD→#1E50F4), grafik to'ldirish #E7EFFD, yorliq yashil #E9F5EC/#197560,
+           qizil #FFE7E9/#AA2F45, ko'k #E3EBFE/#2F5BEA, menyu pill #E1E4ED, segment #F3F5F7. Shrift Inter, raqam 700.
+           Maket: https://claude.ai/artifact/5bEnVoW76xZUFLjVcT52T9 — kompyuter (chap menyu + «Ombor oldi-berdi»
+           kartochkalari + o'ng «Do'konlar» paneli = bizning 2 panelli PC), planshet, telefon (Bosh, Do'konlar).
+           Taklif: 1-bosqich v1.09 = ranglar, oq kartochkalar, PC chap ikonka menyu + o'ng panel, telefon pastki menyu;
+           2-bosqich = kartochkalardagi mini-grafiklar (YANGI HISOB — har biri uchun qaror).
+           Javobsiz savollar: uslub shu bo'lsinmi? qora rejim qolsinmi / sayt doim oq ochilsinmi? Kod YOZILMAGAN.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
