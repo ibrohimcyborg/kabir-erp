@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.18 — PRODDA** (2026-10-13)
+**Oxirgi yangilanish:** 2026-10-13 · versiya: **v1.19** (commit, push kutilmoqda) · prodda v1.18
 
 ## ⏳ KEYINGI ISH — DAFTAR TIZIMIGA O'TISH (2026-10-13) — QARORLAR OLINDI, 1-BOSQICHDAN BOSHLASH
 
@@ -40,14 +40,16 @@ BOSQICHLAR: 1) `daftar.js` (yangi fayl, index.html ga ULANMAYDI) + Node birlik s
 Keyingi qadam: 1-bosqich — TAXMIN BLOKI → `daftar.js` dvigateli (Kabir kalitlari) + Node sinovlari; index.html ga tegmaslik.
 Ibrohimdan kerak (2-bosqichgacha): Firebase konsol → Firestore → Rules rasmi; tarif (Spark/Blaze).
 
-## ⏳ YARIM QOLDI — QIDIRUV YONIGA «×» (TOZALASH) (2026-10-13) — ENG OXIRGI ISH
+## ⏳ v1.19 — HAMMA QIDIRUVDA «×» (2026-10-13) — PUSH KUTILMOQDA
 
-Ibrohim: «poiskning yoniga x qo'y, tez o'chirib tashlashga». Kod YOZILMAGAN, prodda v1.18.
-Maket:     https://claude.ai/artifact/UTfNjZBeSRKvRXnm512B2A (2-versiya: yozuv bor paytda o'ngda iOS uslubidagi kulrang doira «×»)
-Taklif:    `{q && <button onClick={() => setQ("")}>×</button>}` qidiruv label ichida, 22px doira rgba(118,118,128,.45), oq ×.
-Javobsiz savol: faqat do'kon qidiruvi (telefon StoresPage + kompyuter DokonlarPane) yoki ombordagi 2 ta qidiruv ham
-           («Kategoriya qidirish...» :2361, «Shu kategoriyada qidirish...» :2221)?
-Keyingi qadam: javob → TAXMIN BLOKI → kod → v1.19 → push (agar aytsa).
+Ibrohim: «poiskning yoniga x qo'y» → maket (https://claude.ai/artifact/UTfNjZBeSRKvRXnm512B2A, 2-versiya) → «hammasiga qo'y pc tablet mobilega».
+Qilingan:  `s.clr` uslubi (iBtn dan keyin); 4 qidiruvga `{q && <button aria-label="Qidiruvni tozalash" …>×</button>}`:
+           DokonlarPane «Do'kon qidirish», WarehousePage «Shu kategoriyada qidirish...» va «Kategoriya qidirish...»,
+           StoresPage «Do'kon qidirish». Bosilsa `setQ("")` + `parentElement.querySelector("input").focus()`.
+Sinov:     JSX OK; soxta baza: telefon (3 qidiruv), planshet (2), kompyuter (2), telefon qora — bo'shda × yo'q, yozilganda 22×22,
+           bosilganda qiymat "", fokus qidiruvda, xato yo'q. (Birinchi urinishda previousSibling bo'sh matn tuguniga tushib
+           xato bergan — tuzatildi, commitga kirmagan.)
+Keyingi qadam: Ibrohim «push qil» desa → branch + main.
 
 ## ✅ v1.18 — KOMPYUTERDAGI DO'KON QIDIRUVI HAM B (2026-10-13) — PRODDA
 

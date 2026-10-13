@@ -1,4 +1,4 @@
-<!-- v1.18 -->
+<!-- v1.19 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -138,7 +138,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:blo
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.18";
+const APP_VER = "v1.19";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -887,6 +887,7 @@ function App() {
     row: { display: "flex", justifyContent: "space-between", alignItems: "center" },
     inp: { width: "100%", background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), border: "none", borderRadius: 10, padding: "12px 13px", color: t.txt, fontSize: 16, marginBottom: 11 },
     iBtn: { width: 40, height: 40, borderRadius: 13, background: t.glass, border: `1px solid ${t.glassB}`, display: "flex", alignItems: "center", justifyContent: "center", color: t.txt },
+    clr: { width: 22, height: 22, borderRadius: 11, flexShrink: 0, background: "rgba(118,118,128,0.45)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, lineHeight: 1 },
     mono: { fontVariantNumeric: "tabular-nums", letterSpacing: "-0.01em" },
     numXl: { fontWeight: 400, fontVariantNumeric: "tabular-nums", letterSpacing: "-0.03em" },
   };
@@ -2130,7 +2131,7 @@ function App() {
         </div>
         <label style={{ display: "flex", alignItems: "center", gap: 6, height: 36, padding: "0 10px", borderRadius: 10, background: dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)", color: t.sub }}>
           <Ic n="search" s={16} />
-          <input style={{ flex: 1, minWidth: 0, background: "none", border: "none", color: t.txt, fontSize: 15 }} placeholder="Do'kon qidirish" value={q} onChange={e => setQ(e.target.value)} />
+          <input style={{ flex: 1, minWidth: 0, background: "none", border: "none", color: t.txt, fontSize: 15 }} placeholder="Do'kon qidirish" value={q} onChange={e => setQ(e.target.value)} />{q && <button type="button" aria-label="Qidiruvni tozalash" onClick={e => { setQ(""); e.currentTarget.parentElement.querySelector("input")?.focus(); }} style={s.clr}>×</button>}
         </label>
         <div style={box}>
           {shown.length === 0 ? (
@@ -2219,7 +2220,7 @@ function App() {
           </div>
           <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 11, padding: "10px 13px", marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
             <div style={{ color: t.sub }}><Ic n="search" s={16} /></div>
-            <input style={{ flex: 1, background: "none", color: t.txt, fontSize: 14, border: "none" }} placeholder="Shu kategoriyada qidirish..." value={q} onChange={e => setQ(e.target.value)} />
+            <input style={{ flex: 1, background: "none", color: t.txt, fontSize: 14, border: "none" }} placeholder="Shu kategoriyada qidirish..." value={q} onChange={e => setQ(e.target.value)} />{q && <button type="button" aria-label="Qidiruvni tozalash" onClick={e => { setQ(""); e.currentTarget.parentElement.querySelector("input")?.focus(); }} style={s.clr}>×</button>}
           </div>
           {list.length === 0 ? (
             <Empty icon="warehouse" title="Hali mahsulot yo'q" desc={`${selectedCategory} kategoriyasida mahsulot qo'shing`} btnText="Mahsulot qo'shish" onBtn={() => { setSel({ defaultCategory: selectedCategory }); setModal("product"); }} />
@@ -2359,7 +2360,7 @@ function App() {
         </div>
         <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 11, padding: "10px 13px", marginBottom: 12, display: "flex", alignItems: "center", gap: 8 }}>
           <div style={{ color: t.sub }}><Ic n="search" s={16} /></div>
-          <input style={{ flex: 1, background: "none", color: t.txt, fontSize: 14, border: "none" }} placeholder="Kategoriya qidirish..." value={q} onChange={e => setQ(e.target.value)} />
+          <input style={{ flex: 1, background: "none", color: t.txt, fontSize: 14, border: "none" }} placeholder="Kategoriya qidirish..." value={q} onChange={e => setQ(e.target.value)} />{q && <button type="button" aria-label="Qidiruvni tozalash" onClick={e => { setQ(""); e.currentTarget.parentElement.querySelector("input")?.focus(); }} style={s.clr}>×</button>}
         </div>
         <div style={{ fontSize: 13, color: t.sub, fontWeight: 500, marginBottom: 8 }}>Kategoriyalar</div>
         {visibleCategories.map(({ cat, count, whCount }) => (
@@ -2396,7 +2397,7 @@ function App() {
         {stores.length > 0 && (
           <label style={{ display: "flex", alignItems: "center", gap: 6, height: 38, padding: "0 10px", borderRadius: 10, background: dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)", color: t.sub, marginBottom: 14 }}>
             <Ic n="search" s={16} />
-            <input style={{ flex: 1, minWidth: 0, background: "none", border: "none", color: t.txt, fontSize: 16 }} placeholder="Do'kon qidirish" value={q} onChange={e => setQ(e.target.value)} />
+            <input style={{ flex: 1, minWidth: 0, background: "none", border: "none", color: t.txt, fontSize: 16 }} placeholder="Do'kon qidirish" value={q} onChange={e => setQ(e.target.value)} />{q && <button type="button" aria-label="Qidiruvni tozalash" onClick={e => { setQ(""); e.currentTarget.parentElement.querySelector("input")?.focus(); }} style={s.clr}>×</button>}
           </label>
         )}
         {stores.length === 0 ? (

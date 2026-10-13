@@ -2,6 +2,9 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.19 — 2026-10-13 — hamma qidiruvda «×» (bir bosishda tozalash)
+- Do'kon qidirish (telefon sahifasi va kompyuter paneli), Kategoriya qidirish, Shu kategoriyada qidirish: yozuv bor paytda o'ngda kulrang «×»; bosilsa yozuv o'chadi, kursor qidiruvda qoladi.
+
 ## v1.18 — 2026-10-13 — kompyuterdagi do'kon qidiruvi ham nomi, manzili, menejeri va telefoni bo'yicha
 - Bosh sahifadagi «Do'konlar» panelida «Do'kon qidirish» endi telefondagidek qidiradi (avval faqat nom bo'yicha edi).
 
