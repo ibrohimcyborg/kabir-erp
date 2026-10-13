@@ -2,6 +2,9 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.18 — 2026-10-13 — kompyuterdagi do'kon qidiruvi ham nomi, manzili, menejeri va telefoni bo'yicha
+- Bosh sahifadagi «Do'konlar» panelida «Do'kon qidirish» endi telefondagidek qidiradi (avval faqat nom bo'yicha edi).
+
 ## v1.17 — 2026-10-13 — telefondagi Do'konlar sahifasiga qidiruv
 - Sarlavha ostida «Do'kon qidirish» qatori: nomi, manzili, menejeri va telefoni bo'yicha (raqamlar bo'shliqsiz ham topiladi); «Topildi: X / N ta», bo'sh natijada «Hech narsa topilmadi». Kompyuterdagi qidiruv o'zgarmagan (faqat nom).
 

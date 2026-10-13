@@ -1,4 +1,4 @@
-<!-- v1.17 -->
+<!-- v1.18 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -138,7 +138,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:blo
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.17";
+const APP_VER = "v1.18";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -2111,8 +2111,9 @@ function App() {
     const vitVal = storeRows.reduce((a, r) => a + r.vitVal, 0);
     const debtTotal = storeRows.reduce((a, r) => a + r.debt, 0);
     const debtStores = storeRows.filter(r => r.debt > 0).length;
+    const qs = q.trim().toLowerCase(), qd = qs.replace(/\D/g, "");
     const shown = storeRows
-      .filter(r => r.st.name.toLowerCase().includes(q.toLowerCase()))
+      .filter(({ st }) => !qs || [st.name, st.address, st.manager, st.phone].some(v => (v || "").toLowerCase().includes(qs)) || (qd && (st.phone || "").replace(/\D/g, "").includes(qd)))
       .sort((a, b) => (b.last?.[0] || "").localeCompare(a.last?.[0] || ""));
     const AV = [F.indigo, F.teal, F.orange, F.red, F.green, F.blue];
 

@@ -3,7 +3,15 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.17 — PRODDA** (2026-10-13)
+**Oxirgi yangilanish:** 2026-10-13 · versiya: **v1.18** (commit, push kutilmoqda) · prodda v1.17
+
+## ⏳ v1.18 — KOMPYUTERDAGI DO'KON QIDIRUVI HAM B (2026-10-13) — PUSH KUTILMOQDA
+
+Ibrohim: «kompda ham shunaqa qil» (push haqida aytmagan).
+Qilingan:  `DokonlarPane` (index.html:2095) `shown` filtri: name/address/manager/phone + telefon raqamlari — StoresPage bilan bir xil.
+           Paneldagi «N ta do'kon», tartib, «Topilmadi» matni o'zgarmagan.
+Sinov:     JSX OK; soxta baza PC 1440: sergeli/AKMAL/901112233/33 44/diler c/xyz/bo'sh — to'g'ri; telefon qidiruvi o'zgarmagan.
+Keyingi qadam: Ibrohim «push qil» desa → branch + main.
 
 ## ✅ v1.17 — DO'KONLAR SAHIFASIGA QIDIRUV (2026-10-13) — PRODDA
 
@@ -14,7 +22,6 @@ Qilingan:  `StoresPage` (index.html:2381): `useState("")` early return'dan OLDIN
            qidiruv qatori (PC `DokonlarPane` uslubida, 38px, fontSize 16) faqat do'kon bor bo'lsa; bo'sh natija matni.
 Sinov:     JSX OK; soxta baza (superadmin, moder): sergeli/AKMAL/901112233/33 44/qarshi/xyz/bo'sh — to'g'ri;
            profilga kirib qaytganda qidiruv saqlanadi, boshqa bo'limdan qaytganda tozalanadi; do'konsiz — eski bo'sh holat.
-Javobsiz savol: kompyuterdagi `DokonlarPane` qidiruvi ham B ga o'tsinmi? (hozir faqat nom bo'yicha, tegilmagan)
 
 ## ✅ v1.16 — OYNA OCHIQ PAYTDA FON QIMIRLAMAYDI (2026-10-13) — PRODDA
 
