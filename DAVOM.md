@@ -92,6 +92,9 @@ Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vit
            Reja: repoga YANGI fayl `apple-touch-icon.png` (180×180) + 14-qator havolasi shu faylga — yangi fayl =
            Ibrohim ruxsati kerak (CLAUDE.md §11). Belgilar manbasi: HTML+Inter → Playwright (scratchpad/icon/).
            Javobsiz savol: A/B/C? fayl qo'shishga ruxsat? Kod YOZILMAGAN.
+           + versiya 2: Ibrohim «qoraga tilla qil» → A/B/C o'rniga: D qora fon (radial #1C1B19→#050505) + tilla «K»
+           (gradient #FBE9B7→#E8C26A→#C9972F→#F3D88E→#B9862A, Inter 700); E shu ranglarda «Kabir» / «ERP».
+           Javobsiz savol endi: D yoki E? fayl qo'shishga ruxsat?
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
