@@ -5,6 +5,18 @@
 
 **Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.13 — PRODDA** (2026-10-13)
 
+## ⏳ YARIM QOLDI — TEPADA XIRALASHIB YO'QOLISH (2026-10-13) — ENG OXIRGI ISH
+
+Ibrohim (iPhone Sozlamalari rasmi bilan): «tepaga chiqarganda xiralashib yo'q bo'lib ketyapti, Kabir ERP'ni ham shunaqa qiling».
+Branch:    claude/pc-versiya — kod YOZILMAGAN, prodda v1.13.
+Maket:     https://claude.ai/artifact/SS11Za8sdqdbgfvphtSgfh (ikki jonli telefon: hozirgi keskin kesilish / taklif).
+Tashxis:   `#main-scroll` (index.html:3209) sarlavhaning PASTIDAN boshlanadi (height calc(100vh - 60px)) → tepada keskin kesiladi.
+Taklif:    faqat telefonda (@media max-width:480px): `#main-scroll` height 100vh, margin-top -60px, padding-top 76px,
+           mask-image linear-gradient(transparent 22px → #000 72px); sarlavhaga backdrop-filter blur(8px) qatlam (mask bilan
+           pastga so'nadi). Planshet/PC o'zgarmaydi (.pc-side sticky top:0 yashirinib qolardi). ~7 qator CSS + 1 qator JSX.
+Keyingi qadam: Ibrohim «shunaqa qil»/«push qil» desa → TAXMIN BLOKI → kod → v1.14 → push main.
+Javobsiz savol: maket ma'qulmi? Xiralashish kuchi yetarlimi?
+
 ## ⏳ YARIM QOLDI — MA'LUMOT KO'PAYSA / XOTIRA TELEFONDA (2026-10-13) — ENG OXIRGI ISH
 
 Ibrohim: «buni cloud ushlashi qanaqa qilingan, blob bo'lganmi?» (men buni avval menyu haqida deb noto'g'ri tushundim),
