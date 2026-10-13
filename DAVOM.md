@@ -133,6 +133,11 @@ Keyingi qadam: Ibrohim saytda tekshiradi; telefonda eski belgini o'chirib, Safar
            Telefon menyusi: tugmalar flex:1, `[data-pill]` absolute; chap menyu: `[data-pill]` top = 8+i*56.
            Sinov: bosish/surib tanlash/sahifa surish (CDP touch)/vertikal/chet — to'g'ri; regressiya xato 0.
 Ochiq: ko'rsatkichlar A/B/C/D (https://claude.ai/artifact/LW3cHx3BtH223DVfp6TpLY) javobsiz.
+⏳ YUKLANISH EKRANI (2026-10-13): Ibrohim «load qilayotganda ekranda eski dizayn ko'rinishi qolib ketgan».
+           Sabab: `App` `if (loading)` bloki THEMES.dark + «M · Mebel ERP» (eski); undan oldin statik
+           `body{background:#080810}` (index.html:28) va `<meta name="theme-color" content="#080810">` (9-qator).
+           Maket: https://claude.ai/artifact/EPc4hMpH4damovWwHqAxmt — A oq fon + ko'k «K»; B oq fon + qora-tilla
+           «K» belgi (tavsiya); C qora fon + tilla «K». Javobsiz savol: A/B/C? Kod YOZILMAGAN.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
