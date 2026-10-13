@@ -1,4 +1,4 @@
-<!-- v1.16 -->
+<!-- v1.17 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -138,7 +138,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:blo
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.16";
+const APP_VER = "v1.17";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -2379,20 +2379,31 @@ function App() {
   // PAGE: STORES
   // ═══════════════════════════════════════════════════════════
   const StoresPage = () => {
+    const [q, setQ] = useState("");
     if (storeProfileId) return <Screen key={storeProfileId} render={StoreProfile} />;
+    const qs = q.trim().toLowerCase(), qd = qs.replace(/\D/g, "");
+    const shown = stores.filter(st => !qs || [st.name, st.address, st.manager, st.phone].some(v => (v || "").toLowerCase().includes(qs)) || (qd && (st.phone || "").replace(/\D/g, "").includes(qd)));
     return (
       <div className="fade">
         <div style={{ ...s.row, marginBottom: 14 }}>
           <div>
             <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: "-0.01em" }}>Do'konlar</div>
-            <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>Jami: {stores.length} ta</div>
+            <div style={{ fontSize: 12, color: t.sub, marginTop: 2 }}>{qs ? `Topildi: ${shown.length} / ${stores.length} ta` : `Jami: ${stores.length} ta`}</div>
           </div>
           {canSee("price") && <button onClick={() => setModal("addstore")} style={{ background: t.acc, color: t.accTxt, borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
         </div>
+        {stores.length > 0 && (
+          <label style={{ display: "flex", alignItems: "center", gap: 6, height: 38, padding: "0 10px", borderRadius: 10, background: dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)", color: t.sub, marginBottom: 14 }}>
+            <Ic n="search" s={16} />
+            <input style={{ flex: 1, minWidth: 0, background: "none", border: "none", color: t.txt, fontSize: 16 }} placeholder="Do'kon qidirish" value={q} onChange={e => setQ(e.target.value)} />
+          </label>
+        )}
         {stores.length === 0 ? (
           <Empty icon="store" title="Do'kon yo'q" desc="Birinchi do'koningizni qo'shing" btnText="Do'kon qo'shish" onBtn={() => setModal("addstore")} />
+        ) : shown.length === 0 ? (
+          <div style={{ textAlign: "center", color: t.sub, fontSize: 14, padding: "30px 10px" }}>Hech narsa topilmadi</div>
         ) : (
-          stores.map(store => {
+          shown.map(store => {
             const sUnits = units.filter(u => u.location === store.id && u.status === "available");
             const sSales = sales.filter(s => s.storeId === store.id);
             const sDebt = sUnits.reduce((sum, u) => sum + (products.find(p => p.id === u.productId)?.price || 0), 0);
