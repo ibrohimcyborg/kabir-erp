@@ -2,6 +2,9 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.22 — 2026-10-13 — Hisobot tugmalari dumaloq
+Do'kon hisobotidagi «Hammasi | Bu oy» va tur filtri iOS kabi to'liq dumaloq; davr tugmasida ham oq belgi suriladi.
+
 ## v1.21 — 2026-10-13 — Do'kon hisoboti
 Do'kon profilida 5-bo'lim «Hisobot»: jo'natildi / sotildi / qaytdi / pul olindi tarixi hozirgi bazadan (faqat o'qiydi),
 «Hammasi | Bu oy», tur bo'yicha filtr, kunlar bo'yicha yig'ilgan. Bo'lim tugmalari yonga suriladi va dumaloq.

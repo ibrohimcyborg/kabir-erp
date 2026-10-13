@@ -3,7 +3,14 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · **main = v1.21 commiti — PUSH QILINDI (prod)**: v1.20 soya rejimi + v1.21 do'kon hisoboti birga. Keyingi: Ibrohim (superadmin) ilovani ochadi → daftar birinchi nusxasi avtomatik; hamma telefonlar ilovani yopib qayta ochsin · «Sonlarni 0 qilish» maketi javob kutmoqda (Sxp3CPzHU84XwYwGW2FU7m) · hisobot tahriri (5–10) keyin
+**Oxirgi yangilanish:** 2026-10-13 · **main = v1.22 commiti — PUSH QILINDI (prod)** (v1.20 soya + v1.21 do'kon hisoboti + v1.22 hisobot tugmalari dumaloq). Keyingi: Ibrohim (superadmin) ilovani ochadi → daftar birinchi nusxasi avtomatik; hamma telefonlar ilovani yopib qayta ochsin · «Sonlarni 0 qilish» maketi javob kutmoqda (Sxp3CPzHU84XwYwGW2FU7m) · hisobot tahriri (5–10) keyin
+
+## ✅ v1.22 — HISOBOT TUGMALARI iOS/TELEGRAM KABI DUMALOQ (2026-10-13) — PUSH QILINDI (prod)
+
+Ibrohim (skrinshot, ikkala qator belgilangan): «shularniyam qilsa bo'ladimi, iOS Telegram'dagidek» → vizual, «ha».
+Qilingan:  `StoreProfile` → `hisobot()`: «Hammasi | Bu oy» — dumaloq (999) + suriladigan oq belgi (tur filtridagi prujina);
+           tur filtri (Hammasi | Jo'natish | Sotuv | Qaytish | Pul) — chiziq va oq belgi 9/7 → 999. Mantiq tegilmadi.
+Sinov:     JSX OK; brauzer 3/3 (moder, superadmin, 320px).
 
 ## ✅ v1.21 — DO'KON HISOBOTI (ko'rish qismi) (2026-10-13) — PUSH QILINDI (prod)
 

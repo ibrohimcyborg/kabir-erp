@@ -1,4 +1,4 @@
-<!-- v1.21 -->
+<!-- v1.22 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -142,7 +142,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:blo
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.21";
+const APP_VER = "v1.22";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -2737,11 +2737,12 @@ function App() {
       const idlar = a => a.map((x, i) => (i && String(x).indexOf("#") >= 0 ? String(x).slice(String(x).indexOf("#")) : x)).join(", ");
       const kun = d => d.slice(8, 10) + "/" + d.slice(5, 7) + "/" + d.slice(0, 4);
       const nomi = pid => products.find(p => p.id === pid)?.name || "—";
-      const segBtn = on => ({ flex: 1, padding: "6px", borderRadius: 7, fontSize: 13, fontWeight: on ? 600 : 500, color: t.txt, background: on ? (dark ? "#636366" : "#fff") : "transparent", boxShadow: on ? "0 1px 3px rgba(0,0,0,0.1)" : "none" });
+      const segBtn = on => ({ position: "relative", zIndex: 1, padding: "6px", borderRadius: 999, fontSize: 13, fontWeight: on ? 600 : 500, color: t.txt });
       const kesik = { whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
       return (
         <div>
-          <div style={{ display: "flex", gap: 2, background: fill, padding: 2, borderRadius: 9, marginBottom: 10 }}>
+          <div style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", background: fill, padding: 2, borderRadius: 999, marginBottom: 10 }}>
+            <span style={{ position: "absolute", top: 2, bottom: 2, left: 2, width: "calc((100% - 4px) / 2)", borderRadius: 999, background: dark ? "#636366" : "#fff", boxShadow: "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)", transform: `translateX(${hDavr === "all" ? 0 : 100}%)`, transition: "transform .38s cubic-bezier(.3,1.35,.5,1)" }} />
             <button onClick={() => setHDavr("all")} style={segBtn(hDavr === "all")}>Hammasi</button>
             <button onClick={() => setHDavr("month")} style={segBtn(hDavr === "month")}>Bu oy</button>
           </div>
@@ -2760,8 +2761,8 @@ function App() {
               ))}
             </div>
           </div>
-          <div style={{ position: "relative", display: "grid", gridTemplateColumns: "repeat(5, minmax(0, 1fr))", background: fill, padding: 2, borderRadius: 9, marginBottom: 10 }}>
-            <span style={{ position: "absolute", top: 2, bottom: 2, left: 2, width: "calc((100% - 4px) / 5)", borderRadius: 7, background: dark ? "#636366" : "#fff", boxShadow: "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)", transform: `translateX(${fi * 100}%)`, transition: "transform .38s cubic-bezier(.3,1.35,.5,1)" }} />
+          <div style={{ position: "relative", display: "grid", gridTemplateColumns: "repeat(5, minmax(0, 1fr))", background: fill, padding: 2, borderRadius: 999, marginBottom: 10 }}>
+            <span style={{ position: "absolute", top: 2, bottom: 2, left: 2, width: "calc((100% - 4px) / 5)", borderRadius: 999, background: dark ? "#636366" : "#fff", boxShadow: "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)", transform: `translateX(${fi * 100}%)`, transition: "transform .38s cubic-bezier(.3,1.35,.5,1)" }} />
             {FL.map(([k, l]) => (
               <button key={k} onClick={() => setHTur(k)} style={{ position: "relative", zIndex: 1, minWidth: 0, padding: "7px 0", fontSize: 12, fontWeight: hTur === k ? 600 : 500, color: t.txt, ...kesik }}>{l}</button>
             ))}
