@@ -105,6 +105,11 @@ Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vit
            Sinov: JSX OK; soxta baza: PC/planshet/telefon, oq/qora, superadmin/moder/ombor, hamma sahifa, login,
            sukut rejim = oq, belgi 180×180 yuklanadi — xato 0.
 Keyingi qadam: Ibrohim saytda tekshiradi; telefonda eski belgini o'chirib, Safari'dan qayta «Bosh ekranga qo'shish».
+⏳ KO'RSATKICHLAR 4 BO'LAK (2026-10-13): Ibrohim «yoqmagani — 4 bo'lak bo'lib qolgan ko'rsatkichlari, nima qilsak bo'ladi?»
+           [MEN tushunishim] PC `PcOmborPane` tepasidagi 4 ta `kpi` kartochka (Keldi/Do'konga ketdi/Sotildi/Omborda).
+           Maket: https://claude.ai/artifact/LW3cHx3BtH223DVfp6TpLY — haqiqiy ilova: A bitta `box` ichida 4 ustun,
+           ingichka `hair` chiziq (tavsiya); B 2×2, raqam 38px; C bitta `box` ichida 4 qator ro'yxat.
+           Javobsiz savol: A/B/C? «Do'konlar» ustidagi 3 kartochka (`DokonlarPane`) ham shu usulda bo'lsinmi? Kod YOZILMAGAN.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
