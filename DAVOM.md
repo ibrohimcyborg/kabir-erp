@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = c539c0b (v1.19 prodda) · **v1.20 SOYA REJIMI — commit qilingan, PUSH QILINMAGAN** (branch `claude/pc-versiya`) · keyingi: Ibrohim «push qil» → prodda superadmin ochadi → birinchi nusxa avtomatik · navbatda: «Sozlamalar → ombor/do'kon sonini 0 qilish» (maket kerak), do'kon hisoboti (1–10 qarorlar)
+**Oxirgi yangilanish:** 2026-10-13 · main = c539c0b (v1.19 prodda) · **v1.20 SOYA REJIMI — commit qilingan, PUSH QILINMAGAN** (branch `claude/pc-versiya`) · keyingi: Ibrohim «push qil» → prodda superadmin ochadi → birinchi nusxa avtomatik · «Sonlarni 0 qilish» maketi javob kutmoqda (Sxp3CPzHU84XwYwGW2FU7m), do'kon hisoboti (1–10 qarorlar)
 
 ## ⏳ DO'KON HISOBOTI — MAKET TAYYOR, DAFTAR'DAN KEYIN (2026-10-13)
 
@@ -532,8 +532,16 @@ Javobsiz savol: PDF ham tuzatilsinmi?
 
 ## ⬜ Navbatda (Ibrohim tanlaydi)
 
-- ⏳ YANGI SO'ROV (2026-10-13, Ibrohim): «sozlamalarga ombordagi narsalar sonini, keyin do'kondagi narsalar sonini 0
-  qiladigan qil — biz to'ldiramiz». KOD YO'Q — avval MAKET (LOGIKA: unitlarni o'chiradi). Maketda ko'rsatiladigan
+- ⏳ SONLARNI 0 QILISH — MAKET, JAVOB KUTILMOQDA (2026-10-13): https://claude.ai/artifact/Sxp3CPzHU84XwYwGW2FU7m
+  Ibrohim: «sozlamalarga ombordagi narsalar sonini, keyin do'kondagi narsalar sonini 0 qiladigan qil — biz to'ldiramiz»
+  → «menga 0 qilishni mockupda ko'rsat». KOD YO'Q. Maketda: sozlamalar menyusida «Sonlarni 0 qilish» (superadmin) →
+  oyna (Ombor / har do'kon, sonlari, belgilash) → tasdiq (vitrina qarzi qancha kamayishi) → natija. Raqam misoli A/B.
+  Qarorlar (tavsiya): 1) A hisobdan chiqarish — units.status uchinchi qiymat (masalan `nol`), dona bazada qoladi, raqam
+  davom etadi (B — o'chirish: generateUnitId soni bo'yicha → sotilgan/eski yorliq bilan takror); 2) oynada tanlanadi;
+  3) faqat superadmin; 4) qayta kiritilganlarga yangi yorliq; 5) oylik «Kelgan» shunday qolsin; 6) qaytarish tugmasi hozir
+  yo'q. Tegiladigan joylar: sozlamalar menyusi, ombor donalar ro'yxati (~2525 «0 qilingan»), yozuv units+activity.
+  Taxminiy versiya v1.21. Keyingi qadam: Ibrohim «shunaqa qil»/1–6 → TAXMIN BLOKI → kod.
+  Eski eslatma: KOD YO'Q — avval MAKET (LOGIKA: unitlarni o'chiradi). Maketda ko'rsatiladigan
   muammolar: unit ID soni bo'yicha (`AddStockModal`, existingCount) — o'chirilgach yangi yorliqlar eski chop etilgan
   ID'larni takrorlaydi (§10 ochiq muammo 4); sotilgan unitlar QOLISHI shart (sales.unit_ids); soya rejimida o'chirish
   daftarga ham ketadi; kim qila oladi (faqat superadmin?); qaysi do'kon / hammasi; tasdiq oynasi.
