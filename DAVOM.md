@@ -3,9 +3,12 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = 897304e · versiya: **v1.19 — PRODDA**
+**Oxirgi yangilanish:** 2026-10-13 · main = 897304e · versiya: **v1.19 — PRODDA** · **KEYINGI ISH: DAFTAR 1-bosqich (yangi seans)**
 
-## ⏳ DO'KON HISOBOTI — MAKET, JAVOB KUTILMOQDA (2026-10-13)
+## ⏳ DO'KON HISOBOTI — MAKET TAYYOR, DAFTAR'DAN KEYIN (2026-10-13)
+
+TARTIB (Ibrohim, 2026-10-13): «Bo'ldi, daftarga o'tqiz, keyin hisobotni to'g'rilaymiz» → AVVAL DAFTAR (pastdagi bo'lim),
+           do'kon hisoboti va tahrirlash — DAFTAR'dan keyin. Qarorlar 1–10 hali javobsiz.
 
 Ibrohim: «Vitrina, Sotuv, To'lov joyiga Hisobot qo'sh — shu do'kon hisoboti: qachon nima borgani, vozvrat, olingan pul hammasi».
 Maket:     https://claude.ai/artifact/KSPHJnCkhkkYvkTaiwksso (hozirgi vs taklif, A/C tugmasi, tashxis, 4 qaror). KOD YOZILMAGAN.
