@@ -3,7 +3,21 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · **main = v1.22 commiti — PUSH QILINDI (prod)** (v1.20 soya + v1.21 do'kon hisoboti + v1.22 hisobot tugmalari dumaloq). Keyingi: Ibrohim (superadmin) ilovani ochadi → daftar birinchi nusxasi avtomatik; hamma telefonlar ilovani yopib qayta ochsin · «Sonlarni 0 qilish» maketi javob kutmoqda (Sxp3CPzHU84XwYwGW2FU7m) · hisobot tahriri (5–10) keyin
+**Oxirgi yangilanish:** 2026-10-13 · **main = v1.23 commiti — PUSH QILINDI (prod)** (v1.23 — telefonda surish/scroll tuzatish; Ibrohim iPhone'da tekshiradi). Navbatda: «Sonlarni 0 qilish» — TAXMIN BLOKI chiqarilgan, Ibrohimning «ha»sini kutmoqda (maket Sxp3CPzHU84XwYwGW2FU7m, versiya v1.24) · hisobot tahriri (5–10) keyin · v1.20 soya: superadmin ochadi → birinchi nusxa
+
+## ✅ v1.23 — TELEFONDA SURISH VA SCROLL (2026-10-13) — PUSH QILINDI (prod), Ibrohim tekshiradi
+
+Ibrohim (2 skrinshot, iPhone ilova rejimi): «swipe qilsam scroll pastga tushib, ekran o'ynab ketyapti; scroll tepaga
+           taqalsa tepaning ochilishi nega kerak» → taxmin bloki → «scroll + swipe qilsam shunaqa bo'lyapti, push qil tekshiraman».
+Tashxis:   ro'yxat `#main-scroll` ichida; tepaga yetganda iOS harakatni butun hujjatga uzatadi → sarlavha bilan butun ekran
+           cho'ziladi. React touchmove passiv — `swMove` tik scroll'ni to'xtata olmaydi (qiyshiq barmoq = ikkala yo'nalish).
+Qilingan:  CSS @media(max-width:480px) (~110–112): `html:has(#main-scroll), … body {overflow:hidden; overscroll-behavior:none}`,
+           `#main-scroll {overscroll-behavior-y:contain; touch-action:pan-y}`; `goTab` (~3369) + `scrollTo(0,0)` — surish va
+           menyu bilan o'tilgan sahifa tepadan ochiladi. Login/QR sahifa, PC/planshet — tegilmadi.
+Sinov:     JSX OK; Chromium telefon rejimi (CDP barmoq hodisalari) 6/6: CSS qo'llangan, tik scroll ishlaydi, qiyshiq surish
+           bo'lim almashtiradi va scroll qimirlamaydi, `.tg-tabs` barmoq bilan suriladi, PC o'zgarmagan.
+           ⚠ Chromium iOS cho'zilishini takrorlamaydi (v1.22 da ham surish sinovlari o'tdi) — natija faqat iPhone'da ko'rinadi.
+Javobsiz:  Ibrohim iPhone'da tekshiradi — «o'zgarmadi» desa: avval prodda v1.23 ekanini so'ra (ilovani yopib ochish).
 
 ## 📌 QOIDA — DIZAYN USLUBI iOS + TELEGRAM (2026-10-13)
 

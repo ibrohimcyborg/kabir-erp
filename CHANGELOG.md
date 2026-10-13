@@ -2,6 +2,10 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.23 — 2026-10-13 — Telefonda surish va scroll
+Ro'yxat tepaga/pastga yetganda butun ekran cho'zilmaydi; sahifani yonga surganda tik scroll bo'lmaydi; boshqa bo'limga
+o'tilganda sahifa tepadan ochiladi (faqat telefon).
+
 ## v1.22 — 2026-10-13 — Hisobot tugmalari dumaloq
 Do'kon hisobotidagi «Hammasi | Bu oy» va tur filtri iOS kabi to'liq dumaloq; davr tugmasida ham oq belgi suriladi.
 
