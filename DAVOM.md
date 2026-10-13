@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-10 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.08 — PRODDA** (2026-10-10)
+**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.09 — PRODDA** (2026-10-13)
 
 ## ⏳ YARIM QOLDI — YANGI DIZAYN KODGA TUSHMOQDA (2026-10-10) — HOZIRGI ASOSIY ISH
 
@@ -95,6 +95,16 @@ Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vit
            + versiya 2: Ibrohim «qoraga tilla qil» → A/B/C o'rniga: D qora fon (radial #1C1B19→#050505) + tilla «K»
            (gradient #FBE9B7→#E8C26A→#C9972F→#F3D88E→#B9862A, Inter 700); E shu ranglarda «Kabir» / «ERP».
            Javobsiz savol endi: D yoki E? fayl qo'shishga ruxsat?
+✅ v1.09 PRODDA (2026-10-13): Ibrohim «D» + «birato'la dizayni bilan push qil tekshiraman». Kodga tushdi:
+           THEMES.light yangi ranglar (yuqoridagi «FAQAT RANGLAR» qiymatlari) + rail/railIn tokenlar ikkala temada;
+           `App` dark useState: saved===null → false (sukut OQ) [MEN qarori, Ibrohimga aytildi];
+           `.sidebar` → chap dumaloq menyu (PC + planshet, `nav.pc-only` yashirin, `.main-content` margin 96px);
+           `WarehousePage` kategoriya tugmasi va `StoresPage` do'kon kartochkasiga `color: t.txt`;
+           `index.html:14` apple-touch-icon → PNG data-URI 180×180 (D, 128 rang, ~8.5 KB) — yangi fayl QO'SHILMADI.
+           Agar iPhone data-URI belgini olmasa → alohida `apple-touch-icon.png` fayl (Ibrohim ruxsati bilan).
+           Sinov: JSX OK; soxta baza: PC/planshet/telefon, oq/qora, superadmin/moder/ombor, hamma sahifa, login,
+           sukut rejim = oq, belgi 180×180 yuklanadi — xato 0.
+Keyingi qadam: Ibrohim saytda tekshiradi; telefonda eski belgini o'chirib, Safari'dan qayta «Bosh ekranga qo'shish».
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 

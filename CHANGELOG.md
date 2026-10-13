@@ -2,6 +2,11 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.09 — 2026-10-13 — oq-ko'k ranglar, chap dumaloq menyu, iPhone belgisi
+- Oq rejim yangi ranglarda (Ibrohim yuborgan dashboard rasmidan): fon #F2F4F5, oq kartochka, ko'k #2F63F6, matn #20252E. Sayt sukut bo'yicha oq ochiladi; oy/quyosh tugmasi qoldi.
+- Kompyuter va planshetda menyu chapda — dumaloq tik panel (iOS uslubi), tanlangani oq doirada; PC tepasidagi menyu tugmalari olib tashlandi.
+- iPhone bosh ekrani belgisi: qora fonda tilla «K» (PNG). Qora rejimda ko'rinmay qolgan kategoriya va do'kon nomlari tuzatildi.
+
 ## v1.08 — 2026-10-10 — yangi qora dizayn: umumiy uslub (Behance «Vaulta» uslubi)
 - Qora rejim ranglari: fon #020202 + tepada olxo'ri–shaftoli nur, kartochka #111, urg'u oq (matni qora), oltin #EEC77A, pushti #E8A189. Shrift Inter Tight, katta raqamlar ingichka.
 - Sarlavha shaffof, tugmalar shisha kvadratchalar; kompyuter menyusi chiplar (tanlangani oq); telefon pastki menyusi suzuvchi, faqat ikonkalar.
