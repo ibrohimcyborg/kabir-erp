@@ -1,4 +1,4 @@
-<!-- v1.12 -->
+<!-- v1.13 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -130,7 +130,7 @@ input[type=number]{-moz-appearance:textfield}
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.12";
+const APP_VER = "v1.13";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -3024,31 +3024,38 @@ To'lov uchun:
   // Menyudagi oq doira joyi (CSS transition bilan silliq suriladi)
   const pillX = (i) => `calc(8px + ${i} * ((100% - 16px) / ${navItems.length}))`;
   const pillY = (i) => `${8 + i * 56}px`;
+  const pillTr = (p) => `${p} .38s cubic-bezier(.3,1.35,.5,1), transform .22s cubic-bezier(.3,1.35,.5,1)`;
+  const navTint = (el, axis, i) => [...el.querySelectorAll("button")].forEach((b, k) => { b.style.color = k === i ? t.txt : axis === "x" || dark ? t.sub : "#4B505B"; });
   const navHit = (el, axis, e) => {
     const r = el.getBoundingClientRect(), n = navItems.length;
     const i = axis === "x" ? Math.floor((e.clientX - r.left - 8) / ((r.width - 16) / n)) : Math.floor((e.clientY - r.top - 2) / 56);
     return Math.max(0, Math.min(n - 1, i));
   };
-  // Menyu ustida barmoq bilan surib tanlash: doira barmoq ortidan yuradi, qo'yganda o'sha bo'lim ochiladi
+  // Menyu ustida barmoq bilan surib tanlash: doira barmoqqa yopishib yuradi, qo'yganda eng yaqin bo'limga o'tiradi
   const navDrag = (axis) => {
+    const P = axis === "x" ? "left" : "top";
     const end = (e, go) => {
       const el = e.currentTarget, moved = el.dataset.moved === "1";
       el.dataset.drag = "0"; el.dataset.moved = "0";
       if (!moved) return;
-      const i = navHit(el, axis, e), pill = el.querySelector("[data-pill]");
-      if (pill) pill.style[axis === "x" ? "left" : "top"] = (axis === "x" ? pillX : pillY)(go ? i : navIdx);
+      const i = go ? navHit(el, axis, e) : navIdx, pill = el.querySelector("[data-pill]");
+      if (pill) { pill.style.transition = pillTr(P); pill.style.transform = ""; pill.style[P] = (axis === "x" ? pillX : pillY)(i); }
+      navTint(el, axis, i);
       if (go && navItems[i]) goTab(navItems[i].id);
     };
     return {
       onPointerDown: e => { const el = e.currentTarget; el.dataset.drag = "1"; el.dataset.moved = "0"; el.dataset.p0 = axis === "x" ? e.clientX : e.clientY; },
       onPointerMove: e => {
         const el = e.currentTarget; if (el.dataset.drag !== "1") return;
-        if (el.dataset.moved !== "1") {
-          if (Math.abs((axis === "x" ? e.clientX : e.clientY) - el.dataset.p0) < 8) return;
-          el.dataset.moved = "1"; try { el.setPointerCapture(e.pointerId); } catch {}
-        }
         const pill = el.querySelector("[data-pill]");
-        if (pill) pill.style[axis === "x" ? "left" : "top"] = (axis === "x" ? pillX : pillY)(navHit(el, axis, e));
+        if (el.dataset.moved !== "1") {
+          if (Math.abs((axis === "x" ? e.clientX : e.clientY) - el.dataset.p0) < 4) return;
+          el.dataset.moved = "1"; try { el.setPointerCapture(e.pointerId); } catch {}
+          if (pill) { pill.style.transition = `${P} .07s linear, transform .22s cubic-bezier(.3,1.35,.5,1)`; pill.style.transform = "scale(1.14)"; }
+        }
+        const r = el.getBoundingClientRect(), w = (el.clientWidth - 16) / navItems.length;
+        if (pill) pill.style[P] = (axis === "x" ? Math.max(8, Math.min(el.clientWidth - 8 - w, e.clientX - r.left - el.clientLeft - w / 2)) : Math.max(8, Math.min(8 + (navItems.length - 1) * 56, e.clientY - r.top - 22))) + "px";
+        navTint(el, axis, navHit(el, axis, e));
       },
       onPointerUp: e => end(e, true),
       onPointerCancel: e => end(e, false),
@@ -3071,13 +3078,17 @@ To'lov uchun:
     const dx = e.touches[0].clientX - SW.x, dy = e.touches[0].clientY - SW.y;
     if (!SW.lock) { if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return; SW.lock = Math.abs(dx) > Math.abs(dy) * 1.3 ? "x" : "y"; }
     if (SW.lock !== "x") return;
-    const edge = (dx > 0 && navIdx === 0) || (dx < 0 && navIdx === navItems.length - 1);
-    SW.dx = dx; SW.el.style.transition = "none"; SW.el.style.transform = `translateX(${edge ? dx * 0.25 : dx}px)`;
+    const edge = (dx > 0 && navIdx === 0) || (dx < 0 && navIdx === navItems.length - 1), d = edge ? dx * 0.25 : dx;
+    SW.dx = dx; SW.el.style.transition = "none"; SW.el.style.transform = `translateX(${d}px)`;
+    // pastki menyudagi doira ham barmoq bilan birga yuradi (yarim ekran = bitta bo'lim)
+    const pill = document.querySelector(".mobile-nav [data-pill]");
+    if (pill) { pill.style.transition = "none"; pill.style.left = (8 + Math.max(0, Math.min(navItems.length - 1, navIdx + Math.max(-1, Math.min(1, -d / (window.innerWidth * 0.5))))) * (pill.parentElement.clientWidth - 16) / navItems.length) + "px"; }
   };
   const swEnd = () => {
     if (!SW.on || !SW.el || SW.lock !== "x") { SW.on = false; return; }
-    const el = SW.el, dir = SW.dx < -70 ? 1 : SW.dx > 70 ? -1 : 0, ni = navIdx + dir;
+    const el = SW.el, dir = SW.dx < -70 ? 1 : SW.dx > 70 ? -1 : 0, ni = navIdx + dir, pill = document.querySelector(".mobile-nav [data-pill]");
     SW.on = false;
+    if (pill) { pill.style.transition = pillTr("left"); pill.style.left = pillX(navItems[ni] ? ni : navIdx); }
     if (!dir || !navItems[ni]) { el.style.transition = "transform .22s ease-out"; el.style.transform = "translateX(0)"; return; }
     el.style.transition = "transform .16s ease-in"; el.style.transform = `translateX(${dir > 0 ? -100 : 100}%)`;
     setTimeout(() => {

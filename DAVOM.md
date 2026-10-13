@@ -3,24 +3,20 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.12 — PRODDA** (2026-10-13)
+**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.13 — PRODDA** (2026-10-13)
 
-## ⏳ YARIM QOLDI — MENYU TELEGRAM KABI O'TSIN (2026-10-13) — ENG OXIRGI ISH
+## ✅ v1.13 — MENYU TELEGRAM KABI O'TADI (2026-10-13) — PRODDA
 
-Ibrohim (Telegram papkalar menyusi rasmi bilan): «o'tishini shunaqa o'tadigan qiling, bu yerda bosiladigan
-bo'lib qolibdi»; keyin: «buni swipe'da shunaqa qiling, sizniki bosadigan bo'lib qolgan».
-Branch:    claude/pc-versiya — kod YOZILMAGAN, prodda v1.12.
-Tashxis:   `navDrag` (index.html:3051) surganda doirani faqat tugma joylariga qo'yadi → tugmadan tugmaga
-           sakraydi (har biri .38s), 8px'dan keyin boshlanadi, ushlaganda kattalashmaydi. `swMove`/`swEnd`
-           (~3069–3090) sahifa surilganda doirani qimirlatmaydi. v1.10 maketida doira barmoqqa yopishgan edi —
-           kodga ko'chirishda farq qilib qolgan.
-Maket:     https://claude.ai/artifact/6p38wQ19a5sHuRyTe3AciV (ikki jonli telefon: hozirgi / taklif).
-Taklif:    1) menyuni ushlab surganda doira barmoqqa yopishadi (4px'dan), 1.14 marta kattalashadi, qo'yganda
-              eng yaqin bo'limga prujinali o'tiradi; chap menyu (PC/planshet) ham shunday — umumiy `navDrag`;
-           2) sahifani surganda pastdagi doira ham yuradi (yarim ekran = 1 bo'lim). Shakl/rang o'zgarmaydi.
-           Taxminiy diff ~20 qator (`navDrag`, `swMove`, `swEnd`).
-Keyingi qadam: Ibrohim 1 va 2 ga «ha» desa → TAXMIN BLOKI → kod → v1.13 → «push qil» bo'lsa main.
-Javobsiz savol: 1 — ha/yo'q? 2 — ha/yo'q?
+Ibrohim (Telegram papkalar menyusi rasmi bilan): «o'tishini shunaqa qiling, bu yerda bosiladigan bo'lib qolibdi».
+Maket: https://claude.ai/artifact/6p38wQ19a5sHuRyTe3AciV → Ibrohim: «ikkalasini ham push qil».
+Qilingan:  1) `navDrag` (chap va pastki menyu): doira 4px'dan keyin barmoqqa yopishadi (px bilan, .07s),
+              `scale(1.14)`, barmoq ostidagi ikonka rangi jonli (`navTint`), qo'yganda `pillTr` prujina bilan
+              eng yaqin bo'limga; 2) `swMove`: sahifa surilganda pastki doira ham yuradi (yarim ekran = 1 bo'lim,
+              bittadan oshmaydi, menyu ichida qoladi); `swEnd`: doira yangi bo'limga yoki joyiga qaytadi.
+           Tashxis: v1.10 kodida doira tugma joylariga sakrardi (`pillX(navHit)`) — v1.10 maketidan farq qilgan.
+Sinov:     JSX OK; soxta baza: telefon oq/qora (sichqoncha + barmoq bilan menyu, sahifa chap/o'ng/ozgina/
+           vertikal/chekka), PC oq/qora chap menyu, planshet, ombor/moder rollari — xato yo'q, ikonka ranglari
+           React holati bilan mos.
 
 ## ⏳ YARIM QOLDI — YANGI DIZAYN KODGA TUSHMOQDA (2026-10-10) — HOZIRGI ASOSIY ISH
 

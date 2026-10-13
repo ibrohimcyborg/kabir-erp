@@ -2,6 +2,10 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.13 — 2026-10-13 — menyu doirasi Telegram kabi barmoqqa yopishib yuradi
+- Pastki va chap menyuni ushlab surganda oq doira tugmadan tugmaga sakramaydi, barmoq ortidan silliq yuradi, biroz kattalashadi; qo'yganda eng yaqin bo'limga o'tiradi.
+- Telefonda sahifani chapga-o'ngga surganda pastki menyudagi doira ham birga yuradi.
+
 ## v1.12 — 2026-10-13 — «Ombor oldi-berdi» ko'rsatkichlari surib o'tiladi
 - Telefon/iPad (barmoq bilan) da Keldi/Do'konga ketdi/Sotildi/Omborda bir qatorda chapga-o'ngga suriladi, pastda nuqtalar.
 - Sichqonchali kompyuterda to'rttasi bitta kartochka ichida, ingichka chiziq bilan ajratilgan (4 ta alohida bo'lak emas).
