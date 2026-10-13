@@ -16,8 +16,12 @@ Qarorlar (tavsiya): 1) manba A (faqat o'qiydi) hozir, DAFTAR kelgach C (to'liq +
            2) davr «Hammasi | Bu oy»; 3) zakazlar kirmaydi; 4) 5-bo'lim «Hisobot» oxirida. Diff taxmini ~70–90 qator, v1.20.
 Maket tuzatishlari (Ibrohim, bittadan): v2 — tur tugmalari bitta qatorga sig'adi, iOS kabi oq belgi suriladi;
            v3 — amallar sanalar bo'yicha yig'ilgan (Tilla kabi «12/10/2026 · 2 ta», bosilsa ochiladi, boshida yopiq).
-Navbatda:  amalni tahrirlash (summa, dona, pul, model) — bazani o'zgartiradi → tashxis + qaror nuqtalari bilan maket.
-Keyingi qadam: Ibrohim «shunaqa qil» → tahrirlash maketi; keyin 1–4 tanlovi → TAXMIN BLOKI → kod.
+           v4 — amalni bosib tahrirlash oynasi (sotuv: model/dona/narx; jo'natish: model/dona; qaytish: dona (faqat C);
+           pul: summa/usul/sana), «Nima o'zgaradi» — qaysi ID qayerga ko'chishi, qarz, xatolar; tahrir tashxisi + qarorlar 5–10.
+Tahrir tashxisi: sotuv dona/model = `sales` + `units` (tranzaksiya emas, garantiya qayta chop); pul = `partial_payments`
+           butun massiv (to'liq to'lov summasi saqlanmaydi, :2481); qaytish yozuvi yo'q; do'konga to'g'ridan kirim kamaytirilsa
+           ID takrorlanadi (:1220). Tavsiya: hozir faqat narx/summa va pul, dona/model — DAFTAR (ombor qulfi) bilan.
+Keyingi qadam: Ibrohim 1–10 tanlovi → TAXMIN BLOKI → kod (avval hisobot o'qish qismi, tahrir alohida versiya).
 
 ## ⏳ KEYINGI ISH — DAFTAR TIZIMIGA O'TISH (2026-10-13) — QARORLAR OLINDI, 1-BOSQICHDAN BOSHLASH
 
