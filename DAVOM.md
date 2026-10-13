@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.10 — PRODDA** (2026-10-13)
+**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.11 — PRODDA** (2026-10-13)
 
 ## ⏳ YARIM QOLDI — YANGI DIZAYN KODGA TUSHMOQDA (2026-10-10) — HOZIRGI ASOSIY ISH
 
@@ -138,6 +138,10 @@ Ochiq: ko'rsatkichlar A/B/C/D (https://claude.ai/artifact/LW3cHx3BtH223DVfp6TpLY
            `body{background:#080810}` (index.html:28) va `<meta name="theme-color" content="#080810">` (9-qator).
            Maket: https://claude.ai/artifact/EPc4hMpH4damovWwHqAxmt — A oq fon + ko'k «K»; B oq fon + qora-tilla
            «K» belgi (tavsiya); C qora fon + tilla «K». Javobsiz savol: A/B/C? Kod YOZILMAGAN.
+✅ v1.11 PRODDA: Ibrohim «B ni qilib push qil». Statik `.boot` CSS (head) + `#root` ichida boot markup (React
+           createRoot uni almashtiradi) + kichik oddiy <script> belgini apple-touch-icon havolasidan oladi;
+           `App` `if (loading)` ham `.boot` (o'sha belgi); body bg #F2F4F5, theme-color #F2F4F5.
+           Sinov: statik splash (ilova kodisiz) va loading holati bir xil; regressiya + menyu sinovlari xato 0.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 

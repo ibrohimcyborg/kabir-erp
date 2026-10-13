@@ -1,4 +1,4 @@
-<!-- v1.10 -->
+<!-- v1.11 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#080810">
+<meta name="theme-color" content="#F2F4F5">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Kabir ERP">
@@ -25,7 +25,7 @@
 <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:system-ui,sans-serif;background:#080810;color:#EEEEF8;transition:background .3s,color .3s}
+body{font-family:system-ui,sans-serif;background:#F2F4F5;color:#20252E;transition:background .3s,color .3s}
 input,select,textarea,button{font-family:inherit;outline:none}
 button{cursor:pointer;border:none;background:none}
 input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
@@ -39,6 +39,12 @@ input[type=number]{-moz-appearance:textfield}
 .fade{animation:fade .2s ease}
 .press{transition:transform .12s}.press:active{transform:scale(.97)}
 .spin{animation:spin 1s linear infinite}
+/* Yuklanish ekrani (ilova kodi yuklanguncha ham ko'rinadi) */
+.boot{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#F2F4F5;font-family:-apple-system,BlinkMacSystemFont,'Inter Tight',system-ui,sans-serif}
+.boot img{width:72px;height:72px;border-radius:17px;box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.boot-t{color:#20252E;font-size:19px;font-weight:600}
+.boot-s{color:#6B6F78;font-size:13px}
+.boot-sp{width:28px;height:28px;border:3px solid #E1E4ED;border-top-color:#20252E;border-radius:50%}
 /* RESPONSIVE LAYOUT */
 .app-layout{display:flex;min-height:100vh}
 .sidebar{width:220px;background:#101018;border-right:1px solid #22223A;display:flex;flex-direction:column;position:fixed;left:0;top:0;height:100vh;z-index:10;transition:transform .3s}
@@ -106,10 +112,11 @@ input[type=number]{-moz-appearance:textfield}
 </style>
 </head>
 <body>
-<div id="root"></div>
+<div id="root"><div class="boot"><img id="boot-ic" alt=""><div class="boot-t">Kabir ERP</div><div class="boot-s">Ma'lumotlar yuklanmoqda...</div><div class="boot-sp spin"></div></div></div>
+<script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.10";
+const APP_VER = "v1.11";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -933,12 +940,11 @@ function App() {
   // Loading ekran
   if (loading) {
     return (
-      <div style={{ background: THEMES.dark.bg, minHeight: "100vh", maxWidth: 430, margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20 }}>
-        <style>{css}</style>
-        <div style={{ width: 60, height: 60, borderRadius: 18, background: `linear-gradient(135deg, ${THEMES.dark.acc}, ${THEMES.dark.blue})`, display: "flex", alignItems: "center", justifyContent: "center", color: THEMES.dark.accTxt, fontWeight: 800, fontSize: 28 }}>M</div>
-        <div style={{ color: THEMES.dark.acc, fontSize: 18, fontWeight: 800 }}>Mebel ERP</div>
-        <div style={{ color: THEMES.dark.sub, fontSize: 13 }}>Ma'lumotlar yuklanmoqda...</div>
-        <div style={{ width: 32, height: 32, border: `3px solid ${THEMES.dark.border}`, borderTopColor: THEMES.dark.acc, borderRadius: "50%" }} className="spin" />
+      <div className="boot">
+        <img src={document.querySelector('link[rel="apple-touch-icon"]')?.href} alt="" />
+        <div className="boot-t">Kabir ERP</div>
+        <div className="boot-s">Ma'lumotlar yuklanmoqda...</div>
+        <div className="boot-sp spin" />
       </div>
     );
   }

@@ -2,6 +2,10 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.11 — 2026-10-13 — yangi yuklanish ekrani
+- Sayt ochilayotganda eski «M · Mebel ERP» qora ekran o'rniga: och kulrang fon, qora-tilla «K» belgi (iPhone belgisi bilan bir xil), «Kabir ERP».
+- Ekran ilova kodi yuklanguncha ham ko'rinadi; boshidagi to'q ko'k lahza va theme-color ham yangi fonga almashdi.
+
 ## v1.10 — 2026-10-13 — menyu iOS kabi surib o'tiladi
 - Menyudagi oq doira (telefon pastki menyusi va kompyuter/planshet chap menyusi) bo'limdan bo'limga silliq surilib o'tadi.
 - Menyu ustida barmoq bilan surib bo'lim tanlash mumkin; telefonda sahifani chapga-o'ngga surib qo'shni bo'limga o'tiladi.
