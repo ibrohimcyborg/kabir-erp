@@ -5,6 +5,23 @@
 
 **Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.12 — PRODDA** (2026-10-13)
 
+## ⏳ YARIM QOLDI — MENYU TELEGRAM KABI O'TSIN (2026-10-13) — ENG OXIRGI ISH
+
+Ibrohim (Telegram papkalar menyusi rasmi bilan): «o'tishini shunaqa o'tadigan qiling, bu yerda bosiladigan
+bo'lib qolibdi»; keyin: «buni swipe'da shunaqa qiling, sizniki bosadigan bo'lib qolgan».
+Branch:    claude/pc-versiya — kod YOZILMAGAN, prodda v1.12.
+Tashxis:   `navDrag` (index.html:3051) surganda doirani faqat tugma joylariga qo'yadi → tugmadan tugmaga
+           sakraydi (har biri .38s), 8px'dan keyin boshlanadi, ushlaganda kattalashmaydi. `swMove`/`swEnd`
+           (~3069–3090) sahifa surilganda doirani qimirlatmaydi. v1.10 maketida doira barmoqqa yopishgan edi —
+           kodga ko'chirishda farq qilib qolgan.
+Maket:     https://claude.ai/artifact/6p38wQ19a5sHuRyTe3AciV (ikki jonli telefon: hozirgi / taklif).
+Taklif:    1) menyuni ushlab surganda doira barmoqqa yopishadi (4px'dan), 1.14 marta kattalashadi, qo'yganda
+              eng yaqin bo'limga prujinali o'tiradi; chap menyu (PC/planshet) ham shunday — umumiy `navDrag`;
+           2) sahifani surganda pastdagi doira ham yuradi (yarim ekran = 1 bo'lim). Shakl/rang o'zgarmaydi.
+           Taxminiy diff ~20 qator (`navDrag`, `swMove`, `swEnd`).
+Keyingi qadam: Ibrohim 1 va 2 ga «ha» desa → TAXMIN BLOKI → kod → v1.13 → «push qil» bo'lsa main.
+Javobsiz savol: 1 — ha/yo'q? 2 — ha/yo'q?
+
 ## ⏳ YARIM QOLDI — YANGI DIZAYN KODGA TUSHMOQDA (2026-10-10) — HOZIRGI ASOSIY ISH
 
 Ibrohim: «saytga yoz; push qil = main'ga yangi versiyada push». Savollarga javoblari (2026-10-10):
