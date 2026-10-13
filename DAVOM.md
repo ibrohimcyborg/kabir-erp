@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = 897304e · versiya: **v1.19 — PRODDA** · **DAFTAR 1–2-bosqich TAYYOR (qoida prodda) · KEYINGI: 3-bosqich (#sinov TEST rejimi, avval maket)**
+**Oxirgi yangilanish:** 2026-10-13 · main = 897304e · versiya: **v1.19 — PRODDA** · **DAFTAR 1–2-bosqich TAYYOR (qoida prodda) · KEYINGI: SOYA REJIMI (maket javob kutmoqda)**
 
 ## ⏳ DO'KON HISOBOTI — MAKET TAYYOR, DAFTAR'DAN KEYIN (2026-10-13)
 
@@ -92,7 +92,18 @@ Ibrohim: Publish'dan keyin ilova (Ombor/Do'kon) «ochildi» — tasdiqlandi. mai
            3-bosqichda har yozuv alohida qator (guruhlash, qulf, internet-yo'q UX — 4-bosqich), oddiy manzil o'zgarmaydi.
            Qarorlar (tavsiya): 1) faqat manzil #sinov; 2) bo'sh baza; 3) TEST_rasmlar; 4) faqat tasma (versiya yonida
            SINOV — uzun sarlavhada sig'maydi). Taxminiy versiya v1.20.
-Keyingi qadam: Ibrohim «shunaqa qil»/1–4 tanlovi → TAXMIN BLOKI → kod (index.html + daftar.js ulash) → soxta baza sinovi.
+❌ #sinov rejimi BEKOR (Ibrohim: «menga sinov kerak emas» → «main'da amalda qilsa bo'lmaydimi» → «A ni qil»).
+⏳ 3-BOSQICH O'RNIGA — SOYA REJIMI: MAKET, JAVOB KUTILMOQDA (2026-10-13): https://claude.ai/artifact/KFawfZMHuzipdHZuJPyCdv
+           Ilova eski jadvallardan ishlaydi (asosiy nusxa o'zgarmaydi); db o'rami yozuvdan keyin xuddi o'sha yozuvni daftarga
+           ham yuboradi (kutmasdan, xatosi ilovaga chiqmaydi, id bir xil); superadmin ochganda daftar bo'sh bo'lsa — 7 jadval
+           YANGIDAN o'qilib bitta katta yozuv (kochir, navbat qulfi bilan); kuniga bir marta solishtirish (eski jadvallar
+           yangidan o'qilib, daftar holati bilan kalitma-kalit; farq ro'yxati oynada); superadminda bulut yonida rangli nuqta +
+           oyna (holat, farqlar, «O'tishga tayyorlik N/7 kun», «Hozir solishtirish»). Boshqa rollarda o'zgarish yo'q.
+           Qarorlar (tavsiya): 1) birinchi nusxa avtomatik; 2) faqat superadmin; 3) ketma-ket 7 kun 1:1; 4) farq — faqat
+           ko'rsatadi, Ibrohim rasmini yuboradi. Kod: TEST_kabir emas, `kabir` daftari (prod daftar, eski jadvallarga tegmaydi).
+           Ehtimoliy farq manbai: eski tizimdagi ikki telefon to'qnashuvi (masalan, to'lov massivi ustidan yozilishi) — daftar
+           ikkala to'lovni saqlaydi. O'tish (eski → daftardan o'qish) — alohida versiya, alohida «ha».
+Keyingi qadam: Ibrohim «shunaqa qil»/1–4 tanlovi → TAXMIN BLOKI → kod (v1.20: daftar.js ulash, soya yozuv, kochir, solishtirish, bulut oynasi) → soxta baza sinovi.
 Javobsiz:  tarif (Spark/Blaze) — qoidaga ta'sir qilmaydi, rasmlar ombori uchun kerak.
 
 ## ✅ VERCEL KUNLIK CHEGARASI (2026-10-13) — HAL QILINDI
