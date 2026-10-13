@@ -14,7 +14,10 @@ Tashxis:   Sotildi va Pul olindi — to'liq (`sales`, `partial_payments`/`paid`)
            «Vitrinadan qaytarildi: <mahsulot> N dona — <do'kon nomi>» (do'kon id/unit ID yo'q). Naqsh: `PcOmborPane` «Harakatlar».
 Qarorlar (tavsiya): 1) manba A (faqat o'qiydi) hozir, DAFTAR kelgach C (to'liq + «jo'natildi−sotildi−qaytdi=vitrinada»);
            2) davr «Hammasi | Bu oy»; 3) zakazlar kirmaydi; 4) 5-bo'lim «Hisobot» oxirida. Diff taxmini ~70–90 qator, v1.20.
-Keyingi qadam: Ibrohim «shunaqa qil» + 1–4 tanlovi → TAXMIN BLOKI → `StoreProfile` ichida `pTab === "report"`.
+Maket tuzatishlari (Ibrohim, bittadan): v2 — tur tugmalari bitta qatorga sig'adi, iOS kabi oq belgi suriladi;
+           v3 — amallar sanalar bo'yicha yig'ilgan (Tilla kabi «12/10/2026 · 2 ta», bosilsa ochiladi, boshida yopiq).
+Navbatda:  amalni tahrirlash (summa, dona, pul, model) — bazani o'zgartiradi → tashxis + qaror nuqtalari bilan maket.
+Keyingi qadam: Ibrohim «shunaqa qil» → tahrirlash maketi; keyin 1–4 tanlovi → TAXMIN BLOKI → kod.
 
 ## ⏳ KEYINGI ISH — DAFTAR TIZIMIGA O'TISH (2026-10-13) — QARORLAR OLINDI, 1-BOSQICHDAN BOSHLASH
 
