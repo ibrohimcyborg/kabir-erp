@@ -505,6 +505,12 @@ Tekshirilmagan fix ustiga tekshirilmagan fix qo'yish — kod izlanmaydigan bo'li
   JSX sinov OK bo'lsa). Ibrohim prodda (kabir-erp.vercel.app) versiyani solishtiradi: *«asosiy
   saytga qil, boshqa sayt qilib tekshirish kerak emas»*. Preview havola berilmaydi. Shu kuni oldinroq aksini aytgan edi («prodga qo'shma, push qil
   diman») — oxirgi qaror kuchda. Ikkilansang — so'ra.
+- ⚠ **ENG OXIRGI QAROR — Ibrohim (2026-10-13), Vercel chegarasi sababli:** «push qil» = **FAQAT `main`ga**
+  (`git push origin HEAD:main`, fast-forward). `claude/*` branch'ga alohida push **QILINMAYDI** — har push Vercel'da
+  yig'ish (deployment) sarflaydi, branch push ham alohida preview yig'adi. Vercel bepul tarifida kuniga 100 ta yig'ish
+  bor va u Ibrohimning HAMMA loyihalari (kabir-erp, tilla-erp, analitika, kitco …) uchun UMUMIY (2026-10-13 da to'lib,
+  v1.19 saytga chiqmay qolgan). Faqat `.md` (DAVOM/CHANGELOG/CLAUDE) commitlari alohida push qilinmaydi — keyingi
+  «push qil» bilan birga ketadi; istisno: seans tugash arafasida (yangi seans taklifi) — bitta push `main`ga.
 - `"prodga chiqar"` / `"main'ga qo'sh"` = `main`ga merge = **Vercel darhol deploy**. Faqat shu
   aniq so'zlardan keyin, TEKSHIRUV va JSX sinov OK bo'lsa.
 - **Hech qachon:** `--force`, `main` tarixini qayta yozish, so'ralmagan merge.

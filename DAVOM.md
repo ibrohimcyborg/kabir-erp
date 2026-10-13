@@ -42,6 +42,10 @@ Ibrohimdan kerak (2-bosqichgacha): Firebase konsol → Firestore → Rules rasmi
 
 ## ⚠️ VERCEL KUNLIK CHEGARASI (2026-10-13) — v1.19 SAYTGA CHIQMAGAN
 
+Tekshirildi (Vercel API, 24 soat): jami 124 yig'ish — tilla-erp 69, analitika 26 (avtomatik data commitlari), kabir-erp 25
+(12 main + 13 branch), kitco 4. Chegara jamoa («Ibrohim's projects») bo'yicha UMUMIY. Ibrohim qarori (2026-10-13):
+«push qil» = FAQAT main'ga; .md commitlari keyingi versiya bilan birga (CLAUDE.md §8 yangilandi).
+
 main = 6c21743 (v1.19 ichida), lekin Vercel production yig'ishi BOSHLANMAGAN: bepul tarif «kuniga 100 ta yig'ish»
 (`api-deployments-free-per-day`, 402) to'lgan. Branch preview (dpl_JEHFfprpWd2Xjeuu4fMWsGJisvZz) sig'gan, main'niki yo'q.
 Promote (422 — preview'ni promote qilib bo'lmaydi) va create_deployment (402) ham rad etildi. Prodda: d637887 (v1.18).
