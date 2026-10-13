@@ -85,6 +85,13 @@ Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vit
            doira, tanlangani `t.surf` + soya, boshqasi #4B505B; pastda foydalanuvchi harfi. PC da `nav.pc-only` (tepadagi
            chiplar) yashirildi, `.sidebar` PC da ham ko'rinadi, `.main-content` margin-left 96px (planshet/PC).
            Telefon pastki menyusi o'zgarmadi. Tokenlar: light rail/railIn; dark rgba(255,255,255,.07).
+⏳ iPHONE BELGISI (2026-10-13): Ibrohim «iPhone ekraniga Safari'dan chiqarganda logosini, iconini qil».
+           Hozirgi `index.html:14` apple-touch-icon — SVG data-URI (eski binafsha-feruza «K») → iOS SVG ni qabul
+           qilmaydi. Maket: https://claude.ai/artifact/9jpNtio7tHzE5U2BppXr9h — 3 variant PNG 180×180:
+           A ko'k gradient #4A7EFD→#1E50F4 + oq «K» (Inter 700); B oq fon + ko'k #2F63F6 «K»; C ko'k + «Kabir» / «ERP».
+           Reja: repoga YANGI fayl `apple-touch-icon.png` (180×180) + 14-qator havolasi shu faylga — yangi fayl =
+           Ibrohim ruxsati kerak (CLAUDE.md §11). Belgilar manbasi: HTML+Inter → Playwright (scratchpad/icon/).
+           Javobsiz savol: A/B/C? fayl qo'shishga ruxsat? Kod YOZILMAGAN.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
