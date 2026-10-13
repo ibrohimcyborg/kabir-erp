@@ -41,6 +41,10 @@ Bu qoidalar Tilla ERP `CLAUDE.md` sidan moslangan (2026-10-08). Tilla'ga xos nar
    **Nega bu bor:** 2026-07-03 14:04 da `main`ga (eb91963) Kabir o'rniga **Tilla ERP ning
    `index.html`i** tushgan (`projectId: "tilla-erp-8b357"`), 69 soniyadan keyin qaytarilgan.
    Tilla'dan kod, funksiya yoki qaror ko'chirilmaydi.
+   **Istisno — DAFTAR (Ibrohim, 2026-10-13, «7 ha»):** Tilla'dagi DAFTAR tizimi (`daftar.js`, v188.81 + v188.85)
+   Kabir'ga o'tkaziladi. Tilla'dan G'OYA va sinovdan o'tgan yechimlar olinadi, kod Kabir jadvallari uchun QAYTA
+   yoziladi (so'zma-so'z ko'chirilmaydi). Tilla papkasi faqat o'qiladi (`git fetch` + `git show`), unga yozilmaydi.
+   Reja va qarorlar — `DAVOM.md` («DAFTAR» bo'limi).
 
 ---
 

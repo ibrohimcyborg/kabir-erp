@@ -5,25 +5,40 @@
 
 **Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.18 — PRODDA** (2026-10-13)
 
-## ⏳ YARIM QOLDI — DAFTAR TIZIMI (TILLA'DAN) — MAKET + REJA (2026-10-13) — ENG OXIRGI ISH
+## ⏳ KEYINGI ISH — DAFTAR TIZIMIGA O'TISH (2026-10-13) — QARORLAR OLINDI, 1-BOSQICHDAN BOSHLASH
 
-Ibrohim: «Tilla ERP dagi DAFTAR tizimini Kabir ERP ga ko'chirmoqchiman… avval o'qi, Kabir ma'lumot tuzilishini o'rgan,
-MAKET + reja ko'rsat. Kod yozma.» + 11 band spetsifikatsiya (append-only, kalitlar, navbat, 300k bo'lak, imzo, ombor qulfi,
-ko'chirish, avval TEST) + 2 saboq (forEach(yubor); internet yo'qda chiqim bloki + «Qayta bosmang» butun ekran).
-Manba o'qildi: tilla-erp origin/main (638277f) — daftar.js (656 q.), index.html DAFTAR_REJIM (37 joy; save() shoxi 2537,
-           DF.Daftar env 20824), DAVOM v188.85 (qoida). Tilla papkasiga yozilmagan (faqat git fetch + git show).
-Maket+reja: https://claude.ai/artifact/U1Hs86Tv5HQf9iXkPPQA5u — KOD YOZILMAGAN.
-Asosiy topilmalar: Kabir'da Firebase Auth YO'Q (Tilla qoidasi request.auth.uid ga tayanadi) → qoida faqat «o'zgartirib/
-           o'chirib bo'lmaydi»ni kafolatlaydi; Kabir joriy Firestore qoidasi noma'lum (rasm so'raldi). Kabir'da _oid kerak emas
-           (id bor). Ombor qulfi Kabir'da donaga: sotuv/jo'natish/qaytarish/o'chirish + unit ID va ZK- raqami ham navbat bilan.
-           partial_payments → `sales:<id>.pp:<ppid>` (ikki telefon to'lovi ikkalasi qoladi). Faqat snake_case maydonlar.
-Bosqichlar: 0 qarorlar → 1 daftar.js (yangi fayl, Node sinov) → 2 qoida (emulyator, Publish — Ibrohim) → 3 TEST rejim +
-           db o'rami/loadAll ulanishi → 4 guruhlash + qulf + internet-yo'q UX → 5 TEST'ga ko'chirish (prod faqat O'QILADI) →
-           6 Ibrohim 2 telefonda sinaydi → 7 o'tish kuni.
-Javobsiz savol (7 ta, tavsiya «1B 2A 3B 4A 5A 6A 7 ha»): 1) amal=1 qator; 2) offline chiqim; 3) rasmlar; 4) Firebase Auth;
-           5) TEST kirish (#sinov); 6) QR katalog; 7) CLAUDE.md «Tilla'dan ko'chirilmaydi» qoidasiga istisno.
-           + Firebase konsolidan joriy qoida rasmi va tarif (Spark/Blaze).
-Keyingi qadam: javob → 1-bosqich (daftar.js + Node sinovlari), index.html ga tegmasdan.
+Ibrohim: «Tilla ERP dagi DAFTAR tizimini Kabir ERP ga ko'chirmoqchiman» → maket+reja → «bo'ldi unda shu sistemaga
+o'tqizaylik» → qarorlar (AskUserQuestion, 2026-10-13): **hammasi tavsiya bo'yicha**, `daftar.js` alohida fayl — HA,
+yangi seansda boshlash. CLAUDE.md §0.5 ga «DAFTAR istisnosi» yozildi.
+Maket+reja: https://claude.ai/artifact/U1Hs86Tv5HQf9iXkPPQA5u (oqim, kalitlar, ombor qulfi, internet-yo'q UX, qoida qoralamasi,
+           7 bosqich). KOD YOZILMAGAN.
+QARORLAR:  1B har AMAL = daftarda BITTA qator (sotuv/jo'natish/qaytarish/omborga qo'shish/zakaz/o'chirishlar guruhlanadi) ·
+           2A internet yo'q paytda navbatli amal (sotuv, jo'natish, …) SAQLANMAYDI — oyna ochilishida sariq ogohlantirish,
+           tugma «Internet kutilmoqda…», kiritilganlar yo'qolmaydi · 3B rasmlar daftarga KIRMAYDI, alohida omborda (havola) —
+           ombor tanlovi keyin (Firebase Storage endi Blaze talab qilishi mumkin → Vercel Blob tekshiriladi) · 4A Firebase
+           Auth hozircha YO'Q (qoida faqat «o'zgartirib/o'chirib bo'lmaydi»ni kafolatlaydi) · 5A TEST rejimi manzil oxiridagi
+           `#sinov` bilan, `TEST_kabir` daftari · 6A QR uchun alohida ochiq katalog (tannarxsiz) · 7 CLAUDE.md istisnosi — yozildi.
+Tarif:     Ibrohim bilmaydi («bepuli yetsa kerak?»). Taxmin: DAFTAR bilan Spark bemalol yetadi (har telefon faqat yangi
+           qatorlarni o'qiydi; kuniga yuzlab o'qish/yozish). Konsolda chap pastda «Spark/Blaze» yozuvi — tekshirish so'raladi.
+MANBA:     tilla-erp origin/main @ 638277f — `daftar.js` (656 q.: yassi/farq/qolla/indeks, Daftar: boshla/saqla/kochir/tekshir/
+           quril/yubor/ulan/qabul, v188.85: navbat/talonYoz/chiqimBoshla/cjUrin/cjKut/cjNomalum/cjTugat/qaytar/yetkaz);
+           index.html: `DAFTAR_REJIM` (2085), save() shoxi (2537), IndexedDB 'tilla-daftar' (_dfIdb, _dfOmborYoz — d+m bitta
+           tranzaksiyada), `DF.Daftar({...})` env (20824), _dfKutish/_dfRad; DAVOM v188.85 qoida (create ol==1, ch→getAfter navbat).
+SABOQLAR:  forEach(yubor) (daftar.js:558,:561 — indeks `vaada` bo'ladi) → `forEach(e => yubor(e))` + sinov (navbatda 3 ta,
+           2-chisi rad → xato ko'rinsin); «Qayta bosmang» butun ekran (:495) → faqat tugma holati + orqada tekshiruv + qisqa xabar.
+KABIR KALITLARI: `<jadval>:<id>` bor, `<jadval>:<id>.<maydon>` (faqat snake_case ro'yxat bo'yicha); `sales:<id>.pp:<ppid>`
+           (har qisman to'lov alohida); `orders:<id>.sh:<vaqt>`; `activity:<id>` butun yozuv; users — daftarga kirmaydi.
+           _oid kerak emas (id bor). Navbat raqami bilan: sotuv, jo'natish, qaytarish, mahsulot/do'kon o'chirish, omborga qo'shish
+           (unit ID sanog'i), yangi zakaz (ZK- sanog'i). Qulfsiz: to'lov, tahrirlar, mijoz, zakaz statusi, tarix.
+KABIR ULANISH JOYLARI: `db` o'rami (index.html ~191), `loadAll` (~497), yozuvlar 19 joy (grep 'db.from("[a-z]*")\.(insert|
+           upsert|update|delete)'), verifyUnitsUnchanged (~572), generateUnitId (~591, :1053/:1229), ZK- (~1770), PayModal
+           partial_payments (~1689), importBackup (~415), QR (~448). Firestore `enablePersistence` (~151).
+BOSQICHLAR: 1) `daftar.js` (yangi fayl, index.html ga ULANMAYDI) + Node birlik sinovlari (scratchpad) → 2) Firebase qoidasi
+           emulyatorda (java bor; firebase-tools npm) → Ibrohim Publish (joriy qoida RASMI kerak) → 3) `#sinov` TEST rejimi + db
+           o'rami/loadAll → 4) guruhlash + ombor qulfi + internet-yo'q UX → 5) TEST'ga ko'chirish (prod faqat O'QILADI) + tekshir
+           1:1 → 6) Ibrohim 2 telefonda sinaydi → 7) o'tish kuni. Har bosqich alohida versiya, UI bo'lsa avval maket.
+Keyingi qadam: 1-bosqich — TAXMIN BLOKI → `daftar.js` dvigateli (Kabir kalitlari) + Node sinovlari; index.html ga tegmaslik.
+Ibrohimdan kerak (2-bosqichgacha): Firebase konsol → Firestore → Rules rasmi; tarif (Spark/Blaze).
 
 ## ⏳ YARIM QOLDI — QIDIRUV YONIGA «×» (TOZALASH) (2026-10-13) — ENG OXIRGI ISH
 
