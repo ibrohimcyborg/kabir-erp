@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = 897304e · versiya: **v1.19 — PRODDA** · **DAFTAR 1-bosqich TAYYOR (daftar.js, ilovaga ulanmagan) · KEYINGI: 2-bosqich (Firebase qoidasi)**
+**Oxirgi yangilanish:** 2026-10-13 · main = 897304e · versiya: **v1.19 — PRODDA** · **DAFTAR 1-bosqich TAYYOR · 2-bosqich: qoida tayyor, Ibrohim Publish qilishi KUTILMOQDA**
 
 ## ⏳ DO'KON HISOBOTI — MAKET TAYYOR, DAFTAR'DAN KEYIN (2026-10-13)
 
@@ -26,7 +26,7 @@ Tahrir tashxisi: sotuv dona/model = `sales` + `units` (tranzaksiya emas, garanti
            ID takrorlanadi (:1220). Tavsiya: hozir faqat narx/summa va pul, dona/model — DAFTAR (ombor qulfi) bilan.
 Keyingi qadam: Ibrohim 1–10 tanlovi → TAXMIN BLOKI → kod (avval hisobot o'qish qismi, tahrir alohida versiya).
 
-## ⏳ KEYINGI ISH — DAFTAR TIZIMIGA O'TISH (2026-10-13) — 1-BOSQICH TAYYOR, 2-BOSQICH KUTILMOQDA
+## ⏳ KEYINGI ISH — DAFTAR TIZIMIGA O'TISH (2026-10-13) — 1-BOSQICH TAYYOR, 2-BOSQICH: PUBLISH KUTILMOQDA
 
 Ibrohim: «Tilla ERP dagi DAFTAR tizimini Kabir ERP ga ko'chirmoqchiman» → maket+reja → «bo'ldi unda shu sistemaga
 o'tqizaylik» → qarorlar (AskUserQuestion, 2026-10-13): **hammasi tavsiya bo'yicha**, `daftar.js` alohida fayl — HA,
@@ -72,8 +72,18 @@ Fayllar:   `daftar.js` (630 q., index.html YUKLAMAYDI) — `DF.Daftar(env)`: bos
 TOPILGAN XATO (Tilla'da ham bor!): o'z yozuvlarim cloudda boshqa tartibda tushsa (biri rad etilib qayta yuborilsa) telefon
            cloud'dan farqli qiymatda qolardi. Kabir'da tuzatildi (`qabul` — o'z yozuvi tasdiqlanganda eng keyingi qiymat
            qayta qo'yiladi). Tilla'ga TEGILMADI — Ibrohimga aytildi, Tilla seansida alohida tuzatiladi.
-Keyingi qadam: 2-bosqich — Firebase qoidasi (`kabir/_daftar`: yozuvlar faqat create, ol==1, ch → navbat getAfter;
-           navbat n faqat +1) + emulyatorda sinov. Ibrohimdan kerak: Firebase konsol → Firestore → Rules RASMI; tarif (Spark/Blaze).
+⏳ 2-BOSQICH (2026-10-13) — QOIDA TAYYOR, IBROHIM PUBLISH QILISHI KUTILMOQDA
+Hozirgi prod qoida (Ibrohim rasmi): `match /{document=**} { allow read, write: if true; }` — hammasi ochiq.
+Qilingan:  `firestore.rules` — eski jadvallar AYNAN avvalgidek ochiq (`/{kol}/{qolgan=**}`, kol kabir/TEST_kabir dan
+           boshqa); `<kol>/_daftar/yozuvlar/{id}`: read; create faqat ol==1, t==request.time, o string, ch bo'lsa
+           getAfter(navbat).n==ch va .y==id; update/delete YO'Q. `<kol>/_daftar/navbat/bosh`: create/update faqat n==eski+1,
+           t==request.time, getAfter(yozuvlar/y).ch==n; delete YO'Q. Konsol (admin) qoidadan tashqarida.
+Sinov:     `sinov/qoida.test.mjs` — Firestore emulyatori v1.19.7 + firebase 10.14.1 + rules-unit-testing 3.0.4 (/tmp/kabir-fb,
+           repoga kirmaydi): 7/7 — eski jadvallar ochiq, daftar faqat qo'shish, soxta vaqt/ol'siz rad, navbat sakrash/takror rad,
+           bo'laklangan qulfli yozuv o'tadi, daftar.js 2 telefon (ko'chirish, qulf, offlayn navbat, tekshir 1:1) haqiqiy SDK bilan.
+Ko'rsatma: https://claude.ai/artifact/AdoG7EHDTm3kDv5uhvXd7j (nusxa tugmasi, 4 qadam, orqaga qaytarish — eski qoida matni).
+Keyingi qadam: Ibrohim Publish → «qo'ydim» → 3-bosqich (#sinov TEST rejimi + db o'rami/loadAll, maket bilan).
+Javobsiz:  tarif (Spark/Blaze) — qoidaga ta'sir qilmaydi, rasmlar ombori uchun kerak.
 
 ## ✅ VERCEL KUNLIK CHEGARASI (2026-10-13) — HAL QILINDI
 

@@ -1,0 +1,40 @@
+rules_version = '2';
+// Kabir ERP — Firestore qoidasi (DAFTAR 2-bosqich). Firebase konsol → Firestore Database → Rules ga
+// shu matn qo'yiladi va Publish bosiladi. Sinov: sinov/qoida.test.mjs (emulyatorda).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Eski jadvallar (products, units, stores, sales, orders, customers, activity, users …) — o'tish kunigacha
+    // AYNAN avvalgidek ochiq: ilova shular bilan ishlaydi. Login (Firebase Auth) yo'q — haqiqiy himoya alohida qaror.
+    // Daftar papkalari (kabir, TEST_kabir) bundan chiqarilgan — ular pastdagi qoidalar bilan.
+    match /{kol}/{qolgan=**} {
+      allow read, write: if !(kol in ['kabir', 'TEST_kabir']);
+    }
+
+    // Daftar qatori: faqat QO'SHISH. Bor qatorni o'zgartirish yoki o'chirish — hech kimga.
+    // ol == 1 — dvigatel belgisi; t — SERVER vaqti (telefon soxta vaqt qo'ya olmaydi, tartib buzilmaydi).
+    // ch (ombor qulfi navbat raqami) bo'lsa — navbat shu yozishning o'zida aynan shu qatorga ko'rsatishi shart.
+    match /{kol}/_daftar/yozuvlar/{id} {
+      allow read: if kol in ['kabir', 'TEST_kabir'];
+      allow create: if kol in ['kabir', 'TEST_kabir']
+        && request.resource.data.ol == 1
+        && request.resource.data.t == request.time
+        && request.resource.data.o is string
+        && (!('ch' in request.resource.data)
+            || (getAfter(/databases/$(database)/documents/$(kol)/_daftar/navbat/bosh).data.n == request.resource.data.ch
+                && getAfter(/databases/$(database)/documents/$(kol)/_daftar/navbat/bosh).data.y == id));
+      allow update, delete: if false;
+    }
+
+    // Navbat raqami (ombor qulfi): faqat +1 oshadi va o'sha raqamli daftar qatori bilan BIRGA yoziladi.
+    match /{kol}/_daftar/navbat/bosh {
+      allow read: if kol in ['kabir', 'TEST_kabir'];
+      allow create, update: if kol in ['kabir', 'TEST_kabir']
+        && request.resource.data.n == (resource == null ? 0 : resource.data.n) + 1
+        && request.resource.data.t == request.time
+        && request.resource.data.y is string
+        && getAfter(/databases/$(database)/documents/$(kol)/_daftar/yozuvlar/$(request.resource.data.y)).data.ch == request.resource.data.n;
+      allow delete: if false;
+    }
+  }
+}

@@ -7,5 +7,6 @@
 mockups/
 __pycache__/
 sinov/
+firestore.rules
 
 # Chop ETILADI (tegmang): index.html, api/, requirements.txt, daftar.js

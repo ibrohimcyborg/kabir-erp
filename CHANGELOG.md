@@ -2,6 +2,10 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## daftar d1 — 2026-10-13 — DAFTAR 2-bosqich: Firebase qoidasi
+`firestore.rules`: eski jadvallar avvalgidek ochiq; daftar (`kabir`, `TEST_kabir`) — faqat qo'shish (ol==1, server vaqti),
+o'zgartirish/o'chirish yo'q; navbat faqat +1 va o'z qatori bilan birga. `sinov/qoida.test.mjs` — emulyatorda 7/7 (Firebase 10.14.1).
+
 ## daftar d1 — 2026-10-13 — DAFTAR 1-bosqich: dvigatel (ilovaga ulanmagan)
 `daftar.js` — Kabir jadvallari uchun daftar dvigateli (Tilla g'oyasi, kod qayta yozilgan): yassi kalitlar, amal → bitta
 qator, ombor qulfi (navbat raqami, amal qayta quriladi), navbat, bo'laklar, imzo, ko'chirish/tekshirish. `sinov/` —

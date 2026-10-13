@@ -682,8 +682,10 @@ index.html        ~2 960 qator (~195 KB, ~49k token) — butun ilova (React 18 U
                   bitta <script type="text/babel">, Firebase Firestore compat 10.14.1)
 api/pdf.py        PDF generator (Vercel Python funksiyasi, ReportLab)
 daftar.js         DAFTAR dvigateli (2026-10-13, 1-bosqich) — index.html hali YUKLAMAYDI; reja DAVOM.md da
-sinov/            daftar.js sinovlari: `node sinov/daftar.test.mjs` (soxta Firestore, haqiqiy bazaga ulanmaydi;
-                  .vercelignore saytdan yashiradi)
+firestore.rules   Firebase qoidasi (DAFTAR 2-bosqich) — matni Ibrohim konsolga qo'yib Publish qiladi; saytdan yashirin
+sinov/            daftar.js sinovlari: `node sinov/daftar.test.mjs` (soxta Firestore, haqiqiy bazaga ulanmaydi);
+                  qoida sinovi: `KABIR_FB=/tmp/kabir-fb node sinov/qoida.test.mjs` (emulyator, tayyorlash — fayl boshida).
+                  .vercelignore saytdan yashiradi
 requirements.txt  reportlab (versiyasiz)
 CLAUDE.md         shu fayl — qoidalar
 DAVOM.md          hozirgi holat + keyingi vazifa (har seans boshida o'qiladi)
