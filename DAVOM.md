@@ -3,19 +3,19 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · versiya: **v1.14** (tepada xiralashish) — push kutilmoqda
+**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.15 — PRODDA** (2026-10-13)
 
-## ⏳ YARIM QOLDI — TEPADA VA PASTDA XIRALASHISH (2026-10-13) — ENG OXIRGI ISH
+## ✅ v1.14 + v1.15 — TEPADA VA PASTDA XIRALASHISH (2026-10-13) — PRODDA
 
 Ibrohim (iPhone Sozlamalari rasmi bilan): «tepaga chiqarganda xiralashib yo'q bo'lib ketyapti, Kabir ERP'ni ham shunaqa qiling»;
 keyin «push qil tekshiraman» + «pastdan ham xiralashib chiqsin, tepaga o'xshab».
-Maket:     https://claude.ai/artifact/SS11Za8sdqdbgfvphtSgfh
-Qilingan:  v1.14 (tepa) — faqat telefonda (@media max-width:480px): `#main-scroll` height 100vh, margin-top -60px,
-           padding-top 76px, mask-image (transparent 22px → #000 72px); `<span className="hdr-fx" />` sarlavhada
-           (backdrop blur 8px, pastga so'nadi). Planshet/PC o'zgarmagan (sinovda tekshirildi).
-Qolgan:    v1.15 (past) — mask pastki to'xtashlari + `.nav-fx` qatlam menyu ustida + pastki bo'shliq safe-area bilan;
-           keyin push (branch + main).
-Keyingi qadam: v1.15 ni yozish, sinash, push.
+Maket:     https://claude.ai/artifact/SS11Za8sdqdbgfvphtSgfh (2-versiya: tepa + past)
+v1.14:     faqat telefonda (@media max-width:480px): `#main-scroll` height 100vh, margin-top -60px, padding-top 76px,
+           mask-image tepada (transparent 22px → #000 72px); `<span className="hdr-fx" />` sarlavhada (blur 8px).
+v1.15:     mask pastda (#000 → transparent: 100%-96px-safe → 100%-40px-safe), padding-bottom calc(116px + safe-area),
+           `<div className="nav-fx" />` menyu oldida (fixed, blur 8px, tepaga so'nadi, z 99, pointer-events none).
+Sinov:     JSX OK; soxta baza: telefon oq/qora (tepada/pastda xiralashadi, joyida turganda va oxirida kontent to'liq),
+           sarlavha tugmalari bosiladi, menyu va sahifa surish ishlaydi; planshet/PC o'zgarmagan (mask none); ombor roli.
 
 ## ⏳ YARIM QOLDI — MA'LUMOT KO'PAYSA / XOTIRA TELEFONDA (2026-10-13) — ENG OXIRGI ISH
 
