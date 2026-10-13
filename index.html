@@ -1,4 +1,4 @@
-<!-- v1.09 -->
+<!-- v1.10 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -109,7 +109,7 @@ input[type=number]{-moz-appearance:textfield}
 <div id="root"></div>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.09";
+const APP_VER = "v1.10";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -327,6 +327,9 @@ const THEMES = {
 // ularni qaytadan yaratadi (tanlangan kategoriya, filtr kabi ichki holat yo'qoladi).
 // Screen esa barqaror tur: sahifa funksiyasini o'z ichida chaqiradi, holat saqlanib qoladi.
 const Screen = ({ render }) => render();
+
+// Telefonda sahifani chapga-o'ngga surib bo'lim almashtirish holati (hook emas)
+const SW = { on: false };
 
 function App() {
   const [dark, setDark] = useState(() => {
@@ -2992,6 +2995,73 @@ To'lov uchun:
     { id: "debts", l: "Qarz", i: "debt" },
     ...(user?.role !== "moder" ? [{ id: "report", l: "Hisobot", i: "report" }] : []),
   ];
+  const goTab = (id) => { setTab(id); localStorage.setItem("kabir_tab", id); setStoreProfileId(null); setSidebarOpen(false); };
+  const navIdx = Math.max(0, navItems.findIndex(n => n.id === tab));
+  // Menyudagi oq doira joyi (CSS transition bilan silliq suriladi)
+  const pillX = (i) => `calc(8px + ${i} * ((100% - 16px) / ${navItems.length}))`;
+  const pillY = (i) => `${8 + i * 56}px`;
+  const navHit = (el, axis, e) => {
+    const r = el.getBoundingClientRect(), n = navItems.length;
+    const i = axis === "x" ? Math.floor((e.clientX - r.left - 8) / ((r.width - 16) / n)) : Math.floor((e.clientY - r.top - 2) / 56);
+    return Math.max(0, Math.min(n - 1, i));
+  };
+  // Menyu ustida barmoq bilan surib tanlash: doira barmoq ortidan yuradi, qo'yganda o'sha bo'lim ochiladi
+  const navDrag = (axis) => {
+    const end = (e, go) => {
+      const el = e.currentTarget, moved = el.dataset.moved === "1";
+      el.dataset.drag = "0"; el.dataset.moved = "0";
+      if (!moved) return;
+      const i = navHit(el, axis, e), pill = el.querySelector("[data-pill]");
+      if (pill) pill.style[axis === "x" ? "left" : "top"] = (axis === "x" ? pillX : pillY)(go ? i : navIdx);
+      if (go && navItems[i]) goTab(navItems[i].id);
+    };
+    return {
+      onPointerDown: e => { const el = e.currentTarget; el.dataset.drag = "1"; el.dataset.moved = "0"; el.dataset.p0 = axis === "x" ? e.clientX : e.clientY; },
+      onPointerMove: e => {
+        const el = e.currentTarget; if (el.dataset.drag !== "1") return;
+        if (el.dataset.moved !== "1") {
+          if (Math.abs((axis === "x" ? e.clientX : e.clientY) - el.dataset.p0) < 8) return;
+          el.dataset.moved = "1"; try { el.setPointerCapture(e.pointerId); } catch {}
+        }
+        const pill = el.querySelector("[data-pill]");
+        if (pill) pill.style[axis === "x" ? "left" : "top"] = (axis === "x" ? pillX : pillY)(navHit(el, axis, e));
+      },
+      onPointerUp: e => end(e, true),
+      onPointerCancel: e => end(e, false),
+    };
+  };
+  // Telefonda sahifani surish: barmoq ortidan suriladi, yetarli surilsa qo'shni bo'limga o'tadi
+  const swStart = (e) => {
+    SW.on = false;
+    if (window.innerWidth > 480 || navItems.length < 2 || e.touches.length > 1) return;
+    for (let el = e.target; el && el !== e.currentTarget; el = el.parentElement) {
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)) return;
+      const ox = getComputedStyle(el).overflowX;
+      if ((ox === "auto" || ox === "scroll") && el.scrollWidth > el.clientWidth + 2) return;
+    }
+    SW.on = true; SW.x = e.touches[0].clientX; SW.y = e.touches[0].clientY; SW.lock = null;
+    SW.el = e.currentTarget.querySelector(".swipe-pg");
+  };
+  const swMove = (e) => {
+    if (!SW.on || !SW.el) return;
+    const dx = e.touches[0].clientX - SW.x, dy = e.touches[0].clientY - SW.y;
+    if (!SW.lock) { if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return; SW.lock = Math.abs(dx) > Math.abs(dy) * 1.3 ? "x" : "y"; }
+    if (SW.lock !== "x") return;
+    const edge = (dx > 0 && navIdx === 0) || (dx < 0 && navIdx === navItems.length - 1);
+    SW.dx = dx; SW.el.style.transition = "none"; SW.el.style.transform = `translateX(${edge ? dx * 0.25 : dx}px)`;
+  };
+  const swEnd = () => {
+    if (!SW.on || !SW.el || SW.lock !== "x") { SW.on = false; return; }
+    const el = SW.el, dir = SW.dx < -70 ? 1 : SW.dx > 70 ? -1 : 0, ni = navIdx + dir;
+    SW.on = false;
+    if (!dir || !navItems[ni]) { el.style.transition = "transform .22s ease-out"; el.style.transform = "translateX(0)"; return; }
+    el.style.transition = "transform .16s ease-in"; el.style.transform = `translateX(${dir > 0 ? -100 : 100}%)`;
+    setTimeout(() => {
+      goTab(navItems[ni].id);
+      el.style.transition = "none"; el.style.transform = `translateX(${dir > 0 ? 35 : -35}%)`;
+      requestAnimationFrame(() => requestAnimationFrame(() => { el.style.transition = "transform .26s cubic-bezier(.2,.8,.2,1)"; el.style.transform = "translateX(0)"; }));
+    }, 160);
+  };
   
   
 
@@ -3010,12 +3080,13 @@ To'lov uchun:
       <aside className={sidebarOpen ? "sidebar sidebar-open" : "sidebar"}>
         <div style={{ width:68, flex:1, borderRadius:34, background:t.rail, display:"flex", flexDirection:"column", alignItems:"center", padding:"12px 0" }}>
           <div style={{ width:48, height:48, borderRadius:24, background:t.acc, color:t.accTxt, display:"flex", alignItems:"center", justifyContent:"center", fontWeight:700, fontSize:20, boxShadow:"0 6px 14px rgba(47,99,246,0.30)", flexShrink:0 }}>K</div>
-          <nav style={{ marginTop:28, width:56, borderRadius:28, background:t.railIn, padding:"8px 0", display:"flex", flexDirection:"column", alignItems:"center", gap:12 }}>
+          <nav {...navDrag("y")} style={{ marginTop:28, width:56, borderRadius:28, background:t.railIn, padding:"8px 0", display:"flex", flexDirection:"column", alignItems:"center", gap:12, position:"relative", touchAction:"none" }}>
+            <span data-pill style={{ position:"absolute", left:6, top:pillY(navIdx), width:44, height:44, borderRadius:22, background:t.surf, boxShadow:"0 2px 6px rgba(16,24,40,0.10)", transition:"top .38s cubic-bezier(.3,1.35,.5,1)", pointerEvents:"none" }} />
             {navItems.map(item => {
               const active = tab === item.id;
               return (
-                <button key={item.id} title={item.l} aria-label={item.l} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); setSidebarOpen(false); }}
-                  style={{ width:44, height:44, borderRadius:22, display:"flex", alignItems:"center", justifyContent:"center", background:active ? t.surf : "transparent", boxShadow:active ? "0 2px 6px rgba(16,24,40,0.10)" : "none", color:active ? t.txt : (dark ? t.sub : "#4B505B"), position:"relative" }}>
+                <button key={item.id} title={item.l} aria-label={item.l} onClick={() => goTab(item.id)}
+                  style={{ width:44, height:44, borderRadius:22, display:"flex", alignItems:"center", justifyContent:"center", background:"transparent", color:active ? t.txt : (dark ? t.sub : "#4B505B"), position:"relative" }}>
                   <Ic n={item.i} s={22} />
                   {item.id === "debts" && stats.debtCount > 0 && (
                     <div style={{ position:"absolute", top:4, right:2, minWidth:16, height:16, padding:"0 4px", borderRadius:8, background:t.red, color:"#fff", fontSize:10, fontWeight:600, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</div>
@@ -3100,28 +3171,31 @@ To'lov uchun:
             </button>
           </div>
         </header>
-        <div id="main-scroll" style={{ padding:16, paddingBottom:110, overflowY:"auto", height:"calc(100vh - 60px)" }}>
+        <div id="main-scroll" onTouchStart={swStart} onTouchMove={swMove} onTouchEnd={swEnd} onTouchCancel={swEnd} style={{ padding:16, paddingBottom:110, overflowY:"auto", overflowX:"hidden", height:"calc(100vh - 60px)" }}>
           {refreshing && (
             <div style={{ textAlign:"center", padding:"8px", color:t.acc, fontSize:13, fontWeight:700, marginBottom:8 }}>
               <span className="ptr-spin" style={{ display:"inline-flex" }}><Ic n="refresh" s={14}/></span> Yangilanmoqda...
             </div>
           )}
+          <div className="swipe-pg">
           <div className={user?.role !== "ombor" ? "pc-split" : ""}>
             <div style={{ minWidth: 0 }}>{renderPage()}</div>
             {user?.role !== "ombor" && <div className="pc-block pc-side"><Screen key="dokonlar" render={DokonlarPane} /></div>}
+          </div>
           </div>
         </div>
       </main>
 
       {/* MOBILE BOTTOM NAV */}
-      <nav className="mobile-nav" style={{ left:12, right:12, bottom:"calc(12px + env(safe-area-inset-bottom))", height:64, borderRadius:32, background:t.nav, backdropFilter:"blur(18px)", WebkitBackdropFilter:"blur(18px)", border:`1px solid ${t.glassB}`, boxShadow:dark ? "0 14px 34px rgba(0,0,0,0.5)" : "0 6px 20px rgba(0,0,0,0.10)", alignItems:"center", justifyContent:"space-around", padding:"0 8px" }}>
+      <nav className="mobile-nav" {...navDrag("x")} style={{ touchAction:"none", left:12, right:12, bottom:"calc(12px + env(safe-area-inset-bottom))", height:64, borderRadius:32, background:t.nav, backdropFilter:"blur(18px)", WebkitBackdropFilter:"blur(18px)", border:`1px solid ${t.glassB}`, boxShadow:dark ? "0 14px 34px rgba(0,0,0,0.5)" : "0 6px 20px rgba(0,0,0,0.10)", alignItems:"center", justifyContent:"space-around", padding:"0 8px" }}>
+        <span data-pill style={{ position:"absolute", top:7, left:pillX(navIdx), width:`calc((100% - 16px) / ${navItems.length})`, height:48, display:"flex", justifyContent:"center", transition:"left .38s cubic-bezier(.3,1.35,.5,1)", pointerEvents:"none" }}><span style={{ width:48, height:48, borderRadius:24, background:t.navOn, border:`1px solid ${t.glassB}` }} /></span>
         {navItems.map(item => {
           const active = tab === item.id;
           return (
-            <button key={item.id} aria-label={item.l} title={item.l} style={{ width:48, height:48, borderRadius:24, display:"flex", alignItems:"center", justifyContent:"center", background:active ? t.navOn : "transparent", border:`1px solid ${active ? t.glassB : "transparent"}`, color:active ? t.txt : t.sub, position:"relative" }} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }}>
+            <button key={item.id} aria-label={item.l} title={item.l} style={{ flex:1, height:48, display:"flex", alignItems:"center", justifyContent:"center", background:"transparent", color:active ? t.txt : t.sub, position:"relative" }} onClick={() => goTab(item.id)}>
               <Ic n={item.i} s={23}/>
               {item.id==="debts" && stats.debtCount > 0 && (
-                <div style={{ position:"absolute", top:3, right:0, minWidth:17, height:17, padding:"0 5px", borderRadius:9, background:t.red, color:"#fff", fontSize:11, fontWeight:600, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</div>
+                <div style={{ position:"absolute", top:3, right:"calc(50% - 26px)", minWidth:17, height:17, padding:"0 5px", borderRadius:9, background:t.red, color:"#fff", fontSize:11, fontWeight:600, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</div>
               )}
             </button>
           );

@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.09 — PRODDA** (2026-10-13)
+**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.10 — PRODDA** (2026-10-13)
 
 ## ⏳ YARIM QOLDI — YANGI DIZAYN KODGA TUSHMOQDA (2026-10-10) — HOZIRGI ASOSIY ISH
 
@@ -123,6 +123,16 @@ Keyingi qadam: Ibrohim saytda tekshiradi; telefonda eski belgini o'chirib, Safar
            Kodga o'tkazishda: 3) uchun `renderPage` bitta sahifa chizadi → 6 sahifani yonma-yon chizish yoki
            surish imo-ishorasini ushlab setTab — bu LOGIKA/tuzilish qarori (Screen naqshi, ichki holat), avval ayt.
            Javobsiz savol: 1/2/3 har biri ha/yo'q? Kod YOZILMAGAN.
+✅ v1.10 PRODDA: Ibrohim «ha, shuni push qil» → uchalasi ham kodda (yangi HOOK YO'Q):
+           `SW` (Screen yonida, modul darajasidagi oddiy obyekt) — sahifa surish holati;
+           navItems dan keyin: `goTab`, `navIdx`, `pillX`/`pillY` (oq doira joyi, CSS transition .38s),
+           `navHit` + `navDrag(axis)` (pointer: 8px dan ko'p surilsa — barmoq ortidan, qo'yganda goTab),
+           `swStart/swMove/swEnd` (#main-scroll touch: faqat ≤480px; input/select va gorizontal aylanadigan
+           ichki joylar o'tkazib yuboriladi; 70px dan ko'p → qo'shni bo'lim, chetda 0.25 qarshilik).
+           `.swipe-pg` o'rami renderPage atrofida; #main-scroll overflowX hidden.
+           Telefon menyusi: tugmalar flex:1, `[data-pill]` absolute; chap menyu: `[data-pill]` top = 8+i*56.
+           Sinov: bosish/surib tanlash/sahifa surish (CDP touch)/vertikal/chet — to'g'ri; regressiya xato 0.
+Ochiq: ko'rsatkichlar A/B/C/D (https://claude.ai/artifact/LW3cHx3BtH223DVfp6TpLY) javobsiz.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 

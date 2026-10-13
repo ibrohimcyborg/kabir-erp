@@ -2,6 +2,10 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.10 — 2026-10-13 — menyu iOS kabi surib o'tiladi
+- Menyudagi oq doira (telefon pastki menyusi va kompyuter/planshet chap menyusi) bo'limdan bo'limga silliq surilib o'tadi.
+- Menyu ustida barmoq bilan surib bo'lim tanlash mumkin; telefonda sahifani chapga-o'ngga surib qo'shni bo'limga o'tiladi.
+
 ## v1.09 — 2026-10-13 — oq-ko'k ranglar, chap dumaloq menyu, iPhone belgisi
 - Oq rejim yangi ranglarda (Ibrohim yuborgan dashboard rasmidan): fon #F2F4F5, oq kartochka, ko'k #2F63F6, matn #20252E. Sayt sukut bo'yicha oq ochiladi; oy/quyosh tugmasi qoldi.
 - Kompyuter va planshetda menyu chapda — dumaloq tik panel (iOS uslubi), tanlangani oq doirada; PC tepasidagi menyu tugmalari olib tashlandi.
