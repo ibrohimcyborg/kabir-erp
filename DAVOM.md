@@ -110,6 +110,10 @@ Keyingi qadam: Ibrohim saytda tekshiradi; telefonda eski belgini o'chirib, Safar
            Maket: https://claude.ai/artifact/LW3cHx3BtH223DVfp6TpLY — haqiqiy ilova: A bitta `box` ichida 4 ustun,
            ingichka `hair` chiziq (tavsiya); B 2×2, raqam 38px; C bitta `box` ichida 4 qator ro'yxat.
            Javobsiz savol: A/B/C? «Do'konlar» ustidagi 3 kartochka (`DokonlarPane`) ham shu usulda bo'lsinmi? Kod YOZILMAGAN.
+           + versiya 2: Ibrohim «iOS'da bosilib emas, surilib o'tadi — shuni ham qo'sh, mockupda ko'rsat» → D varianti:
+           4 kartochka bir qatorda, gorizontal surish (overflow-x auto + scroll-snap x mandatory, kartochka 78% eni,
+           keyingisining cheti ko'rinadi), pastda nuqtalar (joriy = ko'k cho'ziq). Maketda JONLI namuna (suriladi).
+           Kompyuterda to'rttasi sig'adi → u yerda A. Javobsiz savol endi: A/B/C/D?
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
