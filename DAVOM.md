@@ -5,6 +5,26 @@
 
 **Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.18 — PRODDA** (2026-10-13)
 
+## ⏳ YARIM QOLDI — DAFTAR TIZIMI (TILLA'DAN) — MAKET + REJA (2026-10-13) — ENG OXIRGI ISH
+
+Ibrohim: «Tilla ERP dagi DAFTAR tizimini Kabir ERP ga ko'chirmoqchiman… avval o'qi, Kabir ma'lumot tuzilishini o'rgan,
+MAKET + reja ko'rsat. Kod yozma.» + 11 band spetsifikatsiya (append-only, kalitlar, navbat, 300k bo'lak, imzo, ombor qulfi,
+ko'chirish, avval TEST) + 2 saboq (forEach(yubor); internet yo'qda chiqim bloki + «Qayta bosmang» butun ekran).
+Manba o'qildi: tilla-erp origin/main (638277f) — daftar.js (656 q.), index.html DAFTAR_REJIM (37 joy; save() shoxi 2537,
+           DF.Daftar env 20824), DAVOM v188.85 (qoida). Tilla papkasiga yozilmagan (faqat git fetch + git show).
+Maket+reja: https://claude.ai/artifact/U1Hs86Tv5HQf9iXkPPQA5u — KOD YOZILMAGAN.
+Asosiy topilmalar: Kabir'da Firebase Auth YO'Q (Tilla qoidasi request.auth.uid ga tayanadi) → qoida faqat «o'zgartirib/
+           o'chirib bo'lmaydi»ni kafolatlaydi; Kabir joriy Firestore qoidasi noma'lum (rasm so'raldi). Kabir'da _oid kerak emas
+           (id bor). Ombor qulfi Kabir'da donaga: sotuv/jo'natish/qaytarish/o'chirish + unit ID va ZK- raqami ham navbat bilan.
+           partial_payments → `sales:<id>.pp:<ppid>` (ikki telefon to'lovi ikkalasi qoladi). Faqat snake_case maydonlar.
+Bosqichlar: 0 qarorlar → 1 daftar.js (yangi fayl, Node sinov) → 2 qoida (emulyator, Publish — Ibrohim) → 3 TEST rejim +
+           db o'rami/loadAll ulanishi → 4 guruhlash + qulf + internet-yo'q UX → 5 TEST'ga ko'chirish (prod faqat O'QILADI) →
+           6 Ibrohim 2 telefonda sinaydi → 7 o'tish kuni.
+Javobsiz savol (7 ta, tavsiya «1B 2A 3B 4A 5A 6A 7 ha»): 1) amal=1 qator; 2) offline chiqim; 3) rasmlar; 4) Firebase Auth;
+           5) TEST kirish (#sinov); 6) QR katalog; 7) CLAUDE.md «Tilla'dan ko'chirilmaydi» qoidasiga istisno.
+           + Firebase konsolidan joriy qoida rasmi va tarif (Spark/Blaze).
+Keyingi qadam: javob → 1-bosqich (daftar.js + Node sinovlari), index.html ga tegmasdan.
+
 ## ⏳ YARIM QOLDI — QIDIRUV YONIGA «×» (TOZALASH) (2026-10-13) — ENG OXIRGI ISH
 
 Ibrohim: «poiskning yoniga x qo'y, tez o'chirib tashlashga». Kod YOZILMAGAN, prodda v1.18.
