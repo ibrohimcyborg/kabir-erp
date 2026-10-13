@@ -199,6 +199,8 @@ sinov('katta yozuv bo\'laklarga bo\'linadi, bitta batch, boshqa telefonda yig\'i
   B.mijoz.onlayn();
   await birXil(A, B);
   assert.equal(B.d.holat().activity['a-katta'].details.length, katta.length);
+  const amallar = new Set([...server.hujjatlar.keys()].filter(k => k.includes('/_daftar/yozuvlar/')).map(k => k.replace(/~\d+$/, ''))).size;
+  assert.equal(A.d.jami(), amallar); assert.equal(B.d.jami(), amallar);   // bo'laklangan yozuv — bitta amal
   await tekshirOk(B);
 });
 

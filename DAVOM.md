@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = 897304e · versiya: **v1.19 — PRODDA** · **DAFTAR 1–2-bosqich TAYYOR (qoida prodda) · KEYINGI: SOYA REJIMI (maket javob kutmoqda)**
+**Oxirgi yangilanish:** 2026-10-13 · main = c539c0b (v1.19 prodda) · **v1.20 SOYA REJIMI — commit qilingan, PUSH QILINMAGAN** (branch `claude/pc-versiya`) · keyingi: Ibrohim «push qil» → prodda superadmin ochadi → birinchi nusxa avtomatik · navbatda: «Sozlamalar → ombor/do'kon sonini 0 qilish» (maket kerak), do'kon hisoboti (1–10 qarorlar)
 
 ## ⏳ DO'KON HISOBOTI — MAKET TAYYOR, DAFTAR'DAN KEYIN (2026-10-13)
 
@@ -16,7 +16,7 @@ Tashxis:   Sotildi va Pul olindi — to'liq (`sales`, `partial_payments`/`paid`)
            `ReturnModal` sent_at=null qiladi → qaytgan molning jo'natilgani yo'qoladi). Qaytdi — faqat `activity` matni
            «Vitrinadan qaytarildi: <mahsulot> N dona — <do'kon nomi>» (do'kon id/unit ID yo'q). Naqsh: `PcOmborPane` «Harakatlar».
 Qarorlar (tavsiya): 1) manba A (faqat o'qiydi) hozir, DAFTAR kelgach C (to'liq + «jo'natildi−sotildi−qaytdi=vitrinada»);
-           2) davr «Hammasi | Bu oy»; 3) zakazlar kirmaydi; 4) 5-bo'lim «Hisobot» oxirida. Diff taxmini ~70–90 qator, v1.20.
+           2) davr «Hammasi | Bu oy»; 3) zakazlar kirmaydi; 4) 5-bo'lim «Hisobot» oxirida. Diff taxmini ~70–90 qator, versiya v1.20 dan keyingisi (v1.20 — soya rejimi).
 Maket tuzatishlari (Ibrohim, bittadan): v2 — tur tugmalari bitta qatorga sig'adi, iOS kabi oq belgi suriladi;
            v3 — amallar sanalar bo'yicha yig'ilgan (Tilla kabi «12/10/2026 · 2 ta», bosilsa ochiladi, boshida yopiq).
            v4 — amalni bosib tahrirlash oynasi (sotuv: model/dona/narx; jo'natish: model/dona; qaytish: dona (faqat C);
@@ -93,7 +93,7 @@ Ibrohim: Publish'dan keyin ilova (Ombor/Do'kon) «ochildi» — tasdiqlandi. mai
            Qarorlar (tavsiya): 1) faqat manzil #sinov; 2) bo'sh baza; 3) TEST_rasmlar; 4) faqat tasma (versiya yonida
            SINOV — uzun sarlavhada sig'maydi). Taxminiy versiya v1.20.
 ❌ #sinov rejimi BEKOR (Ibrohim: «menga sinov kerak emas» → «main'da amalda qilsa bo'lmaydimi» → «A ni qil»).
-⏳ 3-BOSQICH O'RNIGA — SOYA REJIMI: MAKET, JAVOB KUTILMOQDA (2026-10-13): https://claude.ai/artifact/KFawfZMHuzipdHZuJPyCdv
+✅ 3-BOSQICH O'RNIGA — SOYA REJIMI: maket (2026-10-13) https://claude.ai/artifact/KFawfZMHuzipdHZuJPyCdv — Ibrohim «shunaqa qil» (1–4 tavsiya bo'yicha) → «ha boshla» → v1.20 KODDA (pastda)
            Ilova eski jadvallardan ishlaydi (asosiy nusxa o'zgarmaydi); db o'rami yozuvdan keyin xuddi o'sha yozuvni daftarga
            ham yuboradi (kutmasdan, xatosi ilovaga chiqmaydi, id bir xil); superadmin ochganda daftar bo'sh bo'lsa — 7 jadval
            YANGIDAN o'qilib bitta katta yozuv (kochir, navbat qulfi bilan); kuniga bir marta solishtirish (eski jadvallar
@@ -103,7 +103,32 @@ Ibrohim: Publish'dan keyin ilova (Ombor/Do'kon) «ochildi» — tasdiqlandi. mai
            ko'rsatadi, Ibrohim rasmini yuboradi. Kod: TEST_kabir emas, `kabir` daftari (prod daftar, eski jadvallarga tegmaydi).
            Ehtimoliy farq manbai: eski tizimdagi ikki telefon to'qnashuvi (masalan, to'lov massivi ustidan yozilishi) — daftar
            ikkala to'lovni saqlaydi. O'tish (eski → daftardan o'qish) — alohida versiya, alohida «ha».
-Keyingi qadam: Ibrohim «shunaqa qil»/1–4 tanlovi → TAXMIN BLOKI → kod (v1.20: daftar.js ulash, soya yozuv, kochir, solishtirish, bulut oynasi) → soxta baza sinovi.
+✅ v1.20 — SOYA REJIMI KODDA (2026-10-13) — commit qilingan, PUSH QILINMAGAN (prodda yo'q)
+Branch:    claude/pc-versiya — push: yo'q
+Qilingan:  index.html:24 `<script src="daftar.js?v=1.20">` (firebase compat'dan keyin);
+           db o'rami (`db._run`, ~207–268): batch.commit() muvaffaqiyatidan KEYIN `soyaYoz(...)` — insert/upsert (id bilan
+           tozalangan hujjatlar), update/delete (fsGetAll topgan id'lar). Faqat DF.MAYDON jadvallari (users — yo'q).
+           Soya moduli (`SOYA`, `soyaYoz`, `soyaBoshla`, `soyaNazorat`, `soyaKorinish` …, ~275–417, HELPERS dan oldin):
+           dvigatel `kabir` daftari; holat nusxasi IndexedDB `kabir_daftar` (k/xom), meta — localStorage `kabir_daftar_meta`,
+           qurilma id — `kabir_qurilma`. Dvigatel FAQAT kirgan foydalanuvchida (`App` hook ~597 `if (user) soyaBoshla()`) —
+           QR ochiq sahifasida ishlamaydi. Superadmin: daftar navbati (`kabir/_daftar/navbat/bosh`) yo'q bo'lsa — 7 jadval
+           server'dan o'qilib `kochir` (birinchi nusxa); kuniga 1 marta solishtirish (eski jadvallar server'dan ↔ daftar
+           holati, yassi kalitlar; farq bo'lsa 10 s kutib QAYTA — ikkalasida bor kalit farq hisoblanadi); 1-kuni (boshlangan
+           = bugun) farq chiqsa — bitta marta qayta kochir. Natija Firestore `kabir_soya/holat`: boshlangan, seriya (1:1
+           kunlar ketma-ket; farq → 0; bir kunda bir marta oshadi), seriyaKun, oxirgi {vaqt, ok, farqSoni, farq[20], amallar}.
+           `SoyaTugma` (~511, App'dan TASHQARIDA — o'z holati, App'ni qayta chizdirmaydi; oyna portal bilan body'ga):
+           superadmin bulut belgisi ustida shaffof tugma + rangli nuqta, bosilsa oyna (maketdagidek).
+           Header (~3393): bulut div o'ralgan `position:relative`; `{user?.role === "superadmin" && <SoyaTugma t={t} />}`.
+           daftar.js: `meta.jami` (daftardagi amallar soni) + `jami()`; sinov/daftar.test.mjs ga jami tekshiruvi.
+Sinov:     JSX OK; daftar 25/25 (URUGLAR=30: 49/49); qoida 7/7; brauzer (haqiqiy index.html + firebase compat SDK →
+           emulyator, firestore.rules yuklangan) 8/8: superadmin birinchi nusxa + 1:1, admin yozuvlari daftarga (id bir xil,
+           rasm/camelCase/users kirmaydi), 1-kun qayta nusxa, farq ko'rsatiladi (tuzatilmaydi, seriya 0), internetsiz yozuv,
+           daftar.js 404 — ilova ishlaydi, pageerror/alert/tashqi so'rov yo'q. Brauzer sinov skripti scratchpad'da (repoda yo'q).
+           Sinov eslatmasi: Chromium lokal emulyatorga so'rovni bloklaydi — `--disable-features=LocalNetworkAccessChecks,…`
+           va sahifa `http://localhost:8899/` (route bilan) kerak.
+Keyingi qadam: Ibrohim «push qil» → main → prod. Keyin Ibrohim (superadmin) ilovani ochadi → birinchi nusxa avtomatik →
+           bulut nuqtasi yashil bo'lishi kerak; 7 kun kuzatiladi. Farq chiqsa — Ibrohim oyna rasmini yuboradi.
+O'tish (daftardan o'qish) — 7/7 dan keyin ALOHIDA versiya, alohida «ha».
 Javobsiz:  tarif (Spark/Blaze) — qoidaga ta'sir qilmaydi, rasmlar ombori uchun kerak.
 
 ## ✅ VERCEL KUNLIK CHEGARASI (2026-10-13) — HAL QILINDI
@@ -507,6 +532,11 @@ Javobsiz savol: PDF ham tuzatilsinmi?
 
 ## ⬜ Navbatda (Ibrohim tanlaydi)
 
+- ⏳ YANGI SO'ROV (2026-10-13, Ibrohim): «sozlamalarga ombordagi narsalar sonini, keyin do'kondagi narsalar sonini 0
+  qiladigan qil — biz to'ldiramiz». KOD YO'Q — avval MAKET (LOGIKA: unitlarni o'chiradi). Maketda ko'rsatiladigan
+  muammolar: unit ID soni bo'yicha (`AddStockModal`, existingCount) — o'chirilgach yangi yorliqlar eski chop etilgan
+  ID'larni takrorlaydi (§10 ochiq muammo 4); sotilgan unitlar QOLISHI shart (sales.unit_ids); soya rejimida o'chirish
+  daftarga ham ketadi; kim qila oladi (faqat superadmin?); qaysi do'kon / hammasi; tasdiq oynasi.
 - Tahlildagi tezkor tuzatishlar (har biri alohida sikl, avval maket): QR `#p=SKU` havolasi
   ilovani yiqitishi; PDF kirill/ʻ shrifti; PDF holat ranglari; chop HTML da nomlarni tozalash.
 - Xavfsizlik: standart parollarni almashtirish, repo'ni private qilish — Ibrohim o'zi

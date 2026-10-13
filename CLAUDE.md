@@ -149,7 +149,7 @@ Muammoni topganingda ham avval mockup.
 | Firestore yozish/o'qish | `db` o'rami, `loadAll`, har `db.from(...)` chaqiruvi |
 | PDF ma'lumoti | `pdf*` funksiyalari ↔ `api/pdf.py` `build_*` |
 | Sana | `today()`, `now()`, oy kaliti |
-| `localStorage` | `kabir_user`, `kabir_tab`, `kabir_dark` |
+| `localStorage` | `kabir_user`, `kabir_tab`, `kabir_dark`; daftar (v1.20): `kabir_qurilma`, `kabir_daftar_meta` + IndexedDB `kabir_daftar` |
 
 **Nega bu bor:** Kabir'da TEST rejimi yo'q (§7). Logika xatosi sinov paytidayoq haqiqiy savdo
 ma'lumotiga yoziladi.
@@ -681,7 +681,9 @@ yuklaydi). O'chirish faqat alohida so'rov bilan.
 index.html        ~2 960 qator (~195 KB, ~49k token) — butun ilova (React 18 UMD + Babel,
                   bitta <script type="text/babel">, Firebase Firestore compat 10.14.1)
 api/pdf.py        PDF generator (Vercel Python funksiyasi, ReportLab)
-daftar.js         DAFTAR dvigateli (2026-10-13, 1-bosqich) — index.html hali YUKLAMAYDI; reja DAVOM.md da
+daftar.js         DAFTAR dvigateli (2026-10-13) — v1.20 dan index.html yuklaydi: SOYA REJIMI (db o'rami yozuvdan keyin
+                  daftarga ham; superadmin — birinchi nusxa + kunlik solishtirish `kabir_soya/holat`; `SOYA`, `SoyaTugma`).
+                  Ekran hali eski jadvallardan. Reja DAVOM.md da
 firestore.rules   Firebase qoidasi (DAFTAR 2-bosqich) — matni Ibrohim konsolga qo'yib Publish qiladi; saytdan yashirin
 sinov/            daftar.js sinovlari: `node sinov/daftar.test.mjs` (soxta Firestore, haqiqiy bazaga ulanmaydi);
                   qoida sinovi: `KABIR_FB=/tmp/kabir-fb node sinov/qoida.test.mjs` (emulyator, tayyorlash — fayl boshida).

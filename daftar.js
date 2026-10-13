@@ -252,14 +252,14 @@ function Daftar(env){
   function boshla(){
     meta = env.metaOl() || {};
     meta.oxirgiT = meta.oxirgiT || 0; meta.korildi = meta.korildi || {}; meta.chiqish = meta.chiqish || [];
-    meta.yetim = meta.yetim || 0; meta.chK = meta.chK || 0; meta.chOrt = meta.chOrt || {};
+    meta.yetim = meta.yetim || 0; meta.chK = meta.chK || 0; meta.chOrt = meta.chOrt || {}; meta.jami = meta.jami || 0;
     var xom = env.xomOl ? env.xomOl() : null, saqlangan = null;
     // Qurilmadagi holat — dvigatel oxirgi marta yozgan nusxaning O'ZImi (imzo)? Bo'lmasa (yangi qurilma, kesh tozalandi,
     // qo'lda o'zgartirildi) — unga ishonilmaydi: holat bo'shatiladi va daftar BOSHIDAN o'qiladi.
     var ishonch = !!(meta.imzo && xom !== null && xom !== undefined && imzo(xom) === meta.imzo);
     if(ishonch){ try{ saqlangan = JSON.parse(xom); }catch(e){ ishonch = false; } }
     if(!ishonch){
-      meta.oxirgiT = 0; meta.korildi = {}; meta.kt = {}; meta.soya = {}; meta.oxirgiOz = {}; meta.yetim = 0; meta.chK = 0; meta.chOrt = {};
+      meta.oxirgiT = 0; meta.korildi = {}; meta.kt = {}; meta.soya = {}; meta.oxirgiOz = {}; meta.yetim = 0; meta.chK = 0; meta.chOrt = {}; meta.jami = 0;
       meta.chiqish.forEach(function(e){ e.lokal = 0; });
       baza = bosh();
     } else {
@@ -514,7 +514,7 @@ function Daftar(env){
       if(it.t > meta.oxirgiT) meta.oxirgiT = it.t;
       if(env.izla) env.izla(kutish[it.id] ? 'oz' : meta.korildi[it.id] !== undefined ? 'skip' : 'boshqa', it.id);
       if(meta.korildi[it.id] !== undefined && !kutish[it.id]) return;   // allaqachon qo'llangan
-      meta.korildi[it.id] = it.t;
+      meta.korildi[it.id] = it.t; meta.jami++;          // daftardagi amallar soni (bo'laklangan yozuv — bitta)
       if(it.x.ch) chBelgila(it.x.ch);
       if(meta.chiqish.length) meta.chiqish = meta.chiqish.filter(function(c){ return c.id !== it.id; });
       var ops = JSON.parse(it.x.o), ver = [it.t, it.id];
@@ -618,6 +618,7 @@ function Daftar(env){
     holat: function(){ return baza; },
     tayyor: function(){ return !!(unsub && serverdan && !xato && meta && !meta.chiqish.length && !cj); },
     navbatda: function(){ return meta ? meta.chiqish.length : 0; },
+    jami: function(){ return meta ? meta.jami : 0; },
     tashlandi: function(){ return Object.assign({}, tashlandi); },
     _ichki: function(){ return { H: H, meta: meta, kutish: kutish, kalitKutish: kalitKutish, soya: soya, serverdan: serverdan, xato: xato, tartibsiz: tartibsiz, cj: cj }; }
   };

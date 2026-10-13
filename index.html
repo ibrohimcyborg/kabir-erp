@@ -1,4 +1,4 @@
-<!-- v1.19 -->
+<!-- v1.20 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -21,6 +21,7 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="daftar.js?v=1.20"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 <style>
@@ -138,7 +139,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:blo
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.19";
+const APP_VER = "v1.20";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -225,12 +226,15 @@ const db = {
           if (q._op === "insert" || q._op === "upsert") {
             const items = Array.isArray(q._payload) ? q._payload : [q._payload];
             const batch = fsdb.batch();
+            const yozildi = [];
             items.forEach(it => {
               const id = it.id ?? (Math.random().toString(36).slice(2) + Date.now());
               const clean = JSON.parse(JSON.stringify({ ...it, id })); // undefined larni tozalash
               batch.set(fsdb.collection(table).doc(String(id)), clean, { merge: q._op === "upsert" });
+              yozildi.push(clean);
             });
             await batch.commit();
+            soyaYoz({ t: q._op, j: table, r: yozildi });
             setCloudStatus("ok");
             return { data: items, error: null };
           }
@@ -240,6 +244,7 @@ const db = {
             const batch = fsdb.batch();
             rows.forEach(r => batch.update(fsdb.collection(table).doc(String(r.id)), clean));
             await batch.commit();
+            if (rows.length) soyaYoz({ t: "update", j: table, id: rows.map(r => String(r.id)), f: clean });
             setCloudStatus("ok");
             return { data: null, error: null };
           }
@@ -248,6 +253,7 @@ const db = {
             const batch = fsdb.batch();
             rows.forEach(r => batch.delete(fsdb.collection(table).doc(String(r.id))));
             await batch.commit();
+            if (rows.length) soyaYoz({ t: "delete", j: table, id: rows.map(r => String(r.id)) });
             setCloudStatus("ok");
             return { data: null, error: null };
           }
@@ -264,6 +270,149 @@ const db = {
     };
     return q;
   },
+};
+
+// ═══════════════════════════════════════════════════════════
+// DAFTAR — SOYA REJIMI (daftar.js). Ilova eski jadvallardan ishlaydi; har muvaffaqiyatli yozuv orqa fonda
+// daftarga ham qo'shiladi (kutilmaydi, xatosi ilovaga chiqmaydi). Superadmin telefonida: daftar boshlanmagan
+// bo'lsa — birinchi nusxa (ko'chirish), kuniga bir marta eski jadvallar bilan solishtirish (kabir_soya/holat).
+// ═══════════════════════════════════════════════════════════
+const SOYA_KOL = "kabir";
+const SOYA = { d: null, boshlandi: false, kut: [], rang: "gray", matn: "ulanmagan", h: null, ish: false, jarayon: "", xato: "", qaytaKochir: false, ting: [] };
+const soyaXabar = () => SOYA.ting.forEach(fn => { try { fn(); } catch (e) {} });
+const onSoya = (fn) => { SOYA.ting.push(fn); return () => { SOYA.ting = SOYA.ting.filter(f => f !== fn); }; };
+const soyaYoz = (y) => {
+  try {
+    if (!window.DF || !DF.MAYDON[y.j]) return;                  // users va boshqalar daftarga kirmaydi
+    if (!SOYA.d) { if (SOYA.kut) SOYA.kut.push(y); return; }    // dvigatel hali ochilmagan — ochilgach yuboriladi
+    SOYA.d.amal(y.t + " " + y.j, () => [y]).catch(e => console.warn("Daftar:", (e && e.sabab) || e));
+  } catch (e) { console.warn("Daftar:", e); }
+};
+// Dvigatel: holat nusxasi qurilmada IndexedDB da (katta bo'lishi mumkin), kichik meta — localStorage da
+const soyaBoshla = () => {
+  if (SOYA.boshlandi) return;
+  SOYA.boshlandi = true;
+  const toxta = () => { SOYA.kut = null; soyaXabar(); };
+  if (!window.DF || !window.indexedDB) return toxta();
+  let r;
+  try { r = indexedDB.open("kabir_daftar", 1); } catch (e) { return toxta(); }
+  r.onupgradeneeded = () => r.result.createObjectStore("k");
+  r.onerror = toxta;
+  r.onsuccess = () => {
+    const idb = r.result;
+    const davom = (xom) => {
+      try {
+        const d = DF.Daftar({
+          db: () => fsdb, kol: () => SOYA_KOL, ver: APP_VER,
+          qurilma: () => { let q = localStorage.getItem("kabir_qurilma"); if (!q) { q = DF.yangiId("q"); localStorage.setItem("kabir_qurilma", q); } return q; },
+          serverVaqt: () => firebase.firestore.FieldValue.serverTimestamp(),
+          vaqtDan: (ms) => firebase.firestore.Timestamp.fromMillis(ms),
+          xomOl: () => xom,
+          lokalSaqla: (j) => { xom = j; try { idb.transaction("k", "readwrite").objectStore("k").put(j, "xom"); } catch (e) {} },
+          metaOl: () => { try { return JSON.parse(localStorage.getItem("kabir_daftar_meta") || "null"); } catch (e) { return null; } },
+          metaYoz: (m) => localStorage.setItem("kabir_daftar_meta", JSON.stringify(m)),
+          holat: (rang, matn) => { SOYA.rang = rang; SOYA.matn = matn; soyaXabar(); },
+          kutish: () => {},
+          xatoLog: (e) => console.warn("Daftar:", e),
+        });
+        d.boshla(); SOYA.d = d; d.ulan();
+        const k = SOYA.kut || []; SOYA.kut = null; k.forEach(soyaYoz);
+      } catch (e) { console.warn("Daftar:", e); SOYA.kut = null; }
+      soyaXabar();
+    };
+    try {
+      const g = idb.transaction("k").objectStore("k").get("xom");
+      g.onsuccess = () => davom(typeof g.result === "string" ? g.result : null);
+      g.onerror = () => davom(null);
+    } catch (e) { davom(null); }
+  };
+};
+// Superadmin: birinchi nusxa + solishtirish
+const soyaHolatRef = () => fsdb.collection("kabir_soya").doc("holat");
+const soyaJadvallar = async () => {
+  const r = {};
+  for (const j of Object.keys(DF.MAYDON)) r[j] = (await fsdb.collection(j).get({ source: "server" })).docs.map(x => ({ id: x.id, ...x.data() }));
+  return r;
+};
+const soyaKut = async (ms) => {
+  const t0 = Date.now();
+  while (!(SOYA.d && SOYA.d.tayyor())) { if (Date.now() - t0 > ms) return false; await new Promise(ok => setTimeout(ok, 1000)); }
+  return true;
+};
+const soyaFarq = async () => {   // { kalit: [daftardagi, eski jadvaldagi] } — rasm, login, camelCase nusxalar hisobga kirmaydi
+  const eski = DF.yassi(DF.bazaDan(await soyaJadvallar())), m = DF.yassi(SOYA.d.holat()), f = {};
+  for (const k in m) if (m[k] !== eski[k]) f[k] = [m[k], eski[k]];
+  for (const k in eski) if (m[k] === undefined) f[k] = [undefined, eski[k]];
+  return f;
+};
+const soyaIkkiMarta = async () => {   // shu soniyada boshqa telefon yozayotgan bo'lsa — farq emas: 10 soniyadan keyin qayta
+  const f1 = await soyaFarq();
+  if (!Object.keys(f1).length) return f1;
+  await new Promise(ok => setTimeout(ok, 10000));
+  if (!(await soyaKut(90000))) throw new Error("daftar cloud bilan ulanmadi");
+  const f2 = await soyaFarq(), f = {};
+  Object.keys(f2).forEach(k => { if (f1[k]) f[k] = f2[k]; });
+  return f;
+};
+const soyaQator = (k, [a, b]) => {
+  const i = k.indexOf(":"), j = k.slice(0, i), r = k.slice(i + 1), n = r.indexOf("."), id = n < 0 ? r : r.slice(0, n);
+  const q = (v) => v === undefined ? "yo'q" : v.length > 40 ? v.slice(0, 40) + "…" : v;
+  const bosh = `${j} · ${id.length > 8 ? id.slice(0, 6) + "…" : id}`;
+  if (n < 0) return bosh + (a !== undefined ? " — daftarda bor, eski jadvalda yo'q" : " — eski jadvalda bor, daftarda yo'q");
+  return `${bosh} · ${r.slice(n + 1)} — daftar: ${q(a)}, eski: ${q(b)}`;
+};
+const soyaNazorat = async (qolda) => {
+  if (SOYA.ish) return;
+  SOYA.ish = true; SOYA.xato = "";
+  const bosqich = (m) => { SOYA.jarayon = m; soyaXabar(); };
+  try {
+    bosqich("Daftar tayyorlanmoqda…");
+    if (!(await soyaKut(90000))) throw new Error("daftar cloud bilan ulanmadi");
+    const hs = await soyaHolatRef().get({ source: "server" });
+    let h = hs.exists ? hs.data() : {};
+    const nav = await fsdb.collection(SOYA_KOL).doc("_daftar").collection("navbat").doc("bosh").get({ source: "server" });
+    if (!nav.exists) {   // daftar hali boshlanmagan — hozirgi ma'lumot bitta katta yozuv bo'lib ko'chiriladi
+      bosqich("Birinchi nusxa olinmoqda…");
+      await SOYA.d.kochir(await soyaJadvallar(), "Birinchi nusxa · " + APP_VER);
+      h = { boshlangan: today(), seriya: 0, seriyaKun: "" };
+      await soyaHolatRef().set(h);
+    }
+    if (!h.boshlangan) h.boshlangan = today();
+    SOYA.h = h;
+    if (!qolda && h.oxirgi && String(h.oxirgi.vaqt).slice(0, 10) === today()) return;   // bugun solishtirilgan
+    bosqich("Solishtirilmoqda…");
+    let f = await soyaIkkiMarta();
+    if (Object.keys(f).length && h.boshlangan === today() && !SOYA.qaytaKochir) {   // 1-kun: nusxa olinayotganda kelgan amal
+      SOYA.qaytaKochir = true;
+      bosqich("Birinchi nusxa yangilanmoqda…");
+      await SOYA.d.kochir(await soyaJadvallar(), "Birinchi nusxa (qayta) · " + APP_VER);
+      bosqich("Solishtirilmoqda…");
+      f = await soyaIkkiMarta();
+    }
+    const kl = Object.keys(f), ok = !kl.length, kun = today();
+    if (ok) { if (h.seriyaKun !== kun) { h.seriya = (h.seriya || 0) + 1; h.seriyaKun = kun; } }
+    else { h.seriya = 0; h.seriyaKun = ""; }
+    h.oxirgi = { vaqt: now(), ok, farqSoni: kl.length, farq: kl.slice(0, 20).map(k => soyaQator(k, f[k])), amallar: SOYA.d.jami() };
+    await soyaHolatRef().set(h);
+    SOYA.h = h;
+  } catch (e) {
+    SOYA.xato = (e && (e.sabab || e.message)) || String(e);
+  } finally {
+    SOYA.ish = false; SOYA.jarayon = ""; soyaXabar();
+  }
+};
+const soyaKorinish = () => {
+  const d = SOYA.d, o = SOYA.h && SOYA.h.oxirgi;
+  if (!d) return { rang: "gray", matn: "Daftar ishga tushmagan" };
+  if (SOYA.jarayon) return { rang: "yellow", matn: SOYA.jarayon };
+  if (SOYA.xato) return { rang: "red", matn: "Xato: " + SOYA.xato };
+  if (SOYA.rang === "red") return { rang: "red", matn: "Daftar: " + SOYA.matn };
+  if (o && !o.ok) return { rang: "red", matn: `Solishtirishda ${o.farqSoni} ta farq` };
+  if (!navigator.onLine) return { rang: "yellow", matn: d.navbatda() ? "Internet yo'q — amallar navbatda" : "Internet yo'q" };
+  if (d.navbatda()) return { rang: "yellow", matn: "Daftarga yuborilmoqda · " + d.navbatda() };
+  if (SOYA.rang !== "green") return { rang: "yellow", matn: "Daftar o'qilmoqda…" };
+  if (!o) return { rang: "yellow", matn: "Hali solishtirilmagan" };
+  return { rang: "green", matn: "Daftar eski jadvallar bilan 1:1" };
 };
 
 // ═══════════════════════════════════════════════════════════
@@ -357,6 +506,61 @@ const THEMES = {
 // Screen esa barqaror tur: sahifa funksiyasini o'z ichida chaqiradi, holat saqlanib qoladi.
 const Screen = ({ render }) => render();
 
+// Daftar (soya rejimi) — superadmin bulut belgisi ustidagi tugma + oyna. App dan tashqarida: o'z holati bilan
+// qayta chiziladi, App ni (ochiq forma, filtrlar) qayta chizdirmaydi.
+const SoyaTugma = ({ t }) => {
+  const [, setTik] = useState(0);
+  const [ochiq, setOchiq] = useState(false);
+  useEffect(() => onSoya(() => setTik(x => x + 1)), []);
+  useEffect(() => { soyaNazorat(false); }, []);
+  const k = soyaKorinish(), rang = { green: t.green, yellow: t.amber, red: t.red, gray: t.dim }[k.rang];
+  const fon = { green: t.greenS, yellow: t.amberS, red: t.redS, gray: t.accSoft }[k.rang];
+  const h = SOYA.h || {}, o = h.oxirgi, n = Math.min(h.seriya || 0, 7), d = SOYA.d;
+  const qator = { display: "flex", justifyContent: "space-between", gap: 10, fontSize: 13.5, padding: "7px 2px", borderBottom: `1px solid ${t.border}`, fontVariantNumeric: "tabular-nums" };
+  const vaqt = (v) => v ? dateStr(v) + " " + new Date(v).toLocaleTimeString("uz-UZ", { hour: "2-digit", minute: "2-digit" }) : "—";
+  const son = (x) => String(x || 0).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return (
+    <>
+      <button onClick={() => setOchiq(true)} aria-label={"Daftar: " + k.matn} title={"Daftar: " + k.matn} style={{ position: "absolute", inset: 0, borderRadius: 14 }}>
+        <span style={{ position: "absolute", top: -3, right: -3, width: 11, height: 11, borderRadius: "50%", background: rang, border: `2px solid ${t.bg}` }} />
+      </button>
+      {ochiq && ReactDOM.createPortal(
+        <div className="ovl" style={{ position: "fixed", inset: 0, background: "#00000099", zIndex: 9999, display: "flex", alignItems: "flex-end", justifyContent: "center" }} onClick={() => setOchiq(false)}>
+          <div className="up" role="dialog" aria-modal="true" aria-label="Daftar · soya rejimi" onClick={e => e.stopPropagation()} style={{ background: t.surf, color: t.txt, borderRadius: "28px 28px 0 0", width: "100%", maxHeight: "90vh", overflowY: "auto", padding: 20 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: 17, fontWeight: 700 }}>Daftar · soya rejimi</span>
+              <button onClick={() => setOchiq(false)} aria-label="Yopish" style={{ width: 34, height: 34, borderRadius: 11, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: t.txt }}><Ic n="x" s={16} /></button>
+            </div>
+            <div style={{ fontSize: 12.5, color: t.sub, marginTop: 4 }}>Asosiy ma'lumot — eski jadvallarda. Daftar orqa fonda yozilmoqda va solishtirilmoqda.</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 9, margin: "12px 0 10px", padding: "11px 12px", borderRadius: 12, fontWeight: 700, fontSize: 14.5, background: fon, color: rang }}>
+              <span style={{ width: 10, height: 10, borderRadius: "50%", background: rang, flex: "none" }} />{k.matn}
+            </div>
+            {o && !o.ok && (
+              <div style={{ marginTop: 8, borderRadius: 12, background: t.redS, padding: "10px 12px", fontSize: 12.5 }}>
+                <b style={{ color: t.red }}>Farqlar (rasmga olib yuboring):</b>
+                {(o.farq || []).map((x, i) => <div key={i} style={{ padding: "3px 0", overflowWrap: "anywhere" }}>{x}</div>)}
+                {o.farqSoni > (o.farq || []).length && <div style={{ padding: "3px 0", color: t.sub }}>… yana {o.farqSoni - (o.farq || []).length} ta</div>}
+              </div>
+            )}
+            <div style={{ margin: "12px 2px 4px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}><b>O'tishga tayyorlik</b><span style={{ color: t.sub }}>{n} / 7 kun ketma-ket 1:1</span></div>
+              <div style={{ height: 8, borderRadius: 4, background: t.border, marginTop: 6, overflow: "hidden" }}><div style={{ height: "100%", width: Math.round(n / 7 * 100) + "%", background: t.green, borderRadius: 4 }} /></div>
+            </div>
+            <div style={qator}><span style={{ color: t.sub }}>Oxirgi solishtirish</span><b>{vaqt(o && o.vaqt)}</b></div>
+            <div style={qator}><span style={{ color: t.sub }}>Navbatda (yuborilmagan)</span><b>{d ? d.navbatda() : 0}</b></div>
+            <div style={qator}><span style={{ color: t.sub }}>Daftar boshlangan</span><b>{h.boshlangan ? dateStr(h.boshlangan) : "—"}</b></div>
+            <div style={qator}><span style={{ color: t.sub }}>Daftardagi amallar</span><b>{son(d ? d.jami() : 0)}</b></div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 14 }}>
+              <button disabled={SOYA.ish || !d} onClick={() => soyaNazorat(true)} style={{ borderRadius: 12, padding: 11, fontWeight: 600, fontSize: 14, background: t.acc, color: t.accTxt, opacity: SOYA.ish || !d ? 0.6 : 1 }}>{SOYA.ish ? "Solishtirilmoqda…" : "Hozir solishtirish"}</button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+    </>
+  );
+};
+
 // Telefonda sahifani chapga-o'ngga surib bo'lim almashtirish holati (hook emas)
 const SW = { on: false };
 
@@ -390,6 +594,7 @@ function App() {
   // Cloud holati (yashil/qizil ikonka) va sozlamalar menyusi
   const [cloudStatus, setCloudStatusState] = useState("ok");
   useEffect(() => onCloudStatus(setCloudStatusState), []);
+  useEffect(() => { if (user) soyaBoshla(); }, [user]);   // daftar (soya rejimi) — faqat kirgan foydalanuvchida
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   useEffect(() => {
     const goOnline = () => setIsOnline(true);
@@ -3181,8 +3386,11 @@ To'lov uchun:
             </nav>
           </div>
           <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+            <div style={{ position:"relative", display:"flex" }}>
             <div title={!isOnline ? "Internet yo'q" : cloudStatus === "ok" ? "Cloud ulangan" : "Cloud xato"} style={{ width:42, height:42, borderRadius:14, border:`1px solid ${t.glassB}`, background: (isOnline && cloudStatus === "ok") ? t.glass : t.redS, display:"flex", alignItems:"center", justifyContent:"center", color: (isOnline && cloudStatus === "ok") ? t.sub : t.red }}>
               <Ic n={(isOnline && cloudStatus === "ok") ? "cloud" : "cloudOff"} s={18}/>
+            </div>
+            {user?.role === "superadmin" && <SoyaTugma t={t} />}
             </div>
             <button onClick={doRefresh} disabled={refreshing} title="Yangilash" style={{ width:42, height:42, borderRadius:14, border:`1px solid ${t.glassB}`, background:t.glass, display:"flex", alignItems:"center", justifyContent:"center", color:t.txt }}>
               <span className={refreshing ? "ptr-spin" : ""} style={{ display:"flex" }}><Ic n="refresh" s={18}/></span>

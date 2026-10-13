@@ -2,6 +2,11 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.20 — 2026-10-13 — DAFTAR soya rejimi
+Ilova eski jadvallardan ishlaydi; db o'rami har muvaffaqiyatli yozuvni orqa fonda `kabir` daftariga ham yuboradi (id bir xil,
+xatosi ilovaga chiqmaydi). Superadmin: daftar bo'sh bo'lsa birinchi nusxa, kuniga bir marta solishtirish (`kabir_soya/holat`),
+bulut belgisida rangli nuqta + oyna («O'tishga tayyorlik N/7»). `daftar.js`: amallar soni (`jami`).
+
 ## daftar d1 — 2026-10-13 — DAFTAR 2-bosqich: Firebase qoidasi
 `firestore.rules`: eski jadvallar avvalgidek ochiq; daftar (`kabir`, `TEST_kabir`) — faqat qo'shish (ol==1, server vaqti),
 o'zgartirish/o'chirish yo'q; navbat faqat +1 va o'z qatori bilan birga. `sinov/qoida.test.mjs` — emulyatorda 7/7 (Firebase 10.14.1).
