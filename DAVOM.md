@@ -79,6 +79,12 @@ Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vit
            nav rgba(233,236,241,0.96), navOn #FFFFFF, glow none.
            Taklif: sayt doim oq ochilsin (useState default: saved===null → false), oy/quyosh tugmasi qoladi.
            Javobsiz savol: ranglar shu bo'lsinmi? sayt doim oq ochilsinmi? → «ha» → v1.09 → push main. Kod YOZILMAGAN.
+           + Maket versiya 3 (2026-10-13): Ibrohim menyu rasmini yubordi «faqat iOS'dagidek shunaqa dumaloq qil» →
+           kompyuter va planshetda chap dumaloq menyu: `.sidebar` 96px (padding 12px), ichida 68px pill r34 `t.rail`
+           (#E1E4ED), tepada 48px ko'k «K», ikonkalar 56px pill r28 `t.railIn` (#D0D5E2) ichida, gap 12, tugma 44px
+           doira, tanlangani `t.surf` + soya, boshqasi #4B505B; pastda foydalanuvchi harfi. PC da `nav.pc-only` (tepadagi
+           chiplar) yashirildi, `.sidebar` PC da ham ko'rinadi, `.main-content` margin-left 96px (planshet/PC).
+           Telefon pastki menyusi o'zgarmadi. Tokenlar: light rail/railIn; dark rgba(255,255,255,.07).
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
