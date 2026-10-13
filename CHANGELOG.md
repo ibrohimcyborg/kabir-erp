@@ -2,6 +2,10 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.16 — 2026-10-13 — oyna ochiq paytda orqadagi sahifa qimirlamaydi, sana maydoni oynaga sig'adi
+- Har qanday oyna (11 ta) ochiq turganda orqadagi sahifa qulflanadi: surish orqaga o'tmaydi, Safari paneli kichraymaydi. Uzun oynaning ichi avvalgidek suriladi.
+- iPhone'da sana maydoni oynadan chiqib turmaydi (6 ta sana maydoni).
+
 ## v1.15 — 2026-10-13 — telefonda ro'yxat pastda ham menyu ustida xiralashadi
 - Telefonda ro'yxat pastki menyuga yaqinlashganda xiralashib yo'qoladi (tepadagidek); oxirigacha surilganda oxirgi kartochka to'liq ko'rinadi (pastki bo'shliq safe-area bilan).
 

@@ -3,26 +3,27 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.15 — PRODDA** (2026-10-13)
+**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.16 — PRODDA** (2026-10-13)
 
-## ⏳ YARIM QOLDI — OYNA OCHIQ PAYTDA FON QIMIRLAMASIN (2026-10-13) — ENG OXIRGI ISH
+## ⏳ KEYINGI ISH — DO'KONLAR SAHIFASIGA QIDIRUV (2026-10-13)
 
-Ibrohim (TransferModal skrinshoti bilan): «nega orqasi o'ynab ketyapti, tushuntir» → tushuntirildi → «ko'rsat, keyin
-do'konga ham qidirish qo'shish kerak».
-Branch:    claude/pc-versiya — kod YOZILMAGAN, prodda v1.15.
-Maket:     https://claude.ai/artifact/9XvbzGFJdtPoNtfuWSsArt (ikki jonli telefon: hozirgi / taklif)
-Tashxis:   `s.overlay`/`s.sheet` (index.html:881–882) da overscroll/touch-action yo'q, oyna ochilganda html/body qulflanmaydi →
-           oynada surish orqadagi hujjatga (root) o'tadi, Safari paneli kichrayadi → fon qimirlaydi. Klaviatura ham suradi (iOS).
-           `input type=date` (6 joy: :1252 :1424 :1628 :1639 :1711 :1817) iPhone'da o'z min-kengligi bilan oynadan chiqadi.
-           v1.14/v1.15 sababchi EMAS (hujjat balandligi avval ham 100vh edi).
-Taklif:    11 ta overlay (9 ta `style={s.overlay}` + confirmDialog :3256 + printData :3274) ga className="ovl";
-           CSS: `html:has(.ovl),html:has(.ovl) body{overflow:hidden;overscroll-behavior:none}`, `.ovl{touch-action:none;
-           overscroll-behavior:contain}`, `.ovl>*{overscroll-behavior:contain}`, `input[type=date]{-webkit-appearance:none;
-           appearance:none;min-width:0}`. ⚠ `.ovl` ichidagi oyna uzun bo'lsa surilishi saqlanishi kerak (touch-action faqat
-           pardaning o'zida — farzand scroll konteyner, ta'sir qilmaydi) — sinovda tekshirish.
-Keyingi qadam: Ibrohim «push qil»/«ha» desa → TAXMIN BLOKI → kod → v1.16 → push main.
-Keyin:     DO'KONLAR SAHIFASIGA QIDIRUV (Ibrohim so'radi) — alohida maket; savol: nima bo'yicha qidiradi (nomi, manzili,
-           menejer, telefon)?
+Ibrohim: «keyin do'konga ham qidirish qo'shish kerak». Kod YOZILMAGAN, maket ham yo'q.
+Keyingi qadam: `StoresPage` ni grep bilan ochish → maket (Artifact) → Ibrohim tasdig'i → kod.
+Javobsiz savol: nima bo'yicha qidiradi — nomi, manzili, menejeri, telefoni (yoki hammasi)?
+
+## ✅ v1.16 — OYNA OCHIQ PAYTDA FON QIMIRLAMAYDI (2026-10-13) — PRODDA
+
+Ibrohim (TransferModal skrinshoti): «nega orqasi o'ynab ketyapti» → tushuntirildi → «ko'rsat» → «push qil tekshiraman».
+Maket:     https://claude.ai/artifact/9XvbzGFJdtPoNtfuWSsArt
+Qilingan:  11 ta overlay (9 ta `style={s.overlay}` + confirmDialog + printData) ga `className="ovl"`; statik CSS:
+           `html:has(.ovl),html:has(.ovl) body{overflow:hidden;overscroll-behavior:none}`, `.ovl,.ovl>*{overscroll-behavior:contain}`,
+           `input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:block}`.
+           Maketdagi «pardada touch-action:none» kodga QO'SHILMADI (iPhone'da uzun oyna surilishini to'xtatish xavfi);
+           ko'rinadigan natija bir xil — qulf parda ustidagi surishni ham to'xtatadi.
+Sinov:     JSX OK; soxta baza: eski versiyada oyna ochiq turib aylantirilsa hujjat 80px siljiydi, yangisida 0;
+           oyna yopilsa qulf ochiladi; uzun Sotuv oynasi ichi g'ildirak va barmoq bilan suriladi (0→168), hujjat 0;
+           tasdiqlash oynasi ham qulflaydi; planshet va PC oyna ochiladi; xato yo'q.
+           ⚠ iPhone'ning o'zida sinalmagan (Chromium) — Ibrohim prodda tekshiradi.
 
 ## ✅ v1.14 + v1.15 — TEPADA VA PASTDA XIRALASHISH (2026-10-13) — PRODDA
 

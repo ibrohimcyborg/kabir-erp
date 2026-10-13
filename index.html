@@ -1,4 +1,4 @@
-<!-- v1.15 -->
+<!-- v1.16 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -38,6 +38,10 @@ input[type=number]{-moz-appearance:textfield}
 .up{animation:up .3s cubic-bezier(.16,1,.3,1) forwards}
 .fade{animation:fade .2s ease}
 .press{transition:transform .12s}.press:active{transform:scale(.97)}
+/* Oyna ochiq paytda orqadagi sahifa qimirlamaydi; sana maydoni oynaga sig'adi */
+html:has(.ovl),html:has(.ovl) body{overflow:hidden;overscroll-behavior:none}
+.ovl,.ovl>*{overscroll-behavior:contain}
+input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:block}
 .spin{animation:spin 1s linear infinite}
 /* Yuklanish ekrani (ilova kodi yuklanguncha ham ko'rinadi) */
 .boot{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#F2F4F5;font-family:-apple-system,BlinkMacSystemFont,'Inter Tight',system-ui,sans-serif}
@@ -134,7 +138,7 @@ input[type=number]{-moz-appearance:textfield}
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.15";
+const APP_VER = "v1.16";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -1064,7 +1068,7 @@ function App() {
     };
 
     return (
-      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+      <div className="ovl" style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
             <span style={{ fontSize: 17, fontWeight: 800 }}>{existing ? "Tahrirlash" : "Yangi mahsulot"}</span>
@@ -1238,7 +1242,7 @@ function App() {
     };
 
     return (
-      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+      <div className="ovl" style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
             <span style={{ fontSize: 17, fontWeight: 700 }}>Omborga qo'shish</span>
@@ -1298,7 +1302,7 @@ function App() {
       setModal(null); setSel(null);
     };
     return (
-      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+      <div className="ovl" style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
             <span style={{ fontSize: 17, fontWeight: 800 }}>{existing ? "Do'konni tahrirlash" : "Yangi do'kon"}</span>
@@ -1353,7 +1357,7 @@ function App() {
 
     if (stores.length === 0 || products.length === 0) {
       return (
-        <div style={s.overlay} onClick={() => setModal(null)}>
+        <div className="ovl" style={s.overlay} onClick={() => setModal(null)}>
           <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
             <div style={{ ...s.row, marginBottom: 16 }}>
               <span style={{ fontSize: 17, fontWeight: 800 }}>Jo'natish</span>
@@ -1414,7 +1418,7 @@ function App() {
     };
 
     return (
-      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+      <div className="ovl" style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
             <span style={{ fontSize: 17, fontWeight: 700 }}>Vitrinaga jo'natish</span>
@@ -1586,7 +1590,7 @@ function App() {
     };
 
     return (
-      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+      <div className="ovl" style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
             <span style={{ fontSize: 17, fontWeight: 700 }}>Sotuv yozish</span>
@@ -1690,7 +1694,7 @@ function App() {
     };
 
     return (
-      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+      <div className="ovl" style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
             <span style={{ fontSize: 17, fontWeight: 700 }}>Pul qabul qilish</span>
@@ -1740,7 +1744,7 @@ function App() {
       setModal(null); setSel(null);
     };
     return (
-      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+      <div className="ovl" style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
             <span style={{ fontSize: 17, fontWeight: 700 }}>Qaytarish</span>
@@ -1792,7 +1796,7 @@ function App() {
     };
 
     return (
-      <div style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
+      <div className="ovl" style={s.overlay} onClick={() => { setModal(null); setSel(null); }}>
         <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
           <div style={{ ...s.row, marginBottom: 16 }}>
             <span style={{ fontSize: 17, fontWeight: 800 }}>{existing ? "Zakazni tahrirlash" : "Yangi zakaz"}</span>
@@ -3253,7 +3257,7 @@ To'lov uchun:
       {modal === "order" && <OrderModal />}
 
       {confirmDialog && (
-        <div style={{ position:"fixed", inset:0, background:"#000000CC", zIndex:9999, display:"flex", alignItems:"center", justifyContent:"center" }} onClick={() => setConfirmDialog(null)}>
+        <div className="ovl" style={{ position:"fixed", inset:0, background:"#000000CC", zIndex:9999, display:"flex", alignItems:"center", justifyContent:"center" }} onClick={() => setConfirmDialog(null)}>
           <div style={{ background:t.surf, borderRadius:18, width:"100%", maxWidth:360, padding:24, border:`1px solid ${t.border}`, margin:16 }} onClick={e => e.stopPropagation()} className="up">
             <div style={{ textAlign:"center", padding:"8px 0" }}>
               <div style={{ width:60, height:60, borderRadius:18, background:confirmDialog.danger ? t.redS : t.amberS, color:confirmDialog.danger ? t.red : t.amber, display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 14px" }}>
@@ -3271,7 +3275,7 @@ To'lov uchun:
       )}
 
       {printData && (
-        <div style={{ position:"fixed", inset:0, background:"#000000CC", zIndex:9999, display:"flex", flexDirection:"column" }}>
+        <div className="ovl" style={{ position:"fixed", inset:0, background:"#000000CC", zIndex:9999, display:"flex", flexDirection:"column" }}>
           <div style={{ background:"#1A1A30", padding:"12px 16px", display:"flex", alignItems:"center", justifyContent:"space-between", flexShrink:0 }}>
             <div>
               <div style={{ fontSize:14, fontWeight:800, color:"#fff" }}>
