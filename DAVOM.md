@@ -3,7 +3,18 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = 5daaf9c (+ shu DAVOM commiti, push kutilmoqda) · versiya: **v1.19 — PRODDA** (dpl_6N4uwE93…, READY)
+**Oxirgi yangilanish:** 2026-10-13 · main = 897304e · versiya: **v1.19 — PRODDA**
+
+## ⏳ DO'KON HISOBOTI — MAKET, JAVOB KUTILMOQDA (2026-10-13)
+
+Ibrohim: «Vitrina, Sotuv, To'lov joyiga Hisobot qo'sh — shu do'kon hisoboti: qachon nima borgani, vozvrat, olingan pul hammasi».
+Maket:     https://claude.ai/artifact/KSPHJnCkhkkYvkTaiwksso (hozirgi vs taklif, A/C tugmasi, tashxis, 4 qaror). KOD YOZILMAGAN.
+Tashxis:   Sotildi va Pul olindi — to'liq (`sales`, `partial_payments`/`paid`). Jo'natildi — `units.sent_at` (qaytarilganda
+           `ReturnModal` sent_at=null qiladi → qaytgan molning jo'natilgani yo'qoladi). Qaytdi — faqat `activity` matni
+           «Vitrinadan qaytarildi: <mahsulot> N dona — <do'kon nomi>» (do'kon id/unit ID yo'q). Naqsh: `PcOmborPane` «Harakatlar».
+Qarorlar (tavsiya): 1) manba A (faqat o'qiydi) hozir, DAFTAR kelgach C (to'liq + «jo'natildi−sotildi−qaytdi=vitrinada»);
+           2) davr «Hammasi | Bu oy»; 3) zakazlar kirmaydi; 4) 5-bo'lim «Hisobot» oxirida. Diff taxmini ~70–90 qator, v1.20.
+Keyingi qadam: Ibrohim «shunaqa qil» + 1–4 tanlovi → TAXMIN BLOKI → `StoreProfile` ichida `pTab === "report"`.
 
 ## ⏳ KEYINGI ISH — DAFTAR TIZIMIGA O'TISH (2026-10-13) — QARORLAR OLINDI, 1-BOSQICHDAN BOSHLASH
 
