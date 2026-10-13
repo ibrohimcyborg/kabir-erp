@@ -3,15 +3,14 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · versiya: **v1.18** (commit, push kutilmoqda) · prodda v1.17
+**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.18 — PRODDA** (2026-10-13)
 
-## ⏳ v1.18 — KOMPYUTERDAGI DO'KON QIDIRUVI HAM B (2026-10-13) — PUSH KUTILMOQDA
+## ✅ v1.18 — KOMPYUTERDAGI DO'KON QIDIRUVI HAM B (2026-10-13) — PRODDA
 
-Ibrohim: «kompda ham shunaqa qil» (push haqida aytmagan).
+Ibrohim: «kompda ham shunaqa qil» → «push qil».
 Qilingan:  `DokonlarPane` (index.html:2095) `shown` filtri: name/address/manager/phone + telefon raqamlari — StoresPage bilan bir xil.
            Paneldagi «N ta do'kon», tartib, «Topilmadi» matni o'zgarmagan.
 Sinov:     JSX OK; soxta baza PC 1440: sergeli/AKMAL/901112233/33 44/diler c/xyz/bo'sh — to'g'ri; telefon qidiruvi o'zgarmagan.
-Keyingi qadam: Ibrohim «push qil» desa → branch + main.
 
 ## ✅ v1.17 — DO'KONLAR SAHIFASIGA QIDIRUV (2026-10-13) — PRODDA
 
