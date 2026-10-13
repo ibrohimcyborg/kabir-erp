@@ -114,6 +114,15 @@ Keyingi qadam: Ibrohim saytda tekshiradi; telefonda eski belgini o'chirib, Safar
            4 kartochka bir qatorda, gorizontal surish (overflow-x auto + scroll-snap x mandatory, kartochka 78% eni,
            keyingisining cheti ko'rinadi), pastda nuqtalar (joriy = ko'k cho'ziq). Maketda JONLI namuna (suriladi).
            Kompyuterda to'rttasi sig'adi → u yerda A. Javobsiz savol endi: A/B/C/D?
+⏳ MENYU SURIB O'TISH (2026-10-13): Ibrohim (chap menyu rasmi bilan) «bular ham, mobildagilar ham surilib o'tadigan
+           bo'lishi kerak». Jonli namuna: https://claude.ai/artifact/BL4JTGnpQoyYVAv43dgqTf
+           1) menyudagi oq doira (telefon pastki menyu + PC/planshet chap menyu) silliq surilib o'tadi —
+              absolute «pill» + transition .38s cubic-bezier(.3,1.35,.5,1);
+           2) menyu ustida barmoq bilan surib tanlash (pointerdown/move/up, touch-action:none, qo'yganda tanlanadi);
+           3) telefonda sahifani chapga-o'ngga surib bo'lim almashtirish (scroll-snap x, har bo'lim 100% eni).
+           Kodga o'tkazishda: 3) uchun `renderPage` bitta sahifa chizadi → 6 sahifani yonma-yon chizish yoki
+           surish imo-ishorasini ushlab setTab — bu LOGIKA/tuzilish qarori (Screen naqshi, ichki holat), avval ayt.
+           Javobsiz savol: 1/2/3 har biri ha/yo'q? Kod YOZILMAGAN.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
