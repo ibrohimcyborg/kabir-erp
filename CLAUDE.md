@@ -143,7 +143,7 @@ Muammoni topganingda ham avval mockup.
 |---|---|
 | Sotuv summasi, chegirma, foyda | `SellModal` (`total`), `stats`, `ReportPage` |
 | Qarz / to'lov | `PayModal`, `partial_payments`, `paid` |
-| Unit holati va joyi | `units.status` (`available`/`sold`), `units.location` (`warehouse` / do'kon id) |
+| Unit holati va joyi | `units.status` (`available`/`sold`/`nol` — v1.24 «0 qilingan»), `units.location` (`warehouse` / do'kon id) |
 | Unit ID, zakaz raqami | `generateUnitId`, `ZK-` (`OrderModal`) |
 | Rollar | `canSee`, `navItems`, `user?.role` shartlari |
 | Firestore yozish/o'qish | `db` o'rami, `loadAll`, har `db.from(...)` chaqiruvi |
@@ -561,7 +561,7 @@ to'g'ri kelmasa — **kod haqiqat**, bu bo'limni o'sha commitda yangila.
 | Kolleksiya | Maydonlar | Xarita |
 |---|---|---|
 | `products` | id, name, sku, category, dimensions, cost, price, markup, cost_items[{id,name,amount}], price_incomplete, image (base64 JPEG), created_at | cost_items→costItems, price_incomplete→priceIncomplete |
-| `units` | id, unit_id, product_id, location (`"warehouse"` / store.id), status (`"available"`/`"sold"`), added_at, sent_at | unitId, productId, addedAt, sentAt |
+| `units` | id, unit_id, product_id, location (`"warehouse"` / store.id), status (`"available"`/`"sold"`/`"nol"` — v1.24: «Sonlarni 0 qilish», dona bazada qoladi, raqam uchun sanaladi), added_at, sent_at | unitId, productId, addedAt, sentAt |
 | `stores` | id, name, address, manager, phone, created_at | — |
 | `sales` | id, unit_ids (unitId MATNLARI), store_id, product_id, customer_id, customer_name, qty, price (chegirmadan keyin 1 dona), cost (sotuv paytidagi), total_amount, paid, pay_date, pay_method, debt_due, partial_payments[{id,amount,method,date}], date, created_at | unitIds, storeId, productId, customerId, customerName, totalAmount, payDate, payMethod, partialPayments. **`debt_due` xaritalanmaydi** |
 | `orders` | id, order_id (`ZK-0001`), store_id, product_id, qty, note, deadline, price, prepaid, status (pending/working/ready/delivered), status_history[{status,time}], created_at | orderId, storeId, productId, statusHistory |
@@ -584,6 +584,7 @@ to'g'ri kelmasa — **kod haqiqat**, bu bo'limni o'sha commitda yangila.
 | Do'kon qo'shish/tahrir/o'chirish | `StoreModal`, `StoresPage` | `stores`; o'chirishda available unitlar omborga |
 | Mahsulot o'chirish | `WarehousePage` | product_id bo'yicha `units` delete (SOTILGANLARI HAM) → `products` delete |
 | Backup tiklash | `importBackup` | 6 kolleksiyaga upsert (`activity`, `users` eksportga kirmaydi) |
+| Sonlarni 0 qilish (superadmin) | `NolModal` → `nol` | server'dan qayta o'qib, hali `available` va joyi o'zgarmaganlari → `units` update status="nol" (400 tadan) → `activity` |
 | Har amal | `log` | `activity` insert |
 
 ### Tuzoqlar (bilmasang xato qilasan)

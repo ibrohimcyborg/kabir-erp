@@ -1,4 +1,4 @@
-<!-- v1.23 -->
+<!-- v1.24 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -145,7 +145,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:blo
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.23";
+const APP_VER = "v1.24";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -1934,6 +1934,89 @@ function App() {
   // ═══════════════════════════════════════════════════════════
   // MODAL: RETURN
   // ═══════════════════════════════════════════════════════════
+  // Sonlarni 0 qilish (superadmin): tanlangan joydagi sotilmagan donalar hisobdan chiqadi — status "nol", dona o'chmaydi
+  const NolModal = () => {
+    const [olib, setOlib] = useState({});
+    const [saving, setSaving] = useState(false);
+    const [natija, setNatija] = useState(null);
+    const fill = dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)";
+    const joylar = [{ id: "warehouse", nm: "Ombor" }, ...stores.map(st => ({ id: st.id, nm: st.name }))].map(j => {
+      const us = units.filter(u => u.location === j.id && u.status === "available");
+      return { ...j, us, n: us.length, model: new Set(us.map(u => u.productId)).size, sum: j.id === "warehouse" ? 0 : us.reduce((a, u) => a + (products.find(p => p.id === u.productId)?.price || 0), 0) };
+    }).filter(j => j.id === "warehouse" || j.n > 0);
+    const tanlangan = joylar.filter(j => !olib[j.id] && j.n > 0);
+    const jami = tanlangan.reduce((a, j) => a + j.n, 0), qarz = tanlangan.reduce((a, j) => a + j.sum, 0);
+    const misolU = tanlangan[0]?.us[0], misolP = misolU && products.find(p => p.id === misolU.productId);
+    const misol = misolP && generateUnitId(misolP.sku, pad4(units.filter(u => u.productId === misolP.id).length + 1));
+    const yop = () => setModal(null);
+    const nol = async () => {
+      const ids = tanlangan.flatMap(j => j.us.map(u => u.id));
+      if (!ids.length) return;
+      setSaving(true);
+      const { data: fresh, error: e0 } = await db.from("units").select("*").in("id", ids);
+      if (e0) { setSaving(false); return; }
+      const lokal = new Map(units.map(u => [u.id, u]));
+      const ok = (fresh || []).filter(f => f.status === "available" && f.location === lokal.get(f.id)?.location).map(f => f.id);
+      const bajarildi = [];
+      for (let i = 0; i < ok.length; i += 400) {
+        const bolak = ok.slice(i, i + 400);
+        const { error } = await db.from("units").update({ status: "nol" }).in("id", bolak);
+        if (error) break;
+        bajarildi.push(...bolak);
+      }
+      const set = new Set(bajarildi);
+      setUnits(prev => prev.map(u => set.has(u.id) ? { ...u, status: "nol" } : u));
+      const qatorlar = tanlangan.map(j => ({ nm: j.nm, n: j.us.filter(u => set.has(u.id)).length })).filter(x => x.n > 0);
+      if (bajarildi.length) await log("Sonlar 0 qilindi", qatorlar.map(x => `${x.nm} ${x.n} dona`).join(", "));
+      setNatija({ qatorlar, otkazildi: ids.length - bajarildi.length });
+      setSaving(false);
+    };
+    const tasdiq = () => askConfirm("Sonlarni 0 qilish",
+      tanlangan.map(j => `${j.nm} — ${j.n} dona`).join("\n") + "\n\n0 bo'ladi." + (qarz > 0 ? ` Vitrina qarzi ${fmt(qarz)} ga kamayadi.` : "") + " Davom etilsinmi?",
+      nol, true, { icon: "trash", confirmLabel: "0 qilish" });
+    return (
+      <div className="ovl" style={s.overlay} onClick={() => { if (!saving) yop(); }}>
+        <div style={s.sheet} onClick={e => e.stopPropagation()} className="up">
+          <div style={{ ...s.row, marginBottom: 4 }}>
+            <span style={{ fontSize: 17, fontWeight: 700 }}>Sonlarni 0 qilish</span>
+            <button style={s.iBtn} onClick={() => { if (!saving) yop(); }}><Ic n="x" s={16} /></button>
+          </div>
+          {natija ? (
+            <div>
+              <div style={{ marginTop: 12, borderRadius: 12, background: t.greenS, padding: "12px 14px", fontSize: 14 }}>
+                <b style={{ color: t.green }}>0 qilindi:</b> {natija.qatorlar.length ? natija.qatorlar.map(x => `${x.nm} ${x.n} dona`).join(", ") : "hech narsa"}
+                <div style={{ fontSize: 12.5, color: t.sub, marginTop: 4 }}>Endi «Omborga qo'shish» bilan haqiqiy sonlarni kiriting.</div>
+              </div>
+              {natija.otkazildi > 0 && <div style={{ marginTop: 8, borderRadius: 12, background: t.amberS, color: t.amber, padding: "10px 12px", fontSize: 12.5 }}>{natija.otkazildi} dona tegilmadi — boshqa telefonda sotilgan yoki joyi o'zgargan, yoki internet uzildi.</div>}
+              <button onClick={yop} style={{ width: "100%", marginTop: 12, borderRadius: 12, padding: 12, fontWeight: 700, fontSize: 14, background: t.acc, color: t.accTxt }}>Yopish</button>
+            </div>
+          ) : (
+            <div>
+              <div style={{ fontSize: 12.5, color: t.sub, marginTop: 4 }}>Belgilangan joydagi sotilmagan donalar 0 bo'ladi. Keyin «Omborga qo'shish» bilan qayta to'ldirasiz.</div>
+              {joylar.map(j => {
+                const on = !olib[j.id] && j.n > 0;
+                return (
+                  <button key={j.id} disabled={!j.n || saving} onClick={() => setOlib(o => ({ ...o, [j.id]: !o[j.id] }))} style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", padding: "11px 4px", borderBottom: `0.5px solid ${t.border}`, textAlign: "left", color: t.txt, opacity: j.n ? 1 : 0.5 }}>
+                    <span style={{ width: 22, height: 22, borderRadius: 7, border: `2px solid ${on ? t.red : t.border}`, background: on ? t.red : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flex: "none", color: "#fff", fontSize: 12, fontWeight: 800 }}>{on ? "✓" : ""}</span>
+                    <span style={{ flex: 1, minWidth: 0 }}>
+                      <b style={{ display: "block", fontSize: 14 }}>{j.nm}</b>
+                      <span style={{ display: "block", fontSize: 11.5, color: t.sub }}>{j.id === "warehouse" ? `${j.model} model` : `vitrina ${fmt(j.sum)}`}</span>
+                    </span>
+                    <span style={{ fontWeight: 700, fontSize: 14, ...s.mono }}>{j.n} dona</span>
+                  </button>
+                );
+              })}
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, fontSize: 14, fontWeight: 700 }}><span>0 bo'ladi</span><span style={s.mono}>{jami} dona</span></div>
+              <div style={{ marginTop: 12, borderRadius: 12, background: t.greenS, padding: "10px 12px", fontSize: 12.5 }}><b style={{ color: t.green }}>O'zgarmaydi:</b> sotilgan donalar, sotuvlar, qarzlar, to'lovlar, zakazlar, mahsulotlar va narxlar.</div>
+              {misol && <div style={{ marginTop: 8, borderRadius: 12, background: t.blueS, padding: "10px 12px", fontSize: 12.5 }}><b style={{ color: t.blue }}>Raqam davom etadi:</b> masalan {misolP.name} qayta kiritilsa — {misol} dan.</div>}
+              <button disabled={!jami || saving} onClick={tasdiq} style={{ width: "100%", marginTop: 12, borderRadius: 12, padding: 12, fontWeight: 700, fontSize: 14, background: t.red, color: "#fff", opacity: !jami || saving ? 0.45 : 1 }}>{saving ? "0 qilinmoqda…" : "0 qilish"}</button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   const ReturnModal = () => {
     const store = stores.find(s => s.id === sel?.storeId);
     const product = products.find(p => p.id === sel?.productId);
@@ -2528,8 +2611,8 @@ function App() {
                         )}
                       </div>
                       {p.allUnits.slice().reverse().map(u => {
-                        const loc = u.status === "sold" ? "Sotildi" : u.location === "warehouse" ? "Omborda" : stores.find(s => s.id === u.location)?.name || "—";
-                        const lc = u.status === "sold" ? t.green : u.location === "warehouse" ? t.acc : t.blue;
+                        const loc = u.status === "sold" ? "Sotildi" : u.status === "nol" ? "0 qilingan" : u.location === "warehouse" ? "Omborda" : stores.find(s => s.id === u.location)?.name || "—";
+                        const lc = u.status === "sold" ? t.green : u.status === "nol" ? t.dim : u.location === "warehouse" ? t.acc : t.blue;
                         const isChecked = selectedIds.includes(u.id);
                         return (
                           <div key={u.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0", borderBottom: `1px solid ${t.border}33`, fontSize: 11 }}>
@@ -3547,6 +3630,16 @@ To'lov uchun:
                         <div style={{ fontSize:10.5, color:t.sub }}>JSON fayldan qayta yuklash</div>
                       </div>
                     </button>
+                    {user?.role === "superadmin" && (<>
+                    <div style={{ borderTop:`1px solid ${t.border}` }} />
+                    <button onClick={() => { setSettingsOpen(false); setModal("nol"); }} style={{ width:"100%", display:"flex", alignItems:"center", gap:10, padding:"11px 12px", textAlign:"left" }}>
+                      <div style={{ width:30, height:30, borderRadius:9, background:t.redS, display:"flex", alignItems:"center", justifyContent:"center", color:t.red, flexShrink:0 }}><Ic n="trash" s={15}/></div>
+                      <div>
+                        <div style={{ fontSize:13, fontWeight:700, color:t.red }}>Sonlarni 0 qilish</div>
+                        <div style={{ fontSize:10.5, color:t.sub }}>Ombor va do'konlardagi qoldiq</div>
+                      </div>
+                    </button>
+                    </>)}
                     <input ref={fileInputRef} type="file" accept="application/json" style={{ display:"none" }} onChange={e => { const f = e.target.files[0]; if (f) importBackup(f); e.target.value = ""; }} />
                   </div>
                 </>
@@ -3597,6 +3690,7 @@ To'lov uchun:
       {modal === "pay" && <PayModal />}
       {modal === "return" && <ReturnModal />}
       {modal === "order" && <OrderModal />}
+      {modal === "nol" && <Screen key="nol" render={NolModal} />}
 
       {confirmDialog && (
         <div className="ovl" style={{ position:"fixed", inset:0, background:"#000000CC", zIndex:9999, display:"flex", alignItems:"center", justifyContent:"center" }} onClick={() => setConfirmDialog(null)}>

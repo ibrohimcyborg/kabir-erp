@@ -3,7 +3,25 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · **main = v1.23 commiti — PUSH QILINDI (prod)** (v1.23 — telefonda surish/scroll tuzatish; Ibrohim iPhone'da tekshiradi). Navbatda: «Sonlarni 0 qilish» — TAXMIN BLOKI chiqarilgan, Ibrohimning «ha»sini kutmoqda (maket Sxp3CPzHU84XwYwGW2FU7m, versiya v1.24) · hisobot tahriri (5–10) keyin · v1.20 soya: superadmin ochadi → birinchi nusxa
+**Oxirgi yangilanish:** 2026-10-13 · **main = v1.24 commiti — PUSH QILINDI (prod)** (v1.24 — «Sonlarni 0 qilish»). Ibrohim tekshiradi: v1.23 surish/scroll (iPhone), v1.24 sozlamalar → «Sonlarni 0 qilish» (superadmin). Navbatda: hisobot tahriri (5–10) · v1.20 soya: superadmin ochadi → birinchi nusxa · DAFTAR'dan o'qishga o'tish (7/7 dan keyin)
+
+## ✅ v1.24 — SONLARNI 0 QILISH (2026-10-13) — PUSH QILINDI (prod)
+
+Ibrohim: «0 qilishni maketdagidek qil» → taxmin bloki → «haa». Qarorlar 1–6 tavsiya bo'yicha.
+Qilingan:  sozlamalar menyusi — `user?.role === "superadmin"` da «Sonlarni 0 qilish» (qizil, trash belgisi);
+           `NolModal` (ReturnModal dan oldin) — `{modal === "nol" && <Screen key="nol" render={NolModal} />}` (Screen —
+           App qayta chizilsa belgilar saqlanadi): Ombor (har doim) + donasi bor do'konlar, sonlari, model / vitrina summasi,
+           boshida hammasi belgilangan; «0 bo'ladi N dona»; «O'zgarmaydi»; «Raqam davom etadi» misoli (generateUnitId);
+           «0 qilish» → askConfirm (joylar, dona, vitrina qarzi kamayishi) → `nol`: units server'dan qayta o'qiladi, faqat
+           hali "available" va joyi o'zgarmaganlari → `db.from("units").update({status:"nol"}).in(id, 400 tadan)` →
+           setUnits → `log("Sonlar 0 qilindi", "Ombor N dona, …")` → natija oynada («N dona tegilmadi» ham).
+           Ombor donalar ro'yxati (~2528): «0 qilingan» kulrang (t.dim).
+           Taxmindan farq: verifyUnitsUnchanged o'rniga to'g'ridan tekshiruv — u «baribir davom etilsinmi?» deb so'raydi va
+           boshqa telefon sotgan donani ham "nol" qilib yuborishi mumkin edi; endi bunday dona tegilmaydi.
+Sinov:     JSX OK; emulyator + firestore.rules, brauzer 5/5: admin'da menyu yo'q; superadmin oyna (452+3 dona, vitrina $1,060);
+           belgi olib/qo'yish; tasdiq matni; boshqa telefon sotgan dona tegilmadi (sold qoldi); 451 dona = 2 bo'lak (400+51);
+           dona o'chmagan (unit_id joyida); activity bitta; daftarga ham tushgan (soya); Bosh «Vitrina qarzi $0»; ro'yxatda
+           «0 qilingan». Xato/alert yo'q.
 
 ## ✅ v1.23 — TELEFONDA SURISH VA SCROLL (2026-10-13) — PUSH QILINDI (prod), Ibrohim tekshiradi
 
@@ -577,7 +595,7 @@ Javobsiz savol: PDF ham tuzatilsinmi?
 
 ## ⬜ Navbatda (Ibrohim tanlaydi)
 
-- ⏳ SONLARNI 0 QILISH — MAKET, JAVOB KUTILMOQDA (2026-10-13): https://claude.ai/artifact/Sxp3CPzHU84XwYwGW2FU7m
+- ✅ SONLARNI 0 QILISH — v1.24 PRODDA (2026-10-13). Maket: https://claude.ai/artifact/Sxp3CPzHU84XwYwGW2FU7m (tarix pastda)
   Ibrohim: «sozlamalarga ombordagi narsalar sonini, keyin do'kondagi narsalar sonini 0 qiladigan qil — biz to'ldiramiz»
   → «menga 0 qilishni mockupda ko'rsat». KOD YO'Q. Maketda: sozlamalar menyusida «Sonlarni 0 qilish» (superadmin) →
   oyna (Ombor / har do'kon, sonlari, belgilash) → tasdiq (vitrina qarzi qancha kamayishi) → natija. Raqam misoli A/B.
