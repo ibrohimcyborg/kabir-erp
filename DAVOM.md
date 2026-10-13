@@ -3,9 +3,27 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = c539c0b (v1.19 prodda) · **v1.20 SOYA REJIMI — commit qilingan, PUSH QILINMAGAN** (branch `claude/pc-versiya`) · keyingi: Ibrohim «push qil» → prodda superadmin ochadi → birinchi nusxa avtomatik · «Sonlarni 0 qilish» maketi javob kutmoqda (Sxp3CPzHU84XwYwGW2FU7m), do'kon hisoboti (1–10 qarorlar)
+**Oxirgi yangilanish:** 2026-10-13 · **main = v1.21 commiti — PUSH QILINDI (prod)**: v1.20 soya rejimi + v1.21 do'kon hisoboti birga. Keyingi: Ibrohim (superadmin) ilovani ochadi → daftar birinchi nusxasi avtomatik; hamma telefonlar ilovani yopib qayta ochsin · «Sonlarni 0 qilish» maketi javob kutmoqda (Sxp3CPzHU84XwYwGW2FU7m) · hisobot tahriri (5–10) keyin
 
-## ⏳ DO'KON HISOBOTI — MAKET TAYYOR, DAFTAR'DAN KEYIN (2026-10-13)
+## ✅ v1.21 — DO'KON HISOBOTI (ko'rish qismi) (2026-10-13) — PUSH QILINDI (prod)
+
+Ibrohim: «Hisobot bilan push qil main'ga» → savol: «Hisobotni yoz, birga push» → taxmin bloki → «push qil didimku…;
+           taxmin 1 — shunaqa qil, faqat Telegram'dagidek surilsin, iOS'dagidek dumaloq; 2) moder ko'rsin, lekin tahrirlamasin».
+Qilingan:  `StoreProfile` (index.html ~2672): hooklar hDavr/hTur/hOchiq (`if (!store)` dan yuqorida; komponent `Screen` ichida);
+           `hisobot()` (~2705) — A manba, faqat o'qiydi: Jo'natildi = do'kondagi donalar `sentAt` (sana+model, unit ID'lar,
+           sotilganlari ham); Sotildi = `sales`; Qaytdi = `activity` «Vitrinadan qaytarildi», matn oxiri «— do'kon nomi»,
+           dona matndan; Pul olindi = `allPayments` («qisman» — sotuv yopilmagan). Tepada 4 son (davrdagi dona + hozir
+           vitrinada), pul: Sotuv / Olingan pul / Qarz qoldi; davr «Hammasi | Bu oy» (today() oyi); tur: Hammasi | Jo'natish |
+           Sotuv | Qaytish | Pul (oq belgi suriladi); amallar sana bo'yicha, boshida yopiq. Amal bosilmaydi (tahrir yo'q).
+           Bo'lim tugmalari (~2840): 5-chi «Hisobot»; `.tg-tabs` (CSS ~47) — yonga suriladi, scrollbar yo'q, dumaloq
+           (borderRadius 999), bosilgan tugma ko'rinishga suriladi. Moder ham ko'radi (hisobotda tannarx/foyda yo'q).
+Sinov:     JSX OK; brauzer (emulyator, soxta seed) 3/3: moder va superadmin — sonlar/pul to'g'ri (Hammasi va Bu oy), kun
+           ochiladi, «Pul» filtri, xato/alert yo'q; 320px da tugmalar suriladi. 320px da sahifa kengligi 360 — v1.20 da ham
+           363 (eski, sarlavha belgilari) — tegilmadi.
+Qolgan:    tahrirlash (qarorlar 5–10) — alohida; Ibrohim: moder hisobotni KO'RADI, lekin TAHRIRLAMAYDI (tahrir qilinganda
+           shu qoida). DAFTAR'ga o'tilgach C rejimi (to'liq jo'natish/qaytish + «jo'natildi−sotildi−qaytdi=vitrinada»).
+
+## (eski) DO'KON HISOBOTI — MAKET (2026-10-13)
 
 TARTIB (Ibrohim, 2026-10-13): «Bo'ldi, daftarga o'tqiz, keyin hisobotni to'g'rilaymiz» → AVVAL DAFTAR (pastdagi bo'lim),
            do'kon hisoboti va tahrirlash — DAFTAR'dan keyin. Qarorlar 1–10 hali javobsiz.
@@ -103,8 +121,8 @@ Ibrohim: Publish'dan keyin ilova (Ombor/Do'kon) «ochildi» — tasdiqlandi. mai
            ko'rsatadi, Ibrohim rasmini yuboradi. Kod: TEST_kabir emas, `kabir` daftari (prod daftar, eski jadvallarga tegmaydi).
            Ehtimoliy farq manbai: eski tizimdagi ikki telefon to'qnashuvi (masalan, to'lov massivi ustidan yozilishi) — daftar
            ikkala to'lovni saqlaydi. O'tish (eski → daftardan o'qish) — alohida versiya, alohida «ha».
-✅ v1.20 — SOYA REJIMI KODDA (2026-10-13) — commit qilingan, PUSH QILINMAGAN (prodda yo'q)
-Branch:    claude/pc-versiya — push: yo'q
+✅ v1.20 — SOYA REJIMI (2026-10-13) — PUSH QILINDI (prod, v1.21 bilan birga)
+Branch:    claude/pc-versiya → main
 Qilingan:  index.html:24 `<script src="daftar.js?v=1.20">` (firebase compat'dan keyin);
            db o'rami (`db._run`, ~207–268): batch.commit() muvaffaqiyatidan KEYIN `soyaYoz(...)` — insert/upsert (id bilan
            tozalangan hujjatlar), update/delete (fsGetAll topgan id'lar). Faqat DF.MAYDON jadvallari (users — yo'q).

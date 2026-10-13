@@ -2,6 +2,10 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.21 — 2026-10-13 — Do'kon hisoboti
+Do'kon profilida 5-bo'lim «Hisobot»: jo'natildi / sotildi / qaytdi / pul olindi tarixi hozirgi bazadan (faqat o'qiydi),
+«Hammasi | Bu oy», tur bo'yicha filtr, kunlar bo'yicha yig'ilgan. Bo'lim tugmalari yonga suriladi va dumaloq.
+
 ## v1.20 — 2026-10-13 — DAFTAR soya rejimi
 Ilova eski jadvallardan ishlaydi; db o'rami har muvaffaqiyatli yozuvni orqa fonda `kabir` daftariga ham yuboradi (id bir xil,
 xatosi ilovaga chiqmaydi). Superadmin: daftar bo'sh bo'lsa birinchi nusxa, kuniga bir marta solishtirish (`kabir_soya/holat`),

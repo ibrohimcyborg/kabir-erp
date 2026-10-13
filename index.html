@@ -1,4 +1,4 @@
-<!-- v1.20 -->
+<!-- v1.21 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -44,6 +44,9 @@ html:has(.ovl),html:has(.ovl) body{overflow:hidden;overscroll-behavior:none}
 .ovl,.ovl>*{overscroll-behavior:contain}
 input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:block}
 .spin{animation:spin 1s linear infinite}
+/* Telegram kabi suriladigan bo'limlar (do'kon profili) */
+.tg-tabs{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tg-tabs::-webkit-scrollbar{display:none}
 /* Yuklanish ekrani (ilova kodi yuklanguncha ham ko'rinadi) */
 .boot{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#F2F4F5;font-family:-apple-system,BlinkMacSystemFont,'Inter Tight',system-ui,sans-serif}
 .boot img{width:72px;height:72px;border-radius:17px;box-shadow:0 8px 20px rgba(0,0,0,.18)}
@@ -139,7 +142,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:blo
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.20";
+const APP_VER = "v1.21";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -2670,6 +2673,9 @@ function App() {
   const StoreProfile = () => {
     const store = stores.find(s => s.id === storeProfileId);
     const [pTab, setPTab] = useState("vitrina");
+    const [hDavr, setHDavr] = useState("all");
+    const [hTur, setHTur] = useState("all");
+    const [hOchiq, setHOchiq] = useState({});
     if (!store) { setStoreProfileId(null); return null; }
     const sUnits = units.filter(u => u.location === store.id && u.status === "available");
     const unitsByProd = {};
@@ -2695,6 +2701,116 @@ function App() {
       const pp = (s.partialPayments || []).reduce((a, p) => a + p.amount, 0);
       return sum + (s.totalAmount - pp);
     }, 0);
+    // Hisobot: do'kon tarixi hozirgi bazadan (faqat o'qiydi)
+    const hisobot = () => {
+      const fill = dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)";
+      const oy = today().slice(0, 7);
+      const ev = [];
+      const jon = {};
+      units.filter(u => u.location === store.id && u.sentAt).forEach(u => {
+        const d = String(u.sentAt).slice(0, 10), k = d + "|" + u.productId;
+        (jon[k] = jon[k] || { k: "out", id: "o" + k, d, pid: u.productId, ids: [] }).ids.push(u.unitId);
+      });
+      Object.values(jon).forEach(e => ev.push({ ...e, q: e.ids.length }));
+      sSales.forEach(sr => {
+        const pp = (sr.partialPayments || []).reduce((a, p) => a + p.amount, 0);
+        ev.push({ k: "sold", id: "s" + sr.id, d: String(sr.date || "").slice(0, 10), pid: sr.productId, q: +sr.qty || 0, a: sr.totalAmount || 0, c: sr.customerName, ids: sr.unitIds || [], debt: sr.paid ? 0 : Math.max(0, sr.totalAmount - pp) });
+      });
+      const oxiri = " — " + store.name;
+      activity.filter(a => a.action === "Vitrinadan qaytarildi" && typeof a.details === "string" && a.details.endsWith(oxiri)).forEach(a => {
+        const m = a.details.slice(0, -oxiri.length).match(/^(.*) (\d+) dona$/);
+        ev.push({ k: "back", id: "b" + a.id, d: String(a.time || "").slice(0, 10), p: m ? m[1] : a.details.slice(0, -oxiri.length), q: m ? +m[2] : 0 });
+      });
+      allPayments.forEach(pm => {
+        const sr = sSales.find(x => x.id === pm.saleId);
+        ev.push({ k: "pay", id: "p" + pm.id, d: String(pm.date || "").slice(0, 10), pid: pm.productId, c: pm.customerName, a: pm.amount || 0, m: PAYMENT_INFO[pm.method]?.label || pm.method || "", qisman: !!(sr && !sr.paid) });
+      });
+      const davrda = ev.filter(e => hDavr === "all" || e.d.slice(0, 7) === oy);
+      const dona = k => davrda.filter(e => e.k === k).reduce((a, e) => a + e.q, 0);
+      const pul = (k, f) => davrda.filter(e => e.k === k).reduce((a, e) => a + (e[f] || 0), 0);
+      const qator = davrda.filter(e => hTur === "all" || e.k === hTur).sort((a, b) => b.d.localeCompare(a.d));
+      const kunlar = [];
+      qator.forEach(e => { const g = kunlar[kunlar.length - 1]; if (g && g.d === e.d) g.list.push(e); else kunlar.push({ d: e.d, list: [e] }); });
+      const TUR = { out: ["Jo'natildi", "send"], sold: ["Sotildi", "bag"], back: ["Qaytdi", "undo"], pay: ["Pul olindi", "banknote"] };
+      const FL = [["all", "Hammasi"], ["out", "Jo'natish"], ["sold", "Sotuv"], ["back", "Qaytish"], ["pay", "Pul"]];
+      const fi = Math.max(0, FL.findIndex(x => x[0] === hTur));
+      const idlar = a => a.map((x, i) => (i && String(x).indexOf("#") >= 0 ? String(x).slice(String(x).indexOf("#")) : x)).join(", ");
+      const kun = d => d.slice(8, 10) + "/" + d.slice(5, 7) + "/" + d.slice(0, 4);
+      const nomi = pid => products.find(p => p.id === pid)?.name || "—";
+      const segBtn = on => ({ flex: 1, padding: "6px", borderRadius: 7, fontSize: 13, fontWeight: on ? 600 : 500, color: t.txt, background: on ? (dark ? "#636366" : "#fff") : "transparent", boxShadow: on ? "0 1px 3px rgba(0,0,0,0.1)" : "none" });
+      const kesik = { whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
+      return (
+        <div>
+          <div style={{ display: "flex", gap: 2, background: fill, padding: 2, borderRadius: 9, marginBottom: 10 }}>
+            <button onClick={() => setHDavr("all")} style={segBtn(hDavr === "all")}>Hammasi</button>
+            <button onClick={() => setHDavr("month")} style={segBtn(hDavr === "month")}>Bu oy</button>
+          </div>
+          <div style={{ background: t.card, borderRadius: 16, padding: "12px 14px", marginBottom: 10 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 4 }}>
+              {[["Jo'natildi", dona("out")], ["Sotildi", dona("sold")], ["Qaytdi", dona("back")], ["Vitrinada", sUnits.length]].map(([l, v]) => (
+                <div key={l} style={{ textAlign: "center", padding: "4px 0" }}>
+                  <div style={{ fontSize: 11, color: t.sub }}>{l}</div>
+                  <div style={{ fontSize: 19, fontWeight: 800, ...s.mono }}>{v}<span style={{ fontSize: 11, fontWeight: 600, color: t.sub, marginLeft: 2 }}>dona</span></div>
+                </div>
+              ))}
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", borderTop: `0.5px solid ${t.border}`, marginTop: 10, paddingTop: 10 }}>
+              {[["Sotuv", pul("sold", "a"), t.txt], ["Olingan pul", pul("pay", "a"), t.txt], ["Qarz qoldi", pul("sold", "debt"), pul("sold", "debt") > 0 ? t.red : t.txt]].map(([l, v, c], i) => (
+                <div key={l} style={{ fontSize: 11, color: t.sub, padding: "0 8px", borderLeft: i ? `0.5px solid ${t.border}` : "none" }}>{l}<div style={{ fontSize: 15, fontWeight: 700, color: c, ...s.mono }}>{fmt(v)}</div></div>
+              ))}
+            </div>
+          </div>
+          <div style={{ position: "relative", display: "grid", gridTemplateColumns: "repeat(5, minmax(0, 1fr))", background: fill, padding: 2, borderRadius: 9, marginBottom: 10 }}>
+            <span style={{ position: "absolute", top: 2, bottom: 2, left: 2, width: "calc((100% - 4px) / 5)", borderRadius: 7, background: dark ? "#636366" : "#fff", boxShadow: "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)", transform: `translateX(${fi * 100}%)`, transition: "transform .38s cubic-bezier(.3,1.35,.5,1)" }} />
+            {FL.map(([k, l]) => (
+              <button key={k} onClick={() => setHTur(k)} style={{ position: "relative", zIndex: 1, minWidth: 0, padding: "7px 0", fontSize: 12, fontWeight: hTur === k ? 600 : 500, color: t.txt, ...kesik }}>{l}</button>
+            ))}
+          </div>
+          {kunlar.length === 0 ? (
+            <div style={{ ...s.card, textAlign: "center", padding: 22, color: t.sub, fontSize: 13 }}>Bu davrda harakat yo'q</div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {kunlar.map(g => {
+                const ochiq = !!hOchiq[g.d];
+                return (
+                  <div key={g.d} style={{ background: t.card, borderRadius: 16, overflow: "hidden" }}>
+                    <button onClick={() => setHOchiq(o => ({ ...o, [g.d]: !o[g.d] }))} aria-expanded={ochiq} style={{ display: "flex", alignItems: "center", gap: 11, width: "100%", padding: "10px 14px 10px 12px", textAlign: "left", color: t.txt }}>
+                      <span style={{ width: 30, height: 30, borderRadius: 9, background: fill, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}><span style={{ display: "flex", transform: ochiq ? "rotate(90deg)" : "none", transition: "transform .25s ease" }}><Ic n="right" s={16} /></span></span>
+                      <b style={{ flex: 1, fontSize: 15, fontWeight: 700, ...s.mono }}>{kun(g.d)}</b>
+                      <Badge c={t.sub} bg={fill}>{g.list.length} ta</Badge>
+                    </button>
+                    <div style={{ display: "grid", gridTemplateRows: ochiq ? "1fr" : "0fr", transition: "grid-template-rows .3s ease" }}>
+                      <div style={{ minHeight: 0, overflow: "hidden" }}>
+                        {g.list.map(e => {
+                          let t1, t2, t3 = "", rt;
+                          if (e.k === "out") { t1 = nomi(e.pid); t2 = "Jo'natildi · ombordan → vitrinaga"; t3 = idlar(e.ids); rt = <span>{e.q} dona</span>; }
+                          if (e.k === "sold") { t1 = nomi(e.pid); t2 = `Sotildi · ${e.q} dona${e.c ? " · " + e.c : ""}`; t3 = idlar(e.ids); rt = <>{fmt(e.a)}{e.debt > 0 && <div style={{ fontSize: 11, fontWeight: 600, color: t.red }}>qarz {fmt(e.debt)}</div>}</>; }
+                          if (e.k === "back") { t1 = e.p; t2 = "Qaytdi · vitrinadan → omborga"; t3 = "unit ID yozilmagan"; rt = <span style={{ color: t.amber }}>{e.q} dona</span>; }
+                          if (e.k === "pay") { t1 = e.c || nomi(e.pid); t2 = `Pul olindi${e.m ? " · " + e.m : ""}${e.qisman ? " · qisman" : ""}`; rt = <span style={{ color: t.green }}>+{fmt(e.a)}</span>; }
+                          return (
+                            <div key={e.id} style={{ display: "flex", alignItems: "center", gap: 11, paddingLeft: 12 }}>
+                              <span style={{ width: 30, height: 30, borderRadius: 9, background: fill, display: "flex", alignItems: "center", justifyContent: "center", flex: "none", color: t.txt }}><Ic n={TUR[e.k][1]} s={17} /></span>
+                              <div style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 10, padding: "10px 12px 10px 0", borderTop: `0.5px solid ${t.border}` }}>
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <div style={{ fontSize: 14, fontWeight: 600, ...kesik }}>{t1}</div>
+                                  <div style={{ fontSize: 12, color: t.sub, ...kesik }}>{t2}</div>
+                                  {t3 && <div style={{ fontSize: 11, color: t.sub, ...s.mono, ...kesik }}>{t3}</div>}
+                                </div>
+                                <div style={{ textAlign: "right", flex: "none", fontSize: 14, fontWeight: 700, ...s.mono }}>{rt}</div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      );
+    };
     return (
       <div className="fade">
         <div style={{ ...s.row, marginBottom: 14 }}>
@@ -2721,9 +2837,9 @@ function App() {
           <button onClick={() => { setSel({ storeId: store.id }); setModal("sell"); }} className="press" style={{ background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 12, padding: "11px 8px", fontWeight: 600, fontSize: 13, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}><Ic n="money" s={16} /> Sotuv</button>
           <button onClick={() => { setSel({ storeId: store.id }); setModal("order"); }} className="press" style={{ background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 12, padding: "11px 8px", fontWeight: 600, fontSize: 13, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}><Ic n="order" s={16} /> Zakaz</button>
         </div>
-        <div style={{ display: "flex", gap: 2, marginBottom: 12, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), padding: 2, borderRadius: 9 }}>
-          {[{ id: "vitrina", l: "Vitrina", n: sUnits.length }, { id: "sales", l: "Sotuv", n: sSales.length }, { id: "payments", l: "To'lov", n: allPayments.length }, { id: "orders", l: "Zakaz", n: sOrders.length }].map(x => (
-            <button key={x.id} onClick={() => setPTab(x.id)} style={{ flex: 1, padding: "7px 4px", borderRadius: 7, background: pTab === x.id ? (dark ? "#636366" : "#fff") : "transparent", boxShadow: pTab === x.id ? "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)" : "none", color: t.txt, fontSize: 13, fontWeight: pTab === x.id ? 600 : 500 }}>{x.l} {x.n > 0 && <span style={{ opacity: 0.7 }}>· {x.n}</span>}</button>
+        <div className="tg-tabs" style={{ display: "flex", gap: 2, marginBottom: 12, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), padding: 2, borderRadius: 999 }}>
+          {[{ id: "vitrina", l: "Vitrina", n: sUnits.length }, { id: "sales", l: "Sotuv", n: sSales.length }, { id: "payments", l: "To'lov", n: allPayments.length }, { id: "orders", l: "Zakaz", n: sOrders.length }, { id: "report", l: "Hisobot" }].map(x => (
+            <button key={x.id} onClick={e => { setPTab(x.id); e.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" }); }} style={{ flex: "1 0 auto", whiteSpace: "nowrap", padding: "7px 14px", borderRadius: 999, background: pTab === x.id ? (dark ? "#636366" : "#fff") : "transparent", boxShadow: pTab === x.id ? "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)" : "none", color: t.txt, fontSize: 13, fontWeight: pTab === x.id ? 600 : 500 }}>{x.l} {x.n > 0 && <span style={{ opacity: 0.7 }}>· {x.n}</span>}</button>
           ))}
         </div>
         {pTab === "vitrina" && (
@@ -2832,6 +2948,7 @@ function App() {
             );
           })
         )}
+        {pTab === "report" && hisobot()}
       </div>
     );
   };
