@@ -419,8 +419,8 @@ hisobotlarida ko'radi va qaysi yozuv soxta ekanini ajratib bo'lmaydi.
 4. `pageerror` va `dialog` ro'yxatlari bo'sh bo'lishi shart (`alert("Baza xatosi")` = dialog).
 5. Seed'da haqiqiy ism, telefon, parol bo'lmaydi.
 
-Vositalar hozir repoda yo'q — har seans scratchpad'da qayta yoziladi. Repoga qo'shish
-(`sinov/` + `.vercelignore`) — Ibrohim qarori.
+Ilova (Playwright) sinov vositalari repoda yo'q — har seans scratchpad'da qayta yoziladi. `sinov/` papkasi bor
+(Ibrohim, 2026-10-13) — hozircha faqat `daftar.js` sinovlari.
 
 ---
 
@@ -681,6 +681,9 @@ yuklaydi). O'chirish faqat alohida so'rov bilan.
 index.html        ~2 960 qator (~195 KB, ~49k token) — butun ilova (React 18 UMD + Babel,
                   bitta <script type="text/babel">, Firebase Firestore compat 10.14.1)
 api/pdf.py        PDF generator (Vercel Python funksiyasi, ReportLab)
+daftar.js         DAFTAR dvigateli (2026-10-13, 1-bosqich) — index.html hali YUKLAMAYDI; reja DAVOM.md da
+sinov/            daftar.js sinovlari: `node sinov/daftar.test.mjs` (soxta Firestore, haqiqiy bazaga ulanmaydi;
+                  .vercelignore saytdan yashiradi)
 requirements.txt  reportlab (versiyasiz)
 CLAUDE.md         shu fayl — qoidalar
 DAVOM.md          hozirgi holat + keyingi vazifa (har seans boshida o'qiladi)

@@ -6,5 +6,6 @@
 *.md
 mockups/
 __pycache__/
+sinov/
 
-# Chop ETILADI (tegmang): index.html, api/, requirements.txt
+# Chop ETILADI (tegmang): index.html, api/, requirements.txt, daftar.js

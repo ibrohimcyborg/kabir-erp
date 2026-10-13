@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = 897304e · versiya: **v1.19 — PRODDA** · **KEYINGI ISH: DAFTAR 1-bosqich (yangi seans)**
+**Oxirgi yangilanish:** 2026-10-13 · main = 897304e · versiya: **v1.19 — PRODDA** · **DAFTAR 1-bosqich TAYYOR (daftar.js, ilovaga ulanmagan) · KEYINGI: 2-bosqich (Firebase qoidasi)**
 
 ## ⏳ DO'KON HISOBOTI — MAKET TAYYOR, DAFTAR'DAN KEYIN (2026-10-13)
 
@@ -26,7 +26,7 @@ Tahrir tashxisi: sotuv dona/model = `sales` + `units` (tranzaksiya emas, garanti
            ID takrorlanadi (:1220). Tavsiya: hozir faqat narx/summa va pul, dona/model — DAFTAR (ombor qulfi) bilan.
 Keyingi qadam: Ibrohim 1–10 tanlovi → TAXMIN BLOKI → kod (avval hisobot o'qish qismi, tahrir alohida versiya).
 
-## ⏳ KEYINGI ISH — DAFTAR TIZIMIGA O'TISH (2026-10-13) — QARORLAR OLINDI, 1-BOSQICHDAN BOSHLASH
+## ⏳ KEYINGI ISH — DAFTAR TIZIMIGA O'TISH (2026-10-13) — 1-BOSQICH TAYYOR, 2-BOSQICH KUTILMOQDA
 
 Ibrohim: «Tilla ERP dagi DAFTAR tizimini Kabir ERP ga ko'chirmoqchiman» → maket+reja → «bo'ldi unda shu sistemaga
 o'tqizaylik» → qarorlar (AskUserQuestion, 2026-10-13): **hammasi tavsiya bo'yicha**, `daftar.js` alohida fayl — HA,
@@ -47,8 +47,9 @@ MANBA:     tilla-erp origin/main @ 638277f — `daftar.js` (656 q.: yassi/farq/q
            tranzaksiyada), `DF.Daftar({...})` env (20824), _dfKutish/_dfRad; DAVOM v188.85 qoida (create ol==1, ch→getAfter navbat).
 SABOQLAR:  forEach(yubor) (daftar.js:558,:561 — indeks `vaada` bo'ladi) → `forEach(e => yubor(e))` + sinov (navbatda 3 ta,
            2-chisi rad → xato ko'rinsin); «Qayta bosmang» butun ekran (:495) → faqat tugma holati + orqada tekshiruv + qisqa xabar.
-KABIR KALITLARI: `<jadval>:<id>` bor, `<jadval>:<id>.<maydon>` (faqat snake_case ro'yxat bo'yicha); `sales:<id>.pp:<ppid>`
-           (har qisman to'lov alohida); `orders:<id>.sh:<vaqt>`; `activity:<id>` butun yozuv; users — daftarga kirmaydi.
+KABIR KALITLARI: `<jadval>:<id>` bor, `<jadval>:<id>.<maydon>` (faqat `MAYDON` ro'yxati, snake_case); `sales:<id>.partial_payments`
+           + `sales:<id>.pp:<ppid>` (har qisman to'lov alohida); `orders:<id>.status_history` + `orders:<id>.sh:<vaqt>~<n>`;
+           `activity` ham maydonlab (action/details/time); users va `products.image` — daftarga kirmaydi.
            _oid kerak emas (id bor). Navbat raqami bilan: sotuv, jo'natish, qaytarish, mahsulot/do'kon o'chirish, omborga qo'shish
            (unit ID sanog'i), yangi zakaz (ZK- sanog'i). Qulfsiz: to'lov, tahrirlar, mijoz, zakaz statusi, tarix.
 KABIR ULANISH JOYLARI: `db` o'rami (index.html ~191), `loadAll` (~497), yozuvlar 19 joy (grep 'db.from("[a-z]*")\.(insert|
@@ -58,8 +59,21 @@ BOSQICHLAR: 1) `daftar.js` (yangi fayl, index.html ga ULANMAYDI) + Node birlik s
            emulyatorda (java bor; firebase-tools npm) → Ibrohim Publish (joriy qoida RASMI kerak) → 3) `#sinov` TEST rejimi + db
            o'rami/loadAll → 4) guruhlash + ombor qulfi + internet-yo'q UX → 5) TEST'ga ko'chirish (prod faqat O'QILADI) + tekshir
            1:1 → 6) Ibrohim 2 telefonda sinaydi → 7) o'tish kuni. Har bosqich alohida versiya, UI bo'lsa avval maket.
-Keyingi qadam: 1-bosqich — TAXMIN BLOKI → `daftar.js` dvigateli (Kabir kalitlari) + Node sinovlari; index.html ga tegmaslik.
-Ibrohimdan kerak (2-bosqichgacha): Firebase konsol → Firestore → Rules rasmi; tarif (Spark/Blaze).
+✅ 1-BOSQICH (2026-10-13, Ibrohim: «daftarni tugat» → taxmin bloki → «muammo ko'rmayapman» = ha):
+           Qarorlar: sinovlar repoda `sinov/` (.vercelignore'da yashirin); daftar joyi `kabir/_daftar/…` (sinov: `TEST_kabir`);
+           qulfli amal QAYTA QURILADI; rasmlar keyin alohida `rasmlar` kolleksiyasiga (Firebase ichida).
+Fayllar:   `daftar.js` (630 q., index.html YUKLAMAYDI) — `DF.Daftar(env)`: boshla/amal(izoh, qur, {qulf})/ulan/uzil/
+           qaytaYubor/tekshir/kochir(royxatlar)/quril/holat/tayyor/navbatda/tashlandi. Yordamchilar: yassi/farq/qolla/
+           opsHisobla/bazaDan/Holat. qur(baza) → [{t:'insert'|'upsert', j, r}, {t:'update', j, id, f}, {t:'delete', j, id}]
+           yoki {rad:'sabab'}; xulq hozirgi `db` o'rami bilan bir xil (insert almashtiradi, upsert/update qo'shadi, massiv butun).
+           `sinov/soxta-firestore.mjs` (server + telefonlar, qoida taqlidi: faqat yaratish, ol==1, navbat +1),
+           `sinov/daftar.test.mjs` — 25 sinov (19 holat + 6 tasodifiy 3-telefon). Ishga tushirish: `node sinov/daftar.test.mjs`;
+           ko'proq: `URUGLAR=60 node sinov/daftar.test.mjs` (79/79 o'tgan).
+TOPILGAN XATO (Tilla'da ham bor!): o'z yozuvlarim cloudda boshqa tartibda tushsa (biri rad etilib qayta yuborilsa) telefon
+           cloud'dan farqli qiymatda qolardi. Kabir'da tuzatildi (`qabul` — o'z yozuvi tasdiqlanganda eng keyingi qiymat
+           qayta qo'yiladi). Tilla'ga TEGILMADI — Ibrohimga aytildi, Tilla seansida alohida tuzatiladi.
+Keyingi qadam: 2-bosqich — Firebase qoidasi (`kabir/_daftar`: yozuvlar faqat create, ol==1, ch → navbat getAfter;
+           navbat n faqat +1) + emulyatorda sinov. Ibrohimdan kerak: Firebase konsol → Firestore → Rules RASMI; tarif (Spark/Blaze).
 
 ## ✅ VERCEL KUNLIK CHEGARASI (2026-10-13) — HAL QILINDI
 

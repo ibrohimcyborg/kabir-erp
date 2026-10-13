@@ -2,6 +2,11 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## daftar d1 — 2026-10-13 — DAFTAR 1-bosqich: dvigatel (ilovaga ulanmagan)
+`daftar.js` — Kabir jadvallari uchun daftar dvigateli (Tilla g'oyasi, kod qayta yozilgan): yassi kalitlar, amal → bitta
+qator, ombor qulfi (navbat raqami, amal qayta quriladi), navbat, bo'laklar, imzo, ko'chirish/tekshirish. `sinov/` —
+soxta Firestore + 25 sinov. Tilla'dan farqli tuzatish: o'z yozuvlari cloudda boshqa tartibda tushsa telefon ajralmaydi.
+
 ## v1.19 — 2026-10-13 — hamma qidiruvda «×» (bir bosishda tozalash)
 - Do'kon qidirish (telefon sahifasi va kompyuter paneli), Kategoriya qidirish, Shu kategoriyada qidirish: yozuv bor paytda o'ngda kulrang «×»; bosilsa yozuv o'chadi, kursor qidiruvda qoladi.
 
