@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` (6c21743) · versiya: **v1.19 main'da, lekin SAYTDA HALI v1.18** — Vercel kunlik chegarasi (pastga qara)
+**Oxirgi yangilanish:** 2026-10-13 · main = 5daaf9c (+ shu DAVOM commiti, push kutilmoqda) · versiya: **v1.19 — PRODDA** (dpl_6N4uwE93…, READY)
 
 ## ⏳ KEYINGI ISH — DAFTAR TIZIMIGA O'TISH (2026-10-13) — QARORLAR OLINDI, 1-BOSQICHDAN BOSHLASH
 
@@ -40,20 +40,18 @@ BOSQICHLAR: 1) `daftar.js` (yangi fayl, index.html ga ULANMAYDI) + Node birlik s
 Keyingi qadam: 1-bosqich — TAXMIN BLOKI → `daftar.js` dvigateli (Kabir kalitlari) + Node sinovlari; index.html ga tegmaslik.
 Ibrohimdan kerak (2-bosqichgacha): Firebase konsol → Firestore → Rules rasmi; tarif (Spark/Blaze).
 
-## ⚠️ VERCEL KUNLIK CHEGARASI (2026-10-13) — v1.19 SAYTGA CHIQMAGAN
+## ✅ VERCEL KUNLIK CHEGARASI (2026-10-13) — HAL QILINDI
 
-Tekshirildi (Vercel API, 24 soat): jami 124 yig'ish — tilla-erp 69, analitika 26 (avtomatik data commitlari), kabir-erp 25
-(12 main + 13 branch), kitco 4. Chegara jamoa («Ibrohim's projects») bo'yicha UMUMIY. Ibrohim qarori (2026-10-13):
-«push qil» = FAQAT main'ga; .md commitlari keyingi versiya bilan birga (CLAUDE.md §8 yangilandi).
+Sabab: 24 soatda 124 yig'ish (tilla-erp 69 — 43 tasi `main-dby0je` branch'idan; analitika 26 — `data` va `claude/*` branch'lari;
+kabir-erp 25 — 12 main + 13 branch; kitco 4). Bepul tarif: kuniga 100 ta, jamoa («Ibrohim's projects») bo'yicha UMUMIY.
+1) Ibrohim qarori: «push qil» = FAQAT main'ga; .md commitlari keyingi versiya bilan birga (CLAUDE.md §8).
+2) Ibrohim: «o'zin sozla» → Claude Vercel API orqali 8 ta loyihaning HAMMASIGA `previewDeploymentsDisabled: true` qo'ydi:
+   kabir-erp, tilla-erp, analitika, kitco, zavod-erp, ai-office, kabir-gold-ai, tilla-jonli. Production (main) tegilmagan,
+   domenlar joyida. Preview havolalar baribir Vercel login ortida edi (ssoProtection) — hech kim ishlatmagan.
+   Qaytarish: Vercel → loyiha → Settings → preview deployments yoqish (yoki API: `previewDeploymentsDisabled: false`).
+Natija: v1.19 chegara tiklangach main push bilan chiqdi (5daaf9c, production READY).
 
-main = 6c21743 (v1.19 ichida), lekin Vercel production yig'ishi BOSHLANMAGAN: bepul tarif «kuniga 100 ta yig'ish»
-(`api-deployments-free-per-day`, 402) to'lgan. Branch preview (dpl_JEHFfprpWd2Xjeuu4fMWsGJisvZz) sig'gan, main'niki yo'q.
-Promote (422 — preview'ni promote qilib bo'lmaydi) va create_deployment (402) ham rad etildi. Prodda: d637887 (v1.18).
-Keyingi qadam: chegara tiklangach (Vercel: 24 soatgacha) main'ga keyingi push v1.19 ni chiqaradi, yoki Ibrohim Vercel'da
-           Deployments → oxirgi main → Redeploy bosadi. Har push 2 ta yig'ish qiladi (claude/* branch + main) — kvotani
-           tejash uchun branch preview'larni o'chirish (Vercel → Settings → Git) — Ibrohim qarori, o'zim o'zgartirmayman.
-
-## ⏳ v1.19 — HAMMA QIDIRUVDA «×» (2026-10-13) — MAIN'DA, SAYTGA CHIQISHI KUTILMOQDA
+## ✅ v1.19 — HAMMA QIDIRUVDA «×» (2026-10-13) — PRODDA
 
 Ibrohim: «poiskning yoniga x qo'y» → maket (https://claude.ai/artifact/UTfNjZBeSRKvRXnm512B2A, 2-versiya) → «hammasiga qo'y pc tablet mobilega».
 Qilingan:  `s.clr` uslubi (iBtn dan keyin); 4 qidiruvga `{q && <button aria-label="Qidiruvni tozalash" …>×</button>}`:
@@ -62,7 +60,7 @@ Qilingan:  `s.clr` uslubi (iBtn dan keyin); 4 qidiruvga `{q && <button aria-labe
 Sinov:     JSX OK; soxta baza: telefon (3 qidiruv), planshet (2), kompyuter (2), telefon qora — bo'shda × yo'q, yozilganda 22×22,
            bosilganda qiymat "", fokus qidiruvda, xato yo'q. (Birinchi urinishda previousSibling bo'sh matn tuguniga tushib
            xato bergan — tuzatildi, commitga kirmagan.)
-Keyingi qadam: Ibrohim «push qil» desa → branch + main.
+Prodda: main 5daaf9c (Ibrohim telefonda tekshiradi).
 
 ## ✅ v1.18 — KOMPYUTERDAGI DO'KON QIDIRUVI HAM B (2026-10-13) — PRODDA
 
