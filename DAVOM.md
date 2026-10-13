@@ -5,6 +5,15 @@
 
 **Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.18 — PRODDA** (2026-10-13)
 
+## ⏳ YARIM QOLDI — QIDIRUV YONIGA «×» (TOZALASH) (2026-10-13) — ENG OXIRGI ISH
+
+Ibrohim: «poiskning yoniga x qo'y, tez o'chirib tashlashga». Kod YOZILMAGAN, prodda v1.18.
+Maket:     https://claude.ai/artifact/UTfNjZBeSRKvRXnm512B2A (2-versiya: yozuv bor paytda o'ngda iOS uslubidagi kulrang doira «×»)
+Taklif:    `{q && <button onClick={() => setQ("")}>×</button>}` qidiruv label ichida, 22px doira rgba(118,118,128,.45), oq ×.
+Javobsiz savol: faqat do'kon qidiruvi (telefon StoresPage + kompyuter DokonlarPane) yoki ombordagi 2 ta qidiruv ham
+           («Kategoriya qidirish...» :2361, «Shu kategoriyada qidirish...» :2221)?
+Keyingi qadam: javob → TAXMIN BLOKI → kod → v1.19 → push (agar aytsa).
+
 ## ✅ v1.18 — KOMPYUTERDAGI DO'KON QIDIRUVI HAM B (2026-10-13) — PRODDA
 
 Ibrohim: «kompda ham shunaqa qil» → «push qil».
