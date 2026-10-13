@@ -70,6 +70,15 @@ Javobsiz savol: «Oylik reja 91/100», «Qarz xavfi», «Ombor holati %», «Vit
            Taklif: 1-bosqich v1.09 = ranglar, oq kartochkalar, PC chap ikonka menyu + o'ng panel, telefon pastki menyu;
            2-bosqich = kartochkalardagi mini-grafiklar (YANGI HISOB — har biri uchun qaror).
            Javobsiz savollar: uslub shu bo'lsinmi? qora rejim qolsinmi / sayt doim oq ochilsinmi? Kod YOZILMAGAN.
+⏳ FAQAT RANGLAR (2026-10-13, HOZIRGI): Ibrohim «diagrammalarni ko'paytirib tashlama, ranglarini ol faqat».
+           Maket (shu havola, versiya 2): https://claude.ai/artifact/5bEnVoW76xZUFLjVcT52T9 — haqiqiy ilova,
+           tuzilish v1.08 dagidek, faqat THEMES.light almashgan (+ nomlar tuzatishi):
+           light: bg #F2F4F5, surf/card #FFFFFF, border #E6E8EE, acc #2F63F6, accSoft #2F63F61A, accTxt #FFFFFF,
+           txt #20252E, sub #6B6F78, dim #A3A7B0, green #197560, greenS #E9F5EC, red #CE2B45, redS #FFE7E9,
+           amber #A86A00, amberS #FFF3DC, blue #2F63F6, blueS #E3EBFE, glass #FFFFFF, glassB #E6E8EE,
+           nav rgba(233,236,241,0.96), navOn #FFFFFF, glow none.
+           Taklif: sayt doim oq ochilsin (useState default: saved===null → false), oy/quyosh tugmasi qoladi.
+           Javobsiz savol: ranglar shu bo'lsinmi? sayt doim oq ochilsinmi? → «ha» → v1.09 → push main. Kod YOZILMAGAN.
 
 ## ⏸ (bajarildi → yuqorida) YANGI DIZAYN «1:1» MAKETI (2026-10-10)
 
