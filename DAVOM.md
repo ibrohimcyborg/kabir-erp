@@ -83,7 +83,16 @@ Sinov:     `sinov/qoida.test.mjs` — Firestore emulyatori v1.19.7 + firebase 10
            bo'laklangan qulfli yozuv o'tadi, daftar.js 2 telefon (ko'chirish, qulf, offlayn navbat, tekshir 1:1) haqiqiy SDK bilan.
 Ko'rsatma: https://claude.ai/artifact/AdoG7EHDTm3kDv5uhvXd7j (nusxa tugmasi, 4 qadam, orqaga qaytarish — eski qoida matni).
 Tekshiruv: Ibrohimdan — ilova (Ombor/Do'kon) Publish'dan keyin odatdagidek ochilishini tasdiqlash so'raldi.
-Keyingi qadam: 3-bosqich — avval MAKET (#sinov TEST rejimi: sinov belgisi, daftar holati, TEST_kabir), keyin taxmin bloki, keyin kod.
+Ibrohim: Publish'dan keyin ilova (Ombor/Do'kon) «ochildi» — tasdiqlandi. main = c539c0b (push qilingan).
+⏳ 3-BOSQICH — MAKET, JAVOB KUTILMOQDA (2026-10-13): https://claude.ai/artifact/MoeY7DdsGBguX1TWFXWHst
+           #sinov: tepada to'q sariq tasma, bulut tugmasi = daftar holati (yashil 1:1 / sariq yuborilmoqda / internet yo'q /
+           qizil yozilmadi), bosilsa oyna (navbat, oxirgi yozuv, qatorlar, TEST_kabir, Tekshirish, Sinovdan chiqish);
+           sinov bazasi boshida bo'sh. Kodda: db o'rami (~200–260) sinovda daftarga; loadAll (~497–515) daftar holatidan,
+           boshqa telefon o'zgarishi jonli; bulut (~3184); login/users o'zgarmaydi; rasm → TEST_rasmlar; nusxa IndexedDB.
+           3-bosqichda har yozuv alohida qator (guruhlash, qulf, internet-yo'q UX — 4-bosqich), oddiy manzil o'zgarmaydi.
+           Qarorlar (tavsiya): 1) faqat manzil #sinov; 2) bo'sh baza; 3) TEST_rasmlar; 4) faqat tasma (versiya yonida
+           SINOV — uzun sarlavhada sig'maydi). Taxminiy versiya v1.20.
+Keyingi qadam: Ibrohim «shunaqa qil»/1–4 tanlovi → TAXMIN BLOKI → kod (index.html + daftar.js ulash) → soxta baza sinovi.
 Javobsiz:  tarif (Spark/Blaze) — qoidaga ta'sir qilmaydi, rasmlar ombori uchun kerak.
 
 ## ✅ VERCEL KUNLIK CHEGARASI (2026-10-13) — HAL QILINDI
