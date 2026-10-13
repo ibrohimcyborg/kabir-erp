@@ -5,11 +5,17 @@
 
 **Oxirgi yangilanish:** 2026-10-13 · main = `claude/pc-versiya` bilan bir xil · versiya: **v1.16 — PRODDA** (2026-10-13)
 
-## ⏳ KEYINGI ISH — DO'KONLAR SAHIFASIGA QIDIRUV (2026-10-13)
+## ⏳ YARIM QOLDI — DO'KONLAR SAHIFASIGA QIDIRUV (2026-10-13) — ENG OXIRGI ISH
 
-Ibrohim: «keyin do'konga ham qidirish qo'shish kerak». Kod YOZILMAGAN, maket ham yo'q.
-Keyingi qadam: `StoresPage` ni grep bilan ochish → maket (Artifact) → Ibrohim tasdig'i → kod.
-Javobsiz savol: nima bo'yicha qidiradi — nomi, manzili, menejeri, telefoni (yoki hammasi)?
+Ibrohim: «keyin do'konga ham qidirish qo'shish kerak» → «mockupda ko'rsat».
+Branch:    claude/pc-versiya — kod YOZILMAGAN, prodda v1.16.
+Maket:     https://claude.ai/artifact/UTfNjZBeSRKvRXnm512B2A (hozirgi / taklif, A-B tanlovli jonli qidiruv)
+Faktlar:   telefon `StoresPage` (index.html:2381) da qidiruv YO'Q; PC `DokonlarPane` (:2095) da `q` bor (:2131–2132,
+           label 36px, fill rgba(118,118,128,.12), «Do'kon qidirish»), faqat `st.name` bo'yicha (:2120 atrofi `.filter`).
+Taklif:    `StoresPage` sarlavhasi ostida PC'dagi bilan bir xil qidiruv qatori; `useState("")` StoresPage ichida (Screen
+           key="stores" ostida — hook joyi xavfsiz); «Jami: N ta» → qidirilsa «Topildi: X / N ta»; bo'sh natija matni.
+Javobsiz savol: 1) A (faqat nomi) yoki B (nomi + address + manager + phone, tavsiya)? 2) PC qidiruvi ham shunga o'tsinmi?
+Keyingi qadam: javob → TAXMIN BLOKI → kod → v1.17 → push main.
 
 ## ✅ v1.16 — OYNA OCHIQ PAYTDA FON QIMIRLAMAYDI (2026-10-13) — PRODDA
 
