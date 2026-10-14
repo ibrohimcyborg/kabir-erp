@@ -74,8 +74,8 @@ Bulut seansi (`echo $CLAUDE_CODE_REMOTE` → `true`) PC'dan farq qiladi:
 1. **`DAVOM.md` HAR o'zgarishdan keyin DARHOL yangilanadi** — seans oxirini kutmaydi.
    Kod → `DAVOM.md` (+ `CHANGELOG.md`) → bitta commit. Uchtasi bitta ish.
 2. **Push faqat Ibrohim aytganda** (§8). Shuning uchun har o'zgarish tugagach javob oxirida
-   bitta qator: `Push qilinmagan: <branch> @ <hash> — push qilaymi?` Bulutda bu ish seans
-   tugasa yo'qoladi — Ibrohim buni bilishi shart.
+   bitta qator: `Push qilinmagan: <hash> — push qilaymi?` Bulutda bu ish seans
+   tugasa yo'qoladi — Ibrohim buni bilishi shart. Branch nomi Ibrohimga aytilmaydi (§8).
 3. **Yarim qolgan ish** `DAVOM.md` ga shunday yoziladi:
    ```
    ⏳ YARIM QOLDI — <nima> (<sana>)
@@ -514,6 +514,9 @@ Tekshirilmagan fix ustiga tekshirilmagan fix qo'yish — kod izlanmaydigan bo'li
   ```
   `git add -A` / `git add .` **ishlatilmaydi** — `.gitignore` yo'q, sinov qoldig'i
   (`__pycache__/`, skrinshot, html nusxa) public repoga tushib qoladi.
+- ⚠ **BRANCH KERAK EMAS — Ibrohim (2026-10-14): «branch keremas unut».** Ish lokal `main`da (`origin/main` ni
+  kuzatadi). Bulut seansi `claude/*` da boshlansa va unda `origin/main` dan ortiq commit bo'lmasa —
+  `git checkout -B main origin/main`. Branch haqida Ibrohimga gapirilmaydi. Quyidagi `claude/<mavzu>` qatorlari — eski.
 - Ish `claude/<mavzu>` branch'ida. Bulutda push qilinmagan ish konteyner bilan yo'qoladi —
   shuning uchun har o'zgarish oxirida so'ra (§0.1, 2-band).
 - `"push qil"` = ish branch'ini push qilish: `git push -u origin claude/<mavzu>` — branch nomini
