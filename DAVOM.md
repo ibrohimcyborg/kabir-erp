@@ -3,10 +3,10 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-14 · **main = v1.26 (prod)** · **v1.27 (tun rejimi B ranglari) — commit qilindi, PUSH QILINMAGAN** (`claude/pc-versiya`). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.26. Navbatda: hisobot tahriri (5–10) · DAFTAR'dan o'qishga o'tish (7/7 dan keyin)
+**Oxirgi yangilanish:** 2026-10-14 · **main = v1.27 commiti — PUSH QILINDI (prod)** (v1.27 — tun rejimi B «Ko'k» ranglari). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.26. Navbatda: hisobot tahriri (5–10) · DAFTAR'dan o'qishga o'tish (7/7 dan keyin)
 
 
-## ✅ v1.27 — TUN REJIMI: B «KO'K» RANGLARI (2026-10-14) — commit, push QILINMAGAN
+## ✅ v1.27 — TUN REJIMI: B «KO'K» RANGLARI (2026-10-14) — PUSH QILINDI (prod)
 
 Ibrohim: maket (https://claude.ai/artifact/41aPzKnvbGAk4axi7nNCLb) → «B» → taxmin bloki → «ha qil hammasini, PC, planshet,
 mobil — hammasi bir xil bo'lsin».
