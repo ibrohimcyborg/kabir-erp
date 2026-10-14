@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-14 · **main = v1.25 commiti — PUSH QILINDI (prod)** (v1.25 — 0 qilingan donalar tarixdan chiqadi). **Navbatda:** «jo'natganda har do'konga har xil narx» — maket hali yo'q (keyingi ish). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.25
+**Oxirgi yangilanish:** 2026-10-14 · main = 7606df9 (v1.25 prodda). **Hozir:** «jo'natishda har do'konga o'z narxi» maketi javob kutmoqda (4Y2DmDgJ8GmrM4CQV4D9j7, v1.26). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.25
 
 ## ✅ v1.25 — 0 QILINGAN DONALAR TARIXDAN CHIQADI (2026-10-14) — PUSH QILINDI (prod)
 
@@ -23,12 +23,19 @@ Tashxis:   `hisobot()` «Jo'natildi» (~2796) do'kondagi hamma donani `sentAt` b
 Qarorlar:  1) A yoki B (tavsiya B); 2) B da «0 qilindi» Qaytish filtrida (tavsiya) yoki alohida 6-tugma.
 Keyingi qadam: Ibrohim tanlovi → TAXMIN BLOKI → kod (v1.25).
 
-## ⏳ NAVBATDA — JO'NATGANDA HAR DO'KONGA HAR XIL NARX (2026-10-13), maket yo'q
+## ⏳ JO'NATISHDA HAR DO'KONGA O'Z NARXI — MAKET, JAVOB KUTILMOQDA (2026-10-14)
 
-Ibrohim: «do'konga ombordan jo'natganda stol-stulning narxini ham har xil beramiz-ku, shuni qo'shimcha qil».
-LOGIKA (narx: vitrina qarzi `stats`/StoreProfile/DokonlarPane product.price dan; SellModal narxi; hisobot; PDF) → avval maket.
-Hozir narx faqat `products.price` (bitta). Maketda: jo'natish oynasida narx maydoni, dona/jo'natishga narx yozish (yangi
-maydon units.* — §6.2 ehtiyot), vitrina qarzi va sotuvga ta'siri, eski donalar (narxsiz) qanday hisoblanadi.
+Ibrohim: «do'konga ombordan jo'natganda stol-stulning narxini ham har xil beramiz-ku, shuni qo'shimcha qil» → «ha maketini qil».
+Maket:     https://claude.ai/artifact/4Y2DmDgJ8GmrM4CQV4D9j7 — hozir / taklif (3 ko'rinish: jo'natish oynasida har mahsulot
+           yonida narx — avtomatik «shu do'konga oxirgi narx», bo'lmasa asosiy; do'kon profili — vitrina qarzi donalar narxidan,
+           ID yonida narx; sotuv — narx donadan, avval eng oldin jo'natilgani).
+Tashxis:   narx faqat `products.price`. O'qiydigan joylar: stats vitrina qarzi ~829, SellModal total ~1759, NolModal ~1945,
+           DokonlarPane vitVal ~2403, StoresPage QARZ ~2705, StoreProfile sDebt ~2782 va «$X/dona» ~2943. TransferModal ~1540
+           narx yozmaydi. Taklif: yangi `units.store_price` (camel `storePrice`; loadAll xaritasi; TransferModal yozadi;
+           ReturnModal o'chiradi; daftar.js MAYDON.units ga qo'shiladi). canSee("price") — faqat superadmin (narx tahriri).
+Qarorlar (tavsiya): 1) jo'natishda, oxirgi narx eslab qolinadi (yoki narx-varag'i / ustama %); 2) faqat superadmin o'zgartiradi,
+           admin/moder — avtomatik; 3) sotuvda donaning narxi (FIFO); 4) vitrinadagi eski donalar asosiy narxda; 5) qaytsa narx o'chadi.
+Keyingi qadam: Ibrohim «shunaqa qil»/1–5 → TAXMIN BLOKI → kod (v1.26, ~90–120 qator).
 
 ## ✅ v1.24 — SONLARNI 0 QILISH (2026-10-13) — PUSH QILINDI (prod)
 
