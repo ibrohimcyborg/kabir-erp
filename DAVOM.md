@@ -127,6 +127,10 @@ Qilingan:  `StoreProfile` (index.html ~2672): hooklar hDavr/hTur/hOchiq (`if (!s
 Sinov:     JSX OK; brauzer (emulyator, soxta seed) 3/3: moder va superadmin — sonlar/pul to'g'ri (Hammasi va Bu oy), kun
            ochiladi, «Pul» filtri, xato/alert yo'q; 320px da tugmalar suriladi. 320px da sahifa kengligi 360 — v1.20 da ham
            363 (eski, sarlavha belgilari) — tegilmadi.
+ID amalda (2026-10-14, Ibrohim «ID qanaqa bo'ladi, buzilishi mumkinmi? amalda ko'rsat»): https://claude.ai/artifact/N4qbzzk5e7Gj8JjkMJGeQB
+           — bosib sinaladigan ro'yxat + haqiqiy ilova (emulyator) suratlari: dona o'chirilsa → ikkita #0005; ikki telefon → ikkita #0006.
+           ID = SKU-#(mahsulot donalari soni+1) (index.html ~1438). Tahrir (narx/to'lov, dona/model) ID ga tegmaydi; kamaytirish = o'chirish → takror.
+           Ibrohim tahrir uchun 5–10 qarorlarni hali bermadi.
 Qolgan:    tahrirlash (qarorlar 5–10) — alohida; Ibrohim: moder hisobotni KO'RADI, lekin TAHRIRLAMAYDI (tahrir qilinganda
            shu qoida). DAFTAR'ga o'tilgach C rejimi (to'liq jo'natish/qaytish + «jo'natildi−sotildi−qaytdi=vitrinada»).
 
