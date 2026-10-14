@@ -2,6 +2,10 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.26 — 2026-10-14 — Jo'natishda har do'konga o'z narxi
+Jo'natish oynasida har mahsulot narxi (avtomatik — shu do'konga oxirgi narx; superadmin o'zgartiradi). Vitrina qarzi va sotuv
+donaning narxidan; sotuvda eng oldin jo'natilgani birinchi. Vitrinadan qaytsa narx o'chadi.
+
 ## v1.25 — 2026-10-14 — 0 qilingan donalar tarixdan chiqadi
 Do'kon hisoboti, do'kon PDF, ombor oldi-berdi va do'konlar ro'yxatida 0 qilingan donalar «jo'natildi» bo'lib ko'rinmaydi.
 

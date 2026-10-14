@@ -3,7 +3,7 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-14 · main = 7606df9 (v1.25 prodda). **Hozir:** «jo'natishda har do'konga o'z narxi» maketi javob kutmoqda (4Y2DmDgJ8GmrM4CQV4D9j7, v1.26). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.25
+**Oxirgi yangilanish:** 2026-10-14 · **main = v1.26 commiti — PUSH QILINDI (prod)** (v1.26 — jo'natishda har do'konga o'z narxi). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.26. Navbatda: hisobot tahriri (5–10) · DAFTAR'dan o'qishga o'tish (7/7 dan keyin)
 
 ## ✅ v1.25 — 0 QILINGAN DONALAR TARIXDAN CHIQADI (2026-10-14) — PUSH QILINDI (prod)
 
@@ -23,7 +23,22 @@ Tashxis:   `hisobot()` «Jo'natildi» (~2796) do'kondagi hamma donani `sentAt` b
 Qarorlar:  1) A yoki B (tavsiya B); 2) B da «0 qilindi» Qaytish filtrida (tavsiya) yoki alohida 6-tugma.
 Keyingi qadam: Ibrohim tanlovi → TAXMIN BLOKI → kod (v1.25).
 
-## ⏳ JO'NATISHDA HAR DO'KONGA O'Z NARXI — MAKET, JAVOB KUTILMOQDA (2026-10-14)
+## ✅ v1.26 — JO'NATISHDA HAR DO'KONGA O'Z NARXI (2026-10-14) — PUSH QILINDI (prod)
+
+Ibrohim: maket → «ha shunaqa qilib push qil» → taxmin bloki → «ha». Qarorlar 1–5 tavsiya bo'yicha.
+Qilingan:  yangi `units.store_price` (camel `storePrice`, loadAll xaritasi). App: `unitPrice(u)` = storePrice ?? product.price;
+           `oxirgiNarx(sid, pid)` = shu do'kondagi shu mahsulotning eng keyingi sentAt li donasi narxi, bo'lmasa asosiy.
+           TransferModal: `narxlar` holati, `guruhlar` (ro'yxat / bitta mahsulot / skaner), `narxBlok` ikkala «Jo'natish»
+           tugmasidan oldin — superadmin (canSee("price")) input, boshqalar matn; «Vitrina qarziga +$»; send → store_price.
+           Vitrina qarzi: stats, NolModal, DokonlarPane, StoresPage, StoreProfile → unitPrice. StoreProfile vitrina: «$min–$max/dona»,
+           ID yonida narx. SellModal: donalar sentAt bo'yicha (eskisi birinchi), total = Σ unitPrice × (1−chegirma); narx turlicha
+           bo'lsa — har dona qatori. ReturnModal: store_price=null. daftar.js MAYDON.units + 'store_price'; skript daftar.js?v=1.26.
+           Do'kon o'chirilganda omborga qaytgan donalarda store_price qoladi (zarari yo'q — keyingi jo'natish yangisini yozadi).
+Sinov:     JSX OK; daftar 25/25; emulyator brauzer 7/7: superadmin narx 450→500 (bazada 2 dona store_price 500), vitrina qarzi
+           $2.1K, «$450–$500/dona», 2-jo'natishda avtomatik $500, sotuv 3 dona = $1,400 (#0001, #0002 birinchi), qaytarishda
+           store_price null, daftarda ham 500, oxirgi solishtirish 1:1, admin'da input yo'q.
+
+## (bajarildi → yuqorida) JO'NATISHDA HAR DO'KONGA O'Z NARXI — MAKET (2026-10-14)
 
 Ibrohim: «do'konga ombordan jo'natganda stol-stulning narxini ham har xil beramiz-ku, shuni qo'shimcha qil» → «ha maketini qil».
 Maket:     https://claude.ai/artifact/4Y2DmDgJ8GmrM4CQV4D9j7 — hozir / taklif (3 ko'rinish: jo'natish oynasida har mahsulot

@@ -36,7 +36,7 @@ var USTMA = 5 * 60 * 1000;   // qayta ulanganda oxirgi 5 daqiqani yana so'raymiz
 
 var MAYDON = {
   products:  ['name', 'sku', 'category', 'dimensions', 'cost', 'price', 'markup', 'cost_items', 'price_incomplete', 'created_at'],
-  units:     ['unit_id', 'product_id', 'location', 'status', 'added_at', 'sent_at'],
+  units:     ['unit_id', 'product_id', 'location', 'status', 'added_at', 'sent_at', 'store_price'],
   stores:    ['name', 'address', 'manager', 'phone', 'created_at'],
   sales:     ['unit_ids', 'store_id', 'product_id', 'customer_id', 'customer_name', 'qty', 'price', 'cost', 'total_amount',
               'paid', 'pay_date', 'pay_method', 'debt_due', 'date', 'created_at'],

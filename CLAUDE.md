@@ -561,7 +561,7 @@ to'g'ri kelmasa — **kod haqiqat**, bu bo'limni o'sha commitda yangila.
 | Kolleksiya | Maydonlar | Xarita |
 |---|---|---|
 | `products` | id, name, sku, category, dimensions, cost, price, markup, cost_items[{id,name,amount}], price_incomplete, image (base64 JPEG), created_at | cost_items→costItems, price_incomplete→priceIncomplete |
-| `units` | id, unit_id, product_id, location (`"warehouse"` / store.id), status (`"available"`/`"sold"`/`"nol"` — v1.24: «Sonlarni 0 qilish», dona bazada qoladi, raqam uchun sanaladi), added_at, sent_at | unitId, productId, addedAt, sentAt |
+| `units` | id, unit_id, product_id, location (`"warehouse"` / store.id), status (`"available"`/`"sold"`/`"nol"` — v1.24: «Sonlarni 0 qilish», dona bazada qoladi, raqam uchun sanaladi), added_at, sent_at, store_price (v1.26: do'konga jo'natish narxi; yo'q bo'lsa — products.price) | unitId, productId, addedAt, sentAt, storePrice |
 | `stores` | id, name, address, manager, phone, created_at | — |
 | `sales` | id, unit_ids (unitId MATNLARI), store_id, product_id, customer_id, customer_name, qty, price (chegirmadan keyin 1 dona), cost (sotuv paytidagi), total_amount, paid, pay_date, pay_method, debt_due, partial_payments[{id,amount,method,date}], date, created_at | unitIds, storeId, productId, customerId, customerName, totalAmount, payDate, payMethod, partialPayments. **`debt_due` xaritalanmaydi** |
 | `orders` | id, order_id (`ZK-0001`), store_id, product_id, qty, note, deadline, price, prepaid, status (pending/working/ready/delivered), status_history[{status,time}], created_at | orderId, storeId, productId, statusHistory |
@@ -575,10 +575,10 @@ to'g'ri kelmasa — **kod haqiqat**, bu bo'limni o'sha commitda yangila.
 |---|---|---|
 | Mahsulot qo'shish/tahrir | `ProductModal` → `save` | `products` upsert; yangi + boshlang'ich son → `units` insert |
 | Omborga qo'shish | `AddStockModal` → `add` | `units` insert (joy do'kon bo'lsa `sent_at` ham) |
-| Vitrinaga jo'natish | `TransferModal` → `send` | `verifyUnitsUnchanged` → `units` upsert (location, sent_at) |
+| Vitrinaga jo'natish | `TransferModal` → `send` | `verifyUnitsUnchanged` → `units` upsert (location, sent_at, store_price — avtomatik «shu do'konga oxirgi narx», superadmin o'zgartiradi) |
 | Sotuv | `SellModal` → `sell` | `units` status="sold" → yangi mijoz `customers` → `sales` insert → `activity`. **Tranzaksiya emas** |
 | To'lov | `PayModal` → `conf` | `sales` upsert: butun `partial_payments` massivi qayta yoziladi |
-| Vitrinadan qaytarish | `ReturnModal` → `ret` | `units` location="warehouse". Sotuvni QAYTARISH funksiyasi yo'q |
+| Vitrinadan qaytarish | `ReturnModal` → `ret` | `units` location="warehouse", store_price=null. Sotuvni QAYTARISH funksiyasi yo'q |
 | Zakaz qo'shish / tahrir | `OrderModal` → `save` | `orders` insert / upsert (tahrirda `status_history` O'ZGARMAYDI) |
 | Zakaz statusi | `OrdersPage` select | `orders` update: status + `status_history` |
 | Do'kon qo'shish/tahrir/o'chirish | `StoreModal`, `StoresPage` | `stores`; o'chirishda available unitlar omborga |

@@ -1,4 +1,4 @@
-<!-- v1.25 -->
+<!-- v1.26 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -21,7 +21,7 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-<script src="daftar.js?v=1.20"></script>
+<script src="daftar.js?v=1.26"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
 <style>
@@ -145,7 +145,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:blo
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.25";
+const APP_VER = "v1.26";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -718,7 +718,7 @@ function App() {
         db.from("activity").select("*").order("time", { ascending: false }).limit(10000),
       ]);
       if (p.data) setProducts(p.data.map(x => ({ ...x, costItems: x.cost_items || [], priceIncomplete: !!x.price_incomplete })));
-      if (u.data) setUnits(u.data.map(x => ({ ...x, unitId: x.unit_id, productId: x.product_id, addedAt: x.added_at, sentAt: x.sent_at })));
+      if (u.data) setUnits(u.data.map(x => ({ ...x, unitId: x.unit_id, productId: x.product_id, addedAt: x.added_at, sentAt: x.sent_at, storePrice: x.store_price })));
       if (st.data) setStores(st.data);
       if (sa.data) setSales(sa.data.map(x => ({ ...x, unitIds: x.unit_ids || [], storeId: x.store_id, productId: x.product_id, customerId: x.customer_id, customerName: x.customer_name, totalAmount: x.total_amount, payDate: x.pay_date, payMethod: x.pay_method, partialPayments: x.partial_payments || [] })));
       if (o.data) setOrders(o.data.map(x => ({ ...x, orderId: x.order_id, storeId: x.store_id, productId: x.product_id, statusHistory: x.status_history || [] })));
@@ -810,6 +810,13 @@ function App() {
     });
     return r;
   };
+  // Donaning narxi: do'konga jo'natilgandagi narx, bo'lmasa mahsulotning asosiy narxi
+  const unitPrice = (u) => u.storePrice ?? products.find(p => p.id === u.productId)?.price ?? 0;
+  // Shu do'konga shu mahsulotning oxirgi jo'natish narxi, bo'lmasa asosiy narx
+  const oxirgiNarx = (sid, pid) => {
+    const us = units.filter(u => u.location === sid && u.productId === pid && u.storePrice != null && u.sentAt).sort((a, b) => String(b.sentAt).localeCompare(String(a.sentAt)));
+    return us[0] ? us[0].storePrice : (products.find(p => p.id === pid)?.price || 0);
+  };
 
   const stats = useMemo(() => {
     const totalSales = sales.reduce((s, x) => s + x.totalAmount, 0);
@@ -826,7 +833,7 @@ function App() {
     let totalVitrinaDebt = 0;
     units.filter(u => u.location !== "warehouse" && u.status === "available").forEach(u => {
       const p = products.find(x => x.id === u.productId);
-      if (p) totalVitrinaDebt += p.price;
+      if (p) totalVitrinaDebt += u.storePrice ?? p.price;
     });
     const debtCount = sales.filter(x => !x.paid).length;
     return { totalSales, totalProfit, totalPaid, totalCustomerDebt, totalVitrinaDebt, debtCount };
@@ -1548,6 +1555,7 @@ function App() {
     const [scanInput, setScanInput] = useState("");
     const [scanErr, setScanErr] = useState("");
     const [transferList, setTransferList] = useState([]);
+    const [narxlar, setNarxlar] = useState({});
 
     const handleScanInput = (val) => {
       setScanInput(val);
@@ -1585,6 +1593,35 @@ function App() {
     const availUnits = productId ? getWhUnits(productId) : [];
     const product = products.find(p => p.id === productId);
     const qtyN = +qty || 0;
+    // Narx: har mahsulot uchun bitta. Superadmin o'zgartiradi, bo'sh bo'lsa — shu do'konga oxirgi narx / asosiy narx
+    const narxOl = (pid) => { const v = narxlar[pid]; return v !== undefined && v !== "" && +v > 0 ? +v : oxirgiNarx(storeId, pid); };
+    const guruhlar = (() => {
+      const m = {};
+      if (scanMode) scannedIds.forEach(u => { m[u.productId] = (m[u.productId] || 0) + 1; });
+      else if (transferList.length) transferList.forEach(x => { m[x.productId] = (m[x.productId] || 0) + x.qty; });
+      else if (productId && qtyN > 0) m[productId] = qtyN;
+      return Object.entries(m).map(([pid, n]) => ({ pid, n, nomi: products.find(p => p.id === pid)?.name || "—" }));
+    })();
+    const narxBlok = guruhlar.length > 0 && (
+      <div style={{ background: t.card, borderRadius: 10, padding: 10, marginBottom: 11 }}>
+        <div style={{ fontSize: 11, color: t.sub, fontWeight: 700, marginBottom: 4 }}>Narx · 1 dona</div>
+        {guruhlar.map(g => {
+          const asosiy = products.find(p => p.id === g.pid)?.price || 0, oxirgi = oxirgiNarx(storeId, g.pid);
+          return (
+            <div key={g.pid} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0", borderBottom: `1px solid ${t.border}33` }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 13, fontWeight: 700 }}>{g.nomi}</div>
+                <div style={{ fontSize: 11, color: t.sub }}>{g.n} dona · asosiy {fmt(asosiy)}{oxirgi !== asosiy ? ` · oxirgi ${fmt(oxirgi)}` : ""}</div>
+              </div>
+              {canSee("price")
+                ? <input inputMode="decimal" aria-label={g.nomi + " narxi"} value={narxlar[g.pid] ?? String(oxirgi)} onChange={e => setNarxlar(o => ({ ...o, [g.pid]: e.target.value.replace(/[^\d.]/g, "") }))} style={{ width: 96, background: t.surf, border: `1.5px solid ${t.acc}`, borderRadius: 9, padding: "7px 8px", fontSize: 15, fontWeight: 700, textAlign: "right", color: t.txt, ...s.mono }} />
+                : <span style={{ ...s.mono, fontWeight: 700 }}>{fmt(oxirgi)}</span>}
+            </div>
+          );
+        })}
+        <div style={{ ...s.row, marginTop: 8, fontSize: 12, color: t.sub }}><span>Vitrina qarziga</span><b style={{ ...s.mono, color: t.txt }}>+{fmt(guruhlar.reduce((a, g) => a + g.n * narxOl(g.pid), 0))}</b></div>
+      </div>
+    );
 
     const send = async () => {
       if (!storeId) return alert("Do'kon tanlang");
@@ -1619,10 +1656,11 @@ function App() {
         status: "available",
         added_at: u.addedAt,
         sent_at: sentDate + "T00:00:00.000Z",
+        store_price: narxOl(u.productId),
       }));
       const { error: upsertErr } = await db.from("units").upsert(updates);
       if (upsertErr) { console.error("Upsert error:", upsertErr); alert("Xato: " + upsertErr.message); setSaving(false); return; }
-      setUnits(prev => prev.map(u => toSend.find(x => x.id === u.id) ? { ...u, location: storeId, sentAt: sentDate } : u));
+      setUnits(prev => prev.map(u => toSend.find(x => x.id === u.id) ? { ...u, location: storeId, sentAt: sentDate, storePrice: narxOl(u.productId) } : u));
       const store = stores.find(st => st.id === storeId);
       await log("Vitrinaga jo'natildi", `${toSend.length} dona → ${store.name}`);
       setSaving(false);
@@ -1686,6 +1724,7 @@ function App() {
                 </div>
               )}
 
+              {narxBlok}
               <Btn bg={t.acc} onClick={send} disabled={(transferList.length === 0 && (!product || !qtyN)) || saving}>
                 {saving ? "Jo'natilmoqda..." : transferList.length > 0 ? `Jo'natish (${transferList.reduce((s,x)=>s+x.qty,0)} dona)` : "Jo'natish"}
               </Btn>
@@ -1722,6 +1761,7 @@ function App() {
                   ))}
                 </div>
               )}
+              {narxBlok}
               <Btn bg={t.acc} onClick={send} disabled={scannedIds.length === 0 || saving}>{saving ? "Jo'natilmoqda..." : `Jo'natish (${scannedIds.length} dona)`}</Btn>
             </>
           )}
@@ -1752,11 +1792,14 @@ function App() {
       return Object.entries(byP).map(([pid, us]) => ({ product: products.find(p => p.id === pid), units: us })).filter(x => x.product);
     }, [storeId, units]);
 
-    const availUnits = productId && storeId ? getStoreUnits(storeId, productId) : [];
+    const availUnits = (productId && storeId ? getStoreUnits(storeId, productId) : []).slice().sort((a, b) => String(a.sentAt || "").localeCompare(String(b.sentAt || "")));
     const product = products.find(p => p.id === productId);
     const qtyN = +qty || 1;
     const discN = +discount || 0;
-    const total = product ? Math.round(product.price * qtyN * (1 - discN / 100) * 100) / 100 : 0;
+    const sotiladi = availUnits.slice(0, qtyN);
+    const narxSum = sotiladi.reduce((a, u) => a + unitPrice(u), 0) + Math.max(0, qtyN - sotiladi.length) * (product?.price || 0);
+    const total = product ? Math.round(narxSum * (1 - discN / 100) * 100) / 100 : 0;
+    const turliNarx = product && sotiladi.some(u => unitPrice(u) !== product.price);
 
     const sell = async () => {
       if (!storeId || !product) return alert("Tanlang");
@@ -1858,6 +1901,7 @@ function App() {
           </div>
           {product && qtyN > 0 && (
             <div style={{ background: isPaid ? t.greenS : t.redS, borderRadius: 11, padding: 13, marginBottom: 11 }}>
+              {turliNarx && sotiladi.map(u => <div key={u.id} style={{ ...s.row, fontSize: 12, marginBottom: 4 }}><span style={{ ...s.mono, color: t.sub }}>{u.unitId} · {dateStr(u.sentAt)}</span><span style={{ ...s.mono, fontWeight: 700 }}>{fmt(unitPrice(u))}</span></div>)}
               <div style={{ ...s.row, marginBottom: 6 }}><span style={{ fontSize: 12, color: t.sub }}>Jami</span><span style={{ ...s.mono, fontWeight: 800, color: isPaid ? t.green : t.red, fontSize: 17 }}>{fmt(total)}</span></div>
               {canSee("profit") && <div style={s.row}><span style={{ fontSize: 12, color: t.sub }}>Foyda</span><span style={{ ...s.mono, fontWeight: 700, color: t.green }}>{fmt(total - product.cost * qtyN)}</span></div>}
             </div>
@@ -1942,7 +1986,7 @@ function App() {
     const fill = dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)";
     const joylar = [{ id: "warehouse", nm: "Ombor" }, ...stores.map(st => ({ id: st.id, nm: st.name }))].map(j => {
       const us = units.filter(u => u.location === j.id && u.status === "available");
-      return { ...j, us, n: us.length, model: new Set(us.map(u => u.productId)).size, sum: j.id === "warehouse" ? 0 : us.reduce((a, u) => a + (products.find(p => p.id === u.productId)?.price || 0), 0) };
+      return { ...j, us, n: us.length, model: new Set(us.map(u => u.productId)).size, sum: j.id === "warehouse" ? 0 : us.reduce((a, u) => a + unitPrice(u), 0) };
     }).filter(j => j.id === "warehouse" || j.n > 0);
     const tanlangan = joylar.filter(j => !olib[j.id] && j.n > 0);
     const jami = tanlangan.reduce((a, j) => a + j.n, 0), qarz = tanlangan.reduce((a, j) => a + j.sum, 0);
@@ -2031,9 +2075,9 @@ function App() {
       const toRet = availUnits.slice(0, q);
       const ok = await verifyUnitsUnchanged(toRet.map(u => u.id));
       if (!ok) { setSaving(false); return; }
-      const updates = toRet.map(u => ({ ...u, unit_id: u.unitId, product_id: u.productId, added_at: u.addedAt, location: "warehouse", sent_at: null }));
+      const updates = toRet.map(u => ({ ...u, unit_id: u.unitId, product_id: u.productId, added_at: u.addedAt, location: "warehouse", sent_at: null, store_price: null, storePrice: null }));
       await db.from("units").upsert(updates);
-      setUnits(prev => prev.map(u => toRet.find(r => r.id === u.id) ? { ...u, location: "warehouse", sentAt: undefined } : u));
+      setUnits(prev => prev.map(u => toRet.find(r => r.id === u.id) ? { ...u, location: "warehouse", sentAt: undefined, storePrice: null } : u));
       await log("Vitrinadan qaytarildi", `${product.name} ${q} dona — ${store.name}`);
       setSaving(false);
       setModal(null); setSel(null);
@@ -2400,7 +2444,7 @@ function App() {
       sSales.forEach(s => ev.push([(s.date || "").slice(0, 10), "sotildi"]));
       units.filter(u => u.location === st.id && u.sentAt && u.status !== "nol").forEach(u => ev.push([u.sentAt.slice(0, 10), "jo'natildi"]));
       ev.sort((a, b) => b[0].localeCompare(a[0]));
-      return { st, vitN: vit.length, vitVal: vit.reduce((a, u) => a + (prodOf(u.productId)?.price || 0), 0), debt, paid: sPays.reduce((a, p) => a + p.amount, 0), last: ev[0] };
+      return { st, vitN: vit.length, vitVal: vit.reduce((a, u) => a + unitPrice(u), 0), debt, paid: sPays.reduce((a, p) => a + p.amount, 0), last: ev[0] };
     });
     const vitN = storeRows.reduce((a, r) => a + r.vitN, 0);
     const vitVal = storeRows.reduce((a, r) => a + r.vitVal, 0);
@@ -2702,7 +2746,7 @@ function App() {
           shown.map(store => {
             const sUnits = units.filter(u => u.location === store.id && u.status === "available");
             const sSales = sales.filter(s => s.storeId === store.id);
-            const sDebt = sUnits.reduce((sum, u) => sum + (products.find(p => p.id === u.productId)?.price || 0), 0);
+            const sDebt = sUnits.reduce((sum, u) => sum + unitPrice(u), 0);
             const sRev = sSales.reduce((sum, s) => sum + s.totalAmount, 0);
             return (
               <button key={store.id} onClick={() => setStoreProfileId(store.id)} className="press" style={{ ...s.card, width: "100%", textAlign: "left", color: t.txt }}>
@@ -2779,7 +2823,7 @@ function App() {
       (s.partialPayments || []).forEach(p => allPayments.push({ id: p.id, saleId: s.id, amount: p.amount, method: p.method, date: p.date, customerName: s.customerName, productId: s.productId }));
     });
     allPayments.sort((a, b) => b.date.localeCompare(a.date));
-    const sDebt = sUnits.reduce((sum, u) => sum + (products.find(p => p.id === u.productId)?.price || 0), 0);
+    const sDebt = sUnits.reduce((sum, u) => sum + unitPrice(u), 0);
     const totalRev = sSales.reduce((sum, s) => sum + s.totalAmount, 0);
     const totalPaidStore = allPayments.reduce((sum, p) => sum + p.amount, 0);
     const custDebt = sSales.reduce((sum, s) => {
@@ -2940,7 +2984,7 @@ function App() {
                 <div style={s.row}>
                   <div>
                     <div style={{ fontSize: 14, fontWeight: 700 }}>{prod.name}</div>
-                    <div style={{ fontSize: 11, color: t.sub, ...s.mono }}>{prod.sku} · {fmt(prod.price)}/dona</div>
+                    <div style={{ fontSize: 11, color: t.sub, ...s.mono }}>{prod.sku} · {(() => { const np = us.map(unitPrice), mn = Math.min(...np), mx = Math.max(...np); return mn === mx ? fmt(mn) : `${fmt(mn)}–${fmt(mx)}`; })()}/dona</div>
                   </div>
                   <Badge c={t.sub} bg={(dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)")}>{us.length} dona</Badge>
                 </div>
@@ -2948,7 +2992,7 @@ function App() {
                   {us.map(u => (
                     <div key={u.id} style={{ ...s.row, padding: "5px 0", fontSize: 11 }}>
                       <span style={{ ...s.mono, fontWeight: 700 }}>{u.unitId}</span>
-                      <span style={{ color: t.sub }}>{dateStr(u.sentAt)}</span>
+                      <span style={{ color: t.sub }}>{dateStr(u.sentAt)} · {fmt(unitPrice(u))}</span>
                     </div>
                   ))}
                 </div>
