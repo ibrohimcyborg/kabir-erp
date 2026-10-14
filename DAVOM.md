@@ -3,7 +3,20 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-14 · **main = v1.26 commiti — PUSH QILINDI (prod)** (v1.26 — jo'natishda har do'konga o'z narxi). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.26. Navbatda: hisobot tahriri (5–10) · DAFTAR'dan o'qishga o'tish (7/7 dan keyin)
+**Oxirgi yangilanish:** 2026-10-14 · **main = v1.26 commiti — PUSH QILINDI (prod)** (v1.26 — jo'natishda har do'konga o'z narxi). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.26. Navbatda: **tun rejimi ranglari — maket, Ibrohim tanlovini kutyapti** · hisobot tahriri (5–10) · DAFTAR'dan o'qishga o'tish (7/7 dan keyin)
+
+
+## ⏳ TUN REJIMI RANGLARI — MAKET (2026-10-14) — kod yo'q
+
+Ibrohim: «shuni night themeini o'zgartirish kere ranglarini» (rang aytilmagan; «shuni» qaysi ekran — noma'lum).
+Maket:     https://claude.ai/artifact/41aPzKnvbGAk4axi7nNCLb — hozirgi / A «Tun» (qora #000, karta #1C1C1E, tugma ko'k #3E88F7) /
+           B «Ko'k» (fon #0E1621, karta #17212B, tugma #5288C1, segment #2B5278) / C «Grafit» (qora, karta #1C1C1E, tugma oq).
+           Uchalasida tepadagi pushti-bordo `glow` yo'q. Suratlar — index.html nusxasi + emulyator (scratchpad `tun-shot.mjs`).
+Tashxis:   ranglar `THEMES.dark` (index.html ~506) + 36 joyda qattiq yozilgan `dark ? "…"`: 25 × `rgba(118,118,128,0.24)`,
+           4 × `1px solid rgba(255,255,255,0.075)`, 3 × `"#636366"` (segment), karta gradienti (`s.card`), `Tile` gradienti,
+           2 × oq nur (`Btn`, PC menyu). Sof vizual — baza/mantiq/`kabir_dark` tegilmaydi. Kunduzgi rejim tegilmaydi.
+Qarorlar:  1) A / B / C (yoki o'zgartirish); 2) pushti nur qolsinmi; 3) tugma rangi.
+Keyingi qadam: Ibrohim tanlovi → TAXMIN BLOKI → kod (v1.27).
 
 ## ✅ v1.25 — 0 QILINGAN DONALAR TARIXDAN CHIQADI (2026-10-14) — PUSH QILINDI (prod)
 
