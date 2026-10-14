@@ -5,6 +5,19 @@
 
 **Oxirgi yangilanish:** 2026-10-14 · **main = v1.27 commiti — PUSH QILINDI (prod)** (v1.27 — tun rejimi B «Ko'k» ranglari). Ish lokal `main`da — branch kerak emas (Ibrohim, 2026-10-14; CLAUDE.md §8). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.26. Navbatda: hisobot tahriri (5–10) · DAFTAR'dan o'qishga o'tish (7/7 dan keyin)
 
+## ⏳ ID TAKRORLANMASLIGI — MAKET (2026-10-14) — kod yo'q
+
+Ibrohim: «nima qilamiz shunda sistema chalg'imasligi uchun?» (ID amalda maketidan keyin).
+Maket:     https://claude.ai/artifact/RACA9g8CYzLdnkT4MQuVUN — hozirgi/taklif segment bilan jonli ro'yxat, 3 qadam, tashxis, 4 qaror.
+Tashxis:   raqam = mahsulot donalari soni + 1, telefondagi ro'yxatdan (`AddStockModal` ~1438, `ProductModal` ~1267) → dona o'chsa
+           yoki ikki telefon birdan qo'shsa takror. Skaner (`TransferModal` ~1568) birinchisini oladi, ikkinchisini «Allaqachon
+           qo'shilgan» deydi. SKU bandligi tekshirilmaydi (ochiq muammo №4).
+Taklif:    1) raqam = shu SKU dagi eng katta raqam + 1; 2) saqlashdan oldin bazadan yangilab olish + keyin takror tekshiruvi
+           (ogohlantirish); 3) to'liq kafolat — DAFTAR ombor qulfi (keyin). Chop etiladigan `SKU-#0001` ko'rinishi o'zgarmaydi.
+Qarorlar:  1) raqam qoidasi (tavsiya: eng katta+1); 2) ikki telefon (tavsiya: yangilab olish + tekshiruv); 3) «Takror ID tekshirish»
+           tugmasi superadmin'ga (tavsiya: ha, faqat o'qiydi); 4) SKU band bo'lsa (tavsiya: ogohlantirish). Diff taxmini 40–60 qator.
+Keyingi qadam: Ibrohim tanlovi → TAXMIN BLOKI → kod. Hisobot tahriri 5–10 qarorlari ham javobsiz.
+
 
 ## ✅ v1.27 — TUN REJIMI: B «KO'K» RANGLARI (2026-10-14) — PUSH QILINDI (prod)
 
