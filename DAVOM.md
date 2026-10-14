@@ -3,20 +3,22 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-14 · **main = v1.26 commiti — PUSH QILINDI (prod)** (v1.26 — jo'natishda har do'konga o'z narxi). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.26. Navbatda: **tun rejimi ranglari — maket, Ibrohim tanlovini kutyapti** · hisobot tahriri (5–10) · DAFTAR'dan o'qishga o'tish (7/7 dan keyin)
+**Oxirgi yangilanish:** 2026-10-14 · **main = v1.26 (prod)** · **v1.27 (tun rejimi B ranglari) — commit qilindi, PUSH QILINMAGAN** (`claude/pc-versiya`). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.26. Navbatda: hisobot tahriri (5–10) · DAFTAR'dan o'qishga o'tish (7/7 dan keyin)
 
 
-## ⏳ TUN REJIMI RANGLARI — MAKET (2026-10-14) — kod yo'q
+## ✅ v1.27 — TUN REJIMI: B «KO'K» RANGLARI (2026-10-14) — commit, push QILINMAGAN
 
-Ibrohim: «shuni night themeini o'zgartirish kere ranglarini» (rang aytilmagan; «shuni» qaysi ekran — noma'lum).
-Maket:     https://claude.ai/artifact/41aPzKnvbGAk4axi7nNCLb — hozirgi / A «Tun» (qora #000, karta #1C1C1E, tugma ko'k #3E88F7) /
-           B «Ko'k» (fon #0E1621, karta #17212B, tugma #5288C1, segment #2B5278) / C «Grafit» (qora, karta #1C1C1E, tugma oq).
-           Uchalasida tepadagi pushti-bordo `glow` yo'q. Suratlar — index.html nusxasi + emulyator (scratchpad `tun-shot.mjs`).
-Tashxis:   ranglar `THEMES.dark` (index.html ~506) + 36 joyda qattiq yozilgan `dark ? "…"`: 25 × `rgba(118,118,128,0.24)`,
-           4 × `1px solid rgba(255,255,255,0.075)`, 3 × `"#636366"` (segment), karta gradienti (`s.card`), `Tile` gradienti,
-           2 × oq nur (`Btn`, PC menyu). Sof vizual — baza/mantiq/`kabir_dark` tegilmaydi. Kunduzgi rejim tegilmaydi.
-Qarorlar:  1) A / B / C (yoki o'zgartirish); 2) pushti nur qolsinmi; 3) tugma rangi.
-Keyingi qadam: Ibrohim tanlovi → TAXMIN BLOKI → kod (v1.27).
+Ibrohim: maket (https://claude.ai/artifact/41aPzKnvbGAk4axi7nNCLb) → «B» → taxmin bloki → «ha qil hammasini, PC, planshet,
+mobil — hammasi bir xil bo'lsin».
+Qilingan:  `THEMES.dark` (index.html ~506): fon #0E1621, surf/karta #17212B, chegara #232E3C, acc #5288C1 (accTxt oq), txt #F5F7FA,
+           sub #7D8E9E, dim #4F5F6E, green #5FD38D, red #F0656F, amber #E8B64C, blue #6AB3F3, nav rgba(23,33,43,.94),
+           navOn #2B5278, glow "none" (pushti nur yo'q), rail/railIn rgba(255,255,255,.05).
+           Qattiq yozilganlar: 25 × `dark ? "rgba(112,132,153,0.18)"` (oldin 118,118,128,0.24); 3 × segment `dark ? "#2B5278"`
+           (oldin #636366); karta gradienti → #17212B (`s.card`); `Tile` → #232E3C; karta chegarasi 4 × "none";
+           oq nur 2 × "none" (`Btn`, PC menyu ~3628). Ranglar bitta joydan — telefon/planshet/PC bir xil.
+           Tegilmadi: kunduzgi rejim, yuklanish ekrani (:51, och kulrang), PC hisobot plitkalari `F` (~2311), theme-color (:9).
+Sinov:     JSX OK; emulyator 60 sahifa (eski/yangi × tel 375 / planshet 820 / PC 1440 × tun/kun × 7 ekran) — xato 0;
+           kunduzgi rejim eski bilan piksel-piksel bir xil (faqat «v1.27» belgisi); tun — uchala o'lchamda B ranglari.
 
 ## ✅ v1.25 — 0 QILINGAN DONALAR TARIXDAN CHIQADI (2026-10-14) — PUSH QILINDI (prod)
 

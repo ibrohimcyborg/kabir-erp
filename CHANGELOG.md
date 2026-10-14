@@ -2,6 +2,10 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.27 — 2026-10-14 — Tun rejimi: yangi ranglar (B · Ko'k)
+Tun rejimi to'q ko'k-kulrang: fon #0E1621, karta #17212B, tugma #5288C1, tanlangan segment #2B5278; tepadagi pushti nur olib tashlandi.
+`THEMES.dark` + 36 joyda qattiq yozilgan tun ranglari (kulrang fon, karta chegarasi/gradienti, segment, oq nur). Telefon, planshet, kompyuter — bir xil. Kunduzgi rejim o'zgarmadi.
+
 ## v1.26 — 2026-10-14 — Jo'natishda har do'konga o'z narxi
 Jo'natish oynasida har mahsulot narxi (avtomatik — shu do'konga oxirgi narx; superadmin o'zgartiradi). Vitrina qarzi va sotuv
 donaning narxidan; sotuvda eng oldin jo'natilgani birinchi. Vitrinadan qaytsa narx o'chadi.

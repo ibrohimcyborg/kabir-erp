@@ -1,4 +1,4 @@
-<!-- v1.26 -->
+<!-- v1.27 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -145,7 +145,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:blo
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.26";
+const APP_VER = "v1.27";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -503,7 +503,7 @@ const Ic = ({ n, s = 20, f }) => {
 };
 
 const THEMES = {
-  dark: { bg: "#020202", surf: "#111111", card: "#111111", border: "#262626", acc: "#FFFFFF", accSoft: "#FFFFFF1A", accTxt: "#141113", txt: "#FFFFFF", sub: "#9C9C9C", dim: "#5E5E5E", green: "#5BD08A", greenS: "#5BD08A1F", red: "#F0566B", redS: "#F0566B1F", amber: "#EEC77A", amberS: "#EEC77A1F", blue: "#E8A189", blueS: "#E8A1891F", glass: "rgba(255,255,255,0.10)", glassB: "rgba(255,255,255,0.15)", nav: "rgba(38,38,38,0.92)", navOn: "#0B0B0B", glow: "radial-gradient(90% 300px at 50% -60px, rgba(232,161,137,0.40), rgba(232,161,137,0) 70%), linear-gradient(180deg, #6A3247 0px, #4A1C38 90px, #3B152D 200px, #26101E 320px, #0E0509 440px, #020202 560px)", rail: "rgba(255,255,255,0.07)", railIn: "rgba(255,255,255,0.07)" },
+  dark: { bg: "#0E1621", surf: "#17212B", card: "#17212B", border: "#232E3C", acc: "#5288C1", accSoft: "#5288C126", accTxt: "#FFFFFF", txt: "#F5F7FA", sub: "#7D8E9E", dim: "#4F5F6E", green: "#5FD38D", greenS: "#5FD38D1F", red: "#F0656F", redS: "#F0656F1F", amber: "#E8B64C", amberS: "#E8B64C1F", blue: "#6AB3F3", blueS: "#6AB3F31F", glass: "rgba(255,255,255,0.06)", glassB: "rgba(255,255,255,0.10)", nav: "rgba(23,33,43,0.94)", navOn: "#2B5278", glow: "none", rail: "rgba(255,255,255,0.05)", railIn: "rgba(255,255,255,0.05)" },
   light: { bg: "#F2F4F5", surf: "#FFFFFF", card: "#FFFFFF", border: "#E6E8EE", acc: "#2F63F6", accSoft: "#2F63F61A", txt: "#20252E", sub: "#6B6F78", dim: "#A3A7B0", green: "#197560", greenS: "#E9F5EC", red: "#CE2B45", redS: "#FFE7E9", amber: "#A86A00", amberS: "#FFF3DC", blue: "#2F63F6", blueS: "#E3EBFE", accTxt: "#FFFFFF", glass: "#FFFFFF", glassB: "#E6E8EE", nav: "rgba(233,236,241,0.96)", navOn: "#FFFFFF", glow: "none", rail: "#E1E4ED", railIn: "#D0D5E2" },
 };
 
@@ -1099,11 +1099,11 @@ function App() {
     hdr: { background: t.surf, borderBottom: `1px solid ${t.border}`, padding: "13px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 50 },
     body: { padding: 16, paddingBottom: 20 },
     nav: { position: "fixed", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "100%", maxWidth: 430, background: t.surf, borderTop: `1px solid ${t.border}`, display: "flex", padding: "8px 0 14px", zIndex: 100 },
-    card: { background: dark ? "linear-gradient(180deg,#151515,#0F0F0F)" : t.card, border: dark ? "1px solid rgba(255,255,255,0.075)" : `0.5px solid ${t.border}`, borderRadius: 22, padding: 16, marginBottom: 10, boxShadow: dark ? "none" : "0 1px 2px rgba(0,0,0,0.04)" },
+    card: { background: dark ? "#17212B" : t.card, border: dark ? "none" : `0.5px solid ${t.border}`, borderRadius: 22, padding: 16, marginBottom: 10, boxShadow: dark ? "none" : "0 1px 2px rgba(0,0,0,0.04)" },
     overlay: { position: "fixed", inset: 0, background: "#00000099", zIndex: 9999, display: "flex", alignItems: "flex-end", justifyContent: "center" },
     sheet: { background: t.surf, borderRadius: "28px 28px 0 0", width: "100%", maxWidth: "100%", maxHeight: "90vh", overflowY: "auto", padding: 20, position: "relative", zIndex: 10000 },
     row: { display: "flex", justifyContent: "space-between", alignItems: "center" },
-    inp: { width: "100%", background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), border: "none", borderRadius: 10, padding: "12px 13px", color: t.txt, fontSize: 16, marginBottom: 11 },
+    inp: { width: "100%", background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), border: "none", borderRadius: 10, padding: "12px 13px", color: t.txt, fontSize: 16, marginBottom: 11 },
     iBtn: { width: 40, height: 40, borderRadius: 13, background: t.glass, border: `1px solid ${t.glassB}`, display: "flex", alignItems: "center", justifyContent: "center", color: t.txt },
     clr: { width: 22, height: 22, borderRadius: 11, flexShrink: 0, background: "rgba(118,118,128,0.45)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, lineHeight: 1 },
     mono: { fontVariantNumeric: "tabular-nums", letterSpacing: "-0.01em" },
@@ -1111,7 +1111,7 @@ function App() {
   };
 
   const Lbl = ({ children }) => <label style={{ fontSize: 13, fontWeight: 500, color: t.sub, marginBottom: 6, display: "block" }}>{children}</label>;
-  const Btn = ({ bg, c = "#fff", mt = 0, onClick, children, disabled, small }) => { const b = bg === t.green || bg === t.amber ? t.acc : bg; return <button disabled={disabled} style={{ width: "100%", background: disabled ? t.border : b, color: b === t.acc && c === "#fff" ? (disabled ? (dark ? t.sub : "#fff") : t.accTxt) : c, borderRadius: 30, padding: small ? "11px" : "16px", fontWeight: 600, fontSize: small ? 13 : 16, marginTop: mt, opacity: disabled ? 0.5 : 1, boxShadow: !disabled && dark && b === t.acc ? "0 0 26px rgba(255,255,255,0.16)" : "none" }} onClick={onClick}>{children}</button>; };
+  const Btn = ({ bg, c = "#fff", mt = 0, onClick, children, disabled, small }) => { const b = bg === t.green || bg === t.amber ? t.acc : bg; return <button disabled={disabled} style={{ width: "100%", background: disabled ? t.border : b, color: b === t.acc && c === "#fff" ? (disabled ? (dark ? t.sub : "#fff") : t.accTxt) : c, borderRadius: 30, padding: small ? "11px" : "16px", fontWeight: 600, fontSize: small ? 13 : 16, marginTop: mt, opacity: disabled ? 0.5 : 1, boxShadow: !disabled && dark && b === t.acc ? "none" : "none" }} onClick={onClick}>{children}</button>; };
   const Sec = ({ children, right, mt = 16 }) => <div style={{ fontSize: 17, fontWeight: 600, color: t.txt, letterSpacing: "-0.01em", marginBottom: 10, marginTop: mt + 4, display: "flex", justifyContent: "space-between", alignItems: "center" }}><span>{children}</span>{right}</div>;
   const Div = () => <div style={{ borderTop: `1px solid ${t.border}`, margin: "11px 0" }} />;
   const Badge = ({ c, bg, children }) => <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 9px", borderRadius: 20, fontSize: 10, fontWeight: 700, color: c, background: bg }}>{children}</span>;
@@ -1122,7 +1122,7 @@ function App() {
   );
   const Empty = ({ icon, title, desc, btnText, onBtn }) => (
     <div style={{ textAlign: "center", padding: "52px 20px" }}>
-      <div style={{ width: 72, height: 72, borderRadius: 22, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), margin: "0 auto 18px", display: "flex", alignItems: "center", justifyContent: "center", color: t.sub }}><Ic n={icon} s={32} /></div>
+      <div style={{ width: 72, height: 72, borderRadius: 22, background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), margin: "0 auto 18px", display: "flex", alignItems: "center", justifyContent: "center", color: t.sub }}><Ic n={icon} s={32} /></div>
       <div style={{ fontSize: 17, fontWeight: 800, marginBottom: 8 }}>{title}</div>
       <div style={{ fontSize: 13, color: t.sub, lineHeight: 1.55, marginBottom: 22, whiteSpace: "pre-line" }}>{desc}</div>
       {btnText && <button onClick={onBtn} style={{ background: t.acc, color: t.accTxt, borderRadius: 11, padding: "11px 22px", fontWeight: 700, fontSize: 13, display: "inline-flex", alignItems: "center", gap: 8 }}><Ic n="plus" s={15} />{btnText}</button>}
@@ -1983,7 +1983,7 @@ function App() {
     const [olib, setOlib] = useState({});
     const [saving, setSaving] = useState(false);
     const [natija, setNatija] = useState(null);
-    const fill = dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)";
+    const fill = dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)";
     const joylar = [{ id: "warehouse", nm: "Ombor" }, ...stores.map(st => ({ id: st.id, nm: st.name }))].map(j => {
       const us = units.filter(u => u.location === j.id && u.status === "available");
       return { ...j, us, n: us.length, model: new Set(us.map(u => u.productId)).size, sum: j.id === "warehouse" ? 0 : us.reduce((a, u) => a + unitPrice(u), 0) };
@@ -2217,7 +2217,7 @@ function App() {
       <div className="fade">
         <div style={{ ...s.row, alignItems: "flex-end", marginBottom: 16 }}>
           <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.15 }}>Umumiy holat</div>
-          <button onClick={pdfHome} disabled={pdfLoading === "home"} title="PDF" style={{ width: 40, height: 40, borderRadius: 20, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, display: "flex", alignItems: "center", justifyContent: "center" }}><Ic n={pdfLoading === "home" ? "refresh" : "pdf"} s={19} /></button>
+          <button onClick={pdfHome} disabled={pdfLoading === "home"} title="PDF" style={{ width: 40, height: 40, borderRadius: 20, background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), color: t.txt, display: "flex", alignItems: "center", justifyContent: "center" }}><Ic n={pdfLoading === "home" ? "refresh" : "pdf"} s={19} /></button>
         </div>
         {alerts.length > 0 && (
           <div style={{ background: t.card, borderRadius: 12, overflow: "hidden", marginBottom: 16, boxShadow: shadow }}>
@@ -2267,7 +2267,7 @@ function App() {
             <div style={{ background: t.card, borderRadius: 12, overflow: "hidden", boxShadow: shadow }}>
               {topProducts.map((x, i) => (
                 <div key={x.product.id} style={{ display: "flex", alignItems: "center", gap: 12, paddingLeft: 14 }}>
-                  <span style={{ width: 30, height: 30, borderRadius: 15, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, fontSize: 14, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}>{i + 1}</span>
+                  <span style={{ width: 30, height: 30, borderRadius: 15, background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), color: t.txt, fontSize: 14, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}>{i + 1}</span>
                   <span style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 10, minHeight: 58, paddingRight: 14, borderTop: i ? hair : "none" }}>
                     <span style={{ flex: 1, minWidth: 0 }}>
                       <span style={{ display: "block", fontSize: 15, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{x.product.name}</span>
@@ -2315,12 +2315,12 @@ function App() {
     const hair = `0.5px solid ${t.border}`;
     const pane = { display: "grid", gap: 14, alignContent: "start", minWidth: 0 };
     const h2 = { fontSize: 24, fontWeight: 400, letterSpacing: "-0.015em" };
-    const box = { background: t.card, borderRadius: 22, overflow: "hidden", boxShadow: shadow, border: dark ? "1px solid rgba(255,255,255,0.075)" : "none" };
-    const kpi = { flex: "1 1 130px", background: t.card, borderRadius: 22, padding: 16, display: "grid", gap: 6, boxShadow: shadow, minWidth: 0, border: dark ? "1px solid rgba(255,255,255,0.075)" : "none" };
+    const box = { background: t.card, borderRadius: 22, overflow: "hidden", boxShadow: shadow, border: dark ? "none" : "none" };
+    const kpi = { flex: "1 1 130px", background: t.card, borderRadius: 22, padding: 16, display: "grid", gap: 6, boxShadow: shadow, minWidth: 0, border: dark ? "none" : "none" };
     const kl = { fontSize: 13, fontWeight: 500, color: t.sub };
     const kv = { fontSize: 28, lineHeight: 1.15, ...s.numXl };
     const kx = { fontSize: 13, color: t.sub };
-    const Tile = ({ c, n, sz = 26 }) => <span style={{ width: sz, height: sz, borderRadius: sz * 0.3, background: dark ? "linear-gradient(150deg,#262626,#151515)" : "rgba(118,118,128,0.12)", color: t.txt, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}><Ic n={n} s={Math.round(sz * 0.62)} /></span>;
+    const Tile = ({ c, n, sz = 26 }) => <span style={{ width: sz, height: sz, borderRadius: sz * 0.3, background: dark ? "#232E3C" : "rgba(118,118,128,0.12)", color: t.txt, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}><Ic n={n} s={Math.round(sz * 0.62)} /></span>;
     return { monthLabel, inMonth, dm, prodOf, storeName, costOf, payRows, paidMonth, F, hair, pane, h2, box, kpi, kl, kv, kx, Tile };
   };
 
@@ -2359,7 +2359,7 @@ function App() {
           <div style={h2}>Ombor oldi-berdi</div>
           <div style={{ fontSize: 15, color: t.sub }}>{monthLabel}</div>
         </div>
-        <div className="kpi-strip" style={{ "--kc": t.card, "--kb": dark ? "1px solid rgba(255,255,255,0.075)" : "0px solid transparent", "--kh": hair, "--kd": t.border, "--ka": t.acc }}
+        <div className="kpi-strip" style={{ "--kc": t.card, "--kb": dark ? "none" : "0px solid transparent", "--kh": hair, "--kd": t.border, "--ka": t.acc }}
           onScroll={e => { const el = e.currentTarget, c = el.children, dots = el.nextElementSibling; if (!dots || !c.length) return;
             const end = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4, i = end ? c.length - 1 : Math.round(el.scrollLeft / (c[0].offsetWidth + 12));
             [...dots.children].forEach((d, k) => { d.dataset.on = k === i ? "1" : "0"; }); }}>
@@ -2383,7 +2383,7 @@ function App() {
               <div style={kl}>Foyda</div>
               <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginTop: 2 }}>
                 <span style={{ ...s.numXl, fontSize: 34, lineHeight: 1.2 }}>{fmt(profit)}</span>
-                <span style={{ fontSize: 13, fontWeight: 600, color: t.sub, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), padding: "3px 9px", borderRadius: 10 }}>ustama {salesCost > 0 ? Math.round(profit / salesCost * 100) : 0}%</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: t.sub, background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), padding: "3px 9px", borderRadius: 10 }}>ustama {salesCost > 0 ? Math.round(profit / salesCost * 100) : 0}%</span>
               </div>
             </div>
             {[["Sotuv", salesSum], ["Tannarx", salesCost], ["Olingan pul", paidMonth]].map(([l, v]) => (
@@ -2467,7 +2467,7 @@ function App() {
           <div style={kpi}><div style={{ display: "flex", alignItems: "center", gap: 8 }}><Tile c={F.red} n="debt" /><span style={kl}>Qarz</span></div><span style={{ ...kv, color: debtTotal > 0 ? t.red : t.txt }}>{fmt(debtTotal)}</span><span style={kx}>{debtStores} do'kon</span></div>
           <div style={kpi}><div style={{ display: "flex", alignItems: "center", gap: 8 }}><Tile c={F.green} n="banknote" /><span style={kl}>Bu oy olingan</span></div><span style={kv}>{fmt(paidMonth)}</span><span style={kx}>{monthLabel}</span></div>
         </div>
-        <label style={{ display: "flex", alignItems: "center", gap: 6, height: 36, padding: "0 10px", borderRadius: 10, background: dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)", color: t.sub }}>
+        <label style={{ display: "flex", alignItems: "center", gap: 6, height: 36, padding: "0 10px", borderRadius: 10, background: dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)", color: t.sub }}>
           <Ic n="search" s={16} />
           <input style={{ flex: 1, minWidth: 0, background: "none", border: "none", color: t.txt, fontSize: 15 }} placeholder="Do'kon qidirish" value={q} onChange={e => setQ(e.target.value)} />{q && <button type="button" aria-label="Qidiruvni tozalash" onClick={e => { setQ(""); e.currentTarget.parentElement.querySelector("input")?.focus(); }} style={s.clr}>×</button>}
         </label>
@@ -2478,7 +2478,7 @@ function App() {
             const c = AV[i % AV.length];
             return (
               <button key={r.st.id} onClick={() => { setTab("stores"); localStorage.setItem("kabir_tab", "stores"); setStoreProfileId(r.st.id); }} style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, paddingLeft: 16, textAlign: "left", color: t.txt }}>
-                <span style={{ width: 40, height: 40, borderRadius: 20, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, fontSize: 15, fontWeight: 600, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}>{(r.st.name || "?")[0].toUpperCase()}</span>
+                <span style={{ width: 40, height: 40, borderRadius: 20, background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), color: t.txt, fontSize: 15, fontWeight: 600, display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}>{(r.st.name || "?")[0].toUpperCase()}</span>
                 <span style={{ flex: 1, minWidth: 0, display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px 16px", padding: "11px 14px 11px 0", borderTop: i ? hair : "none" }}>
                   <span style={{ flex: "1 1 150px", minWidth: 0 }}>
                     <span style={{ display: "block", fontSize: 15, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r.st.name}</span>
@@ -2545,7 +2545,7 @@ function App() {
           <div style={{ ...s.row, marginBottom: 14 }}>
             <button onClick={() => { setSelectedCategory(null); setQ(""); }} style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <div style={{ width: 34, height: 34, borderRadius: 10, background: t.card, border: `1px solid ${t.border}`, display: "flex", alignItems: "center", justifyContent: "center" }}><Ic n="back" s={16} /></div>
-              <div style={{ width: 42, height: 42, borderRadius: 12, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Ic n={CATEGORY_ICONS[selectedCategory] || "grid"} s={20} /></div>
+              <div style={{ width: 42, height: 42, borderRadius: 12, background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), color: t.txt, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Ic n={CATEGORY_ICONS[selectedCategory] || "grid"} s={20} /></div>
               <div style={{ textAlign: "left" }}>
                 <div style={{ fontSize: 18, fontWeight: 800 }}>{selectedCategory}</div>
                 <div style={{ fontSize: 11, color: t.sub }}>{list.length} mahsulot</div>
@@ -2584,7 +2584,7 @@ function App() {
                         </div>
                         {user?.role !== "ombor" && (
                         <div style={{ display: "flex", gap: 5 }}>
-                          <button onClick={() => { setSel({ editProduct: p }); setModal("product"); }} style={{ background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 8, padding: "6px 8px" }}><Ic n="edit" s={13} /></button>
+                          <button onClick={() => { setSel({ editProduct: p }); setModal("product"); }} style={{ background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 8, padding: "6px 8px" }}><Ic n="edit" s={13} /></button>
                           <button onClick={() => {
                             const uc = p.allUnits.length;
                             askConfirm("Mahsulotni o'chirish", `"${p.name}" o'chirilsinmi?${uc > 0 ? `\n\n${uc} ta unit ham o'chiriladi` : ''}`, async () => {
@@ -2703,7 +2703,7 @@ function App() {
         <div style={{ fontSize: 13, color: t.sub, fontWeight: 500, marginBottom: 8 }}>Kategoriyalar</div>
         {visibleCategories.map(({ cat, count, whCount }) => (
           <button key={cat} onClick={() => { setSelectedCategory(cat); setQ(""); }} style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, background: t.card, border: `1px solid ${t.border}`, borderRadius: 13, padding: "12px 14px", marginBottom: 8, textAlign: "left", color: t.txt }}>
-            <div style={{ width: 42, height: 42, borderRadius: 12, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Ic n={CATEGORY_ICONS[cat] || "grid"} s={20} /></div>
+            <div style={{ width: 42, height: 42, borderRadius: 12, background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), color: t.txt, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Ic n={CATEGORY_ICONS[cat] || "grid"} s={20} /></div>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 14, fontWeight: 700 }}>{cat}</div>
               <div style={{ fontSize: 11.5, color: t.sub, marginTop: 2 }}>{count} mahsulot · {whCount} omborda</div>
@@ -2733,7 +2733,7 @@ function App() {
           {canSee("price") && <button onClick={() => setModal("addstore")} style={{ background: t.acc, color: t.accTxt, borderRadius: 10, padding: "8px 14px", fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", gap: 6 }}><Ic n="plus" s={14} /> Yangi</button>}
         </div>
         {stores.length > 0 && (
-          <label style={{ display: "flex", alignItems: "center", gap: 6, height: 38, padding: "0 10px", borderRadius: 10, background: dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)", color: t.sub, marginBottom: 14 }}>
+          <label style={{ display: "flex", alignItems: "center", gap: 6, height: 38, padding: "0 10px", borderRadius: 10, background: dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)", color: t.sub, marginBottom: 14 }}>
             <Ic n="search" s={16} />
             <input style={{ flex: 1, minWidth: 0, background: "none", border: "none", color: t.txt, fontSize: 16 }} placeholder="Do'kon qidirish" value={q} onChange={e => setQ(e.target.value)} />{q && <button type="button" aria-label="Qidiruvni tozalash" onClick={e => { setQ(""); e.currentTarget.parentElement.querySelector("input")?.focus(); }} style={s.clr}>×</button>}
           </label>
@@ -2833,7 +2833,7 @@ function App() {
     }, 0);
     // Hisobot: do'kon tarixi hozirgi bazadan (faqat o'qiydi)
     const hisobot = () => {
-      const fill = dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)";
+      const fill = dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)";
       const oy = today().slice(0, 7);
       const ev = [];
       const jon = {};
@@ -2872,7 +2872,7 @@ function App() {
       return (
         <div>
           <div style={{ position: "relative", display: "grid", gridTemplateColumns: "1fr 1fr", background: fill, padding: 2, borderRadius: 999, marginBottom: 10 }}>
-            <span style={{ position: "absolute", top: 2, bottom: 2, left: 2, width: "calc((100% - 4px) / 2)", borderRadius: 999, background: dark ? "#636366" : "#fff", boxShadow: "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)", transform: `translateX(${hDavr === "all" ? 0 : 100}%)`, transition: "transform .38s cubic-bezier(.3,1.35,.5,1)" }} />
+            <span style={{ position: "absolute", top: 2, bottom: 2, left: 2, width: "calc((100% - 4px) / 2)", borderRadius: 999, background: dark ? "#2B5278" : "#fff", boxShadow: "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)", transform: `translateX(${hDavr === "all" ? 0 : 100}%)`, transition: "transform .38s cubic-bezier(.3,1.35,.5,1)" }} />
             <button onClick={() => setHDavr("all")} style={segBtn(hDavr === "all")}>Hammasi</button>
             <button onClick={() => setHDavr("month")} style={segBtn(hDavr === "month")}>Bu oy</button>
           </div>
@@ -2892,7 +2892,7 @@ function App() {
             </div>
           </div>
           <div style={{ position: "relative", display: "grid", gridTemplateColumns: "repeat(5, minmax(0, 1fr))", background: fill, padding: 2, borderRadius: 999, marginBottom: 10 }}>
-            <span style={{ position: "absolute", top: 2, bottom: 2, left: 2, width: "calc((100% - 4px) / 5)", borderRadius: 999, background: dark ? "#636366" : "#fff", boxShadow: "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)", transform: `translateX(${fi * 100}%)`, transition: "transform .38s cubic-bezier(.3,1.35,.5,1)" }} />
+            <span style={{ position: "absolute", top: 2, bottom: 2, left: 2, width: "calc((100% - 4px) / 5)", borderRadius: 999, background: dark ? "#2B5278" : "#fff", boxShadow: "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)", transform: `translateX(${fi * 100}%)`, transition: "transform .38s cubic-bezier(.3,1.35,.5,1)" }} />
             {FL.map(([k, l]) => (
               <button key={k} onClick={() => setHTur(k)} style={{ position: "relative", zIndex: 1, minWidth: 0, padding: "7px 0", fontSize: 12, fontWeight: hTur === k ? 600 : 500, color: t.txt, ...kesik }}>{l}</button>
             ))}
@@ -2951,26 +2951,26 @@ function App() {
           <button onClick={() => pdfStore(store.id)} disabled={pdfLoading === "stores"} style={s.iBtn} title="PDF"><Ic n={pdfLoading === "stores" ? "refresh" : "pdf"} s={16} /></button>
         </div>
         <div style={{ background: t.card, borderRadius: 16, padding: 16, marginBottom: 14, color: t.txt, position: "relative", boxShadow: dark ? "none" : "0 1px 2px rgba(0,0,0,0.04)" }}>
-          {canSee("price") && <button onClick={() => { setSel({ editStore: store }); setModal("addstore"); }} style={{ position: "absolute", top: 14, right: 14, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), borderRadius: 16, padding: "7px 8px", color: t.txt }}><Ic n="edit" s={14} /></button>}
+          {canSee("price") && <button onClick={() => { setSel({ editStore: store }); setModal("addstore"); }} style={{ position: "absolute", top: 14, right: 14, background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), borderRadius: 16, padding: "7px 8px", color: t.txt }}><Ic n="edit" s={14} /></button>}
           <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 4 }}>{store.name}</div>
           {store.address && <div style={{ fontSize: 13, color: t.sub }}>{store.address}</div>}
           {store.manager && <div style={{ fontSize: 13, color: t.sub }}>{store.manager}{store.phone ? ` · ${store.phone}` : ''}</div>}
           <div style={{ borderTop: `0.5px solid ${t.border}`, margin: "12px 0" }} />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            <div style={{ background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), borderRadius: 10, padding: 10 }}><div style={{ fontSize: 12, color: t.sub }}>Vitrina qarzi</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(sDebt)}</div></div>
-            <div style={{ background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), borderRadius: 10, padding: 10 }}><div style={{ fontSize: 12, color: t.sub }}>Mijoz qarzi</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono, color: custDebt > 0 ? t.red : t.txt }}>{fmtK(custDebt)}</div></div>
-            <div style={{ background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), borderRadius: 10, padding: 10 }}><div style={{ fontSize: 12, color: t.sub }}>Jami sotuv</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(totalRev)}</div></div>
-            <div style={{ background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), borderRadius: 10, padding: 10 }}><div style={{ fontSize: 12, color: t.sub }}>Olingan pul</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(totalPaidStore)}</div></div>
+            <div style={{ background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), borderRadius: 10, padding: 10 }}><div style={{ fontSize: 12, color: t.sub }}>Vitrina qarzi</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(sDebt)}</div></div>
+            <div style={{ background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), borderRadius: 10, padding: 10 }}><div style={{ fontSize: 12, color: t.sub }}>Mijoz qarzi</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono, color: custDebt > 0 ? t.red : t.txt }}>{fmtK(custDebt)}</div></div>
+            <div style={{ background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), borderRadius: 10, padding: 10 }}><div style={{ fontSize: 12, color: t.sub }}>Jami sotuv</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(totalRev)}</div></div>
+            <div style={{ background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), borderRadius: 10, padding: 10 }}><div style={{ fontSize: 12, color: t.sub }}>Olingan pul</div><div style={{ fontSize: 17, fontWeight: 800, ...s.mono }}>{fmtK(totalPaidStore)}</div></div>
           </div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 14 }}>
-          <button onClick={() => { setSel({ storeId: store.id }); setModal("transfer"); }} className="press" style={{ background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 12, padding: "11px 8px", fontWeight: 600, fontSize: 13, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}><Ic n="send" s={16} /> Jo'natish</button>
-          <button onClick={() => { setSel({ storeId: store.id }); setModal("sell"); }} className="press" style={{ background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 12, padding: "11px 8px", fontWeight: 600, fontSize: 13, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}><Ic n="money" s={16} /> Sotuv</button>
-          <button onClick={() => { setSel({ storeId: store.id }); setModal("order"); }} className="press" style={{ background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 12, padding: "11px 8px", fontWeight: 600, fontSize: 13, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}><Ic n="order" s={16} /> Zakaz</button>
+          <button onClick={() => { setSel({ storeId: store.id }); setModal("transfer"); }} className="press" style={{ background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 12, padding: "11px 8px", fontWeight: 600, fontSize: 13, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}><Ic n="send" s={16} /> Jo'natish</button>
+          <button onClick={() => { setSel({ storeId: store.id }); setModal("sell"); }} className="press" style={{ background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 12, padding: "11px 8px", fontWeight: 600, fontSize: 13, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}><Ic n="money" s={16} /> Sotuv</button>
+          <button onClick={() => { setSel({ storeId: store.id }); setModal("order"); }} className="press" style={{ background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 12, padding: "11px 8px", fontWeight: 600, fontSize: 13, display: "flex", flexDirection: "column", alignItems: "center", gap: 3 }}><Ic n="order" s={16} /> Zakaz</button>
         </div>
-        <div className="tg-tabs" style={{ display: "flex", gap: 2, marginBottom: 12, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), padding: 2, borderRadius: 999 }}>
+        <div className="tg-tabs" style={{ display: "flex", gap: 2, marginBottom: 12, background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), padding: 2, borderRadius: 999 }}>
           {[{ id: "vitrina", l: "Vitrina", n: sUnits.length }, { id: "sales", l: "Sotuv", n: sSales.length }, { id: "payments", l: "To'lov", n: allPayments.length }, { id: "orders", l: "Zakaz", n: sOrders.length }, { id: "report", l: "Hisobot" }].map(x => (
-            <button key={x.id} onClick={e => { setPTab(x.id); e.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" }); }} style={{ flex: "1 0 auto", whiteSpace: "nowrap", padding: "7px 14px", borderRadius: 999, background: pTab === x.id ? (dark ? "#636366" : "#fff") : "transparent", boxShadow: pTab === x.id ? "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)" : "none", color: t.txt, fontSize: 13, fontWeight: pTab === x.id ? 600 : 500 }}>{x.l} {x.n > 0 && <span style={{ opacity: 0.7 }}>· {x.n}</span>}</button>
+            <button key={x.id} onClick={e => { setPTab(x.id); e.currentTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" }); }} style={{ flex: "1 0 auto", whiteSpace: "nowrap", padding: "7px 14px", borderRadius: 999, background: pTab === x.id ? (dark ? "#2B5278" : "#fff") : "transparent", boxShadow: pTab === x.id ? "0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04)" : "none", color: t.txt, fontSize: 13, fontWeight: pTab === x.id ? 600 : 500 }}>{x.l} {x.n > 0 && <span style={{ opacity: 0.7 }}>· {x.n}</span>}</button>
           ))}
         </div>
         {pTab === "vitrina" && (
@@ -2986,7 +2986,7 @@ function App() {
                     <div style={{ fontSize: 14, fontWeight: 700 }}>{prod.name}</div>
                     <div style={{ fontSize: 11, color: t.sub, ...s.mono }}>{prod.sku} · {(() => { const np = us.map(unitPrice), mn = Math.min(...np), mx = Math.max(...np); return mn === mx ? fmt(mn) : `${fmt(mn)}–${fmt(mx)}`; })()}/dona</div>
                   </div>
-                  <Badge c={t.sub} bg={(dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)")}>{us.length} dona</Badge>
+                  <Badge c={t.sub} bg={(dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)")}>{us.length} dona</Badge>
                 </div>
                 <div style={{ marginTop: 10, padding: 10, background: t.surf, borderRadius: 9, maxHeight: 120, overflowY: "auto" }}>
                   {us.map(u => (
@@ -2998,7 +2998,7 @@ function App() {
                 </div>
                 <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
                   <button onClick={() => { setSel({ storeId: store.id, productId: pid }); setModal("sell"); }} style={{ flex: 1, background: t.acc, color: t.accTxt, borderRadius: 10, padding: "9px", fontSize: 14, fontWeight: 600 }}>Sotish</button>
-                  <button onClick={() => { setSel({ storeId: store.id, productId: pid }); setModal("return"); }} style={{ background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 10, padding: "9px 12px", fontSize: 14, fontWeight: 600 }}>Qaytarish</button>
+                  <button onClick={() => { setSel({ storeId: store.id, productId: pid }); setModal("return"); }} style={{ background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 10, padding: "9px 12px", fontSize: 14, fontWeight: 600 }}>Qaytarish</button>
                 </div>
               </div>
             );
@@ -3143,7 +3143,7 @@ function App() {
                 <div style={{ ...s.mono, color: t.sub }}>{fmtK(o.prepaid)}/{fmtK(o.price)}</div>
               </div>
               <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
-                <button onClick={() => { setSel({ editOrder: o }); setModal("order"); }} style={{ flex: 1, background: (dark ? "rgba(118,118,128,0.24)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 8, padding: "8px", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: 4 }}><Ic n="edit" s={13} /> Tahrirlash</button>
+                <button onClick={() => { setSel({ editOrder: o }); setModal("order"); }} style={{ flex: 1, background: (dark ? "rgba(112,132,153,0.18)" : "rgba(118,118,128,0.12)"), color: t.txt, borderRadius: 8, padding: "8px", fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: 4 }}><Ic n="edit" s={13} /> Tahrirlash</button>
                 {o.status !== "delivered" && (
                   <select value={o.status} onChange={async e => {
                     const ns = e.target.value;
@@ -3625,7 +3625,7 @@ To'lov uchun:
               {navItems.filter(item => item.id !== "stores").map(item => {
                 const active = tab === item.id;
                 return (
-                  <button key={item.id} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }} style={{ display:"flex", alignItems:"center", gap:6, height:40, padding:"0 18px", borderRadius:20, fontSize:14, fontWeight:active ? 600 : 400, background:active ? t.acc : t.glass, border:`1px solid ${active ? t.acc : t.glassB}`, boxShadow:active && dark ? "0 0 22px rgba(255,255,255,0.22)" : "none", color:active ? t.accTxt : t.txt, whiteSpace:"nowrap" }}>
+                  <button key={item.id} onClick={() => { setTab(item.id); localStorage.setItem("kabir_tab", item.id); setStoreProfileId(null); }} style={{ display:"flex", alignItems:"center", gap:6, height:40, padding:"0 18px", borderRadius:20, fontSize:14, fontWeight:active ? 600 : 400, background:active ? t.acc : t.glass, border:`1px solid ${active ? t.acc : t.glassB}`, boxShadow:active && dark ? "none" : "none", color:active ? t.accTxt : t.txt, whiteSpace:"nowrap" }}>
                     {item.l}
                     {item.id === "debts" && stats.debtCount > 0 && <span style={{ minWidth:17, height:17, padding:"0 5px", borderRadius:9, background:t.red, color:"#fff", fontSize:11, fontWeight:600, display:"flex", alignItems:"center", justifyContent:"center" }}>{stats.debtCount}</span>}
                   </button>
