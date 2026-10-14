@@ -1,4 +1,4 @@
-<!-- v1.24 -->
+<!-- v1.25 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -145,7 +145,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:blo
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.24";
+const APP_VER = "v1.25";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -876,7 +876,7 @@ function App() {
 
   const pdfStore = (storeId) => {
     const store = stores.find(s => s.id === storeId);
-    const storeUnits = units.filter(u => u.location === storeId);
+    const storeUnits = units.filter(u => u.location === storeId && u.status !== "nol");
     const incomingMap = {};
     storeUnits.forEach(u => {
       const pr = products.find(p => p.id === u.productId);
@@ -2284,7 +2284,7 @@ function App() {
   const PcOmborPane = () => {
     const { monthLabel, inMonth, dm, prodOf, storeName, costOf, payRows, paidMonth, F, hair, pane, h2, box, kpi, kl, kv, kx, Tile } = pcCommon();
     const came = units.filter(u => inMonth(u.addedAt));
-    const sent = units.filter(u => u.sentAt && inMonth(u.sentAt));
+    const sent = units.filter(u => u.sentAt && inMonth(u.sentAt) && u.status !== "nol");
     const monthSales = sales.filter(s => inMonth(s.date));
     const inWh = units.filter(u => u.location === "warehouse" && u.status === "available");
     const soldQty = monthSales.reduce((a, s) => a + (+s.qty || 0), 0);
@@ -2398,7 +2398,7 @@ function App() {
       const ev = [];
       sPays.forEach(p => ev.push([(p.date || "").slice(0, 10), "pul olindi"]));
       sSales.forEach(s => ev.push([(s.date || "").slice(0, 10), "sotildi"]));
-      units.filter(u => u.location === st.id && u.sentAt).forEach(u => ev.push([u.sentAt.slice(0, 10), "jo'natildi"]));
+      units.filter(u => u.location === st.id && u.sentAt && u.status !== "nol").forEach(u => ev.push([u.sentAt.slice(0, 10), "jo'natildi"]));
       ev.sort((a, b) => b[0].localeCompare(a[0]));
       return { st, vitN: vit.length, vitVal: vit.reduce((a, u) => a + (prodOf(u.productId)?.price || 0), 0), debt, paid: sPays.reduce((a, p) => a + p.amount, 0), last: ev[0] };
     });
@@ -2793,7 +2793,7 @@ function App() {
       const oy = today().slice(0, 7);
       const ev = [];
       const jon = {};
-      units.filter(u => u.location === store.id && u.sentAt).forEach(u => {
+      units.filter(u => u.location === store.id && u.sentAt && u.status !== "nol").forEach(u => {
         const d = String(u.sentAt).slice(0, 10), k = d + "|" + u.productId;
         (jon[k] = jon[k] || { k: "out", id: "o" + k, d, pid: u.productId, ids: [] }).ids.push(u.unitId);
       });

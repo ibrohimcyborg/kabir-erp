@@ -3,9 +3,17 @@
 > Har seans boshida o'qiladi. Ish qoidalari — `CLAUDE.md`.
 > Har o'zgarishdan keyin DARHOL yangilanadi.
 
-**Oxirgi yangilanish:** 2026-10-13 · main = a2591c5 (v1.24 prodda). **Hozir:** «0 qilingandan keyin do'kon tarixi» maketi javob kutmoqda (TjCUZvCmrbXgqAr7KrcF8M, v1.25). **Navbatda:** «jo'natganda har do'konga har xil narx» — maket hali yo'q. Ibrohim tekshiradi: v1.23 surish/scroll, v1.24 0 qilish
+**Oxirgi yangilanish:** 2026-10-14 · **main = v1.25 commiti — PUSH QILINDI (prod)** (v1.25 — 0 qilingan donalar tarixdan chiqadi). **Navbatda:** «jo'natganda har do'konga har xil narx» — maket hali yo'q (keyingi ish). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.25
 
-## ⏳ 0 QILINGANDAN KEYIN DO'KON TARIXI — MAKET, JAVOB KUTILMOQDA (2026-10-13)
+## ✅ v1.25 — 0 QILINGAN DONALAR TARIXDAN CHIQADI (2026-10-14) — PUSH QILINDI (prod)
+
+Ibrohim: maket (TjCUZvCmrbXgqAr7KrcF8M) → «A» → taxmin bloki → «ha hammasini».
+Qilingan:  4 joyda `&& u.status !== "nol"`: do'kon hisoboti «Jo'natildi» (`hisobot()` ~2796), do'kon PDF kelganlar
+           (`pdfStore` ~879), PC «Ombor oldi-berdi» oylik «Jo'natildi» (`PcOmborPane` ~2287), do'konlar ro'yxati oxirgi
+           harakat (`DokonlarPane` ~2401). Dona bazada qoladi, raqam davom etadi. «Kelgan» (`came`) — tegilmadi.
+Sinov:     JSX OK; brauzer 3/3 (seed'da 1 dona "nol": Jo'natildi 3, Bu oy 1, vitrinada 2, ro'yxatda u yo'q).
+
+## (bajarildi → yuqorida) 0 QILINGANDAN KEYIN DO'KON TARIXI — MAKET (2026-10-13)
 
 Ibrohim (skrinshot: do'kon hisoboti «Jo'natildi 2 dona», vitrinada 0): «0 qilganimdan keyin tarixida qolib ketyapti».
 Maket:     https://claude.ai/artifact/TjCUZvCmrbXgqAr7KrcF8M — hozir / A (0 qilingan dona hisobotdan chiqadi) /

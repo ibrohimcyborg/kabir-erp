@@ -2,6 +2,9 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.25 — 2026-10-14 — 0 qilingan donalar tarixdan chiqadi
+Do'kon hisoboti, do'kon PDF, ombor oldi-berdi va do'konlar ro'yxatida 0 qilingan donalar «jo'natildi» bo'lib ko'rinmaydi.
+
 ## v1.24 — 2026-10-13 — Sonlarni 0 qilish
 Superadmin sozlamalarida «Sonlarni 0 qilish»: tanlangan ombor/do'kondagi sotilmagan donalar hisobdan chiqadi (holat «nol»,
 dona o'chmaydi, raqam davom etadi). Sotuv, qarz, to'lov tegilmaydi. Ombor ro'yxatida «0 qilingan».
