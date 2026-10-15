@@ -5,6 +5,19 @@
 
 **Oxirgi yangilanish:** 2026-10-14 · **main = v1.27 commiti — PUSH QILINDI (prod)** (v1.27 — tun rejimi B «Ko'k» ranglari). Ish lokal `main`da — branch kerak emas (Ibrohim, 2026-10-14; CLAUDE.md §8). Ibrohim tekshiradi: v1.23 surish/scroll, v1.24–v1.26. Navbatda: hisobot tahriri (5–10) · DAFTAR'dan o'qishga o'tish (7/7 dan keyin)
 
+## ⏳ DAFTAR SOLISHTIRUVIDA SOXTA FARQLAR — MAKET (2026-10-15) — kod yo'q
+
+Ibrohim (2 rasm, soya oynasi): ko'p qator «products · … · cost_items — daftar: [{"name":"MDF","amount":…}], eski: [{"amount":…,"name":"MDF"…}]»;
+           «Hozir solishtirish» dan keyin 1 ta farq; «0 / 7 kun ketma-ket 1:1».
+Tashxis:   `soyaFarq` (index.html ~348) `DF.yassi` matnlarini harfma-harf solishtiradi (`JSON.stringify`, daftar.js ~90/~94).
+           Firebase ichki obyekt kalitlarini har o'qishda boshqa tartibda qaytaradi → qiymat bir xil, matn boshqa → soxta farq,
+           seriya har kuni 0 ga tushadi. Xuddi shu xavf `partial_payments` (pp:) va `status_history` (sh:) elementlarida.
+           Sinov (soxta): hozirgi solishtirish teng emas deydi; kalitlar tartiblansa — teng; 175→180 baribir farq.
+Maket:     https://claude.ai/artifact/YXQxjoqd2gRMEz7c15ZZ8n
+Qaror:     tavsiya — faqat `soyaFarq` da ikkala tomonni tartiblab solishtirish (~5–8 qator, v1.28); muqobil — daftar.js ichida ham.
+           Tuzatilgach 7 kunlik sanoq 0 dan boshlanadi.
+Keyingi qadam: Ibrohim tanlovi → TAXMIN BLOKI → kod.
+
 ## ⏳ ID TAKRORLANMASLIGI — MAKET (2026-10-14) — kod yo'q
 
 Ibrohim: «nima qilamiz shunda sistema chalg'imasligi uchun?» (ID amalda maketidan keyin).
