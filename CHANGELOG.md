@@ -2,6 +2,10 @@
 
 > Arxiv: YOZILADI, O'QILMAYDI. Yangi yozuv TEPAGA. Parol, kalit, mijoz ma'lumoti yozilmaydi.
 
+## v1.28 — 2026-10-15 — Daftar solishtiruvi: kalitlar tartibi farq emas
+`soyaFarq`: daftar va eski jadval qiymatlari solishtirishdan oldin obyekt kalitlari alifbo bo'yicha tartiblanadi (`soyaTartib`).
+Firebase ichki obyekt kalitlarini har xil tartibda qaytargani uchun tannarx tarkibida soxta farq chiqib, 7 kunlik sanoq har kuni 0 ga tushardi.
+
 ## v1.27 — 2026-10-14 — Tun rejimi: yangi ranglar (B · Ko'k)
 Tun rejimi to'q ko'k-kulrang: fon #0E1621, karta #17212B, tugma #5288C1, tanlangan segment #2B5278; tepadagi pushti nur olib tashlandi.
 `THEMES.dark` + 36 joyda qattiq yozilgan tun ranglari (kulrang fon, karta chegarasi/gradienti, segment, oq nur). Telefon, planshet, kompyuter — bir xil. Kunduzgi rejim o'zgarmadi.

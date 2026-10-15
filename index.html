@@ -1,4 +1,4 @@
-<!-- v1.27 -->
+<!-- v1.28 -->
 <!DOCTYPE html>
 <html lang="uz">
 <head>
@@ -145,7 +145,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;min-width:0;display:blo
 <script>(function(){var l=document.querySelector('link[rel="apple-touch-icon"]'),i=document.getElementById("boot-ic");if(l&&i)i.src=l.href;})();</script>
 <script type="text/babel">
 const{useState,useEffect,useMemo,useCallback,useRef}=React;
-const APP_VER = "v1.27";
+const APP_VER = "v1.28";
 // ═══════════════════════════════════════════════════════════
 // FIREBASE (Firestore) — bulutli baza
 // Config kalitlarini Firebase console'dan olib shu yerga qo'ying:
@@ -345,9 +345,15 @@ const soyaKut = async (ms) => {
   while (!(SOYA.d && SOYA.d.tayyor())) { if (Date.now() - t0 > ms) return false; await new Promise(ok => setTimeout(ok, 1000)); }
   return true;
 };
+// Firebase obyekt ichidagi kalitlarni har o'qishda boshqa tartibda qaytaradi — solishtirishda kalitlar alifbo bo'yicha
+const soyaTartib = (v) => {
+  if (v === undefined) return v;
+  const f = (x) => Array.isArray(x) ? x.map(f) : x && typeof x === "object" ? Object.keys(x).sort().reduce((o, k) => (o[k] = f(x[k]), o), {}) : x;
+  try { return JSON.stringify(f(JSON.parse(v))); } catch (e) { return v; }
+};
 const soyaFarq = async () => {   // { kalit: [daftardagi, eski jadvaldagi] } — rasm, login, camelCase nusxalar hisobga kirmaydi
   const eski = DF.yassi(DF.bazaDan(await soyaJadvallar())), m = DF.yassi(SOYA.d.holat()), f = {};
-  for (const k in m) if (m[k] !== eski[k]) f[k] = [m[k], eski[k]];
+  for (const k in m) if (m[k] !== eski[k] && soyaTartib(m[k]) !== soyaTartib(eski[k])) f[k] = [m[k], eski[k]];
   for (const k in eski) if (m[k] === undefined) f[k] = [undefined, eski[k]];
   return f;
 };
